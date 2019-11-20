@@ -19,7 +19,7 @@ public class Strings
     //=====================================================================================================================================
     public void JoinUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`- preview [text]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "join`", channel, StringsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================

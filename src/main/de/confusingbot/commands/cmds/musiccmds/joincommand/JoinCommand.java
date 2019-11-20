@@ -14,7 +14,6 @@ import java.util.List;
 
 public class JoinCommand implements ServerCommand
 {
-
     Strings strings = new Strings();
 
     @Override

@@ -20,6 +20,7 @@ import main.de.confusingbot.commands.cmds.defaultcmds.rulescommand.RulesCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.*;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.PrivateHelpCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.joincommand.JoinCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.leavecommand.LeaveCommand;
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
