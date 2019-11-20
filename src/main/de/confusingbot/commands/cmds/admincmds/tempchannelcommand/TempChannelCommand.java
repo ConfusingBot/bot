@@ -1,7 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.tempchannelcommand;
 
 import main.de.confusingbot.channels.TempVoiceChannels;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -16,7 +15,7 @@ public class TempChannelCommand implements ServerCommand
 {
 
     private SQL sql = new SQL();
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -46,20 +45,20 @@ public class TempChannelCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                strings.GeneralUsage(channel);
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -88,7 +87,7 @@ public class TempChannelCommand implements ServerCommand
         }
         else
         {
-            strings.HasNoTempChannelInformation(channel);
+            embeds.HasNoTempChannelInformation(channel);
         }
     }
 
@@ -106,24 +105,24 @@ public class TempChannelCommand implements ServerCommand
                     sql.addToSQL(channelid, guild.getIdLong());
 
                     //Message
-                    strings.SuccessfullyAddedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                    embeds.SuccessfullyAddedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
                 }
                 else
                 {
                     //Error
-                    strings.VoiceChannelAlreadyExistsError(channel);
+                    embeds.VoiceChannelAlreadyExistsError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.CouldNotFindVoiceChannelByIDError(channel, channelid);
+                embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
             }
 
         } catch (NumberFormatException e)
         {
             //Error
-            strings.NoValidVoiceChannelIDNumberError(channel, args[2]);
+            embeds.NoValidVoiceChannelIDNumberError(channel, args[2]);
         }
 
     }
@@ -142,23 +141,23 @@ public class TempChannelCommand implements ServerCommand
                     sql.removeFromSQL(channelid, guild.getIdLong());
 
                     //Message
-                    strings.SuccessfullyRemovedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                    embeds.SuccessfullyRemovedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
                 }
                 else
                 {
                     //Error
-                    strings.NoExistingTempChannelError(channel, channelid);
+                    embeds.NoExistingTempChannelError(channel, channelid);
                 }
             }
             else
             {
                 //Error
-                strings.CouldNotFindVoiceChannelByIDError(channel, channelid);
+                embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
             }
         } catch (NumberFormatException e)
         {
             //Error
-            strings.NoValidVoiceChannelIDNumberError(channel, args[2]);
+            embeds.NoValidVoiceChannelIDNumberError(channel, args[2]);
         }
     }
 

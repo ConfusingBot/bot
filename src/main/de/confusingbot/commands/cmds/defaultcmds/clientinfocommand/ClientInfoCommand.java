@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
@@ -21,7 +20,7 @@ public class ClientInfoCommand implements ServerCommand
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
     String noInformationString = "none";
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member requester, TextChannel channel, Message message)
@@ -40,7 +39,7 @@ public class ClientInfoCommand implements ServerCommand
         else
         {
             //Usage
-            strings.ClientInfoUsage(channel);
+            embeds.ClientInfoUsage(channel);
         }
     }
 

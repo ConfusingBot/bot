@@ -1,11 +1,11 @@
 package main.de.confusingbot.commands.cmds.admincmds.rolebordercommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class Strings
+public class Embeds
 {
     //=====================================================================================================================================
     //Usage
@@ -14,22 +14,22 @@ public class Strings
     {
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "roleborder create [roleName]`\n`"
                 + "`" + Main.prefix + "roleborder remove [@role]`\n`"
-                + Main.prefix + "roleborder add [@role]`", channel, StringsUtil.showUsageTime);
+                + Main.prefix + "roleborder add [@role]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "roleborder add [@role]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "roleborder add [@role]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "roleborder create [roleName]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "roleborder create [roleName]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "roleborder remove [@role]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "roleborder remove [@role]`", channel, EmbedsUtil.showUsageTime);
     }
 
 
@@ -38,22 +38,22 @@ public class Strings
     //=====================================================================================================================================
     public void NoPermissionError(TextChannel channel)
     {
-        StringsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel);
     }
 
     public void RoleBorderAlreadyExistsError(TextChannel channel)
     {
-        StringsUtil.AlreadyExistsError(channel, "RoleBorder");
+        EmbedsUtil.AlreadyExistsError(channel, "RoleBorder");
     }
 
     public void HaveNotMentionedRoleError(TextChannel channel)
     {
-        StringsUtil.HavenNotMentionedError(channel, "@role");
+        EmbedsUtil.HavenNotMentionedError(channel, "@role");
     }
 
     public void RoleDoesNotExistError(TextChannel channel)
     {
-        StringsUtil.NotExistingError(channel, "This role");
+        EmbedsUtil.NotExistingError(channel, "This role");
     }
 
 
@@ -62,17 +62,17 @@ public class Strings
     //=====================================================================================================================================
     public void SuccessfullyCreateRoleBorder(TextChannel channel, String name)
     {
-        EmbedManager.SendSuccessEmbed("You successfully create the role **" + name + "**", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendSuccessEmbed("You successfully create the role **" + name + "**", channel, EmbedsUtil.showUsageTime);
     }
 
     public void SuccessfullyAddedRoleBorder(TextChannel channel, String roleName)
     {
-        StringsUtil.SuccessfulAdded(channel, roleName, "the RoleBorders");
+        EmbedsUtil.SuccessfulAdded(channel, roleName, "the RoleBorders");
     }
 
     public void SuccessfullyRemovedRoleBorder(TextChannel channel, String roleName)
     {
-        StringsUtil.SuccessfulRemoved(channel, roleName, "from the RoleBorders");
+        EmbedsUtil.SuccessfulRemoved(channel, roleName, "from the RoleBorders");
     }
 
 

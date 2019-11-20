@@ -1,10 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 
-import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,7 +13,7 @@ import java.util.List;
 
 public class ClearCommand implements ServerCommand
 {
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -37,24 +34,24 @@ public class ClearCommand implements ServerCommand
                     channel.purgeMessages(messages);
 
                     //Message
-                   strings.SuccessfulRemovedXMessages(channel, messages);
+                   embeds.SuccessfulRemovedXMessages(channel, messages);
 
                 } catch (NumberFormatException e)
                 {
                     //Error
-                   strings.NoValidNumberError(channel, args[1]);
+                   embeds.NoValidNumberError(channel, args[1]);
                 }
             }
             else
             {
                 //Usage
-                strings.ClearUsage(channel);
+                embeds.ClearUsage(channel);
             }
         }
         else
         {
             //Error
-           strings.NoPermissionError(channel);
+           embeds.NoPermissionError(channel);
         }
     }
 

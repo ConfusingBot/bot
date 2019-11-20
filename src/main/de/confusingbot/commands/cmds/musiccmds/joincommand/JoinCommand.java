@@ -1,9 +1,9 @@
 package main.de.confusingbot.commands.cmds.musiccmds.joincommand;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.Music;
 import main.de.confusingbot.music.MusicController;
 import main.de.confusingbot.music.MusicUtil;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class JoinCommand implements ServerCommand
 {
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -36,6 +36,7 @@ public class JoinCommand implements ServerCommand
 
                     Connect(voiceChannel);
 
+                    //SQL
                     MusicUtil.updateChannel(channel, member);
 
                     List<AudioTrack> queue = controller.getQueue().getQueueList();
@@ -46,23 +47,22 @@ public class JoinCommand implements ServerCommand
                     }
                     else
                     {
-                        //Error
-                        strings.YourQueueIsEmptyInformation(channel);
+                        //Information
+                        embeds.YourQueueIsEmptyInformation(channel);
                     }
                 }
                 else
                 {
-                    //Error
-                    strings.YouAreNotInAVoiceChannelInformation(channel);
+                    //Information
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                 }
             }
         }
         else
         {
             //Usage
-            strings.JoinUsage(channel);
+            embeds.JoinUsage(channel);
         }
-
     }
 
     //=====================================================================================================================================

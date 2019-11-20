@@ -1,25 +1,24 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.previewcommand;
+package main.de.confusingbot.commands.cmds.defaultcmds.jokecommand;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
-import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class Strings
+public class Embeds
 {
-    public Strings()
+    public Embeds()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "preview [your text]\n``` ```Preview your text in a box```");
+        HelpManager.fun.add("```yaml\n" + Main.prefix + "joke ([Mother, JackNorris])\n``` ```ConfusingBot will make you laugh```");
     }
 
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void PreviewUsage(TextChannel channel)
+    public void JokeUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`- preview [text]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "joke ([JackNorris, Mother])`", channel, EmbedsUtil.showUsageTime);
     }
 
 }

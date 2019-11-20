@@ -2,7 +2,6 @@ package main.de.confusingbot.commands.cmds.defaultcmds.reactcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -14,7 +13,7 @@ import java.util.List;
 public class ReactCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
 
     @Override
@@ -62,19 +61,19 @@ public class ReactCommand implements ServerCommand
                     }
 
                     //Message
-                    strings.SuccessfullyAddedEmotes(channel, emotesString);
+                    embeds.SuccessfullyAddedEmotes(channel, emotesString);
 
                 } catch (NumberFormatException e)
                 {
                     //Usage
-                    strings.ThisIsNoMessageIDError(channel, messageIDString);
+                    embeds.ThisIsNoMessageIDError(channel, messageIDString);
                 }
             }
         }
         else
         {
             //Usage
-            strings.ReactCommandUsage(channel);
+            embeds.ReactCommandUsage(channel);
         }
     }
 }

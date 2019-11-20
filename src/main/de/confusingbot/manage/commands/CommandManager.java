@@ -17,10 +17,15 @@ import main.de.confusingbot.commands.cmds.defaultcmds.previewcommand.PreviewComm
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.reactcommand.ReactCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.rulescommand.RulesCommand;
-import main.de.confusingbot.commands.cmds.musiccmds.*;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.PrivateHelpCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.joincommand.JoinCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.leavecommand.LeaveCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.pausecommand.PauseCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.playcommand.PlayCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.queuecommand.QueueCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.shufflecommand.ShuffleCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.skipcommand.SkipCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand.TrackInfoCommand;
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;

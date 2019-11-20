@@ -4,8 +4,11 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.managers.AudioManager;
+
+import java.awt.*;
 
 
 public class TrackScheduler extends AudioEventAdapter {
@@ -16,7 +19,6 @@ public class TrackScheduler extends AudioEventAdapter {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
         MusicController controller = Music.playerManager.getController(guildid);
         controller.getEmbeds().SendPauseSongEmbed(player.getPlayingTrack());
-
     }
 
     @Override
@@ -24,6 +26,7 @@ public class TrackScheduler extends AudioEventAdapter {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
         MusicController controller = Music.playerManager.getController(guildid);
         controller.getEmbeds().DeletePauseSongEmbed();
+        controller.getEmbeds().ResumeEmbed();
     }
 
     @Override

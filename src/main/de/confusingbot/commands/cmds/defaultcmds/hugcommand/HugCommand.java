@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class HugCommand implements ServerCommand {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
     private ConcurrentHashMap<Long, Long> timestamps;//save when the message was sent from which id
     String[] messages = new String[] {"come over %member\uD83E\uDDDF", "%member hugs himself\uD83D\uDE1C", "%member hugs ConfusingBot\uD83C\uDF08"};

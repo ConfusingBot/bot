@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class QuestionCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
     SQL sql = new SQL();
 
     @Override
@@ -59,20 +59,20 @@ public class QuestionCommand implements ServerCommand
                     else
                     {
                         //Error
-                        strings.NoPermissionError(channel);
+                        embeds.NoPermissionError(channel);
                     }
                     break;
 
                 default:
                     //Usage
-                    strings.QuestionCloseUsage(channel);
+                    embeds.QuestionCloseUsage(channel);
                     break;
             }
         }
         else
         {
             //Usage
-            strings.GeneralUsage(channel);
+            embeds.GeneralUsage(channel);
         }
     }
 
@@ -92,23 +92,23 @@ public class QuestionCommand implements ServerCommand
                     sql.AddQuestionCategorieToSQL(guild.getIdLong(), categoryid);
 
                     //Message
-                    strings.SuccessfullyAddedCategoryToQuestionCategory(channel, guild.getCategoryById(categoryid).getName());
+                    embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, guild.getCategoryById(categoryid).getName());
                 }
                 else
                 {
                     //Error
-                    strings.OnlyOneAllowedQuestionCategory(channel);
+                    embeds.OnlyOneAllowedQuestionCategory(channel);
                 }
             } catch (NumberFormatException e)
             {
                 //Error
-                strings.ThisIsNoIDError(channel, args[2]);
+                embeds.ThisIsNoIDError(channel, args[2]);
             }
         }
         else
         {
             //Usage
-            strings.QuestionCategoryCreateUsage(channel);
+            embeds.QuestionCategoryCreateUsage(channel);
         }
     }
 
@@ -124,18 +124,18 @@ public class QuestionCommand implements ServerCommand
                 sql.RemoveQuestionCategoryFromSQL(guild.getIdLong());
 
                 //Message
-                strings.SuccessfullyRemovedCategoryToQuestionCategory(channel, category.getName());
+                embeds.SuccessfullyRemovedCategoryToQuestionCategory(channel, category.getName());
             }
             else
             {
                 //Error
-                strings.ServerHasNoQuestionCategoryError(channel);
+                embeds.ServerHasNoQuestionCategoryError(channel);
             }
         }
         else
         {
             //Usage
-            strings.QuestionCategoryRemoveUsage(channel);
+            embeds.QuestionCategoryRemoveUsage(channel);
         }
     }
 
@@ -155,7 +155,7 @@ public class QuestionCommand implements ServerCommand
                 {
                     int deletedInSeconds = 5;
                     //Message
-                    strings.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
+                    embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
 
                     sleepXSeconds(deletedInSeconds);
 
@@ -168,19 +168,19 @@ public class QuestionCommand implements ServerCommand
                 else
                 {
                     //Error
-                    strings.NoPermissionForClosingThisQuestionChannelError(channel);
+                    embeds.NoPermissionForClosingThisQuestionChannelError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.YouAreNotInAQuestionChannelError(channel);
+                embeds.YouAreNotInAQuestionChannelError(channel);
             }
         }
         else
         {
             //Usage
-            strings.QuestionCloseUsage(channel);
+            embeds.QuestionCloseUsage(channel);
         }
     }
 
@@ -191,7 +191,7 @@ public class QuestionCommand implements ServerCommand
         int mentionableRoles = 3;
         if (roles.size() > mentionableRoles)
         {
-            strings.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
+            embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
         }
         else
         {
@@ -220,7 +220,7 @@ public class QuestionCommand implements ServerCommand
             else
             {
                 //Error
-                strings.ThisServerHasNoExistingQuestionCategoryError(channel);
+                embeds.ThisServerHasNoExistingQuestionCategoryError(channel);
             }
         }
     }

@@ -1,49 +1,42 @@
-package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
+package main.de.confusingbot.commands.cmds.defaultcmds.reactcommand;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.nio.channels.Channel;
-import java.util.List;
-
-public class Strings
+public class Embeds
 {
 
-    public Strings()
+    public Embeds()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "clear [# of messages]\n``` ```Clear the last # messages```");
+        HelpManager.useful.add("```yaml\n" + Main.prefix + "react [textchannel] [messageID] [Emotji's]\n``` ```React with the [Emotji's] on a message[messageID]\uD83D\uDC39```");
     }
 
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void ClearUsage(TextChannel channel)
+    public void ReactCommandUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "clear [# messages]`", channel, 5);
+        EmbedManager.SendErrorEmbed("`- react [channel] [message id] [emotjis]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void NoValidNumberError(TextChannel channel, String number)
+    public void ThisIsNoMessageIDError(TextChannel channel, String id)
     {
-        StringsUtil.NoNumberError(channel, number);
-    }
-
-    public void NoPermissionError(TextChannel channel)
-    {
-        StringsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfulRemovedXMessages(TextChannel channel, List<Message> messages)
+    public void SuccessfullyAddedEmotes(TextChannel channel, String emotesString)
     {
-        StringsUtil.SuccessfulRemoved(channel, (messages.size() - 1) + " messages", "this server");
+        EmbedManager.SendSuccessEmbed("You successfully added " + emotesString, channel, EmbedsUtil.showSuccessTime);
     }
+
+
 }

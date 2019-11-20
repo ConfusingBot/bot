@@ -1,19 +1,13 @@
-package main.de.confusingbot.commands.cmds.strings;
+package main.de.confusingbot.commands.cmds.admincmds;
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class StringsUtil
+public class EmbedsUtil
 {
-    public static int showUsageTime = 10;
+    public static int showUsageTime = 20;
     public static int showErrorTime = 5;
     public static int showSuccessTime = 3;
-    public static int showInfoTime = 5;
-
-    //=====================================================================================================================================
-    //Usage
-    //=====================================================================================================================================
 
     //=====================================================================================================================================
     //Error
@@ -44,13 +38,9 @@ public class StringsUtil
         EmbedManager.SendErrorEmbed("**" + name + "** doesn't exists", channel, showErrorTime);
     }
 
-
-
     public static void OnlyOneAllowedToExistError(TextChannel channel, String name){
         EmbedManager.SendErrorEmbed("You can only create on **" + name + "**!", channel, showErrorTime);
     }
-
-
 
     public static void HavenNotMentionedError(TextChannel channel, String name){
         EmbedManager.SendErrorEmbed( "You haven't mentioned a " + name, channel, showErrorTime);

@@ -2,16 +2,15 @@ package main.de.confusingbot.commands.cmds.musiccmds.joincommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
+import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.w3c.dom.Text;
 
-public class Strings
+public class Embeds
 {
-    public Strings()
+    public Embeds()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "preview [your text]\n``` ```Preview your text in a box```");
+        HelpManager.music.add("```yaml\n" + Main.prefix + "join\n``` ```ConfusingBot will join your channel```");
     }
 
     //=====================================================================================================================================
@@ -19,7 +18,7 @@ public class Strings
     //=====================================================================================================================================
     public void JoinUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "join`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "join`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -27,11 +26,7 @@ public class Strings
     //=====================================================================================================================================
     public void YourQueueIsEmptyInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`Ups, your Queue is empty`⚠️", channel, StringsUtil.showInfoTime);
-    }
-
-    public void YouAreNotInAVoiceChannelInformation(TextChannel channel){
-        EmbedManager.SendInfoEmbed( "`Ups, you aren't in a VoiceChannel\uD83C\uDF99`", channel, StringsUtil.showInfoTime);
+        EmbedManager.SendInfoEmbed("`Ups, your Queue is empty`⚠️", channel, EmbedsUtil.showInfoTime);
     }
 
 }

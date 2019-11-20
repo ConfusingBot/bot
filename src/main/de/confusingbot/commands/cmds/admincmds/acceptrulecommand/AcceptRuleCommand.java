@@ -1,13 +1,9 @@
 package main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
-import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import org.jsoup.internal.StringUtil;
 
 import java.util.List;
 
@@ -16,7 +12,7 @@ public class AcceptRuleCommand implements ServerCommand
 {
 
     private SQL sql = new SQL();
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -41,20 +37,20 @@ public class AcceptRuleCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                strings.GeneralUsage(channel);
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-           strings.NoPermissionError(channel);
+           embeds.NoPermissionError(channel);
         }
     }
 
@@ -88,30 +84,30 @@ public class AcceptRuleCommand implements ServerCommand
                         sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole.getIdLong(), acceptedRole.getIdLong());
 
                         //Message
-                        strings.SuccessfulAddedAcceptRule(channel);
+                        embeds.SuccessfulAddedAcceptRule(channel);
 
                     } catch (NumberFormatException e)
                     {
                         //Error
-                        strings.ThisIsNoIDError(channel, messageIDString);
+                        embeds.ThisIsNoIDError(channel, messageIDString);
                     }
                 }
                 else
                 {
                     //Usage
-                    strings.AddUsage(channel);
+                    embeds.AddUsage(channel);
                 }
             }
             else
             {
                 //Error
-                strings.OnlyOneAcceptRuleAllowedError(channel);
+                embeds.OnlyOneAcceptRuleAllowedError(channel);
             }
         }
         else
         {
             //Usage
-            strings.AddUsage(channel);
+            embeds.AddUsage(channel);
         }
     }
 
@@ -125,18 +121,18 @@ public class AcceptRuleCommand implements ServerCommand
                 sql.removeFormSQL(guild.getIdLong());
 
                 //Message
-                strings.SuccessfulRemovedAcceptRule(channel);
+                embeds.SuccessfulRemovedAcceptRule(channel);
             }
             else
             {
                 //Error
-               strings.NoExistingAcceptRuleError(channel);
+               embeds.NoExistingAcceptRuleError(channel);
             }
         }
         else
         {
             //Usage
-            strings.RemoveUsage(channel);
+            embeds.RemoveUsage(channel);
         }
     }
 

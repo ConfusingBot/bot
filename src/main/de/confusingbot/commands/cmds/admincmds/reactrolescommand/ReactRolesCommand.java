@@ -10,7 +10,7 @@ import java.util.List;
 public class ReactRolesCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
     SQL sql = new SQL();
 
     @Override
@@ -39,20 +39,20 @@ public class ReactRolesCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                strings.GeneralUsage(channel);
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -85,30 +85,30 @@ public class ReactRolesCommand implements ServerCommand
                         sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
 
                         //Message
-                        strings.SuccessfullyAddedReactRole(channel, role);
+                        embeds.SuccessfullyAddedReactRole(channel, role);
                     }
                     else
                     {
                         //Error
-                        strings.ReactRoleAlreadyExistsError(channel);
+                        embeds.ReactRoleAlreadyExistsError(channel);
                     }
 
                 } catch (NumberFormatException e)
                 {
                     //Error
-                    strings.NoMessageIDError(channel, messageIDString);
+                    embeds.NoMessageIDError(channel, messageIDString);
                 }
             }
             else
             {
                 //Usage
-                strings.AddUsage(channel);
+                embeds.AddUsage(channel);
             }
         }
         else
         {
             //Usage
-            strings.AddUsage(channel);
+            embeds.AddUsage(channel);
         }
 
     }
@@ -135,24 +135,24 @@ public class ReactRolesCommand implements ServerCommand
                     sql.removeFromSQL(message.getGuild().getIdLong(), channel.getIdLong(), messageID, emoteString, role.getIdLong());
 
                     //Message
-                    strings.SuccessfullyRemovedReactRole(channel, role);
+                    embeds.SuccessfullyRemovedReactRole(channel, role);
                 }
                 else
                 {
                     //Error
-                    strings.ReactRoleNotExistsError(channel);
+                    embeds.ReactRoleNotExistsError(channel);
                 }
 
             } catch (NumberFormatException e)
             {
                 //Error
-                strings.NoMessageIDError(channel, messageIDString);
+                embeds.NoMessageIDError(channel, messageIDString);
             }
         }
         else
         {
             //Usage
-            strings.RemoveUsage(channel);
+            embeds.RemoveUsage(channel);
         }
     }
 

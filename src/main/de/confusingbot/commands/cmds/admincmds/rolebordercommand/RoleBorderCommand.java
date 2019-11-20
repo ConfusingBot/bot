@@ -1,24 +1,18 @@
 package main.de.confusingbot.commands.cmds.admincmds.rolebordercommand;
 
-import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.restaction.RoleAction;
 
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class RoleBorderCommand implements ServerCommand
 {
     private SQL sql = new SQL();
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -49,7 +43,7 @@ public class RoleBorderCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
@@ -57,7 +51,7 @@ public class RoleBorderCommand implements ServerCommand
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -79,24 +73,24 @@ public class RoleBorderCommand implements ServerCommand
                     sql.addToSQL(channel.getIdLong(), role.getIdLong(), role.getName());
 
                     //Message
-                    strings.SuccessfullyAddedRoleBorder(channel, role.getName());
+                    embeds.SuccessfullyAddedRoleBorder(channel, role.getName());
                 }
                 else
                 {
                     //Error
-                    strings.RoleBorderAlreadyExistsError(channel);
+                    embeds.RoleBorderAlreadyExistsError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.HaveNotMentionedRoleError(channel);
+                embeds.HaveNotMentionedRoleError(channel);
             }
         }
         else
         {
             //Usage
-            strings.AddUsage(channel);
+            embeds.AddUsage(channel);
         }
     }
 
@@ -121,12 +115,12 @@ public class RoleBorderCommand implements ServerCommand
             sql.addToSQL(channel.getIdLong(), roleid, roleName);
 
             //Message
-            strings.SuccessfullyCreateRoleBorder(channel, roleName);
+            embeds.SuccessfullyCreateRoleBorder(channel, roleName);
         }
         else
         {
             //Usage
-            strings.CreateUsage(channel);
+            embeds.CreateUsage(channel);
         }
     }
 
@@ -148,24 +142,24 @@ public class RoleBorderCommand implements ServerCommand
                     role.delete().queue();
 
                     //Message
-                    strings.SuccessfullyRemovedRoleBorder(channel, role.getName());
+                    embeds.SuccessfullyRemovedRoleBorder(channel, role.getName());
                 }
                 else
                 {
                     //Error
-                    strings.RoleDoesNotExistError(channel);
+                    embeds.RoleDoesNotExistError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.HaveNotMentionedRoleError(channel);
+                embeds.HaveNotMentionedRoleError(channel);
             }
         }
         else
         {
             //Usage
-            strings.RemoveUsage(channel);
+            embeds.RemoveUsage(channel);
         }
 
     }

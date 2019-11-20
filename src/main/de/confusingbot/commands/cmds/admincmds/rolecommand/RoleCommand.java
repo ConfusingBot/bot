@@ -18,7 +18,7 @@ public class RoleCommand implements ServerCommand
         HelpManager.admin.add("```yaml\n" + Main.prefix + "createrole [name] ([#HexColor])\n``` ```Create a new role```");
     }
 
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -46,20 +46,20 @@ public class RoleCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                strings.GeneralUsage(channel);
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -94,12 +94,12 @@ public class RoleCommand implements ServerCommand
             //Create Role
             createRole(guild, roleName, roleColor);
             //Message
-            strings.SuccessfulCreatedRole(channel, roleName);
+            embeds.SuccessfulCreatedRole(channel, roleName);
         }
         else
         {
             //Usage
-            strings.CreateUsage(channel);
+            embeds.CreateUsage(channel);
         }
     }
 
@@ -116,18 +116,18 @@ public class RoleCommand implements ServerCommand
                 role.delete().queue();
 
                 //Message
-                strings.SuccessfulDeletedRole(channel, role.getName());
+                embeds.SuccessfulDeletedRole(channel, role.getName());
             }
             else
             {
                 //Error
-                strings.HaveNotMentionedRoleError(channel);
+                embeds.HaveNotMentionedRoleError(channel);
             }
         }
         else
         {
             //Usage
-            strings.DeleteUsage(channel);
+            embeds.DeleteUsage(channel);
         }
 
     }

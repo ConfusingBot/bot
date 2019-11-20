@@ -1,6 +1,5 @@
 package main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand;
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -15,7 +14,7 @@ import java.awt.*;
 public class CustomOneTimeEmbedCommand implements ServerCommand
 {
 
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -35,13 +34,13 @@ public class CustomOneTimeEmbedCommand implements ServerCommand
             else
             {
                 //Usage
-                strings.Usage(channel);
+                embeds.Usage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 

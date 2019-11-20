@@ -9,7 +9,7 @@ public class BumpBotCommand implements ServerCommand
 {
 
     private SQL sql = new SQL();
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -33,20 +33,20 @@ public class BumpBotCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                strings.GeneralUsage(channel);
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -72,24 +72,24 @@ public class BumpBotCommand implements ServerCommand
                     sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), commandString);
 
                     //Message
-                    strings.SuccessfulAddedBumpCommand(channel);
+                    embeds.SuccessfulAddedBumpCommand(channel);
                 }
                 else
                 {
                     //Error
-                    strings.OnlyOneAllowedBumpCommandAllowedError(channel);
+                    embeds.OnlyOneAllowedBumpCommandAllowedError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.HaveNotMentionedATextChannelError(channel);
+                embeds.HaveNotMentionedATextChannelError(channel);
             }
         }
         else
         {
             //Usage
-            strings.AddUsage(channel);
+            embeds.AddUsage(channel);
         }
     }
 
@@ -103,18 +103,18 @@ public class BumpBotCommand implements ServerCommand
                 sql.removeFormSQL(guild.getIdLong());
 
                 //Message
-                strings.SuccessfulRemovedBumpCommand(channel);
+                embeds.SuccessfulRemovedBumpCommand(channel);
             }
             else
             {
                 //Error
-                strings.NoExistingBumpCommandError(channel);
+                embeds.NoExistingBumpCommandError(channel);
             }
         }
         else
         {
             //Usage
-            strings.RemoveUsage(channel);
+            embeds.RemoveUsage(channel);
         }
     }
 

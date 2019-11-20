@@ -26,6 +26,7 @@ public class MusicEmbeds {
     private long musicLastPlayMessageID = -1;
     private long pauseLastMessageID = -1;
 
+    //SongEmbed
     public void SendSongEmbed(AudioTrack track) {
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -89,6 +90,7 @@ public class MusicEmbeds {
 
     }
 
+    //Pause Embed
     public void SendPauseSongEmbed(AudioTrack track) {
         TextChannel channel = getLastUsedChannel();
 
@@ -128,6 +130,12 @@ public class MusicEmbeds {
             System.err.println("Couldn't delete LastSongEmbed");
         }
     }
+
+    public void ResumeEmbed(){
+        TextChannel channel = getLastUsedChannel();
+        EmbedManager.SendCustomEmbed("**Resumed\uD83D\uDD0A**", "Let's go\uD83C\uDFB6", Color.decode("#d400ff"), channel, 3);
+    }
+
 
     private TextChannel getLastUsedChannel() {
         return guild.getTextChannelById(controller.getLastUsedChannelId());

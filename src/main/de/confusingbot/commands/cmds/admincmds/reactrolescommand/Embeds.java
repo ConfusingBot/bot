@@ -1,15 +1,15 @@
 package main.de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class Strings
+public class Embeds
 {
-    public Strings()
+    public Embeds()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "reactrole [channel] [messageID] [emote] [@role])\n``` " +
                 "```▶️Create a [#channel] where you  write your RoleBoard [messageID]\n" +
@@ -22,17 +22,17 @@ public class Strings
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "reactrole add/remove`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "reactrole add/remove`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "reactrole add [channel] [messageID] [emote] [@role]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "reactrole add [channel] [messageID] [emote] [@role]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "reactrole remove [channel] [messageID] [emote] [@role]`", channel, StringsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "reactrole remove [channel] [messageID] [emote] [@role]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -40,22 +40,22 @@ public class Strings
     //=====================================================================================================================================
     public void NoPermissionError(TextChannel channel)
     {
-        StringsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel);
     }
 
     public void ReactRoleAlreadyExistsError(TextChannel channel)
     {
-        StringsUtil.AlreadyExistsError(channel, "ReactRole");
+        EmbedsUtil.AlreadyExistsError(channel, "ReactRole");
     }
 
     public void ReactRoleNotExistsError(TextChannel channel)
     {
-        StringsUtil.NotExistingError(channel, "ReactRole");
+        EmbedsUtil.NotExistingError(channel, "ReactRole");
     }
 
     public void NoMessageIDError(TextChannel channel, String id)
     {
-        StringsUtil.NoValidIDNumberError(channel, id);
+        EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
     //=====================================================================================================================================
@@ -63,11 +63,11 @@ public class Strings
     //=====================================================================================================================================
     public void SuccessfullyAddedReactRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully added the @" + role.getName() + " to ReactRoles", channel, StringsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully added the @" + role.getName() + " to ReactRoles", channel, EmbedsUtil.showSuccessTime);
     }
 
     public void SuccessfullyRemovedReactRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully removed the @" + role.getName() + " to ReactRoles", channel, StringsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully removed the @" + role.getName() + " to ReactRoles", channel, EmbedsUtil.showSuccessTime);
     }
 }
