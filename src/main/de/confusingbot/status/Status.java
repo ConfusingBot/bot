@@ -69,6 +69,7 @@ public class Status {
         }
     }
 
+    //TODO update this
     private int getOnlineMember(){
         TextChannel textChannel = shardMan.getTextChannelById(637567992791695371l);//entrence hall
         Guild guild = textChannel.getGuild();

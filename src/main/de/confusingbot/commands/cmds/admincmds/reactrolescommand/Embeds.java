@@ -58,6 +58,11 @@ public class Embeds
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
+    public void BotHasNoPermissionToAssignRole(TextChannel channel){
+        EmbedManager.SendErrorEmbed("The bot has no right to assign this role\n" +
+                "Please give the bot a role over the role to be assigned", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================

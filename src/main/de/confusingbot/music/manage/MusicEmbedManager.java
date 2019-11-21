@@ -11,10 +11,9 @@ public class MusicEmbedManager {
 
     MusicController controller;
     Guild guild;
-
     MusicEmbeds embeds;
 
-    public void MusicEmbedManager(MusicController controller) {
+    public MusicEmbedManager(MusicController controller) {
         this.controller = controller;
         this.guild = controller.getGuild();
         embeds = new MusicEmbeds(this);

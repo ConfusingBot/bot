@@ -1,4 +1,4 @@
-package main.de.confusingbot.roles;
+package main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AcceptRules {
+public class AcceptRulesListener {
 
     public static void onReactionAdd(MessageReactionAddEvent event) {
 
