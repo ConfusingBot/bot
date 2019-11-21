@@ -91,7 +91,6 @@ public class Main {
         status.runLoop();
 
         HelpManager.insertHelp();
-        JokeCommand.insertJokes();
     }
 
     public CheckQuestionTimer checkQuestionTimer;
