@@ -36,7 +36,7 @@ public class JoinCommand implements ServerCommand
                     Connect(voiceChannel);
 
                     //SQL
-                    MusicUtil.updateChannel(channel, member);
+                    controller.updateChannel(channel, member);
 
                     List<AudioTrack> queue = controller.getQueue().getQueueList();
                     if (queue.size() > 0)

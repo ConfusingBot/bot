@@ -8,19 +8,22 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class ReactionListener extends ListenerAdapter {
 
+    ReactRolesListener reactRolesListener = new ReactRolesListener();
+    AcceptRulesListener acceptRulesListener = new AcceptRulesListener();
+
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
 
-        ReactRolesListener.onReactionAdd(event);
-        AcceptRulesListener.onReactionAdd(event);
+        reactRolesListener.onReactionAdd(event);
+        acceptRulesListener.onReactionAdd(event);
 
     }
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
 
-        ReactRolesListener.onReactionRemove(event);
-        AcceptRulesListener.onReactionRemove(event);
+        reactRolesListener.onReactionRemove(event);
+        acceptRulesListener.onReactionRemove(event);
 
     }
 

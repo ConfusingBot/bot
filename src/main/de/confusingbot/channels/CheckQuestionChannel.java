@@ -33,7 +33,7 @@ public class CheckQuestionChannel
         notificationTimes.add(24);
     }
 
-    public void loopQuestionCommands()
+    public void onSecond()
     {
         try
         {

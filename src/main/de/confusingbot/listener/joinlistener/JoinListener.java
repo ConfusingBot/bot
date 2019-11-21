@@ -1,5 +1,7 @@
 package main.de.confusingbot.listener.joinlistener;
 
+import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRulesListener;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageListener;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
@@ -15,38 +17,20 @@ import java.sql.SQLException;
 
 public class JoinListener extends ListenerAdapter {
 
-    SQL sql = new SQL();
-    Embeds embeds = new Embeds();
+    AcceptRulesListener acceptRulesListener = new AcceptRulesListener();
+    MessageListener messageListener = new MessageListener();
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
 
-        long guildid = event.getGuild().getIdLong();
-        long rolenotacceptedid = sql.getRoleNotAcceptedID(guildid);
-        long channelid = sql.getChannelID(guildid);
 
-        if (rolenotacceptedid != -1 && channelid != -1) {
-            Member member = event.getMember();
-            TextChannel channel = event.getGuild().getDefaultChannel();
-            TextChannel rules = event.getGuild().getTextChannelById(channelid);
-            Guild guild = event.getGuild();
+        acceptRulesListener.onMemberJoinListener(event);
+        messageListener.onMemberJoinListener(event);
 
-            //essage
-            embeds.SendDefaultWelcomeMessage(channel, rules, member);
-
-            //Add member accept rolerole
-            addMemberRole(guild, member, rolenotacceptedid);
-        }
     }
 
 
-    //TODO create a default joinRole command if the user won't create a rule
-    //TODO create custom Welcome Message
 
 
-    //Helper
-    private void addMemberRole(Guild guild, Member member, long roleid) {
-        guild.addRoleToMember(member, guild.getRoleById(roleid)).queue();
-    }
 
 }

@@ -12,9 +12,9 @@ import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
-import main.de.confusingbot.status.Status;
 import main.de.confusingbot.timer.BumpTimer;
 import main.de.confusingbot.timer.CheckQuestionTimer;
+import main.de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -28,7 +28,9 @@ public class Main {
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-    private String token = "NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4";
+
+    //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4
+    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.XdbdJA.U2xgV7PHxPkKIfqpFXt37h8bpIM";
     public static String prefix = "- ";
 
     public static boolean botOffline = false;
@@ -64,9 +66,6 @@ public class Main {
 
         music.instantiateMusic();
 
-        //Bot Methods to start at te beginning
-        StartBotFunctions();
-
         //Start the Timers
         StartTimer();
 
@@ -84,20 +83,12 @@ public class Main {
     }
 
     private void ConsoleCommands() {
-        Shutdown.discrodBot(shardManager);
-    }
-
-    public Status status;
-
-    private void StartBotFunctions() {
-        status = new Status(shardManager);
-        status.runLoop();
-
-        HelpManager.insertHelp();
+        Shutdown.Bot(shardManager);
     }
 
     public CheckQuestionTimer checkQuestionTimer;
     public BumpTimer bumpTimer;
+    public StatusTimer statusTimer;
     private void StartTimer(){
         //Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
         try
@@ -113,6 +104,10 @@ public class Main {
 
         bumpTimer = new BumpTimer();
         bumpTimer.startTimer();
+
+        statusTimer = new StatusTimer(shardManager);
+        statusTimer.startTimer();
+
     }
 //Getter
 

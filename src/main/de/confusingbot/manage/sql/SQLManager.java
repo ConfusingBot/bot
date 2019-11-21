@@ -66,5 +66,13 @@ public class SQLManager {
                 "channelid INTEGER, " +
                 "command TEXT)");
 
+        tabelNames.add("messagecommand");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS messagecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildid INTEGER, " +
+                "channelid INTEGER, " +
+                "color TEXT, " +
+                "messagetype TEXT, " +
+                "title TEXT, " +
+                "message TEXT)");
     }
 }

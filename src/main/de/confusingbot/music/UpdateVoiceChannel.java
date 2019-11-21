@@ -12,7 +12,6 @@ public class UpdateVoiceChannel {
 
             AudioManager manager = channel.getGuild().getAudioManager();
             manager.closeAudioConnection();
-
         }
 
     }

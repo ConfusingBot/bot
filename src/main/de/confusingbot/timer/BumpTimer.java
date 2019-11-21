@@ -19,14 +19,13 @@ public class BumpTimer
     //Timer
     public void startTimer()
     {
-
         //Create Timer Loop
         TimerTask timeTask = new TimerTask()
         {
             @Override
             public void run()
             {
-               bumpChannel.loopBumpCommand();
+                bumpChannel.loopBumpCommand();
             }
         };
 

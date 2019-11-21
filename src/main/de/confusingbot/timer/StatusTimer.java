@@ -1,20 +1,21 @@
 package main.de.confusingbot.timer;
 
 import main.de.confusingbot.channels.CheckQuestionChannel;
+import main.de.confusingbot.status.Status;
+import net.dv8tion.jda.api.sharding.ShardManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CheckQuestionTimer
+public class StatusTimer
 {
-
-    private CheckQuestionChannel checkQuestionChannel;
+    private Status status;
     private Timer timer;
 
-    public CheckQuestionTimer()
+    public StatusTimer(ShardManager shardManager)
     {
         timer = new Timer();
-        this.checkQuestionChannel = new CheckQuestionChannel();
+        this.status = new Status(shardManager);
     }
 
     //Timer
@@ -26,11 +27,11 @@ public class CheckQuestionTimer
             @Override
             public void run()
             {
-                checkQuestionChannel.onSecond();
+                status.onSecond();
             }
         };
 
-        timer.schedule(timeTask, 0l, 1000 * 60);//TODO to hours
+        timer.schedule(timeTask, 0l, 1000 * 30);//30s
     }
 
     public void stopTimer()

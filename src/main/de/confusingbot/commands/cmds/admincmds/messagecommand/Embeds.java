@@ -4,8 +4,11 @@ import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.awt.*;
 
 public class Embeds
 {
@@ -22,15 +25,17 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message welcome/leave`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message [add/remove] [welcome/leave]`", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void WelcomeMessageUsage(TextChannel channel){
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message welcome [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
+    public void WelcomeMessageAddUsage(TextChannel channel)
+    {
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add welcome [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void LeaveMessageUsage(TextChannel channel){
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message leave [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
+    public void LeaveMessageAddUsage(TextChannel channel)
+    {
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add leave [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -41,10 +46,46 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel);
     }
 
+    public void NoMessageDefinedError(TextChannel channel, String messagetype)
+    {
+        EmbedManager.SendErrorEmbed("You have no **" + messagetype + "** message defined!", channel, EmbedsUtil.showErrorTime);
+    }
 
+    public void NoMessageChannelMentionedError(TextChannel channel, String messagetype)
+    {
+        EmbedManager.SendErrorEmbed("You have not mentioned **" + messagetype + "** message channel!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public void MessageAlreadyExistsError(TextChannel channel, String messagetype)
+    {
+        EmbedsUtil.AlreadyExistsError(channel, messagetype + "message");
+    }
 
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
+    public void SuccessfullyAddedMessage(TextChannel channel, String messagetype)
+    {
+        EmbedManager.SendSuccessEmbed("You successfully added a **" + messagetype + " message**",
+                channel, EmbedsUtil.showSuccessTime);
+    }
+
+    public void SuccessfullyRemovedMessage(TextChannel channel, String messagetype)
+    {
+        EmbedManager.SendSuccessEmbed("You successfully removed a **" + messagetype + " message**",
+                channel, EmbedsUtil.showSuccessTime);
+    }
+
+
+    //=====================================================================================================================================
+    //Other
+    //=====================================================================================================================================
+    public void DefaultWelcomeMessage(TextChannel channel, TextChannel rules, Member member)
+    {
+        if (channel != null)
+        {
+
+        }
+    }
 
 }

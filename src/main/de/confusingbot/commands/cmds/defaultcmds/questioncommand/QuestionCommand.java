@@ -230,12 +230,19 @@ public class QuestionCommand implements ServerCommand
     //=====================================================================================================================================
     private EmbedBuilder createQuestionEmbed(String[] args, List<Role> roles, Member member)
     {
-        String questionMarker = "QUESTION:";
+        String questionKey = "QUESTION:";
 
-        String m = removeRoles(args, roles);
+        String wholeQuestion = buildQuestionString(args, roles);
 
-        String questionTitle = m.substring(0, m.indexOf(questionMarker));
-        String question = m.substring((m.indexOf(questionMarker) + questionMarker.length()));
+        String questionTitle = "";
+        String question = "";
+        String[] questionParts = wholeQuestion.split(questionKey);
+
+        if(wholeQuestion.contains(questionKey)){
+            questionTitle = questionParts[0];
+            question = questionParts[1];
+        }
+
         String roleString = createRoleString(roles);
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -249,24 +256,26 @@ public class QuestionCommand implements ServerCommand
         return builder;
     }
 
-    private String removeRoles(String[] args, List<Role> roles)
+    private String buildQuestionString(String[] args, List<Role> roles)
     {
-        String m = "";
+        StringBuilder builder = new StringBuilder();
         for (int i = 1; i < args.length
                 ; i++)
         {
-            m += (args[i] + " ");
+            builder.append(args[i] + " ");
         }
 
+        String question = builder.toString();
+        question.trim();
+
+        //replace roles with the role name
         for (Role role : roles)
         {
             String roleName = "@" + role.getName();
-            m = m.replace(roleName, "");
+            question = question.replace(roleName, "");
         }
 
-        m.trim();
-
-        return m;
+        return question;
     }
 
     private String createRoleString(List<Role> roles)
