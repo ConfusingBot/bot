@@ -17,7 +17,7 @@ public class Status {
     private Thread loop;
     private ShardManager shardMan;
 
-    String[] status = new String[] {"ConfusingGames", "on %servers servers", "DiscrodBot", "Nothing"};
+    String[] status = new String[]{"ConfusingGames", "on %servers servers", "DiscrodBot", "Nothing"};
     int timeBetweenStatuses = 15;//Seconds
 
     public Status(ShardManager shardMan) {
@@ -29,8 +29,8 @@ public class Status {
 
             long time = System.currentTimeMillis();
 
-            while(!Main.botOffline) {
-                if(System.currentTimeMillis() >= time + 1000) {
+            while (!Main.botOffline) {
+                if (System.currentTimeMillis() >= time + 1000) {
                     time = System.currentTimeMillis();
                     onSecond();
                 }
@@ -42,8 +42,9 @@ public class Status {
     }
 
     int currentTime = timeBetweenStatuses;
+
     public void onSecond() {
-        if(currentTime <= 0) {
+        if (currentTime <= 0) {
             Random rand = new Random();
             int i = rand.nextInt(status.length);
 
@@ -54,32 +55,31 @@ public class Status {
                         .replaceAll("%servers", "" + jda.getGuilds().size());
 
 
-
                 jda.getPresence().setActivity(Activity.playing((text)));
             });
             currentTime = timeBetweenStatuses;
-        }else {
+        } else {
             currentTime--;
         }
     }
 
     public void stopLoop() {
-        if(loop != null) {
+        if (loop != null) {
             loop.interrupt();
         }
     }
 
     //TODO update this
-    private int getOnlineMember(){
+    private int getOnlineMember() {
         TextChannel textChannel = shardMan.getTextChannelById(637567992791695371l);//entrence hall
         Guild guild = textChannel.getGuild();
         List<Member> members = guild.getMembers();
 
         int online = 0;
 
-        for(Member memb : members) {
-            if(memb.getOnlineStatus() != OnlineStatus.OFFLINE) {
-                if(!memb.getUser().isBot()) {
+        for (Member memb : members) {
+            if (memb.getOnlineStatus() != OnlineStatus.OFFLINE) {
+                if (!memb.getUser().isBot()) {
                     online++;
                 }
             }

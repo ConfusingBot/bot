@@ -38,12 +38,8 @@ public class PlayCommand implements ServerCommand
 
                     if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
                     {
-                        //Connect if bot is in no VoiceChannel
-                        if (!manager.isConnected())
-                            manager.openAudioConnection(voiceChannel);
-
                         //SQL
-                        MusicUtil.updateChannel(channel, member);
+                        controller.updateChannel(channel, member);
 
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 1; i < args.length; i++) stringBuilder.append(args[i] + " ");
@@ -57,6 +53,10 @@ public class PlayCommand implements ServerCommand
 
                         //Try to Play Song
                         audioPlayerManager.loadItem(url, new AudioLoadResult(url, controller, channel));
+
+                        //Connect if bot is in no VoiceChannel //TODO will not work
+                        if (!manager.isConnected() && controller.getPlayer().getPlayingTrack() != null)
+                            manager.openAudioConnection(voiceChannel);
                     }
                     else
                     {

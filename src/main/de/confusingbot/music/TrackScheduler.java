@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 public class TrackScheduler extends AudioEventAdapter {
 
-
     @Override
     public void onPlayerPause(AudioPlayer player) {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
@@ -37,7 +36,6 @@ public class TrackScheduler extends AudioEventAdapter {
         long maxHours = maxMinutes / 60;
         maxSeconds %= 60;
         maxMinutes %= 60;
-
 
         //Message
         controller.getMusicEmbedManager().getMusicEmbed().PauseSongEmbed(name, isStream, hours, seconds, minutes, maxHours, maxMinutes, maxSeconds);
@@ -88,7 +86,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
             if (queue.hasNext()) return;
 
-            //TODO inform about, that the que ended
+            //Message
+            controller.getMusicEmbedManager().getMusicEmbed().QueueEndedEmbed();
         } else if (endReason.name().equals("REPLACED")) {
             //skip command
             return;

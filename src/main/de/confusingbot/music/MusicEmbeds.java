@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class MusicEmbeds {
 
     MusicEmbedManager musicEmbedManager;
+    Color musicColor = Color.decode("#d400ff");
 
     public MusicEmbeds(MusicEmbedManager musicEmbedManager) {
         this.musicEmbedManager = musicEmbedManager;
@@ -34,20 +35,20 @@ public class MusicEmbeds {
         //Message
         long pauseLastMessageID = EmbedManager.SendCustomEmbedGetMessageID("**Paused Song\uD83D\uDD08**",
                 "" + title + "\n" + (isStream ? "\uD83D\uDD34 STREAM" : "⏳ " + time),
-                Color.decode("#d400ff"), channel);
+                musicColor, channel);
 
         musicEmbedManager.setPauseLastMessageID(pauseLastMessageID);
     }
 
     public void SendResumeEmbed() {
         TextChannel channel = musicEmbedManager.getLastUsedChannel();
-        EmbedManager.SendCustomEmbed("**Resumed\uD83D\uDD0A**", "Let's go\uD83C\uDFB6", Color.decode("#d400ff"), channel, 3);
+        EmbedManager.SendCustomEmbed("**Resumed\uD83D\uDD0A**", "Let's go\uD83C\uDFB6", musicColor, channel, 3);
     }
 
     public void SongInformationEmbed(String author, String title, String url, boolean isStream, long seconds, long minutes, long hours) {
 
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#d400ff"));
+        builder.setColor(musicColor);
 
         builder.setTitle("**Currently playing**📡");
         builder.setDescription("[" + title + "](" + url + ")\n" + author);
@@ -85,7 +86,7 @@ public class MusicEmbeds {
 
     public void YouAddedXTracksToQueueEmbed(int added){
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#d400ff"));
+        builder.setColor(musicColor);
         builder.setDescription("You added " + added + " tracks\uD83C\uDFB6️ to the queue\uD83D\uDDC2");
 
         musicEmbedManager.sendMusicEmbed(builder, 5);
@@ -95,6 +96,14 @@ public class MusicEmbeds {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#d400ff"));
         builder.setDescription("You added " + title + "️ to the queue\uD83D\uDDC2");
+
+        musicEmbedManager.sendMusicEmbed(builder, 5);
+    }
+
+    public void QueueEndedEmbed(){
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(musicColor);
+        builder.setDescription("");
 
         musicEmbedManager.sendMusicEmbed(builder, 5);
     }

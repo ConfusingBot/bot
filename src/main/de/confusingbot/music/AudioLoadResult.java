@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
 import main.de.confusingbot.music.queue.Queue;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -28,7 +29,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
     public void trackLoaded(AudioTrack audioTrack) {
 
         Queue queue = controller.getQueue();
-        if (queue.getQueueList().isEmpty() && controller.getPlayer().getPlayingTrack() != null) {
+        if (queue.getQueueList().isEmpty() && controller.getPlayer().getPlayingTrack() == null) {
             controller.getPlayer().playTrack(audioTrack);
         } else {
             queue.addTrackToQueue(audioTrack);
@@ -43,18 +44,21 @@ public class AudioLoadResult implements AudioLoadResultHandler {
         Queue queue = controller.getQueue();
 
         if (uri.startsWith("ytsearch: ")) {
-            queue.addTrackToQueue(audioPlaylist.getTracks().get(0));
-            return;
-        }
+            AudioTrack track = audioPlaylist.getTracks().get(0);
+            queue.addTrackToQueue(track);
 
-        int added = 0;
-        for (AudioTrack track : audioPlaylist.getTracks()) {
-            queue.addTrackToQueue((track));
-            added++;
-        }
+            //Message
+            controller.getMusicEmbedManager().getMusicEmbed().YouAddedSongToQueueEmbed(track.getInfo().title);
+        }else{
+            int added = 0;
+            for (AudioTrack track : audioPlaylist.getTracks()) {
+                queue.addTrackToQueue((track));
+                added++;
+            }
 
-        //Message
-        controller.getMusicEmbedManager().getMusicEmbed().YouAddedXTracksToQueueEmbed(added);
+            //Message
+            controller.getMusicEmbedManager().getMusicEmbed().YouAddedXTracksToQueueEmbed(added);
+        }
     }
 
     @Override
@@ -68,4 +72,5 @@ public class AudioLoadResult implements AudioLoadResultHandler {
         //Error
         controller.getMusicEmbedManager().getMusicEmbed().LoadFailedError(channel, uri);
     }
+
 }
