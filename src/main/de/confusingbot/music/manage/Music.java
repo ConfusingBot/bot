@@ -1,4 +1,4 @@
-package main.de.confusingbot.music;
+package main.de.confusingbot.music.manage;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;

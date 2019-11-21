@@ -1,6 +1,7 @@
-package main.de.confusingbot.music;
+package main.de.confusingbot.music.manage;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.music.manage.MusicController;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +35,6 @@ public class PlayerManager {
         }
 
         return -1;
-
     }
 
 }

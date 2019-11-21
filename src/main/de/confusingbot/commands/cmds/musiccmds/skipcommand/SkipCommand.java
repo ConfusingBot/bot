@@ -2,15 +2,12 @@ package main.de.confusingbot.commands.cmds.musiccmds.skipcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.music.Music;
-import main.de.confusingbot.music.MusicController;
-import main.de.confusingbot.music.Queue;
+import main.de.confusingbot.music.manage.Music;
+import main.de.confusingbot.music.manage.MusicController;
+import main.de.confusingbot.music.queue.Queue;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.awt.*;
 
 public class SkipCommand implements ServerCommand
 {

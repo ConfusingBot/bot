@@ -5,6 +5,8 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import main.de.confusingbot.music.manage.MusicController;
+import main.de.confusingbot.music.queue.Queue;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -32,12 +34,8 @@ public class AudioLoadResult implements AudioLoadResultHandler {
             queue.addTrackToQueue(audioTrack);
         }
 
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#d400ff"));
-        builder.setDescription("You added " + audioTrack.getInfo().title + "️ to the queue\uD83D\uDDC2");
-
-        controller.getEmbeds().sendEmbed(builder, 5);
-
+        //Message
+        controller.getMusicEmbedManager().getMusicEmbed().YouAddedSongToQueueEmbed(audioTrack.getInfo().title);
     }
 
     @Override
@@ -55,24 +53,19 @@ public class AudioLoadResult implements AudioLoadResultHandler {
             added++;
         }
 
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#d400ff"));
-        builder.setDescription("You added " + added + " tracks\uD83C\uDFB6️ to the queue\uD83D\uDDC2");
-
-        controller.getEmbeds().sendEmbed(builder, 5);
+        //Message
+        controller.getMusicEmbedManager().getMusicEmbed().YouAddedXTracksToQueueEmbed(added);
     }
 
     @Override
     public void noMatches() {
-
-        EmbedManager.SendErrorEmbed("Error", "`Couldn't Find`" + uri, channel, 3);
-
+        //Error
+        controller.getMusicEmbedManager().getMusicEmbed().NoMatchesError(channel, uri);
     }
 
     @Override
     public void loadFailed(FriendlyException e) {
-
-        EmbedManager.SendErrorEmbed("Error", "`Couldn't Load`" + uri, channel, 3);
-
+        //Error
+        controller.getMusicEmbedManager().getMusicEmbed().LoadFailedError(channel, uri);
     }
 }

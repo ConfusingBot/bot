@@ -4,7 +4,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.music.*;
+import main.de.confusingbot.music.manage.Music;
+import main.de.confusingbot.music.manage.MusicController;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 

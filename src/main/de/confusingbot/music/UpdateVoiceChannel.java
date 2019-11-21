@@ -1,7 +1,7 @@
 package main.de.confusingbot.music;
 
+import main.de.confusingbot.music.manage.Music;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 public class UpdateVoiceChannel {

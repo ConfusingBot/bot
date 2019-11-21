@@ -1,6 +1,7 @@
-package main.de.confusingbot.music;
+package main.de.confusingbot.music.queue;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import main.de.confusingbot.music.manage.MusicController;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +45,7 @@ public class Queue {
     public void DeleteAtIndex(int index){
         queueList.remove(index);
     }
+
     //Getter Setter
     public MusicController getController() {
         return controller;

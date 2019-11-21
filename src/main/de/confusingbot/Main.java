@@ -11,7 +11,7 @@ import main.de.confusingbot.manage.commands.CommandManager;
 import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
-import main.de.confusingbot.music.Music;
+import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.status.Status;
 import main.de.confusingbot.timer.BumpTimer;
 import main.de.confusingbot.timer.CheckQuestionTimer;

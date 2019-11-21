@@ -1,8 +1,14 @@
-package main.de.confusingbot.music;
+package main.de.confusingbot.music.manage;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import main.de.confusingbot.manage.sql.LiteSQL;
+import main.de.confusingbot.music.AudioPlayerSendHandler;
+import main.de.confusingbot.music.MusicEmbeds;
+import main.de.confusingbot.music.queue.Queue;
+import main.de.confusingbot.music.TrackScheduler;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +18,7 @@ public class MusicController {
     private Guild guild;
     private AudioPlayer player;
     private Queue queue;
-    private MusicEmbeds embeds;
+    private MusicEmbedManager embedManager;
 
     private boolean isPaused = false;
 
@@ -22,7 +28,7 @@ public class MusicController {
         this.guild = guild;
         this.player = Music.audioPlayerManager.createPlayer();
         this.queue = new Queue(this);
-        this.embeds = new MusicEmbeds(this);
+        this.embedManager = new MusicEmbedManager(this);
 
         this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
         this.player.addListener(new TrackScheduler());
@@ -61,6 +67,21 @@ public class MusicController {
         return channelid;
     }
 
+    public void updateChannel(TextChannel channel, Member member) {
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + channel.getGuild().getIdLong());
+
+        try {
+            if (set.next()) {
+                LiteSQL.onUpdate("UPDATE musicchannel SET channelid = " + channel.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());//https://www.sqlitetutorial.net/sqlite-update/
+            } else {
+                LiteSQL.onUpdate("INSERT INTO musicchannel(guildid, channelid, memberid) VALUES(" + channel.getGuild().getIdLong() + ", " + channel.getIdLong() + ", " + member.getIdLong() + ")");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Getter Setter
     public Guild getGuild() {
         return guild;
@@ -74,8 +95,8 @@ public class MusicController {
         return queue;
     }
 
-    public MusicEmbeds getEmbeds() {
-        return embeds;
+    public MusicEmbedManager getMusicEmbedManager() {
+        return embedManager;
     }
 
     public void setPaused(boolean paused) {

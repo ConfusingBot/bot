@@ -1,7 +1,6 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.helpcommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.music.Music;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.time.OffsetDateTime;
