@@ -103,6 +103,7 @@ public class AcceptRules {
         }
     }
 
+    //Helper
     private static List<Role> getRoleBorders(Guild guild) {
         List<Role> roleBorders = new ArrayList<>();
 

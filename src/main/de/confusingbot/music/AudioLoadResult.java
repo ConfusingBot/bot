@@ -26,9 +26,9 @@ public class AudioLoadResult implements AudioLoadResultHandler {
     public void trackLoaded(AudioTrack audioTrack) {
 
         Queue queue = controller.getQueue();
-        if(queue.getQueueList().isEmpty() && controller.getPlayer().getPlayingTrack() != null){
+        if (queue.getQueueList().isEmpty() && controller.getPlayer().getPlayingTrack() != null) {
             controller.getPlayer().playTrack(audioTrack);
-        }else{
+        } else {
             queue.addTrackToQueue(audioTrack);
         }
 
@@ -72,7 +72,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
     @Override
     public void loadFailed(FriendlyException e) {
 
-      EmbedManager.SendErrorEmbed("Error", "`Couldn't Load`" + uri, channel, 3);
+        EmbedManager.SendErrorEmbed("Error", "`Couldn't Load`" + uri, channel, 3);
 
     }
 }

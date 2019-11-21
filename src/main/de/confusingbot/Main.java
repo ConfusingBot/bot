@@ -1,9 +1,12 @@
 package main.de.confusingbot;
 
 
-import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.JokeCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.listener.*;
+import main.de.confusingbot.listener.botlistener.BotListener;
+import main.de.confusingbot.listener.commandlistener.CommandListener;
+import main.de.confusingbot.listener.joinlistener.JoinListener;
+import main.de.confusingbot.listener.reactionlistener.ReactionListener;
+import main.de.confusingbot.listener.voicelistener.VoiceListener;
 import main.de.confusingbot.manage.commands.CommandManager;
 import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
 import main.de.confusingbot.manage.sql.LiteSQL;

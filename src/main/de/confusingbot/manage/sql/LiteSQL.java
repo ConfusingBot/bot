@@ -49,10 +49,6 @@ public class LiteSQL {
         }
     }
 
-    public static void onUpdateRAW(String sql) throws SQLException {
-        statement.execute(sql);
-    }
-
     public static ResultSet onQuery(String sql) {
         try {
             return statement.executeQuery(sql);
@@ -61,10 +57,6 @@ public class LiteSQL {
         }
 
         return null;
-    }
-
-    public static ResultSet onQueryRAW(String sql) throws SQLException {
-        return statement.executeQuery(sql);
     }
 
 }

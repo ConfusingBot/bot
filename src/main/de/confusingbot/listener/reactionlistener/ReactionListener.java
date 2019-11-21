@@ -1,4 +1,4 @@
-package main.de.confusingbot.listener;
+package main.de.confusingbot.listener.reactionlistener;
 
 import main.de.confusingbot.roles.AcceptRules;
 import main.de.confusingbot.roles.ReactRoles;

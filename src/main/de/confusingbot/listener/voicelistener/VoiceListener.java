@@ -1,4 +1,4 @@
-package main.de.confusingbot.listener;
+package main.de.confusingbot.listener.voicelistener;
 
 import main.de.confusingbot.channels.TempVoiceChannels;
 import main.de.confusingbot.music.UpdateVoiceChannel;

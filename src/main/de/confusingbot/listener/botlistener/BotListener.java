@@ -1,4 +1,4 @@
-package main.de.confusingbot.listener;
+package main.de.confusingbot.listener.botlistener;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
@@ -13,38 +13,39 @@ import java.awt.*;
 
 public class BotListener extends ListenerAdapter {
 
+    Embeds embeds = new Embeds();
+    SQL sql = new SQL();
+
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
         System.out.println("Bot joined server " + event.getGuild().getName());
 
-        LiteSQL.onUpdate("INSERT INTO servers(guildid, name) VALUES(" +
-                event.getGuild().getIdLong() + ", '" + event.getGuild().getName() + "')");
+        //SQL
+        sql.AddGuildToSQL(event.getGuild().getIdLong(), event.getGuild().getName());
 
+        //Message
+        EmbedBuilder builder = embeds.BotJoinEmbed();
 
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#fcdf03"));
-        builder.setTitle("\uD83D\uDCA1Usage");
-        builder.setDescription("Use **'- help'** to experience **all commands** of this bot!");
-        builder.setFooter("Powerd by ConfusingGames");
+        //Send private Message
         event.getGuild().getOwner().getUser().openPrivateChannel().queue((privateChannel) -> {
             privateChannel.sendMessage(builder.build()).queue();
         });
 
+        //Send in the default Channel if bot has permission
         try {
             event.getGuild().getDefaultChannel().sendMessage(builder.build()).queue();
-        }catch (InsufficientPermissionException e){
+        } catch (InsufficientPermissionException e) {
             //no permission in this channel
         }
-
     }
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
         System.out.println("Bot left server " + event.getGuild().getName());
 
-        for (String name : SQLManager.tabelNames){
-            LiteSQL.onUpdate("DELETE FROM " + name + " WHERE "
-                    + "guildid = " + event.getGuild().getIdLong());
-        }
+        //SQL
+        sql.RemoveGuildFromSQL(event.getGuild().getIdLong());
     }
+
+
 }
