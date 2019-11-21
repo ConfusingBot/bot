@@ -14,7 +14,9 @@ import java.util.List;
 
 public class AcceptRulesListener {
 
-    public static void onReactionAdd(MessageReactionAddEvent event) {
+    SQL sql = new SQL();
+
+    public void onReactionAdd(MessageReactionAddEvent event) {
 
         if (event.getChannelType() == ChannelType.TEXT) {
             if (!event.getUser().isBot()) {
@@ -29,37 +31,24 @@ public class AcceptRulesListener {
                     emote = event.getReactionEmote().getId();
                 }
 
-                ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
-                        + "guildid = " + event.getGuild().getIdLong()
-                        + " AND channelid = " + channelid
-                        + " AND messageid = " + messageid
-                        + " AND emote = '" + emote + "'");
+                Guild guild = event.getGuild();
+                long rolenotacceptedid = sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong(), channelid, messageid, emote);
+                long roleacceptedid = sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong(), channelid, messageid, emote);
 
-                try {
-                    if (set.next()) {
-                        Guild guild = event.getGuild();
+                guild.addRoleToMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
+                guild.removeRoleFromMember(event.getMember(), guild.getRoleById(rolenotacceptedid)).queue();
 
-                        long rolenotacceptedid = set.getLong("rolenotacceptedid");
-                        long roleacceptedid = set.getLong("roleacceptedid");
-
-                        guild.addRoleToMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
-                        guild.removeRoleFromMember(event.getMember(), guild.getRoleById(rolenotacceptedid)).queue();
-
-                        List<Role> roleBorders = getRoleBorders(guild);
-                        if (roleBorders != null) {
-                            for (int i = 0; i < roleBorders.size(); i++) {
-                                guild.addRoleToMember(event.getMember(), roleBorders.get(i)).queue();
-                            }
-                        }
+                List<Role> roleBorders = getRoleBorders(guild);
+                if (roleBorders != null) {
+                    for (int i = 0; i < roleBorders.size(); i++) {
+                        guild.addRoleToMember(event.getMember(), roleBorders.get(i)).queue();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
                 }
             }
         }
     }
 
-    public static void onReactionRemove(MessageReactionRemoveEvent event) {
+    public void onReactionRemove(MessageReactionRemoveEvent event) {
         if (event.getChannelType() == ChannelType.TEXT) {
             if (!event.getUser().isBot()) {
 
@@ -73,32 +62,20 @@ public class AcceptRulesListener {
                     emote = event.getReactionEmote().getId();
                 }
 
-                ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
-                        + "guildid = " + event.getGuild().getIdLong()
-                        + " AND channelid = " + channelid
-                        + " AND messageid = " + messageid
-                        + " AND emote = '" + emote + "'");
+                Guild guild = event.getGuild();
+                long rolenotacceptedid = sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong(), channelid, messageid, emote);
+                long roleacceptedid = sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong(), channelid, messageid, emote);
 
-                try {
-                    if (set.next()) {
-                        Guild guild = event.getGuild();
+                guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
+                guild.addRoleToMember(event.getMember(), guild.getRoleById(rolenotacceptedid)).queue();
 
-                        long rolenotacceptedid = set.getLong("rolenotacceptedid");
-                        long roleacceptedid = set.getLong("roleacceptedid");
-
-                        guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
-                        guild.addRoleToMember(event.getMember(), guild.getRoleById(rolenotacceptedid)).queue();
-
-                        List<Role> roleBorders = getRoleBorders(guild);
-                        if (roleBorders != null) {
-                            for (int i = 0; i < roleBorders.size(); i++) {
-                                guild.removeRoleFromMember(event.getMember(), roleBorders.get(i)).queue();
-                            }
-                        }
+                List<Role> roleBorders = getRoleBorders(guild);
+                if (roleBorders != null) {
+                    for (int i = 0; i < roleBorders.size(); i++) {
+                        guild.removeRoleFromMember(event.getMember(), roleBorders.get(i)).queue();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
                 }
+
             }
         }
     }
