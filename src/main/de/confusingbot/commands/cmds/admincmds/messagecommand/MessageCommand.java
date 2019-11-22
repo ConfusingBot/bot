@@ -90,8 +90,7 @@ public class MessageCommand implements ServerCommand {
                 mentionedChannel.remove(0);
 
                 List<Role> mentionedRoles = message.getMentionedRoles();
-                String mentionedRolesString = getMentionedRolesAsString(mentionedRoles);
-                String mentionedChannelsString = getMentionedChannelAsString(mentionedChannel);
+                List<User> mentionedUser = message.getMentionedUsers();
 
                 if (args[3].contains(welcomeChannel.getName())) {
                     //Get Color
@@ -116,7 +115,12 @@ public class MessageCommand implements ServerCommand {
                         }
 
                         //SQL
-                        MessageManager.sql.MessageAddToSQL(guild.getIdLong(), welcomeChannel.getIdLong(), color, MessageManager.welcomeMessageKey, title, welcomeMessage, mentionedChannelsString, mentionedRolesString);
+                        MessageManager.sql.MessageAddToSQL(guild.getIdLong(),
+                                welcomeChannel.getIdLong(),
+                                color,
+                                MessageManager.welcomeMessageKey,
+                                title,
+                                getMentionableMessage(welcomeMessage, mentionedChannel, mentionedRoles, mentionedUser));
 
                         //Message
                         MessageManager.embeds.SuccessfullyAddedMessage(channel, MessageManager.welcomeMessageKey);
@@ -174,22 +178,31 @@ public class MessageCommand implements ServerCommand {
         return wholeMessage.trim();
     }
 
-    private String getMentionedRolesAsString(List<Role> mentionedRoles){
+    private String getMentionableMessage(String message, List<TextChannel> mentionedChannel, List<Role> mentionedRoles, List<User> mentionedUsers) {
+        String mentionableMessage = "";
         StringBuilder builder = new StringBuilder();
-        for(Role role : mentionedRoles){
-            builder.append(role.getIdLong() + " ");
-        }
-        String mentionedRolesString = builder.toString();
-        return mentionedRolesString.trim();
-    }
+        String[] words = message.split(" ");
 
-    private String getMentionedChannelAsString(List<TextChannel> mentionedChannel){
-        StringBuilder builder = new StringBuilder();
-        for (TextChannel channel : mentionedChannel) {
-            builder.append(channel.getIdLong() + " ");
+        for (String word : words) {
+            for (TextChannel channel : mentionedChannel) {
+                word = channel.getAsMention();
+            }
+
+            for (Role role : mentionedRoles) {
+                word = role.getAsMention();
+            }
+
+            for (User user : mentionedUsers) {
+                word = user.getAsMention();
+            }
+
+            builder.append(word + " ");
         }
-        String mentionedChannelString = builder.toString();
-        return mentionedChannelString;
+
+        mentionableMessage = builder.toString().trim();
+
+
+        return mentionableMessage;
     }
 
 
