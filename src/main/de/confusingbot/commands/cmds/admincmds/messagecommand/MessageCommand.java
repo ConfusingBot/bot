@@ -28,7 +28,7 @@ public class MessageCommand implements ServerCommand {
                         if (args.length >= 3) {
                             switch (args[2]) {
                                 case "welcome":
-                                    WelcomeMessageAddCommand(channel, args, message);
+                                    MessageAddCommand(channel, args, message, MessageManager.welcomeMessageKey);
                                     break;
                                 case "leave":
                                     //TODO
@@ -47,7 +47,7 @@ public class MessageCommand implements ServerCommand {
                         if (args.length >= 3) {
                             switch (args[2]) {
                                 case "welcome":
-                                    WelcomeMessageRemoveCommand(channel, args);
+                                    MessageRemoveCommand(channel, args, MessageManager.welcomeMessageKey);
                                     break;
                                 case "leave":
                                     //TODO
@@ -80,19 +80,20 @@ public class MessageCommand implements ServerCommand {
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void WelcomeMessageAddCommand(TextChannel channel, String[] args, Message message) {
+    private void MessageAddCommand(TextChannel channel, String[] args, Message message, String messageKey) {
         Guild guild = channel.getGuild();
         if (args.length > 3) {
-            if (!MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey)) {
+            if (!MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), messageKey)) {
                 List<TextChannel> mentionedChannel = message.getMentionedChannels();
 
-                TextChannel welcomeChannel = mentionedChannel.get(0);
+                //Get channel where to send the message
+                TextChannel messageChannel = mentionedChannel.get(0);
                 mentionedChannel.remove(0);
 
                 List<Role> mentionedRoles = message.getMentionedRoles();
                 List<User> mentionedUser = message.getMentionedUsers();
 
-                if (args[3].contains(welcomeChannel.getName())) {
+                if (args[3].contains(messageChannel.getName())) {
                     //Get Color
                     String defaultColor = "#ffa500";
                     String color = defaultColor;
@@ -106,53 +107,53 @@ public class MessageCommand implements ServerCommand {
 
                         String wholeMessage = getWholeMessage(args, startIndex);
                         String title = "";
-                        String welcomeMessage = "";
+                        String m = "";
 
                         if (wholeMessage.contains(messageKey)) {
                             String[] messageAndTitle = wholeMessage.split(messageKey);
                             title = messageAndTitle[0];
-                            welcomeMessage = messageAndTitle[1];
+                            m = messageAndTitle[1];
                         }
 
                         //SQL
                         MessageManager.sql.MessageAddToSQL(guild.getIdLong(),
-                                welcomeChannel.getIdLong(),
+                                messageChannel.getIdLong(),
                                 color,
-                                MessageManager.welcomeMessageKey,
+                                messageKey,
                                 title,
-                                getMentionableMessage(welcomeMessage, mentionedChannel, mentionedRoles, mentionedUser));
+                                getMentionableMessage(m, mentionedChannel, mentionedRoles, mentionedUser));
 
                         //Message
-                        MessageManager.embeds.SuccessfullyAddedMessage(channel, MessageManager.welcomeMessageKey);
+                        MessageManager.embeds.SuccessfullyAddedMessage(channel, messageKey);
                     } else {
                         //Error
-                        MessageManager.embeds.NoMessageDefinedError(channel, MessageManager.welcomeMessageKey);
+                        MessageManager.embeds.NoMessageDefinedError(channel, messageKey);
                     }
                 } else {
                     //Error
-                    MessageManager.embeds.NoMessageChannelMentionedError(channel, MessageManager.welcomeMessageKey);
+                    MessageManager.embeds.NoMessageChannelMentionedError(channel, messageKey);
                 }
             } else {
                 //Error
-                MessageManager.embeds.MessageAlreadyExistsError(channel, MessageManager.welcomeMessageKey);
+                MessageManager.embeds.MessageAlreadyExistsError(channel, messageKey);
             }
         } else {
             //Usage
-            MessageManager.embeds.WelcomeMessageAddUsage(channel);
+            MessageManager.embeds.MessageAddUsage(channel);
         }
     }
 
-    private void WelcomeMessageRemoveCommand(TextChannel channel, String[] args) {
+    private void MessageRemoveCommand(TextChannel channel, String[] args, String messageKey) {
         Guild guild = channel.getGuild();
         if (args.length == 3) {
             //SQL
-            MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey);
+            MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), messageKey);
 
             //Message
-            MessageManager.embeds.SuccessfullyRemovedMessage(channel, MessageManager.welcomeMessageKey);
+            MessageManager.embeds.SuccessfullyRemovedMessage(channel, messageKey);
         } else {
             //Usage
-            MessageManager.embeds.WelcomeMessageAddUsage(channel);
+            MessageManager.embeds.MessageAddUsage(channel);
         }
     }
 

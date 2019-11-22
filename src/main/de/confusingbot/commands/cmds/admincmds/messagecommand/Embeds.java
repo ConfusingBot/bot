@@ -28,7 +28,7 @@ public class Embeds
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "message [add/remove] [welcome/leave]`", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void WelcomeMessageAddUsage(TextChannel channel)
+    public void MessageAddUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add welcome [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
     }
@@ -79,17 +79,4 @@ public class Embeds
         EmbedManager.SendSuccessEmbed("You successfully removed a **" + messagetype + " message**",
                 channel, EmbedsUtil.showSuccessTime);
     }
-
-
-    //=====================================================================================================================================
-    //Other
-    //=====================================================================================================================================
-    public void DefaultWelcomeMessage(TextChannel channel, TextChannel rules, Member member)
-    {
-        if (channel != null)
-        {
-
-        }
-    }
-
 }
