@@ -25,16 +25,12 @@ public class QuestionCommand implements ServerCommand
     {
         //- question ([Title]) QUESTION: [Question] [Type(Role of the server for Example @Programming)]
         //- question close
-        //-question category create/remove
+        //-question category create ID
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-        if (args.length > 3)
-        {
-            //Create Question
-            CreateQuestionCommand(channel.getGuild(), member, channel, message, args);
-        }
-        else if (args.length >= 2)
+
+        if (args.length >= 2)
         {
             //other Commands
             Guild guild = channel.getGuild();
@@ -46,7 +42,7 @@ public class QuestionCommand implements ServerCommand
                 case "category":
                     if (member.hasPermission(channel, Permission.ADMINISTRATOR))
                     {
-                        if (args.length >= 3)
+                        if (args.length == 3 || args.length == 4)
                         {
                             switch (args[2])
                             {
@@ -57,12 +53,14 @@ public class QuestionCommand implements ServerCommand
                                     CategoryRemoveCommand(args, guild, channel);//for creating a category
                                     break;
                                 default:
+                                    //Usage
                                     embeds.QuestionCategoryGeneralUsage(channel);
                                     break;
                             }
                         }
                         else
                         {
+                            //Usage
                             embeds.QuestionCategoryGeneralUsage(channel);
                         }
                     }
@@ -74,8 +72,16 @@ public class QuestionCommand implements ServerCommand
                     break;
 
                 default:
-                    //Usage
-                    embeds.QuestionCloseUsage(channel);
+                    if (args.length >= 3)
+                    {
+                        //Create Question
+                        CreateQuestionCommand(channel.getGuild(), member, channel, message, args);
+                    }
+                    else
+                    {
+                        //Usage
+                        embeds.QuestionCloseUsage(channel);
+                    }
                     break;
             }
         }

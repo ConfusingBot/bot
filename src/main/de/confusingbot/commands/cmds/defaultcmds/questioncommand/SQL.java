@@ -112,7 +112,7 @@ public class SQL
 
     public void RemoveQuestionCategoryFromSQL(long guildid)
     {
-        LiteSQL.onUpdate("DELETE FROM questioncommand WHERE "
+        LiteSQL.onUpdate("DELETE FROM questioncategories WHERE "
                 + "guildid = " + guildid);
     }
 }
