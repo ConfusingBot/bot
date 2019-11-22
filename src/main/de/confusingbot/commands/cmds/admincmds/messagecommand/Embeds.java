@@ -61,6 +61,10 @@ public class Embeds
         EmbedsUtil.AlreadyExistsError(channel, messagetype + "message");
     }
 
+    public void CouldNotFindMessageChannelError(TextChannel channel, String messagetype){
+        EmbedManager.SendErrorEmbed("The **" + messagetype + "** message channel does not **exists**!", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================

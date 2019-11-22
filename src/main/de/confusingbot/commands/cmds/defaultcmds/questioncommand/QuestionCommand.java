@@ -47,10 +47,10 @@ public class QuestionCommand implements ServerCommand
                         switch (args[2])
                         {
                             case "create":
-                                categoryCreateCommand(args, guild, channel, member);//for creating a category
+                                CategoryCreateCommand(args, guild, channel, member);//for creating a category
                                 break;
                             case "remove":
-                                categoryRemoveCommand(args, guild, channel, member);//for creating a category
+                                CategoryRemoveCommand(args, guild, channel, member);//for creating a category
                                 break;
                             default:
                                 break;
@@ -79,7 +79,7 @@ public class QuestionCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void categoryCreateCommand(String[] args, Guild guild, TextChannel channel, Member member)
+    private void CategoryCreateCommand(String[] args, Guild guild, TextChannel channel, Member member)
     {
         if (args.length == 3)
         {
@@ -112,7 +112,7 @@ public class QuestionCommand implements ServerCommand
         }
     }
 
-    private void categoryRemoveCommand(String[] args, Guild guild, TextChannel channel, Member member)
+    private void CategoryRemoveCommand(String[] args, Guild guild, TextChannel channel, Member member)
     {
         if (args.length == 2)
         {
@@ -155,7 +155,7 @@ public class QuestionCommand implements ServerCommand
                 {
                     int deletedInSeconds = 5;
                     //Message
-                    embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
+                    Embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
 
                     sleepXSeconds(deletedInSeconds);
 
@@ -189,11 +189,7 @@ public class QuestionCommand implements ServerCommand
         List<Role> roles = message.getMentionedRoles();
 
         int mentionableRoles = 3;
-        if (roles.size() > mentionableRoles)
-        {
-            embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
-        }
-        else
+        if (roles.size() <= mentionableRoles)
         {
             Category category = sql.GetQuestionCategory(guild);
             if (category != null)
@@ -222,6 +218,10 @@ public class QuestionCommand implements ServerCommand
                 //Error
                 embeds.ThisServerHasNoExistingQuestionCategoryError(channel);
             }
+        }
+        else
+        {
+            embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
         }
     }
 
