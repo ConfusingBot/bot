@@ -1,9 +1,8 @@
 package main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 
@@ -80,6 +79,19 @@ public class AcceptRulesListener {
         }
     }
 
+    public void onMemberJoinListener(GuildMemberJoinEvent event){
+        long guildid = event.getGuild().getIdLong();
+        long rolenotacceptedid = sql.getRoleNotAcceptedID(guildid);
+
+        if (rolenotacceptedid != -1) {
+            Member member = event.getMember();
+            Guild guild = event.getGuild();
+
+            //Add member accept rolerole
+            addMemberRole(guild, member, rolenotacceptedid);
+        }
+    }
+
     //Helper
     private static List<Role> getRoleBorders(Guild guild) {
         List<Role> roleBorders = new ArrayList<>();
@@ -99,4 +111,7 @@ public class AcceptRulesListener {
         return roleBorders;
     }
 
+    private void addMemberRole(Guild guild, Member member, long roleid) {
+        guild.addRoleToMember(member, guild.getRoleById(roleid)).queue();
+    }
 }

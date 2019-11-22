@@ -4,6 +4,7 @@ import main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand.Cu
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.bumpbotcommand.BumpBotCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageCommand;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.RoleBorderCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolecommand.RoleCommand;
@@ -62,6 +63,7 @@ public class CommandManager {
         this.commands.put("acceptrule", new AcceptRuleCommand());
         this.commands.put("roleborder", new RoleBorderCommand());
         this.commands.put("bump", new BumpBotCommand());
+        this.commands.put("message", new MessageCommand());
 
         //Music
         this.commands.put("play", new PlayCommand());

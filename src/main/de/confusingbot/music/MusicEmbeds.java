@@ -27,7 +27,7 @@ public class MusicEmbeds {
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void PauseSongEmbed(String title, boolean isStream, long seconds, long minutes, long hours, long maxSeconds, long maxMinutes, long maxHours) {
+    public void PauseTrackEmbed(String title, boolean isStream, long seconds, long minutes, long hours, long maxSeconds, long maxMinutes, long maxHours) {
         TextChannel channel = musicEmbedManager.getLastUsedChannel();
 
         String time = ((hours > 0) ? hours + "h " : "") + minutes + "min " + seconds + "s | " + ((maxHours > 0) ? maxHours + "h " : "") + maxMinutes + "min " + maxSeconds + "s";
@@ -40,12 +40,12 @@ public class MusicEmbeds {
         musicEmbedManager.setPauseLastMessageID(pauseLastMessageID);
     }
 
-    public void SendResumeEmbed() {
+    public void ResumeTrackEmbed() {
         TextChannel channel = musicEmbedManager.getLastUsedChannel();
         EmbedManager.SendCustomEmbed("**Resumed\uD83D\uDD0A**", "Let's go\uD83C\uDFB6", musicColor, channel, 3);
     }
 
-    public void SongInformationEmbed(String author, String title, String url, boolean isStream, long seconds, long minutes, long hours) {
+    public void TrackInformationEmbed(String author, String title, String url, boolean isStream, long seconds, long minutes, long hours) {
 
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(musicColor);
@@ -111,7 +111,8 @@ public class MusicEmbeds {
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void NoMatchesError(TextChannel channel, String uri){
+    public void NoMatchesError(TextChannel channel, String uri)
+    {
         EmbedManager.SendErrorEmbed("`Couldn't Find`" + uri, channel, 3);
     }
 

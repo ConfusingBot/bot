@@ -12,10 +12,12 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 
-public class TrackScheduler extends AudioEventAdapter {
+public class TrackScheduler extends AudioEventAdapter
+{
 
     @Override
-    public void onPlayerPause(AudioPlayer player) {
+    public void onPlayerPause(AudioPlayer player)
+    {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
         MusicController controller = Music.playerManager.getController(guildid);
         AudioTrack track = player.getPlayingTrack();
@@ -38,21 +40,23 @@ public class TrackScheduler extends AudioEventAdapter {
         maxMinutes %= 60;
 
         //Message
-        controller.getMusicEmbedManager().getMusicEmbed().PauseSongEmbed(name, isStream, hours, seconds, minutes, maxHours, maxMinutes, maxSeconds);
+        controller.getMusicEmbedManager().getMusicEmbed().PauseTrackEmbed(name, isStream, hours, seconds, minutes, maxHours, maxMinutes, maxSeconds);
     }
 
     @Override
-    public void onPlayerResume(AudioPlayer player) {
+    public void onPlayerResume(AudioPlayer player)
+    {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
         MusicController controller = Music.playerManager.getController(guildid);
 
         //Message
         controller.getMusicEmbedManager().DeletePauseSongEmbed();
-        controller.getMusicEmbedManager().getMusicEmbed().SendResumeEmbed();
+        controller.getMusicEmbedManager().getMusicEmbed().ResumeTrackEmbed();
     }
 
     @Override
-    public void onTrackStart(AudioPlayer player, AudioTrack track) {
+    public void onTrackStart(AudioPlayer player, AudioTrack track)
+    {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
         MusicController controller = Music.playerManager.getController(guildid);
 
@@ -70,25 +74,29 @@ public class TrackScheduler extends AudioEventAdapter {
         seconds %= 60;
 
         //Message
-        controller.getMusicEmbedManager().getMusicEmbed().SongInformationEmbed(author, title, url, isStream, hours, minutes, seconds);
+        controller.getMusicEmbedManager().getMusicEmbed().TrackInformationEmbed(author, title, url, isStream, hours, minutes, seconds);
     }
 
     @Override
-    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason)
+    {
         long guildid = Music.playerManager.getGuildByPlayerHash(player.hashCode());
         MusicController controller = Music.playerManager.getController(guildid);
         Guild guild = controller.getGuild();
 
         controller.getMusicEmbedManager().DeleteLastSongEmbed();
 
-        if (endReason.mayStartNext) {
+        if (endReason.mayStartNext)
+        {
             Queue queue = controller.getQueue();
 
             if (queue.hasNext()) return;
 
             //Message
             controller.getMusicEmbedManager().getMusicEmbed().QueueEndedEmbed();
-        } else if (endReason.name().equals("REPLACED")) {
+        }
+        else if (endReason.name().equals("REPLACED"))
+        {
             //skip command
             return;
         }

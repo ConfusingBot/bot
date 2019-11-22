@@ -13,7 +13,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MusicController {
+public class MusicController
+{
 
     private Guild guild;
     private AudioPlayer player;
@@ -23,7 +24,8 @@ public class MusicController {
     private boolean isPaused = false;
 
 
-    public MusicController(Guild guild) {
+    public MusicController(Guild guild)
+    {
 
         this.guild = guild;
         this.player = Music.audioPlayerManager.createPlayer();
@@ -35,78 +37,96 @@ public class MusicController {
         this.player.setVolume(10);
     }
 
-    public long getLastUsedUserId() {
+    public long getLastUsedUserId()
+    {
         long lastUsedUserId = -1;
 
-        try {
+        try
+        {
             ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
-            if (set.next()) {
+            if (set.next())
+            {
                 lastUsedUserId = set.getLong("channelid");
             }
 
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return lastUsedUserId;
     }
 
-    public long getLastUsedChannelId() {
+    public long getLastUsedChannelId()
+    {
         long channelid = -1;
         ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
 
-        try {
-            if (set.next()) {
+        try
+        {
+            if (set.next())
+            {
                 channelid = set.getLong("channelid");
             }
 
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return channelid;
     }
 
-    public void updateChannel(TextChannel channel, Member member) {
-
+    public void updateChannel(TextChannel channel, Member member)
+    {
         ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + channel.getGuild().getIdLong());
 
-        try {
-            if (set.next()) {
+        try
+        {
+            if (set.next())
+            {
                 LiteSQL.onUpdate("UPDATE musicchannel SET channelid = " + channel.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());//https://www.sqlitetutorial.net/sqlite-update/
-            } else {
+            }
+            else
+            {
                 LiteSQL.onUpdate("INSERT INTO musicchannel(guildid, channelid, memberid) VALUES(" + channel.getGuild().getIdLong() + ", " + channel.getIdLong() + ", " + member.getIdLong() + ")");
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
     //Getter Setter
-    public Guild getGuild() {
+    public Guild getGuild()
+    {
         return guild;
     }
 
-    public AudioPlayer getPlayer() {
+    public AudioPlayer getPlayer()
+    {
         return player;
     }
 
-    public Queue getQueue() {
+    public Queue getQueue()
+    {
         return queue;
     }
 
-    public MusicEmbedManager getMusicEmbedManager() {
+    public MusicEmbedManager getMusicEmbedManager()
+    {
         return embedManager;
     }
 
-    public void setPaused(boolean paused) {
+    public void setPaused(boolean paused)
+    {
         isPaused = paused;
     }
 
-    public boolean getPaused(){
+    public boolean getPaused()
+    {
         return isPaused;
     }
-
 
 
 }

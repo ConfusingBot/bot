@@ -63,7 +63,6 @@ public class PauseCommand implements ServerCommand
                     //Error
                     EmbedsUtil.BotNotInVoiceChannelError(channel);
                 }
-
             }
         }
         else

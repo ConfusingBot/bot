@@ -7,12 +7,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JackNorisJokes implements JokeCategory
+public class JackNorrisJokes implements JokeCategory
 {
-    private List<String> jackNorisJokes = new ArrayList<>();
+    private List<String> jackNorrisJokes = new ArrayList<>();
     private String title = "Jack Norris Facts\\uD83D\\uDE09";
 
-    public JackNorisJokes()
+    public JackNorrisJokes()
     {
         addJackNorisJokes();
     }
@@ -20,7 +20,7 @@ public class JackNorisJokes implements JokeCategory
     @Override
     public void performJoke(TextChannel channel, JokeManager manager)
     {
-        manager.GenerateJokeEmbed(title, jackNorisJokes, channel);
+        manager.GenerateJokeEmbed(title, jackNorrisJokes, channel);
     }
 
     private void addJackNorisJokes()
@@ -39,7 +39,7 @@ public class JackNorisJokes implements JokeCategory
 
     private void addJackNorisJoke(String joke)
     {
-        jackNorisJokes.add(joke);
+        jackNorrisJokes.add(joke);
     }
 
 

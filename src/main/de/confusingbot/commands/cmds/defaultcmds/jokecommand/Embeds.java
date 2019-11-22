@@ -10,7 +10,7 @@ public class Embeds
 {
     public Embeds()
     {
-        HelpManager.fun.add("```yaml\n" + Main.prefix + "joke ([Mother, JackNorris])\n``` ```ConfusingBot will make you laugh```");
+        HelpManager.fun.add("```yaml\n" + Main.prefix + "joke ([mother, jacknorris])\n``` ```ConfusingBot will make you laugh```");
     }
 
     //=====================================================================================================================================
@@ -18,7 +18,7 @@ public class Embeds
     //=====================================================================================================================================
     public void JokeUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "joke ([JackNorris, Mother])`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "joke ([mother, jacknorris]`", channel, EmbedsUtil.showUsageTime);
     }
 
 }

@@ -13,25 +13,30 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
 
-public class AudioLoadResult implements AudioLoadResultHandler {
+public class AudioLoadResult implements AudioLoadResultHandler
+{
 
     private final String uri;
     private final MusicController controller;
     private TextChannel channel;
 
-    public AudioLoadResult(String uri, MusicController controller, TextChannel channel) {
+    public AudioLoadResult(String uri, MusicController controller, TextChannel channel)
+    {
         this.controller = controller;
         this.uri = uri;
         this.channel = channel;
     }
 
     @Override
-    public void trackLoaded(AudioTrack audioTrack) {
-
+    public void trackLoaded(AudioTrack audioTrack)
+    {
         Queue queue = controller.getQueue();
-        if (queue.getQueueList().isEmpty() && controller.getPlayer().getPlayingTrack() == null) {
+        if (queue.getQueueList().isEmpty() && controller.getPlayer().getPlayingTrack() == null)
+        {
             controller.getPlayer().playTrack(audioTrack);
-        } else {
+        }
+        else
+        {
             queue.addTrackToQueue(audioTrack);
         }
 
@@ -40,18 +45,23 @@ public class AudioLoadResult implements AudioLoadResultHandler {
     }
 
     @Override
-    public void playlistLoaded(AudioPlaylist audioPlaylist) {
+    public void playlistLoaded(AudioPlaylist audioPlaylist)
+    {
         Queue queue = controller.getQueue();
 
-        if (uri.startsWith("ytsearch: ")) {
+        if (uri.startsWith("ytsearch: "))
+        {
             AudioTrack track = audioPlaylist.getTracks().get(0);
             queue.addTrackToQueue(track);
 
             //Message
             controller.getMusicEmbedManager().getMusicEmbed().YouAddedSongToQueueEmbed(track.getInfo().title);
-        }else{
+        }
+        else
+        {
             int added = 0;
-            for (AudioTrack track : audioPlaylist.getTracks()) {
+            for (AudioTrack track : audioPlaylist.getTracks())
+            {
                 queue.addTrackToQueue((track));
                 added++;
             }
@@ -62,13 +72,15 @@ public class AudioLoadResult implements AudioLoadResultHandler {
     }
 
     @Override
-    public void noMatches() {
+    public void noMatches()
+    {
         //Error
         controller.getMusicEmbedManager().getMusicEmbed().NoMatchesError(channel, uri);
     }
 
     @Override
-    public void loadFailed(FriendlyException e) {
+    public void loadFailed(FriendlyException e)
+    {
         //Error
         controller.getMusicEmbedManager().getMusicEmbed().LoadFailedError(channel, uri);
     }

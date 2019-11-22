@@ -38,7 +38,7 @@ public class LeaveCommand implements ServerCommand
                     if (voiceChannel != null && botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
                     {
                         //SQL
-                        MusicUtil.updateChannel(channel, member);
+                        controller.updateChannel(channel, member);
 
                         //StopMusic
                         player.stopTrack();

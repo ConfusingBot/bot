@@ -1,9 +1,8 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.jokecommand;
 
 import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.GeneralJokes;
-import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.JackNorisJokes;
+import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.JackNorrisJokes;
 import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.MotherJokes;
-import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -19,9 +18,10 @@ public class JokeManager
 
     public JokeManager()
     {
-        this.jokes.put("jacknoris", new JackNorisJokes());
+        jokes = new ConcurrentHashMap<>();
+        this.jokes.put("jacknorris", new JackNorrisJokes());
         this.jokes.put("mother", new MotherJokes());
-        this.jokes.put("general", new GeneralJokes());
+        this.jokes.put("", new GeneralJokes());
     }
 
     public boolean perform(String command, TextChannel channel)

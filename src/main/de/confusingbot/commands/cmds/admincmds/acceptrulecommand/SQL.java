@@ -34,26 +34,6 @@ public class SQL {
                 + "guildid = " + guildid);
     }
 
-    public long getRoleAcceptedIDFormSQL(long guildid, long channelid, long messageid, String emote) {
-        long roleacceptedid = -1;
-
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
-                + "guildid = " + guildid
-                + " AND channelid = " + channelid
-                + " AND messageid = " + messageid
-                + " AND emote = '" + emote + "'");
-
-        try {
-            if (set.next()) {
-
-                roleacceptedid = set.getLong("roleacceptedid");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return roleacceptedid;
-    }
-
     public long getRoleNotAcceptedIDFormSQL(long guildid, long channelid, long messageid, String emote) {
         long rolenotacceptedid = -1;
 
@@ -74,4 +54,35 @@ public class SQL {
         }
         return rolenotacceptedid;
     }
+
+    public long getRoleNotAcceptedID(long guildid) {
+        long rolenotacceptedid = -1;
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+        try {
+            if (set.next()) {
+                rolenotacceptedid = set.getLong("rolenotacceptedid");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rolenotacceptedid;
+    }
+
+    public long getChannelID(long guildid) {
+        long channelid = -1;
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+        try {
+            if (set.next()) {
+                channelid = set.getLong("channelid");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return channelid;
+    }
+
 }
