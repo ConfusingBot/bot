@@ -28,9 +28,4 @@ public class JoinListener extends ListenerAdapter {
         messageListener.onMemberJoinListener(event);
 
     }
-
-
-
-
-
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class JackNorrisJokes implements JokeCategory
 {
-    private List<String> jackNorisJokes = new ArrayList<>();
+    private List<String> jackNorrisJokes = new ArrayList<>();
     private String title = "Jack Norris Facts\\uD83D\\uDE09";
 
     public JackNorrisJokes()
@@ -20,7 +20,7 @@ public class JackNorrisJokes implements JokeCategory
     @Override
     public void performJoke(TextChannel channel, JokeManager manager)
     {
-        manager.GenerateJokeEmbed(title, jackNorisJokes, channel);
+        manager.GenerateJokeEmbed(title, jackNorrisJokes, channel);
     }
 
     private void addJackNorisJokes()
@@ -39,7 +39,7 @@ public class JackNorrisJokes implements JokeCategory
 
     private void addJackNorisJoke(String joke)
     {
-        jackNorisJokes.add(joke);
+        jackNorrisJokes.add(joke);
     }
 
 

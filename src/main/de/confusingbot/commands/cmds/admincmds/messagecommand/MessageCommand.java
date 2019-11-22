@@ -3,12 +3,10 @@ package main.de.confusingbot.commands.cmds.admincmds.messagecommand;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
+import java.util.List;
 
 public class MessageCommand implements ServerCommand {
 
@@ -86,7 +84,15 @@ public class MessageCommand implements ServerCommand {
         Guild guild = channel.getGuild();
         if (args.length > 3) {
             if (!MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey)) {
-                TextChannel welcomeChannel = message.getMentionedChannels().get(0);
+                List<TextChannel> mentionedChannel = message.getMentionedChannels();
+
+                TextChannel welcomeChannel = mentionedChannel.get(0);
+                mentionedChannel.remove(0);
+
+                List<Role> mentionedRoles = message.getMentionedRoles();
+                String mentionedRolesString = getMentionedRolesAsString(mentionedRoles);
+                String mentionedChannelsString = getMentionedChannelAsString(mentionedChannel);
+
                 if (args[3].contains(welcomeChannel.getName())) {
                     //Get Color
                     String defaultColor = "#ffa500";
@@ -110,7 +116,7 @@ public class MessageCommand implements ServerCommand {
                         }
 
                         //SQL
-                        MessageManager.sql.MessageAddToSQL(guild.getIdLong(), welcomeChannel.getIdLong(), color, MessageManager.welcomeMessageKey, title, welcomeMessage);
+                        MessageManager.sql.MessageAddToSQL(guild.getIdLong(), welcomeChannel.getIdLong(), color, MessageManager.welcomeMessageKey, title, welcomeMessage, mentionedChannelsString, mentionedRolesString);
 
                         //Message
                         MessageManager.embeds.SuccessfullyAddedMessage(channel, MessageManager.welcomeMessageKey);
@@ -166,6 +172,24 @@ public class MessageCommand implements ServerCommand {
         }
         String wholeMessage = builder.toString();
         return wholeMessage.trim();
+    }
+
+    private String getMentionedRolesAsString(List<Role> mentionedRoles){
+        StringBuilder builder = new StringBuilder();
+        for(Role role : mentionedRoles){
+            builder.append(role.getIdLong() + " ");
+        }
+        String mentionedRolesString = builder.toString();
+        return mentionedRolesString.trim();
+    }
+
+    private String getMentionedChannelAsString(List<TextChannel> mentionedChannel){
+        StringBuilder builder = new StringBuilder();
+        for (TextChannel channel : mentionedChannel) {
+            builder.append(channel.getIdLong() + " ");
+        }
+        String mentionedChannelString = builder.toString();
+        return mentionedChannelString;
     }
 
 

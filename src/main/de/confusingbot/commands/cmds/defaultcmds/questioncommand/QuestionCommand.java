@@ -18,10 +18,12 @@ public class QuestionCommand implements ServerCommand
     Embeds embeds = new Embeds();
     SQL sql = new SQL();
 
+    String questionKey = "QUESTION:";
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
-        //- question [Title] QUESTION: [Question] [Type(Role of the server for Example @Programming)]
+        //- question ([Title]) QUESTION: [Question] [Type(Role of the server for Example @Programming)]
         //- question close
         //-question category create/remove
         String[] args = CommandsUtil.messageToArgs(message);
@@ -206,8 +208,19 @@ public class QuestionCommand implements ServerCommand
                     textChannel = category.createTextChannel("❓Question").complete();
                 }
 
+                String wholeQuestion = buildQuestionString(args, roles, 1);
+                String questionTitle = "";
+                String question = "";
+                String roleString = createRoleString(roles);
+
+                if(wholeQuestion.contains(questionKey)){
+                    String[] questionParts = wholeQuestion.split(questionKey);
+                    questionTitle = questionParts[0];
+                    question = questionParts[1];
+                }
+
                 //Send Question Message
-                EmbedBuilder builder = createQuestionEmbed(args, roles, member);
+                EmbedBuilder builder = createQuestionEmbed(member, questionTitle, question, roleString);
                 EmbedManager.SendEmbed(builder, textChannel, 0);
 
                 //SQL
@@ -228,23 +241,8 @@ public class QuestionCommand implements ServerCommand
     //=====================================================================================================================================
     //Helper
     //=====================================================================================================================================
-    private EmbedBuilder createQuestionEmbed(String[] args, List<Role> roles, Member member)
+    private EmbedBuilder createQuestionEmbed(Member member, String questionTitle, String question, String roleString)
     {
-        String questionKey = "QUESTION:";
-
-        String wholeQuestion = buildQuestionString(args, roles);
-
-        String questionTitle = "";
-        String question = "";
-        String[] questionParts = wholeQuestion.split(questionKey);
-
-        if(wholeQuestion.contains(questionKey)){
-            questionTitle = questionParts[0];
-            question = questionParts[1];
-        }
-
-        String roleString = createRoleString(roles);
-
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#a1f542"));
         builder.setDescription("**❓ Question** form " + member.getAsMention() + "\n\n\n");
@@ -256,11 +254,10 @@ public class QuestionCommand implements ServerCommand
         return builder;
     }
 
-    private String buildQuestionString(String[] args, List<Role> roles)
+    private String buildQuestionString(String[] args, List<Role> roles, int startIndex)
     {
         StringBuilder builder = new StringBuilder();
-        for (int i = 1; i < args.length
-                ; i++)
+        for (int i = startIndex; i < args.length; i++)
         {
             builder.append(args[i] + " ");
         }
@@ -268,7 +265,7 @@ public class QuestionCommand implements ServerCommand
         String question = builder.toString();
         question.trim();
 
-        //replace roles with the role name
+        //delete roles from the message
         for (Role role : roles)
         {
             String roleName = "@" + role.getName();

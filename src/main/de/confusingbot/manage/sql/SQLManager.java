@@ -73,6 +73,8 @@ public class SQLManager {
                 "color TEXT, " +
                 "messagetype TEXT, " +
                 "title TEXT, " +
-                "message TEXT)");
+                "message TEXT, " +
+                "mentionedChannel TEXT, " +
+                "mentionedRoles TEXT)");
     }
 }
