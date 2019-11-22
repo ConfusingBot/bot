@@ -33,14 +33,14 @@ public class JoinCommand implements ServerCommand
                     MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
                     Music.channelID = voiceChannel.getIdLong();
 
-                    Connect(voiceChannel);
-
                     //SQL
                     controller.updateChannel(channel, member);
 
                     List<AudioTrack> queue = controller.getQueue().getQueueList();
                     if (queue.size() > 0)
                     {
+                        Connect(voiceChannel);
+
                         //PlayTrack
                         controller.getPlayer().playTrack(queue.get(0));
                     }

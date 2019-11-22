@@ -46,16 +46,24 @@ public class QuestionCommand implements ServerCommand
                 case "category":
                     if (member.hasPermission(channel, Permission.ADMINISTRATOR))
                     {
-                        switch (args[2])
+                        if (args.length >= 3)
                         {
-                            case "create":
-                                CategoryCreateCommand(args, guild, channel, member);//for creating a category
-                                break;
-                            case "remove":
-                                CategoryRemoveCommand(args, guild, channel, member);//for creating a category
-                                break;
-                            default:
-                                break;
+                            switch (args[2])
+                            {
+                                case "create":
+                                    CategoryCreateCommand(args, guild, channel);//for creating a category
+                                    break;
+                                case "remove":
+                                    CategoryRemoveCommand(args, guild, channel);//for creating a category
+                                    break;
+                                default:
+                                    embeds.QuestionCategoryGeneralUsage(channel);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            embeds.QuestionCategoryGeneralUsage(channel);
                         }
                     }
                     else
@@ -81,13 +89,13 @@ public class QuestionCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void CategoryCreateCommand(String[] args, Guild guild, TextChannel channel, Member member)
+    private void CategoryCreateCommand(String[] args, Guild guild, TextChannel channel)
     {
-        if (args.length == 3)
+        if (args.length == 4)
         {
             try
             {
-                long categoryid = Long.parseLong(args[2]);
+                long categoryid = Long.parseLong(args[3]);
                 if (!sql.ServerHasQuestionCategory(guild.getIdLong()))
                 {
                     //SQL
@@ -104,7 +112,7 @@ public class QuestionCommand implements ServerCommand
             } catch (NumberFormatException e)
             {
                 //Error
-                embeds.ThisIsNoIDError(channel, args[2]);
+                embeds.ThisIsNoIDError(channel, args[3]);
             }
         }
         else
@@ -114,9 +122,9 @@ public class QuestionCommand implements ServerCommand
         }
     }
 
-    private void CategoryRemoveCommand(String[] args, Guild guild, TextChannel channel, Member member)
+    private void CategoryRemoveCommand(String[] args, Guild guild, TextChannel channel)
     {
-        if (args.length == 2)
+        if (args.length == 3)
         {
             if (sql.ServerHasQuestionCategory(guild.getIdLong()))
             {
@@ -213,7 +221,8 @@ public class QuestionCommand implements ServerCommand
                 String question = "";
                 String roleString = createRoleString(roles);
 
-                if(wholeQuestion.contains(questionKey)){
+                if (wholeQuestion.contains(questionKey))
+                {
                     String[] questionParts = wholeQuestion.split(questionKey);
                     questionTitle = questionParts[0];
                     question = questionParts[1];

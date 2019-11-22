@@ -23,7 +23,7 @@ public class TrackInfoCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-        if (args.length == 2)
+        if (args.length == 1)
         {
             MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
 

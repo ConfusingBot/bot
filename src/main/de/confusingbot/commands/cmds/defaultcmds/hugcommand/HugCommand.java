@@ -9,41 +9,55 @@ import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HugCommand implements ServerCommand {
+public class HugCommand implements ServerCommand
+{
 
     Embeds embeds = new Embeds();
 
-    private ConcurrentHashMap<Long, Long> timestamps;//save when the message was sent from which id
-    String[] messages = new String[] {"come over %member\uD83E\uDDDF", "%member hugs himself\uD83D\uDE1C", "%member hugs ConfusingBot\uD83C\uDF08"};
     private double waitTime = 30000.0d;
 
-    public HugCommand(){
+    private ConcurrentHashMap<Long, Long> timestamps;//save when the message was sent from which id
+
+    String[] messages = new String[]{"come over %member\uD83E\uDDDF", "%member hugs himself\uD83D\uDE1C", "%member hugs ConfusingBot\uD83C\uDF08"};
+
+    public HugCommand()
+    {
         this.timestamps = new ConcurrentHashMap<>();
     }
 
     @Override
-    public void performCommand(Member member, TextChannel channel, Message message) {
+    public void performCommand(Member member, TextChannel channel, Message message)
+    {
+        message.delete().queue();
 
-       long id = member.getIdLong();
-       if(timestamps.containsKey(id)){
-           long time = timestamps.get(id);
-           long waitedTime = System.currentTimeMillis() - time;
+        long id = member.getIdLong();
+        if (timestamps.containsKey(id))
+        {
+            long time = timestamps.get(id);
+            long waitedTime = System.currentTimeMillis() - time;
 
-           if(waitedTime >= waitTime){
-               this.timestamps.put(id, System.currentTimeMillis());
-               send(member, channel, message);
-           }else{
-               DecimalFormat df = new DecimalFormat("0.00");
-               double timeLeft = (waitTime - waitedTime) / 1000.0d;
-               channel.sendMessage("You have to wait `" + df.format(timeLeft) + "` seconds⏰").queue();
-           }
-       }else{
-           this.timestamps.put(id, System.currentTimeMillis());
-           send(member, channel, message);
-       }
+            if (waitedTime >= waitTime)
+            {
+                this.timestamps.put(id, System.currentTimeMillis());
+                send(member, channel);
+            }
+            else
+            {
+                DecimalFormat df = new DecimalFormat("0.00");
+                double timeLeft = (waitTime - waitedTime) / 1000.0d;
+
+                channel.sendMessage("You have to wait `" + df.format(timeLeft) + "` seconds⏰").queue();
+            }
+        }
+        else
+        {
+            this.timestamps.put(id, System.currentTimeMillis());
+            send(member, channel);
+        }
     }
 
-    private void send(Member member, TextChannel channel, Message message) {
+    private void send(Member member, TextChannel channel)
+    {
         Random rand = new Random();
         int i = rand.nextInt(messages.length);
         String text = messages[i].replaceAll("%member", "" + member.getAsMention());

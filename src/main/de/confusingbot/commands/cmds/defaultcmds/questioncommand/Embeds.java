@@ -28,6 +28,10 @@ public class Embeds
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question close`", channel, EmbedsUtil.showUsageTime);
     }
 
+    public void QuestionCategoryGeneralUsage(TextChannel channel){
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category [create/remove]`", channel, EmbedsUtil.showUsageTime);
+    }
+
     public void QuestionCategoryCreateUsage(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category create [CategoryID]`", channel, EmbedsUtil.showUsageTime);
@@ -74,7 +78,7 @@ public class Embeds
 
     public void ThisServerHasNoExistingQuestionCategoryError(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("**This doesn't support this feature!**\nInform a **Admin** about that!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("**This server doesn't support this feature!**\nInform a **Admin** about that!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void ServerHasNoQuestionCategoryError(TextChannel channel)

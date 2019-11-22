@@ -29,7 +29,7 @@ public class PauseCommand implements ServerCommand
                 AudioManager manager = voiceChannel.getGuild().getAudioManager();
                 VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                if (botVoiceChannel == null)
+                if (botVoiceChannel != null)
                 {
                     if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
                     {

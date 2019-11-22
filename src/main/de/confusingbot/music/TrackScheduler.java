@@ -74,7 +74,7 @@ public class TrackScheduler extends AudioEventAdapter
         seconds %= 60;
 
         //Message
-        controller.getMusicEmbedManager().getMusicEmbed().TrackInformationEmbed(author, title, url, isStream, hours, minutes, seconds);
+        controller.getMusicEmbedManager().getMusicEmbed().TrackInformationEmbed(author, title, url, isStream, seconds, minutes, hours);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class LeaveCommand implements ServerCommand
                 AudioPlayer player = controller.getPlayer();
                 VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                if (botVoiceChannel == null)
+                if (botVoiceChannel != null)
                 {
                     if (voiceChannel != null && botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
                     {

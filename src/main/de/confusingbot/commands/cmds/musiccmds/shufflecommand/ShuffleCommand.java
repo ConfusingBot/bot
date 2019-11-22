@@ -18,7 +18,7 @@ public class ShuffleCommand implements ServerCommand
     {
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
-        if (args.length == 2)
+        if (args.length == 1)
         {
             GuildVoiceState state = member.getVoiceState();
             if (state != null)

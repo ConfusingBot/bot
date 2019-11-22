@@ -23,7 +23,6 @@ public class PlayCommand implements ServerCommand
 
         if (args.length > 1)
         {
-
             GuildVoiceState state = member.getVoiceState();
             if (state != null)
             {
@@ -36,7 +35,7 @@ public class PlayCommand implements ServerCommand
                     AudioManager manager = voiceChannel.getGuild().getAudioManager();
                     VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                    if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
+                    if (botVoiceChannel == null || (botVoiceChannel.getIdLong() == voiceChannel.getIdLong()))
                     {
                         //SQL
                         controller.updateChannel(channel, member);
@@ -51,12 +50,11 @@ public class PlayCommand implements ServerCommand
                             url = "ytsearch: " + url;
                         }
 
+                        //TODO will join channel although the bot could not find song
+                        Connect(voiceChannel);
+
                         //Try to Play Song
                         audioPlayerManager.loadItem(url, new AudioLoadResult(url, controller, channel));
-
-                        //Connect if bot is in no VoiceChannel //TODO will not work
-                        if (!manager.isConnected() && controller.getPlayer().getPlayingTrack() != null)
-                            manager.openAudioConnection(voiceChannel);
                     }
                     else
                     {
@@ -76,6 +74,14 @@ public class PlayCommand implements ServerCommand
             //Usage
             embeds.PlayUsage(channel);
         }
+
+    }
+
+    private void Connect(VoiceChannel voiceChannel)
+    {
+        AudioManager manager = voiceChannel.getGuild().getAudioManager();
+        if (!manager.isConnected())
+            manager.openAudioConnection(voiceChannel);
 
     }
 }
