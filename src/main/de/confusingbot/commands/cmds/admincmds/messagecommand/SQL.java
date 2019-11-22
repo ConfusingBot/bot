@@ -12,9 +12,9 @@ public class SQL {
     //SQL
     //=====================================================================================================================================
 
-    public void MessageAddToSQL(long guildid, long channelid, String hexColor, String messagetype, String title, String message, String mentionedChannel, String mentionedRoles) {
-        LiteSQL.onUpdate("INSERT INTO messagecommand(guildid, channelid, color, messagetype, title, message, mentionedChannel, mentionedRoles) VALUES(" +
-                guildid + ", " + channelid + ", '" + hexColor + "', '" + messagetype + "', '" + title + "', '" + message + "', '" + mentionedChannel + "', '" + mentionedRoles + "')");
+    public void MessageAddToSQL(long guildid, long channelid, String hexColor, String messagetype, String title, String message) {
+        LiteSQL.onUpdate("INSERT INTO messagecommand(guildid, channelid, color, messagetype, title, message) VALUES(" +
+                guildid + ", " + channelid + ", '" + hexColor + "', '" + messagetype + "', '" + title + "', '" + message + "')");
     }
 
     public void MessageRemoveFromSQL(long guildid, String messagetype) {
@@ -111,58 +111,6 @@ public class SQL {
         }
 
         return hexColor;
-    }
-
-    public List<Long> GetMentionedChannelsFromSQL(long guildid, String messagetype) {
-        String mentionedChannelsString = "";
-        List<Long> mentionedChannels = new ArrayList<>();
-
-        try {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
-                    + "guildid = " + guildid
-                    + " AND messagetype = '" + messagetype + "'");
-
-            if (set.next()) {
-                mentionedChannelsString = set.getString("mentionedChannel");
-
-                String[] mentionedChannelsStringArray = mentionedChannelsString.split(" ");
-
-                for(String channel : mentionedChannelsStringArray){
-                    mentionedChannels.add(Long.parseLong(channel));
-                }
-            }
-
-        } catch (SQLException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return mentionedChannels;
-    }
-
-    public List<Long> GetMentionedRolesFromSQL(long guildid, String messagetype) {
-        String mentionedRolesString = "";
-        List<Long> mentionedRoles = new ArrayList<>();
-
-        try {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
-                    + "guildid = " + guildid
-                    + " AND messagetype = '" + messagetype + "'");
-
-            if (set.next()) {
-                mentionedRolesString = set.getString("mentionedRoles");
-
-                String[] mentionedRolesStringArray = mentionedRolesString.split(" ");
-
-                for(String channel : mentionedRolesStringArray){
-                    mentionedRoles.add(Long.parseLong(channel));
-                }
-            }
-
-        } catch (SQLException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return mentionedRoles;
     }
 
 }
