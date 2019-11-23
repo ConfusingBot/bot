@@ -173,7 +173,7 @@ public class QuestionCommand implements ServerCommand
                     //Message
                     Embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
 
-                    sleepXSeconds(deletedInSeconds);
+                    CommandsUtil.sleepXSeconds(deletedInSeconds);
 
                     //SQL
                     sql.RemoveQuestionChannelFromSQL(guild.getIdLong(), channel.getIdLong(), memberid);
@@ -298,17 +298,6 @@ public class QuestionCommand implements ServerCommand
             roleString += " " + role.getAsMention();
         }
         return roleString.trim();
-    }
-
-    private void sleepXSeconds(int seconds)
-    {
-        try
-        {
-            TimeUnit.SECONDS.sleep(seconds);
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
     }
 
 }

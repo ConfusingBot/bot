@@ -27,19 +27,26 @@ public class ClearCommand implements ServerCommand
         {
             if (args.length == 2)
             {
-                try
+                if (CommandsUtil.isNumeric(args[1]))
                 {
-                    int amount = Integer.parseInt(args[1]);
-                    List<Message> messages = getMessages(channel, amount);
-                    channel.purgeMessages(messages);
+                    long amount = Long.parseLong(args[1]);
+                    if (amount > 0)
+                    {
+                        List<Message> messages = getMessagesToDelete(channel, amount);
+                        channel.purgeMessages(messages);
 
-                    //Message
-                   embeds.SuccessfulRemovedXMessages(channel, messages);
-
-                } catch (NumberFormatException e)
+                        //Message
+                        embeds.SuccessfulRemovedXMessages(channel, messages);
+                    }
+                    else
+                    {
+                        channel.sendMessage("Really?").queue();
+                    }
+                }
+                else
                 {
                     //Error
-                   embeds.NoValidNumberError(channel, args[1]);
+                    embeds.NoValidNumberError(channel, args[1]);
                 }
             }
             else
@@ -51,27 +58,27 @@ public class ClearCommand implements ServerCommand
         else
         {
             //Error
-           embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
     //=====================================================================================================================================
     //Helper
     //=====================================================================================================================================
-    private List<Message> getMessages(MessageChannel channel, int amount)
+    private List<Message> getMessagesToDelete(MessageChannel channel, long amount)
     {
+        CommandsUtil.sleepXSeconds(0.5f);
         List<Message> messages = new ArrayList<>();
-        int i = amount + 1;//because it clear also delete your message
+        long i = amount;
 
         for (Message message : channel.getIterableHistory().cache(false))
         {
-            if (!message.isPinned())
+            if (!message.isPinned() && !message.getMember().getUser().isBot())
             {
                 messages.add(message);
+                if (--i <= 0) break;
             }
-            if (--i <= 0) break;
         }
-
         return messages;
     }
 }

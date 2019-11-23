@@ -3,6 +3,8 @@ package main.de.confusingbot.commands.help;
 import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.Message;
 
+import java.util.concurrent.TimeUnit;
+
 public class CommandsUtil {
 
     public static String[] messageToArgs(Message message){
@@ -24,5 +26,17 @@ public class CommandsUtil {
             return false;
         }
         return true;
+    }
+
+    public static void sleepXSeconds(float seconds)
+    {
+        int milliseconds = (int) (seconds * 10);
+        try
+        {
+            TimeUnit.MICROSECONDS.sleep(milliseconds);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

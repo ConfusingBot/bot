@@ -22,7 +22,7 @@ public class Embeds
     //=====================================================================================================================================
     public void ClearUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "clear [# messages]`", channel, 5);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "clear [# messages]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -43,6 +43,6 @@ public class Embeds
     //=====================================================================================================================================
     public void SuccessfulRemovedXMessages(TextChannel channel, List<Message> messages)
     {
-        EmbedsUtil.SuccessfulRemoved(channel, (messages.size() - 1) + " messages", "this server");
+        EmbedManager.SendSuccessEmbed("You successfully cleared " + (messages.size()) + " messages!", channel, EmbedsUtil.showSuccessTime);
     }
 }
