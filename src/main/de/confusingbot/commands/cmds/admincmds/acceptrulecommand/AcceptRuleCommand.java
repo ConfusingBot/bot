@@ -25,7 +25,7 @@ public class AcceptRuleCommand implements ServerCommand
 
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))
         {
-            if (args.length > 2)
+            if (args.length >= 2)
             {
                 switch (args[1])
                 {
@@ -59,9 +59,9 @@ public class AcceptRuleCommand implements ServerCommand
     //=====================================================================================================================================
     private void addCommand(Message message, String[] args, TextChannel channel)
     {
-        if (args.length == 7)
+        if (!sql.ExistsInSQL(message.getGuild().getIdLong()))
         {
-            if (!sql.ExistsInSQL(message.getGuild().getIdLong()))
+            if (args.length == 7)
             {
                 List<TextChannel> channels = message.getMentionedChannels();//args 1
                 List<Role> roles = message.getMentionedRoles();//args 4 and 5
@@ -69,7 +69,7 @@ public class AcceptRuleCommand implements ServerCommand
                 if (!channels.isEmpty() && !roles.isEmpty() && roles.size() == 2)
                 {
                     TextChannel textChannel = channels.get(0);//args 2
-                    String messageIDString = args[2];//args 3
+                    String messageIDString = args[3];//args 3
                     String emoteString = getEmote(message, args);//args 4
                     Role notAcceptedRole = roles.get(0);//args 5
                     Role acceptedRole = roles.get(1);//args 6
@@ -78,7 +78,7 @@ public class AcceptRuleCommand implements ServerCommand
                     {
                         long messageID = Long.parseLong(messageIDString);
 
-                        reactEmote(emoteString, textChannel, messageID, true);
+                        CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
 
                         //SQL
                         sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole.getIdLong(), acceptedRole.getIdLong());
@@ -100,20 +100,20 @@ public class AcceptRuleCommand implements ServerCommand
             }
             else
             {
-                //Error
-                embeds.OnlyOneAcceptRuleAllowedError(channel);
+                //Usage
+                embeds.AddUsage(channel);
             }
         }
         else
         {
-            //Usage
-            embeds.AddUsage(channel);
+            //Error
+            embeds.OnlyOneAcceptRuleAllowedError(channel);
         }
     }
 
     private void removeCommand(Guild guild, String[] args, TextChannel channel)
     {
-        if (args.length > 2)
+        if (args.length == 2)
         {
             if (sql.ExistsInSQL(guild.getIdLong()))
             {
@@ -155,25 +155,6 @@ public class AcceptRuleCommand implements ServerCommand
             emoteString += emote;
         }
         return emoteString;
-    }
-
-    private static void reactEmote(String emoteString, TextChannel channel, long messageid, boolean add)
-    {
-        if (CommandsUtil.isNumeric(emoteString))//if emoteString is a emoteID
-        {
-            Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
-            if (add)
-                channel.addReactionById(messageid, emote).queue();
-            else
-                channel.removeReactionById(messageid, emote).queue();
-        }
-        else
-        {
-            if (add)
-                channel.addReactionById(messageid, emoteString).queue();
-            else
-                channel.removeReactionById(messageid, emoteString).queue();
-        }
     }
 
 }
