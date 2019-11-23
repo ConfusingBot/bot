@@ -92,71 +92,89 @@ public class TempVoiceChannelCommand implements ServerCommand
 
     private void AddCommand(String[] args, Member member, Guild guild, TextChannel channel)
     {
-        try
+        if (args.length == 3)
         {
-            long channelid = Long.parseLong(args[2]);
-            VoiceChannel voiceChannel = member.getGuild().getVoiceChannelById(channelid);
-            if (voiceChannel != null)
+            String channelIdString = args[2];
+            if (CommandsUtil.isNumeric(channelIdString))
             {
-                if (!sql.ExistInSQL(channelid, guild.getIdLong()))
+                long channelid = Long.parseLong(channelIdString);
+                VoiceChannel voiceChannel = member.getGuild().getVoiceChannelById(channelid);
+                if (voiceChannel != null)
                 {
-                    //SQL
-                    sql.addToSQL(channelid, guild.getIdLong());
+                    if (!sql.ExistInSQL(guild.getIdLong(), channelid))
+                    {
+                        //SQL
+                        sql.addToSQL(channelid, guild.getIdLong());
 
-                    //Message
-                    embeds.SuccessfullyAddedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                        //Message
+                        embeds.SuccessfullyAddedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                    }
+                    else
+                    {
+                        //Error
+                        embeds.VoiceChannelAlreadyExistsError(channel);
+                    }
                 }
                 else
                 {
                     //Error
-                    embeds.VoiceChannelAlreadyExistsError(channel);
+                    embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
                 }
             }
             else
             {
                 //Error
-                embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
+                embeds.NoValidVoiceChannelIDNumberError(channel, channelIdString);
             }
-
-        } catch (NumberFormatException e)
-        {
-            //Error
-            embeds.NoValidVoiceChannelIDNumberError(channel, args[2]);
         }
-
+        else
+        {
+            //Usage
+            embeds.AddUsage(channel);
+        }
     }
 
     private void RemoveCommand(String[] args, Member member, Guild guild, TextChannel channel)
     {
-        try
+        if (args.length == 3)
         {
-            long channelid = Long.parseLong(args[2]);
-            VoiceChannel voiceChannel = member.getGuild().getVoiceChannelById(channelid);
-            if (voiceChannel != null)
+            String channelIdString = args[2];
+            if (CommandsUtil.isNumeric(channelIdString))
             {
-                if (sql.ExistInSQL(channelid, guild.getIdLong()))
+                long channelid = Long.parseLong(channelIdString);
+                VoiceChannel voiceChannel = member.getGuild().getVoiceChannelById(channelid);
+                if (voiceChannel != null)
                 {
-                    //SQL
-                    sql.removeFromSQL(channelid, guild.getIdLong());
+                    if (sql.ExistInSQL(guild.getIdLong(), channelid))
+                    {
+                        //SQL
+                        sql.removeFromSQL(channelid, guild.getIdLong());
 
-                    //Message
-                    embeds.SuccessfullyRemovedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                        //Message
+                        embeds.SuccessfullyRemovedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                    }
+                    else
+                    {
+                        //Error
+                        embeds.NoExistingTempChannelError(channel, channelid);
+                    }
                 }
                 else
                 {
                     //Error
-                    embeds.NoExistingTempChannelError(channel, channelid);
+                    embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
                 }
             }
             else
             {
                 //Error
-                embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
+                embeds.NoValidVoiceChannelIDNumberError(channel, channelIdString);
             }
-        } catch (NumberFormatException e)
+        }
+        else
         {
-            //Error
-            embeds.NoValidVoiceChannelIDNumberError(channel, args[2]);
+            //Usage
+            embeds.RemoveUsage(channel);
         }
     }
 

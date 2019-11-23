@@ -12,7 +12,7 @@ public class SQL
     //=====================================================================================================================================
     //SQL
     //=====================================================================================================================================
-    public boolean ExistInSQL(long channelID, long guildid)
+    public boolean ExistInSQL(long guildid, long channelID)
     {
         ResultSet set = LiteSQL.onQuery("SELECT * FROM tempchannels WHERE " +
                 "guildid = " + guildid
@@ -20,7 +20,7 @@ public class SQL
 
         try
         {
-            if (!set.next()) return true;
+            if (set.next()) return true;
         } catch (Exception e)
         {
             e.printStackTrace();

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class MessageCommand implements ServerCommand
 {
 
-    private String messageStartKey = "MESSAGE:";
+
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -137,9 +137,9 @@ public class MessageCommand implements ServerCommand
                             String title = "";
                             String shownMessage = "";
 
-                            if (wholeMessage.contains(messageStartKey))
+                            if (wholeMessage.contains(MessageManager.messageStartKey))
                             {
-                                String[] messageAndTitle = wholeMessage.split(messageStartKey);
+                                String[] messageAndTitle = wholeMessage.split(MessageManager.messageStartKey);
                                 title = messageAndTitle[0];
                                 shownMessage = messageAndTitle[1];
                             }

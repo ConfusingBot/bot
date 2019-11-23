@@ -14,10 +14,7 @@ public class Embeds
 {
     public Embeds()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "reactrole [channel] [messageID] [emote] [@role])\n``` " +
-                "```▶️Create a [#channel] where you  write your RoleBoard [messageID]\n" +
-                "▶️Think about a [emote] with which you want to get the [@role]```" +
-                "```Add a emotji to you role board on which the user can click and automaticlly get the @role```");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember) to the server look at (#rule)]\n``` ");
     }
 
     //=====================================================================================================================================

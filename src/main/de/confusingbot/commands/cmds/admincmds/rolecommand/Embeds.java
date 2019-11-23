@@ -2,17 +2,27 @@ package main.de.confusingbot.commands.cmds.admincmds.rolecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.awt.*;
+
 public class Embeds
 {
+
+    public Embeds()
+    {
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "createrole [name] ([#HexColor])\n``` ```Create a new role```");
+    }
+
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "role create [roleName] ([#HexColor])`\n`"
+        EmbedManager.SendInfoEmbed("`"
+                + Main.prefix + "role create [roleName] ([#HexColor])`\n`"
                 + Main.prefix + "role delete [@role]`", channel, EmbedsUtil.showUsageTime);
     }
 
@@ -39,15 +49,20 @@ public class Embeds
         EmbedsUtil.HavenNotMentionedError(channel, "@role");
     }
 
+    public void NoHexColorError(TextChannel channel, String hexColor)
+    {
+        EmbedManager.SendErrorEmbed("This is no HexColor: " + hexColor + "!", channel, EmbedsUtil.showUsageTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfulCreatedRole(TextChannel channel, String roleName)
+    public void SuccessfullyCreatedRole(TextChannel channel, String roleName, Color color)
     {
-        EmbedsUtil.SuccessfulCreated(channel, "@" + roleName);
+        EmbedManager.SendCustomEmbed("Create Role!", "You successfully created **@" + roleName + "**", color, channel, EmbedsUtil.showSuccessTime);
     }
 
-    public void SuccessfulDeletedRole(TextChannel channel, String roleName)
+    public void SuccessfullyDeletedRole(TextChannel channel, String roleName)
     {
         EmbedsUtil.SuccessfulDeleted(channel, "@" + roleName, "this server");
     }

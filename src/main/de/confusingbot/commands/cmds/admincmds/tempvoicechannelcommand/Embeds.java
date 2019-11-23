@@ -20,18 +20,18 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel add [id]`\n`"
-                + Main.prefix + "tempchannel remove [id]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel add [channelId]`\n`"
+                + Main.prefix + "tempchannel remove [channelId]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules not accepted] [@role rules accepted]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel add [channelId]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel remove [channelId]`", channel, EmbedsUtil.showUsageTime);
     }
 
 
