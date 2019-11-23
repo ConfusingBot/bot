@@ -36,6 +36,6 @@ public class Embeds
     //=====================================================================================================================================
     public void SuccessfullySkippedTrack(TextChannel channel, String title)
     {
-        EmbedManager.SendCustomEmbed("Skipped Song\uD83D\uDD0A", title, Color.decode("#d400ff"), channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendCustomEmbed("Skipped Song\uD83D\uDD0A", title, Color.decode("#d400ff"), channel, 10);
     }
 }

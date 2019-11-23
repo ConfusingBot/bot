@@ -61,7 +61,7 @@ public class Embeds {
     }
 
     public void SendMusicQueueEmbed(TextChannel channel, String queueString, boolean first) {
-        String title = "";
+        String title = " ";
         if (first) {
             title = "Music Queue\uD83D\uDC7E";
         }

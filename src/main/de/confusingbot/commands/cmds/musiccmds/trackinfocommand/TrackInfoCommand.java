@@ -8,6 +8,7 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 public class TrackInfoCommand implements ServerCommand
 {
@@ -26,11 +27,12 @@ public class TrackInfoCommand implements ServerCommand
         if (args.length == 1)
         {
             MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
+            AudioManager manager = channel.getGuild().getAudioManager();
 
             AudioPlayer player = controller.getPlayer();
 
             AudioTrack track = player.getPlayingTrack();
-            if (track != null)
+            if (track != null && manager.isConnected())
             {
                 //Get Data
                 AudioTrackInfo info = track.getInfo();

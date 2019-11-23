@@ -20,7 +20,7 @@ public class Embeds
     //=====================================================================================================================================
     public void LeaveUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "`leave`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "leave`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================

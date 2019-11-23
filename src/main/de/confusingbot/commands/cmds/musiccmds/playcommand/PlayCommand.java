@@ -21,7 +21,7 @@ public class PlayCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-        if (args.length > 1)
+        if (args.length >= 2)
         {
             GuildVoiceState state = member.getVoiceState();
             if (state != null)
@@ -74,7 +74,6 @@ public class PlayCommand implements ServerCommand
             //Usage
             embeds.PlayUsage(channel);
         }
-
     }
 
     private void Connect(VoiceChannel voiceChannel)

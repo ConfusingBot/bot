@@ -25,43 +25,50 @@ public class PauseCommand implements ServerCommand
             if (state != null)
             {
                 VoiceChannel voiceChannel = state.getChannel();
-                MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                AudioManager manager = voiceChannel.getGuild().getAudioManager();
-                VoiceChannel botVoiceChannel = manager.getConnectedChannel();
-
-                if (botVoiceChannel != null)
+                if (voiceChannel != null)
                 {
-                    if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
+                    MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
+
+                    if (botVoiceChannel != null)
                     {
-                        if (controller.getPlayer().getPlayingTrack() == null)
+                        if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
                         {
-                            if (!controller.getPaused())
+                            if (controller.getPlayer().getPlayingTrack() != null)
                             {
-                                controller.setPaused(true);
-                                controller.getPlayer().setPaused(controller.getPaused());
+                                if (!controller.getPaused())
+                                {
+                                    controller.setPaused(true);
+                                    controller.getPlayer().setPaused(controller.getPaused());
+                                }
+                                else
+                                {
+                                    controller.setPaused(false);
+                                    controller.getPlayer().setPaused(controller.getPaused());
+                                }
                             }
                             else
                             {
-                                controller.setPaused(false);
-                                controller.getPlayer().setPaused(controller.getPaused());
+                                //Error
+                                embeds.NoPlayingTrackError(channel);
                             }
                         }
                         else
                         {
                             //Error
-                            embeds.NoPlayingTrackError(channel);
+                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                         }
                     }
                     else
                     {
                         //Error
-                        EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                        EmbedsUtil.BotNotInVoiceChannelError(channel);
                     }
                 }
                 else
                 {
-                    //Error
-                    EmbedsUtil.BotNotInVoiceChannelError(channel);
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                 }
             }
         }

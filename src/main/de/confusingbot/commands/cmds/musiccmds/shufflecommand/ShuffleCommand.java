@@ -43,6 +43,10 @@ public class ShuffleCommand implements ServerCommand
                         EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                     }
                 }
+                else
+                {
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
+                }
             }
         }
         else

@@ -23,47 +23,50 @@ public class LeaveCommand implements ServerCommand
 
         if (args.length == 1)
         {
-
             GuildVoiceState state = member.getVoiceState();
             if (state != null)
             {
                 VoiceChannel voiceChannel = state.getChannel();
-                MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                AudioManager manager = voiceChannel.getGuild().getAudioManager();
-                AudioPlayer player = controller.getPlayer();
-                VoiceChannel botVoiceChannel = manager.getConnectedChannel();
+                if(voiceChannel != null){
+                    MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                    AudioPlayer player = controller.getPlayer();
+                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                if (botVoiceChannel != null)
-                {
-                    if (voiceChannel != null && botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
+                    if (botVoiceChannel != null)
                     {
-                        //SQL
-                        controller.updateChannel(channel, member);
+                        if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
+                        {
+                            //SQL
+                            controller.updateChannel(channel, member);
 
-                        //StopMusic
-                        player.stopTrack();
-                        manager.closeAudioConnection();
+                            //StopMusic
+                            player.stopTrack();
+                            manager.closeAudioConnection();
 
-                        //Message
-                        embeds.StoppedMusicMessage(channel);
+                            //Message
+                            embeds.StoppedMusicMessage(channel);
+                        }
+                        else
+                        {
+                            //Error
+                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                        }
                     }
                     else
                     {
                         //Error
-                        EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                        EmbedsUtil.BotNotInVoiceChannelError(channel);
                     }
-                }
-                else
-                {
-                    //Error
-                    EmbedsUtil.BotNotInVoiceChannelError(channel);
+                }else{
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                 }
             }
-            else
-            {
-                //Usage
-                embeds.LeaveUsage(channel);
-            }
+        }
+        else
+        {
+            //Usage
+            embeds.LeaveUsage(channel);
         }
     }
 }

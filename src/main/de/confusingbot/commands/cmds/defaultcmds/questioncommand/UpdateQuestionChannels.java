@@ -23,6 +23,7 @@ public class UpdateQuestionChannels
 
     int maxTimeInHours = 24;
     List<Integer> notificationTimes = new ArrayList<>();
+    SQL sql = new SQL();
 
 
     public UpdateQuestionChannels()
@@ -55,7 +56,7 @@ public class UpdateQuestionChannels
                 //HANDLE TIME
 
                 long timeleft = getTimeLeft(creationTime, channel);
-                System.out.println("TimeLeft of question: " + timeleft);
+                //System.out.println("TimeLeft of question: " + timeleft);
 
                 for (Integer notificationTime : notificationTimes)
                 {
@@ -74,7 +75,7 @@ public class UpdateQuestionChannels
                     //Delete Channel
                     channel.delete().queue();
                     //SQL
-                    removeFromSQL(guildID, channelID, memberID);
+                    sql.removeQuestionFromSQL(guildID, channelID, memberID);
                 }
             }
         } catch (SQLException e)
@@ -100,7 +101,7 @@ public class UpdateQuestionChannels
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
         long differentInHours = (duration.toMinutes() - 60);//if in toMinutes - 60 and not - 1!
-        System.out.println("Different in minutes " + differentInHours);
+        //System.out.println("Different in minutes " + differentInHours);
         timeLeft = maxTimeInHours - differentInHours;
 
         //TODO optimize Ausnahme wenn nachricht versendet wurde wieder um 2h verlängern oder so..
@@ -127,16 +128,4 @@ public class UpdateQuestionChannels
 
         return lastMessageTime;
     }
-
-    //=====================================================================================================================================
-    //SQL
-    //=====================================================================================================================================
-    private void removeFromSQL(long guildid, long channelid, long memberid)
-    {
-        LiteSQL.onUpdate("DELETE FROM questioncommand WHERE "
-                + "guildid = " + guildid
-                + " AND channelid = " + channelid
-                + " AND memberid = " + memberid);
-    }
-
 }

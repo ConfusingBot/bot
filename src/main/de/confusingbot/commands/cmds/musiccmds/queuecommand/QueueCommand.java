@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.musiccmds.queuecommand;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.music.manage.Music;
@@ -65,7 +66,7 @@ public class QueueCommand implements ServerCommand
             {
                 //Message
                 embeds.SendMusicQueueEmbed(channel, queueStrings.get(i), i == 0);
-                System.out.println(queueStrings);
+                //System.out.println(queueStrings.get(i) + "\n----------------------------------------------------\n");
             }
         }
         else
@@ -98,19 +99,26 @@ public class QueueCommand implements ServerCommand
         {
             if (args[2] != null)
             {
-                int index = Integer.parseInt(args[2]) - 1;//because the user won't start counting by 0
-                List<AudioTrack> queueList = queue.getQueueList();
-                if (index <= queueList.size() && index > 1)
+                if (CommandsUtil.isNumeric(args[2]))
                 {
-                    //Message
-                    embeds.SuccessfullyDeletedTrackAtIndex(channel, index, queueList.get(index).getInfo().title);
+                    int index = Integer.parseInt(args[2]) - 1;//because the user won't start counting by 0
+                    List<AudioTrack> queueList = queue.getQueueList();
+                    if (index <= queueList.size() && index >= 0)
+                    {
+                        //Message
+                        embeds.SuccessfullyDeletedTrackAtIndex(channel, index, queueList.get(index).getInfo().title);
 
-                    queue.DeleteAtIndex(index);
+                        queue.DeleteAtIndex(index);
+                    }
+                    else
+                    {
+                        //Error
+                        embeds.CouldNotDeleteTrackAtIndex(channel, index);
+                    }
                 }
                 else
                 {
-                    //Error
-                    embeds.CouldNotDeleteTrackAtIndex(channel, index);
+                    EmbedsUtil.NoNumberError(channel, args[2]);
                 }
             }
             else
