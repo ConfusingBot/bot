@@ -1,7 +1,6 @@
 package main.de.confusingbot;
 
 
-import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.listener.botlistener.BotListener;
 import main.de.confusingbot.listener.commandlistener.CommandListener;
 import main.de.confusingbot.listener.joinlistener.JoinListener;
@@ -12,7 +11,7 @@ import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
-import main.de.confusingbot.timer.BumpTimer;
+import main.de.confusingbot.timer.InfoTimer;
 import main.de.confusingbot.timer.CheckQuestionTimer;
 import main.de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -87,7 +86,7 @@ public class Main {
     }
 
     public CheckQuestionTimer checkQuestionTimer;
-    public BumpTimer bumpTimer;
+    public InfoTimer infoTimer;
     public StatusTimer statusTimer;
     private void StartTimer(){
         //Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
@@ -102,8 +101,8 @@ public class Main {
         checkQuestionTimer = new CheckQuestionTimer();
         checkQuestionTimer.startTimer();
 
-        bumpTimer = new BumpTimer();
-        bumpTimer.startTimer();
+        infoTimer = new InfoTimer();
+        infoTimer.startTimer();
 
         statusTimer = new StatusTimer(shardManager);
         statusTimer.startTimer();

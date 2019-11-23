@@ -1,4 +1,4 @@
-package main.de.confusingbot.channels;
+package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -18,14 +18,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckQuestionChannel
+public class UpdateQuestionChannels
 {
 
     int maxTimeInHours = 24;
     List<Integer> notificationTimes = new ArrayList<>();
 
 
-    public CheckQuestionChannel()
+    public UpdateQuestionChannels()
     {
         //Add notificationTimes
         notificationTimes.add(1);
@@ -49,7 +49,6 @@ public class CheckQuestionChannel
                 Guild guild = Main.INSTANCE.shardManager.getGuildById(guildID);
                 if (guild == null) return;
                 Member member = guild.getMemberById(memberID);
-                if (member == null) return;
                 TextChannel channel = guild.getTextChannelById(channelID);
                 if (channel == null) return;
 
@@ -64,7 +63,7 @@ public class CheckQuestionChannel
                     {
                         //System.out.println("Notification " + timeleft);
 
-                        EmbedManager.SendCustomEmbedGetMessageID("This question will be closed in " + timeleft + " Minutes",
+                        EmbedManager.SendCustomEmbedGetMessageID("This question will be closed in " + timeleft + " hours!",
                                 member.getAsMention() + " If nobody writes anything within " + timeleft + " hours, this question will be deleted\uD83D\uDE10",
                                 Color.decode("#e03d14"), channel);
                     }

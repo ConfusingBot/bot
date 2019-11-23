@@ -1,6 +1,5 @@
-package main.de.confusingbot.commands.cmds.admincmds.tempchannelcommand;
+package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
-import main.de.confusingbot.channels.TempVoiceChannels;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -11,7 +10,7 @@ import net.dv8tion.jda.api.entities.*;
 import java.awt.*;
 import java.util.List;
 
-public class TempChannelCommand implements ServerCommand
+public class TempVoiceChannelCommand implements ServerCommand
 {
 
     private SQL sql = new SQL();
@@ -67,7 +66,7 @@ public class TempChannelCommand implements ServerCommand
     //=====================================================================================================================================
     private void ListCommand(Guild guild, TextChannel channel)
     {
-        List<Long> tempChannels = TempVoiceChannels.getTempChannelsFromGuild(guild.getIdLong());
+        List<Long> tempChannels = sql.getTempChannelsFromGuild(guild.getIdLong());
         if (tempChannels.size() != 0 && tempChannels != null)
         {
             //Create Description -> all voice channel

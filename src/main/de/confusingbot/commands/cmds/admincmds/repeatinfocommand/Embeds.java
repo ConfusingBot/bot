@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.admincmds.bumpbotcommand;
+package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
@@ -12,15 +12,15 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed( "`" + Main.prefix + "bump add/remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed( "`" + Main.prefix + "repeatinfo add/remove`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel){
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "bump add [#channel] [bumpcommand]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [#channel] [info]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel){
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "bump remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo remove`", channel, EmbedsUtil.showUsageTime);
     }
 
 
@@ -31,15 +31,15 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel);
     }
 
-    public void OnlyOneAllowedBumpCommandAllowedError(TextChannel channel){
-        EmbedsUtil.OnlyOneAllowedToExistError(channel, "BumpCommand");
+    public void OnlyXAllowedInfoCommandsError(TextChannel channel, int maxInfos){
+        EmbedManager.SendUsageEmbed("A server can max has " + maxInfos +" RepeatInfos", channel, EmbedsUtil.showUsageTime);
     }
 
     public void HaveNotMentionedATextChannelError(TextChannel channel){
         EmbedsUtil.HavenNotMentionedError(channel, "#channel");
     }
 
-    public void NoExistingBumpCommandError(TextChannel channel){
+    public void NoExistingInfoAtIndexError(TextChannel channel){
         EmbedsUtil.NotExistingError(channel, "BumpCommand");
     }
 
@@ -47,10 +47,10 @@ public class Embeds
     //Success
     //=====================================================================================================================================
     public void SuccessfulAddedBumpCommand(TextChannel channel){
-        EmbedsUtil.SuccessfulAdded(channel, "BumpCommand", "this server");
+        EmbedsUtil.SuccessfulAdded(channel, "RepeatInfo", "this server");
     }
 
-    public void SuccessfulRemovedBumpCommand(TextChannel channel){
-        EmbedsUtil.SuccessfulRemoved(channel, "BumpCommand", "this server");
+    public void SuccessfulRemovedRepeatInfo(TextChannel channel){
+        EmbedsUtil.SuccessfulRemoved(channel, "RepeatInfo", "this server");
     }
 }

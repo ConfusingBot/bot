@@ -1,6 +1,5 @@
 package main.de.confusingbot.timer;
 
-import main.de.confusingbot.channels.CheckQuestionChannel;
 import main.de.confusingbot.status.Status;
 import net.dv8tion.jda.api.sharding.ShardManager;
 

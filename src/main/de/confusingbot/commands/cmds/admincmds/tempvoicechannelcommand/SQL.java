@@ -1,8 +1,11 @@
-package main.de.confusingbot.commands.cmds.admincmds.tempchannelcommand;
+package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQL
 {
@@ -36,5 +39,25 @@ public class SQL
         LiteSQL.onUpdate("DELETE FROM tempchannels WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelID);
+    }
+
+    public List<Long> getTempChannelsFromGuild(long guildid)
+    {
+        List<Long> channels = new ArrayList<>();
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM tempchannels WHERE guildid = " + guildid);
+        try
+        {
+            while (set.next())
+            {
+                long channelId = set.getLong("channelid");
+                channels.add(channelId);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return channels;
     }
 }

@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.admincmds.tempchannelcommand;
+package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;

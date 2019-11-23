@@ -55,7 +55,7 @@ public class Shutdown
     private static void stopTimer()
     {
         Main.INSTANCE.checkQuestionTimer.stopTimer();
-        Main.INSTANCE.bumpTimer.stopTimer();
+        Main.INSTANCE.infoTimer.stopTimer();
         Main.INSTANCE.statusTimer.stopTimer();
     }
 

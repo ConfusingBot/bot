@@ -1,19 +1,19 @@
 package main.de.confusingbot.timer;
 
-import main.de.confusingbot.channels.BumpChannel;
+import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.InfoHandler;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BumpTimer
+public class InfoTimer
 {
-    private BumpChannel bumpChannel;
+    private InfoHandler infoHandler;
     private Timer timer;
 
-    public BumpTimer()
+    public InfoTimer()
     {
         timer = new Timer();
-        bumpChannel = new BumpChannel();
+        infoHandler = new InfoHandler();
     }
 
     //Timer
@@ -25,11 +25,11 @@ public class BumpTimer
             @Override
             public void run()
             {
-                bumpChannel.loopBumpCommand();
+                infoHandler.loopInfos();
             }
         };
 
-        timer.schedule(timeTask, 0l, 1000 * 60 * 60 * 2);//2h
+        timer.schedule(timeTask, 0l, 1000 * 60 * 60 * 1);//1h
     }
 
     public void stopTimer()

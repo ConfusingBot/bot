@@ -1,4 +1,4 @@
-package main.de.confusingbot.channels;
+package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.*;
@@ -8,16 +8,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TempVoiceChannels
+public class TempVoiceChannelListener
 {
 
     static List<Long> tempchannels = new ArrayList<>();
+    SQL sql = new SQL();
 
     //Events
-    public static void onJoin(VoiceChannel joinedChannel, Member member)
+    public void onJoin(VoiceChannel joinedChannel, Member member)
     {
         Guild guild = joinedChannel.getGuild();
-        List<Long> channelJoinIds = getTempChannelsFromGuild(guild.getIdLong());
+        List<Long> channelJoinIds = sql.getTempChannelsFromGuild(guild.getIdLong());
 
         if (channelJoinIds != null && channelJoinIds.contains(joinedChannel.getIdLong()))
         {
@@ -34,7 +35,7 @@ public class TempVoiceChannels
         }
     }
 
-    public static void onLeave(VoiceChannel channel)
+    public void onLeave(VoiceChannel channel)
     {
         if (channel.getMembers().size() <= 0)
         {
@@ -45,26 +46,4 @@ public class TempVoiceChannels
             }
         }
     }
-
-    //SQL
-    public static List<Long> getTempChannelsFromGuild(long guildid)
-    {
-        List<Long> channels = new ArrayList<>();
-
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM tempchannels WHERE guildid = " + guildid);
-        try
-        {
-            while (set.next())
-            {
-                long channelId = set.getLong("channelid");
-                channels.add(channelId);
-            }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return channels;
-    }
-
 }

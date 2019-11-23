@@ -1,4 +1,4 @@
-package main.de.confusingbot.channels;
+package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.manage.sql.LiteSQL;
@@ -8,11 +8,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BumpChannel
+public class InfoHandler
 {
-    String bumpMessage = "!d bump";
 
-    public void loopBumpCommand()
+
+    public void loopInfos()
     {
         try
         {
@@ -28,8 +28,7 @@ public class BumpChannel
                 TextChannel channel = guild.getTextChannelById(channelID);
                 if (channel == null) return;
 
-                channel.sendMessage(bumpMessage).queue();
-
+                //if((Infotime % currentTime) == 0) channel.sendMessage().queue();
             }
 
         } catch (SQLException e)

@@ -60,11 +60,12 @@ public class SQLManager {
                 "roleid INTEGER, " +
                 "name TEXT)");
 
-        tabelNames.add("bumpcommand");
+        tabelNames.add("repeatinfo");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS bumpcommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
                 "channelid INTEGER, " +
-                "command TEXT)");
+                "info TEXT, " +
+                "time INTEGER)");
 
         tabelNames.add("messagecommand");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS messagecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
