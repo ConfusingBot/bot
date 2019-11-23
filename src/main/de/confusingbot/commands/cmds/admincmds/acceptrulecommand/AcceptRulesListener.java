@@ -91,7 +91,9 @@ public class AcceptRulesListener
         }
     }
 
+    //=====================================================================================================================================
     //Helper
+    //=====================================================================================================================================
     private void addMemberRole(Guild guild, Member member, long roleid)
     {
         guild.addRoleToMember(member, guild.getRoleById(roleid)).queue();

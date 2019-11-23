@@ -4,7 +4,12 @@ import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.awt.*;
+import java.time.OffsetDateTime;
 
 public class Embeds
 {
@@ -102,8 +107,21 @@ public class Embeds
     //=====================================================================================================================================
     //Info
     //=====================================================================================================================================
-    public static void QuestionChannelWillBeDeletedInXSeconds(TextChannel channel, int deletedInSeconds)
+    public void QuestionChannelWillBeDeletedInXSeconds(TextChannel channel, int deletedInSeconds)
     {
         EmbedManager.SendInfoEmbed("The question will be deleted in " + deletedInSeconds + "s!", channel, 0);
+    }
+
+    public EmbedBuilder CreateQuestionEmbed(Member member, String questionTitle, String question, String roleString)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode("#a1f542"));
+        builder.setDescription("**❓ Question** form " + member.getAsMention() + "\n\n\n");
+        builder.addField(questionTitle + "\n\n", question, false);
+        builder.addField("", roleString, false);
+        builder.setTimestamp(OffsetDateTime.now());
+        builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
+
+        return builder;
     }
 }

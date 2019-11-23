@@ -18,7 +18,6 @@ public class InfoCommand implements ServerCommand
         //- repeatinfo add [@channel] ([Time max 10 | default = 2]) [info]     !TimeStamp is always 2h
         //- repeatinfo remove [1, 2, 3]
 
-
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 

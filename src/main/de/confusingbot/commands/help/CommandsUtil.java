@@ -37,10 +37,10 @@ public class CommandsUtil
 
     public static void sleepXSeconds(float seconds)
     {
-        int milliseconds = (int) (seconds * 10);
+        int milliseconds = (int) (seconds * 1000);
         try
         {
-            TimeUnit.MICROSECONDS.sleep(milliseconds);
+            TimeUnit.MILLISECONDS.sleep(milliseconds);
         } catch (InterruptedException e)
         {
             e.printStackTrace();

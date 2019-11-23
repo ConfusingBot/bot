@@ -80,7 +80,7 @@ public class QuestionCommand implements ServerCommand
                     else
                     {
                         //Usage
-                        embeds.QuestionCloseUsage(channel);
+                        embeds.GeneralUsage(channel);
                     }
                     break;
             }
@@ -171,7 +171,7 @@ public class QuestionCommand implements ServerCommand
                 {
                     int deletedInSeconds = 5;
                     //Message
-                    Embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
+                    embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
 
                     CommandsUtil.sleepXSeconds(deletedInSeconds);
 
@@ -230,12 +230,16 @@ public class QuestionCommand implements ServerCommand
                 if (wholeQuestion.contains(questionKey))
                 {
                     String[] questionParts = wholeQuestion.split(questionKey);
-                    questionTitle = questionParts[0];
+                    questionTitle = "**" + questionParts[0] + "**";
                     question = questionParts[1];
+                }
+                else
+                {
+                    question = wholeQuestion;
                 }
 
                 //Send Question Message
-                EmbedBuilder builder = createQuestionEmbed(member, questionTitle, question, roleString);
+                EmbedBuilder builder = embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
                 EmbedManager.SendEmbed(builder, textChannel, 0);
 
                 //SQL
@@ -256,19 +260,6 @@ public class QuestionCommand implements ServerCommand
     //=====================================================================================================================================
     //Helper
     //=====================================================================================================================================
-    private EmbedBuilder createQuestionEmbed(Member member, String questionTitle, String question, String roleString)
-    {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#a1f542"));
-        builder.setDescription("**❓ Question** form " + member.getAsMention() + "\n\n\n");
-        builder.addField("**" + questionTitle + "**\n\n", question, false);
-        builder.addField("", roleString, false);
-        builder.setTimestamp(OffsetDateTime.now());
-        builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
-
-        return builder;
-    }
-
     private String buildQuestionString(String[] args, List<Role> roles, int startIndex)
     {
         StringBuilder builder = new StringBuilder();
