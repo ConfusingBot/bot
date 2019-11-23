@@ -13,7 +13,6 @@ public class MessageCommand implements ServerCommand
 {
 
 
-
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
@@ -101,18 +100,18 @@ public class MessageCommand implements ServerCommand
     private void MessageAddCommand(TextChannel channel, String[] args, Message message, String messageKey)
     {
         Guild guild = channel.getGuild();
-        if (args.length > 3)
+        if (args.length > 4)
         {
             if (!MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), messageKey))
             {
 
-                List<TextChannel> mentionedChannelDiscord = message.getMentionedChannels();
+                List<TextChannel> mentionedDiscordChannel = message.getMentionedChannels();
 
-                if (mentionedChannelDiscord.size() > 0 && mentionedChannelDiscord != null)
+                if (mentionedDiscordChannel.size() > 0)
                 {
                     //Get channel where to send the message
-                    TextChannel messageChannel = mentionedChannelDiscord.get(0);
-                    List<TextChannel> mentionedChannel = mentionedChannelDiscord.stream().collect(Collectors.toList());
+                    TextChannel messageChannel = mentionedDiscordChannel.get(0);
+                    List<TextChannel> mentionedChannel = mentionedDiscordChannel.stream().collect(Collectors.toList());
                     mentionedChannel.remove(0);
 
                     List<Role> mentionedRoles = message.getMentionedRoles();
@@ -129,12 +128,12 @@ public class MessageCommand implements ServerCommand
                         }
 
                         boolean hasChosenNewColor = !color.equals(defaultColor);
-                        if ((args.length >= 4 && !hasChosenNewColor) || args.length >= 5)
+                        if ((args.length > 4 && !hasChosenNewColor) || args.length > 5)
                         {
                             int startIndex = hasChosenNewColor ? 5 : 4;
 
                             String wholeMessage = getWholeMessage(args, startIndex);
-                            String title = "";
+                            String title = " ";
                             String shownMessage = "";
 
                             if (wholeMessage.contains(MessageManager.messageStartKey))
@@ -174,19 +173,19 @@ public class MessageCommand implements ServerCommand
                 else
                 {
                     //Error
-                    MessageManager.embeds.MessageAlreadyExistsError(channel, messageKey);
+                    MessageManager.embeds.NoMessageChannelMentionedError(channel, messageKey);
                 }
             }
             else
             {
                 //Error
-                MessageManager.embeds.NoMessageChannelMentionedError(channel, messageKey);
+                MessageManager.embeds.MessageAlreadyExistsError(channel, messageKey);
             }
         }
         else
         {
             //Usage
-            MessageManager.embeds.MessageAddUsage(channel);
+            MessageManager.embeds.MessageAddUsage(channel, messageKey);
         }
     }
 
@@ -195,16 +194,24 @@ public class MessageCommand implements ServerCommand
         Guild guild = channel.getGuild();
         if (args.length == 3)
         {
-            //SQL
-            MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), messageKey);
+            if (MessageManager.sql.MessageExistsInSQL(channel.getGuild().getIdLong(), messageKey))
+            {
+                //SQL
+                MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), messageKey);
 
-            //Message
-            MessageManager.embeds.SuccessfullyRemovedMessage(channel, messageKey);
+                //Message
+                MessageManager.embeds.SuccessfullyRemovedMessage(channel, messageKey);
+            }
+            else
+            {
+                //Error
+                MessageManager.embeds.MessageDoesNotExistsError(channel, messageKey);
+            }
         }
         else
         {
             //Usage
-            MessageManager.embeds.MessageAddUsage(channel);
+            MessageManager.embeds.MessageRemoveUsage(channel, messageKey);
         }
     }
 

@@ -43,7 +43,7 @@ public class MessageListener
             if(word.equals(keyWord)){
                 word = newWord;
             }
-            builder.append(word);
+            builder.append(word + " ");
         }
         return builder.toString().trim();
     }

@@ -50,7 +50,7 @@ public class AcceptRuleCommand implements ServerCommand
         else
         {
             //Error
-           embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -126,7 +126,7 @@ public class AcceptRuleCommand implements ServerCommand
             else
             {
                 //Error
-               embeds.NoExistingAcceptRuleError(channel);
+                embeds.NoExistingAcceptRuleError(channel);
             }
         }
         else

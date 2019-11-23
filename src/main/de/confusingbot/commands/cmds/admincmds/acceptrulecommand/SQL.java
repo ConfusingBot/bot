@@ -76,7 +76,8 @@ public class SQL
             {
                 rolenotacceptedid = set.getLong("rolenotacceptedid");
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }

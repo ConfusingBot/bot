@@ -14,7 +14,10 @@ public class Embeds
 {
     public Embeds()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember) to the server look at (#rule)]\n``` ");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "message [add] [welcome] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember) to the server look at (#rule)]\n``` " +
+                "```Create a welcome Message which will send if a new Member join your channel```\n" +
+                "```yaml\n" + Main.prefix + "message remove welcome\n```" +
+                "```Remove the welcome Message");
     }
 
     //=====================================================================================================================================
@@ -25,14 +28,14 @@ public class Embeds
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "message [add/remove] [welcome/leave]`", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void MessageAddUsage(TextChannel channel)
+    public void MessageAddUsage(TextChannel channel, String messagetype)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add welcome [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add " + messagetype + " [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void LeaveMessageAddUsage(TextChannel channel)
+    public void MessageRemoveUsage(TextChannel channel, String messagetype)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add leave [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message " + messagetype + " remove`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -55,10 +58,16 @@ public class Embeds
 
     public void MessageAlreadyExistsError(TextChannel channel, String messagetype)
     {
-        EmbedsUtil.AlreadyExistsError(channel, messagetype + "message");
+        EmbedsUtil.AlreadyExistsError(channel, messagetype + " message");
     }
 
-    public void CouldNotFindMessageChannelError(TextChannel channel, String messagetype){
+    public void MessageDoesNotExistsError(TextChannel channel, String messagetype)
+    {
+        EmbedsUtil.NotExistingError(channel, messagetype + " message");
+    }
+
+    public void CouldNotFindMessageChannelError(TextChannel channel, String messagetype)
+    {
         EmbedManager.SendErrorEmbed("The **" + messagetype + "** message channel does not **exists**!", channel, EmbedsUtil.showErrorTime);
     }
 

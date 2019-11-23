@@ -16,7 +16,9 @@ public class Embeds
                 "▶ ️Create a @role [role rules not accepted] which you deny by every Voice/TextChannel, \n" +
                 "▶️ Create another @role [role rules accepted]\n" +
                 "▶️ Think about a [emote] with which you want to \"unlock\" the channels```" +
-                "```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```");
+                "```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n" +
+                "```fix\n" + Main.prefix + "acceptrule remove\n```" +
+                "```Remove hte AcceptRule```\n");
     }
 
     //=====================================================================================================================================
