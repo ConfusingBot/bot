@@ -12,7 +12,7 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "roleborder create [roleName]`\n`"
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "roleborder create [roleName]`\n"
                 + "`" + Main.prefix + "roleborder remove [@role]`\n`"
                 + Main.prefix + "roleborder add [@role]`", channel, EmbedsUtil.showUsageTime);
     }
@@ -53,9 +53,12 @@ public class Embeds
 
     public void RoleDoesNotExistError(TextChannel channel)
     {
-        EmbedsUtil.NotExistingError(channel, "This role");
+        EmbedsUtil.NotExistingError(channel, "This roleborder");
     }
 
+    public void RoleBorderNameIsToLongError(TextChannel channel, String name){
+        EmbedManager.SendErrorEmbed("You role name(**" + name + "**) is  to long!", channel, EmbedsUtil.showUsageTime);
+    }
 
     //=====================================================================================================================================
     //Success
@@ -72,7 +75,7 @@ public class Embeds
 
     public void SuccessfullyRemovedRoleBorder(TextChannel channel, String roleName)
     {
-        EmbedsUtil.SuccessfulRemoved(channel, roleName, "from the RoleBorders");
+        EmbedsUtil.SuccessfulRemoved(channel, roleName, "the RoleBorders");
     }
 
 

@@ -19,7 +19,7 @@ public class Embeds
     //=====================================================================================================================================
     public void ReactCommandUsage(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("`- react [channel] [message id] [emotjis]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" +  Main.prefix + "react [channel] [message id] [emotjis]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -30,12 +30,16 @@ public class Embeds
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
+    public void TriedToAddNoValidEmote(TextChannel channel){
+        EmbedManager.SendUsageEmbed("You tried to add a no valid emote!", channel, EmbedsUtil.showUsageTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
     public void SuccessfullyAddedEmotes(TextChannel channel, String emotesString)
     {
-        EmbedManager.SendSuccessEmbed("You successfully added " + emotesString, channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You successfully added:\n " + emotesString, channel, 5);
     }
 
 

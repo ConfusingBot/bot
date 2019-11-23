@@ -10,7 +10,7 @@ import java.util.List;
 public class JackNorrisJokes implements JokeCategory
 {
     private List<String> jackNorrisJokes = new ArrayList<>();
-    private String title = "Jack Norris Facts\\uD83D\\uDE09";
+    private String title = "Jack Norris Facts \uD83D\uDE2F";
 
     public JackNorrisJokes()
     {

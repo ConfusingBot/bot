@@ -20,7 +20,12 @@ public class JokeCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-        if (args.length == 2)
+        if (args.length == 1)
+        {
+            //- joke
+            manager.perform("", channel);
+        }
+        else if (args.length == 2)
         {
             //- joke mother
             if (!manager.perform(args[1], channel))
@@ -29,18 +34,12 @@ public class JokeCommand implements ServerCommand
                 embeds.JokeUsage(channel);
             }
         }
-        else if (args.length == 1)
-        {
-            //- joke
-            manager.perform("", channel);
-        }
         else
         {
+            //Usage
             embeds.JokeUsage(channel);
         }
 
 
     }
-
-
 }

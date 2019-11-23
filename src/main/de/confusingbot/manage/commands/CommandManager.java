@@ -61,8 +61,8 @@ public class CommandManager {
         this.commands.put("role", new RoleCommand());
         this.commands.put("clear", new ClearCommand());
         this.commands.put("acceptrule", new AcceptRuleCommand());
-        this.commands.put("repeatinfo", new RoleBorderCommand());
-        this.commands.put("bump", new InfoCommand());
+        this.commands.put("roleborder", new RoleBorderCommand());
+        this.commands.put("repeatinfo", new InfoCommand());
         this.commands.put("message", new MessageCommand());
 
         //Music

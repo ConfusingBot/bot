@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JokeManager
 {
     public ConcurrentHashMap<String, JokeCategory> jokes;
+    private int showJokeTime = 30;
 
     public JokeManager()
     {
@@ -43,7 +44,7 @@ public class JokeManager
         {
             Random rand = new Random();
             int i = rand.nextInt(outputJokes.size());
-            EmbedManager.SendCustomEmbed(title, outputJokes.get(i), Color.decode("#7145c4"), channel, 30);
+            EmbedManager.SendCustomEmbed(title, outputJokes.get(i), Color.decode("#7145c4"), channel, showJokeTime);
             outputJokes.clear();
         }
 

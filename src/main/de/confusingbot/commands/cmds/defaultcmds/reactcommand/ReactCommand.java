@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ContextException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ReactCommand implements ServerCommand
                 TextChannel textChannel = message.getMentionedChannels().get(0);
                 String messageIDString = args[2];
 
-                try
+                if (CommandsUtil.isNumeric(messageIDString))
                 {
                     long messageID = Long.parseLong(messageIDString);
                     List<String> customemotes = new ArrayList<>();
@@ -48,7 +49,7 @@ public class ReactCommand implements ServerCommand
                         textChannel.addReactionById(messageID, emote).queue();
                         customemotes.add(":" + emote.getName() + ":");
 
-                        emotesString += ":" + emote.getName() + ":";
+                        emotesString += "[:" + emote.getName() + ":] ";
                     }
 
                     for (int i = 3; i < args.length; i++)
@@ -57,15 +58,16 @@ public class ReactCommand implements ServerCommand
                         if (!customemotes.contains(emote))
                         {
                             textChannel.addReactionById(messageID, args[i]).queue();
+                            emotesString += (emote + " ");
                         }
                     }
-
+                    emotesString.trim();
                     //Message
                     embeds.SuccessfullyAddedEmotes(channel, emotesString);
-
-                } catch (NumberFormatException e)
+                }
+                else
                 {
-                    //Usage
+                    //Error
                     embeds.ThisIsNoMessageIDError(channel, messageIDString);
                 }
             }
