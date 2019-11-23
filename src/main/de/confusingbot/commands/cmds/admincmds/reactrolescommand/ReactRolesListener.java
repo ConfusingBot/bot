@@ -10,63 +10,81 @@ import net.dv8tion.jda.api.exceptions.HierarchyException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ReactRolesListener {
+public class ReactRolesListener
+{
 
     SQL sql = new SQL();
     Embeds embeds = new Embeds();
 
-    public void onReactionAdd(MessageReactionAddEvent event) {
-        try {
+    public void onReactionAdd(MessageReactionAddEvent event)
+    {
+        try
+        {
+            if (event.getChannelType() == ChannelType.TEXT)
+            {
+                long guildid = event.getGuild().getIdLong();
+                long channelid = event.getChannel().getIdLong();
+                long messageid = event.getMessageIdLong();
+                if (sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+                {
+                    if (!event.getUser().isBot())
+                    {
+                        String emote = "";
 
-            if (event.getChannelType() == ChannelType.TEXT) {
-                if (!event.getUser().isBot()) {
+                        if (event.getReactionEmote().isEmoji())
+                        {
+                            emote = event.getReactionEmote().getEmoji();
+                        }
+                        else
+                        {
+                            emote = event.getReactionEmote().getId();
+                        }
 
-                    long guildid = event.getGuild().getIdLong();
-                    long channelid = event.getChannel().getIdLong();
-                    long messageid = event.getMessageIdLong();
-                    String emote = "";
+                        long roleid = sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                        Guild guild = event.getGuild();
 
-                    if (event.getReactionEmote().isEmoji()) {
-                        emote = event.getReactionEmote().getEmoji();
-                    } else {
-                        emote = event.getReactionEmote().getId();
+                        //Add Role to member
+                        guild.addRoleToMember(event.getMember(), guild.getRoleById(roleid)).queue();
+
                     }
-
-                    long roleid = sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                    Guild guild = event.getGuild();
-
-                    //Add Role to member
-                    guild.addRoleToMember(event.getMember(), guild.getRoleById(roleid)).queue();
-
                 }
             }
-        } catch (HierarchyException e) {
+        } catch (HierarchyException e)
+        {
             //Error
             embeds.BotHasNoPermissionToAssignRole(event.getTextChannel());
         }
 
     }
 
-    public void onReactionRemove(MessageReactionRemoveEvent event) {
-        if (event.getChannelType() == ChannelType.TEXT) {
-            if (!event.getUser().isBot()) {
+    public void onReactionRemove(MessageReactionRemoveEvent event)
+    {
+        if (event.getChannelType() == ChannelType.TEXT)
+        {
+            long guildid = event.getGuild().getIdLong();
+            long channelid = event.getChannel().getIdLong();
+            long messageid = event.getMessageIdLong();
+            if (sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+            {
+                if (!event.getUser().isBot())
+                {
+                    String emote = "";
 
-                long guildid = event.getGuild().getIdLong();
-                long channelid = event.getChannel().getIdLong();
-                long messageid = event.getMessageIdLong();
-                String emote = "";
+                    if (event.getReactionEmote().isEmoji())
+                    {
+                        emote = event.getReactionEmote().getEmoji();
+                    }
+                    else
+                    {
+                        emote = event.getReactionEmote().getId();
+                    }
 
-                if (event.getReactionEmote().isEmoji()) {
-                    emote = event.getReactionEmote().getEmoji();
-                } else {
-                    emote = event.getReactionEmote().getId();
+                    long roleid = sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                    Guild guild = event.getGuild();
+
+                    //Remove Role from member
+                    guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
                 }
-
-                long roleid = sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                Guild guild = event.getGuild();
-
-                //Remove Role from member
-                guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
             }
         }
     }

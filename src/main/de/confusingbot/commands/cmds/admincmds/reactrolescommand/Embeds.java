@@ -63,6 +63,10 @@ public class Embeds
                 "Please give the bot a role over the role to be assigned", channel, EmbedsUtil.showErrorTime);
     }
 
+    public void YouHaveNotMentionedAValidEmoteError(TextChannel channel){
+        EmbedManager.SendErrorEmbed("You haven't mentioned valid a Emote!", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================

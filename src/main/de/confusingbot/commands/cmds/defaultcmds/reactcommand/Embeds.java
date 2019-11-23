@@ -30,16 +30,20 @@ public class Embeds
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
-    public void TriedToAddNoValidEmote(TextChannel channel){
-        EmbedManager.SendUsageEmbed("You tried to add a no valid emote!", channel, EmbedsUtil.showUsageTime);
+    public void YouHaveNotMentionedAValidEmoteError(TextChannel channel){
+        EmbedManager.SendErrorEmbed("You haven't mentioned valid a Emote!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public void YouHaveNotMentionedATextChannelError(TextChannel channel){
+        EmbedManager.SendUsageEmbed("You haven't mentioned a TextChannel!", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfullyAddedEmotes(TextChannel channel, String emotesString)
+    public void SuccessfullyAddedEmotes(TextChannel channel)
     {
-        EmbedManager.SendSuccessEmbed("You successfully added:\n " + emotesString, channel, 5);
+        EmbedManager.SendSuccessEmbed("You successfully reacted!", channel, 5);
     }
 
 

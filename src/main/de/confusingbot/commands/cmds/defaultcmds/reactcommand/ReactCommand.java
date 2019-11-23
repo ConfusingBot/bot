@@ -2,10 +2,7 @@ package main.de.confusingbot.commands.cmds.defaultcmds.reactcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.ContextException;
 
 import java.util.ArrayList;
@@ -29,8 +26,14 @@ public class ReactCommand implements ServerCommand
 
         if (args.length > 3)
         {
+            List<String> probablyEmote = new ArrayList<>();
+            for (int i = 3; i < args.length; i++)
+            {
+                probablyEmote.add(args[i]);
+            }
+
             List<TextChannel> channels = message.getMentionedChannels();
-            List<Emote> emotes = message.getEmotes();
+            List<String> emotes = CommandsUtil.getEmotes(message, probablyEmote);
 
             if (!channels.isEmpty())
             {
@@ -40,36 +43,31 @@ public class ReactCommand implements ServerCommand
                 if (CommandsUtil.isNumeric(messageIDString))
                 {
                     long messageID = Long.parseLong(messageIDString);
-                    List<String> customemotes = new ArrayList<>();
 
-                    String emotesString = "";
-
-                    for (Emote emote : emotes)
+                    for (String emoteString : emotes)
                     {
-                        textChannel.addReactionById(messageID, emote).queue();
-                        customemotes.add(":" + emote.getName() + ":");
-
-                        emotesString += "[:" + emote.getName() + ":] ";
-                    }
-
-                    for (int i = 3; i < args.length; i++)
-                    {
-                        String emote = args[i];
-                        if (!customemotes.contains(emote))
+                        if (!emoteString.isEmpty() && emoteString != null)
                         {
-                            textChannel.addReactionById(messageID, args[i]).queue();
-                            emotesString += (emote + " ");
+                            CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
+                        }
+                        else
+                        {
+                            //Error
+                            embeds.YouHaveNotMentionedAValidEmoteError(channel);
                         }
                     }
-                    emotesString.trim();
                     //Message
-                    embeds.SuccessfullyAddedEmotes(channel, emotesString);
+                    embeds.SuccessfullyAddedEmotes(channel);
                 }
                 else
                 {
                     //Error
                     embeds.ThisIsNoMessageIDError(channel, messageIDString);
                 }
+            }
+            else
+            {
+                embeds.YouHaveNotMentionedATextChannelError(channel);
             }
         }
         else

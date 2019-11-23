@@ -65,4 +65,18 @@ public class SQL
 
         return roleid;
     }
+
+    public boolean containsMessageID(long guildid, long messageID) {
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+                + "guildid = " + guildid);
+        try {
+            while (set.next()) {
+                if(messageID == set.getLong("messageid")) return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
