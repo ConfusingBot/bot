@@ -1,18 +1,13 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.clientinfocommand;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 
@@ -21,7 +16,8 @@ public class ClientInfoCommand implements ServerCommand
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
     String noInformationString = "none";
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
+    SQL sql = new SQL();
 
     @Override
     public void performCommand(Member requester, TextChannel channel, Message message)
@@ -34,17 +30,20 @@ public class ClientInfoCommand implements ServerCommand
         {
             for (Member member : members)
             {
-                EmbedManager.SendEmbed(InfoEmbed(requester, member, channel), channel, 30);
+                EmbedManager.SendEmbed(InfoEmbed(requester, member), channel, 30);
             }
         }
         else
         {
             //Usage
-            strings.ClientInfoUsage(channel);
+            embeds.ClientInfoUsage(channel);
         }
     }
 
-    public EmbedBuilder InfoEmbed(Member requester, Member member, TextChannel channel)
+    //=====================================================================================================================================
+    //Helper
+    //=====================================================================================================================================
+    public EmbedBuilder InfoEmbed(Member requester, Member member)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setFooter("Requested by " + requester.getUser().getName());
@@ -59,7 +58,7 @@ public class ClientInfoCommand implements ServerCommand
         builder.addField("**CreationDate\uD83D\uDCA5:** ", displayCreateDate(member), true);
         builder.addField("**Activity\uD83D\uDEB4:** ", displayActivityInfo(member), true);
         builder.addField("**Status\uD83D\uDD54:** ", member.getOnlineStatus().toString(), true);
-        builder.addField("**Roles\uD83C\uDF20:** ", roles(member).toString(), true);
+        builder.addField("**Roles\uD83C\uDF20:** ", getRoles(member).toString(), true);
 
         return builder;
     }
@@ -101,12 +100,12 @@ public class ClientInfoCommand implements ServerCommand
         }
     }
 
-    private StringBuilder roles(Member member)
+    private StringBuilder getRoles(Member member)
     {
         StringBuilder roleBuilder = new StringBuilder();
 
         List<Role> roles = member.getRoles().stream().collect(Collectors.toList());
-        List<Role> roleBorders = getRoleBorders(member.getGuild());
+        List<Role> roleBorders = sql.getRoleBorders(member.getGuild());
 
         for (Role role : roles)
         {
@@ -123,28 +122,6 @@ public class ClientInfoCommand implements ServerCommand
                 roleBuilder.append("" + role.getAsMention() + "  ");
         }
         return roleBuilder;
-    }
-
-    private List<Role> getRoleBorders(Guild guild)
-    {
-        List<Role> roleBorders = new ArrayList<>();
-
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE "
-                + "guildid = " + guild.getIdLong());
-
-        try
-        {
-            while (set.next())
-            {
-                Role role = guild.getRoleById(set.getLong("roleid"));
-                roleBorders.add(role);
-            }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return roleBorders;
     }
 
 }

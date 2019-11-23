@@ -1,17 +1,19 @@
 package main.de.confusingbot;
 
 
-import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.JokeCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.listener.*;
+import main.de.confusingbot.listener.botlistener.BotListener;
+import main.de.confusingbot.listener.commandlistener.CommandListener;
+import main.de.confusingbot.listener.joinlistener.JoinListener;
+import main.de.confusingbot.listener.reactionlistener.ReactionListener;
+import main.de.confusingbot.listener.voicelistener.VoiceListener;
 import main.de.confusingbot.manage.commands.CommandManager;
 import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
-import main.de.confusingbot.music.Music;
-import main.de.confusingbot.status.Status;
-import main.de.confusingbot.timer.BumpTimer;
+import main.de.confusingbot.music.manage.Music;
+import main.de.confusingbot.timer.InfoTimer;
 import main.de.confusingbot.timer.CheckQuestionTimer;
+import main.de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -25,7 +27,9 @@ public class Main {
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-    private String token = "NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4";
+
+    //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4
+    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.XdbdJA.U2xgV7PHxPkKIfqpFXt37h8bpIM";
     public static String prefix = "- ";
 
     public static boolean botOffline = false;
@@ -61,9 +65,6 @@ public class Main {
 
         music.instantiateMusic();
 
-        //Bot Methods to start at te beginning
-        StartBotFunctions();
-
         //Start the Timers
         StartTimer();
 
@@ -81,21 +82,12 @@ public class Main {
     }
 
     private void ConsoleCommands() {
-        Shutdown.discrodBot(shardManager);
-    }
-
-    public Status status;
-
-    private void StartBotFunctions() {
-        status = new Status(shardManager);
-        status.runLoop();
-
-        HelpManager.insertHelp();
-        JokeCommand.insertJokes();
+        Shutdown.Bot(shardManager);
     }
 
     public CheckQuestionTimer checkQuestionTimer;
-    public BumpTimer bumpTimer;
+    public InfoTimer infoTimer;
+    public StatusTimer statusTimer;
     private void StartTimer(){
         //Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
         try
@@ -109,8 +101,12 @@ public class Main {
         checkQuestionTimer = new CheckQuestionTimer();
         checkQuestionTimer.startTimer();
 
-        bumpTimer = new BumpTimer();
-        bumpTimer.startTimer();
+        infoTimer = new InfoTimer();
+        infoTimer.startTimer();
+
+        statusTimer = new StatusTimer(shardManager);
+        statusTimer.startTimer();
+
     }
 //Getter
 

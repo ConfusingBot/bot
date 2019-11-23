@@ -1,10 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 
-import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,7 +13,7 @@ import java.util.List;
 
 public class ClearCommand implements ServerCommand
 {
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -30,51 +27,58 @@ public class ClearCommand implements ServerCommand
         {
             if (args.length == 2)
             {
-                try
+                if (CommandsUtil.isNumeric(args[1]))
                 {
-                    int amount = Integer.parseInt(args[1]);
-                    List<Message> messages = getMessages(channel, amount);
-                    channel.purgeMessages(messages);
+                    long amount = Long.parseLong(args[1]);
+                    if (amount > 0)
+                    {
+                        List<Message> messages = getMessagesToDelete(channel, amount);
+                        channel.purgeMessages(messages);
 
-                    //Message
-                   strings.SuccessfulRemovedXMessages(channel, messages);
-
-                } catch (NumberFormatException e)
+                        //Message
+                        embeds.SuccessfulRemovedXMessages(channel, messages);
+                    }
+                    else
+                    {
+                        channel.sendMessage("Really?").queue();
+                    }
+                }
+                else
                 {
                     //Error
-                   strings.NoValidNumberError(channel, args[1]);
+                    embeds.NoValidNumberError(channel, args[1]);
                 }
             }
             else
             {
                 //Usage
-                strings.ClearUsage(channel);
+                embeds.ClearUsage(channel);
             }
         }
         else
         {
             //Error
-           strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
     //=====================================================================================================================================
     //Helper
     //=====================================================================================================================================
-    private List<Message> getMessages(MessageChannel channel, int amount)
+    private List<Message> getMessagesToDelete(MessageChannel channel, long amount)
     {
+        CommandsUtil.sleepXSeconds(0.5f);
         List<Message> messages = new ArrayList<>();
-        int i = amount + 1;//because it clear also delete your message
+        long i = amount;
 
         for (Message message : channel.getIterableHistory().cache(false))
         {
-            if (!message.isPinned())
+            if (!message.isPinned() && !message.getMember().getUser().isBot())
             {
                 messages.add(message);
+                if (--i <= 0) break;
             }
-            if (--i <= 0) break;
         }
-
         return messages;
     }
 }

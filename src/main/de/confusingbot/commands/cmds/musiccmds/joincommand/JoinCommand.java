@@ -1,12 +1,11 @@
 package main.de.confusingbot.commands.cmds.musiccmds.joincommand;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.music.Music;
-import main.de.confusingbot.music.MusicController;
-import main.de.confusingbot.music.MusicUtil;
+import main.de.confusingbot.music.manage.Music;
+import main.de.confusingbot.music.manage.MusicController;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -14,8 +13,7 @@ import java.util.List;
 
 public class JoinCommand implements ServerCommand
 {
-
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -35,35 +33,35 @@ public class JoinCommand implements ServerCommand
                     MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
                     Music.channelID = voiceChannel.getIdLong();
 
-                    Connect(voiceChannel);
-
-                    MusicUtil.updateChannel(channel, member);
+                    //SQL
+                    controller.updateChannel(channel, member);
 
                     List<AudioTrack> queue = controller.getQueue().getQueueList();
                     if (queue.size() > 0)
                     {
+                        Connect(voiceChannel);
+
                         //PlayTrack
                         controller.getPlayer().playTrack(queue.get(0));
                     }
                     else
                     {
-                        //Error
-                        strings.YourQueueIsEmptyInformation(channel);
+                        //Information
+                        embeds.YourQueueIsEmptyInformation(channel);
                     }
                 }
                 else
                 {
-                    //Error
-                    strings.YouAreNotInAVoiceChannelInformation(channel);
+                    //Information
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                 }
             }
         }
         else
         {
             //Usage
-            strings.JoinUsage(channel);
+            embeds.JoinUsage(channel);
         }
-
     }
 
     //=====================================================================================================================================

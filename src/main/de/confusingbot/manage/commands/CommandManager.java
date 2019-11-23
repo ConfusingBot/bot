@@ -2,12 +2,13 @@ package main.de.confusingbot.manage.commands;
 
 import main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
-import main.de.confusingbot.commands.cmds.admincmds.bumpbotcommand.BumpBotCommand;
+import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.InfoCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageCommand;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.RoleBorderCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolecommand.RoleCommand;
-import main.de.confusingbot.commands.cmds.admincmds.tempchannelcommand.TempChannelCommand;
+import main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand.TempVoiceChannelCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.clientinfocommand.ClientInfoCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.hugcommand.HugCommand;
@@ -17,9 +18,15 @@ import main.de.confusingbot.commands.cmds.defaultcmds.previewcommand.PreviewComm
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.reactcommand.ReactCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.rulescommand.RulesCommand;
-import main.de.confusingbot.commands.cmds.musiccmds.*;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.PrivateHelpCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.joincommand.JoinCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.leavecommand.LeaveCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.pausecommand.PauseCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.playcommand.PlayCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.queuecommand.QueueCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.shufflecommand.ShuffleCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.skipcommand.SkipCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand.TrackInfoCommand;
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
@@ -50,12 +57,13 @@ public class CommandManager {
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());
-        this.commands.put("tempchannel", new TempChannelCommand());
+        this.commands.put("tempchannel", new TempVoiceChannelCommand());
         this.commands.put("role", new RoleCommand());
         this.commands.put("clear", new ClearCommand());
         this.commands.put("acceptrule", new AcceptRuleCommand());
         this.commands.put("roleborder", new RoleBorderCommand());
-        this.commands.put("bump", new BumpBotCommand());
+        this.commands.put("repeatinfo", new InfoCommand());
+        this.commands.put("message", new MessageCommand());
 
         //Music
         this.commands.put("play", new PlayCommand());

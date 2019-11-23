@@ -18,7 +18,7 @@ public class SQL
 
     public void removeFromSQL(long guildid, long roleid)
     {
-        LiteSQL.onQuery("DELETE FROM roleborders WHERE "
+        LiteSQL.onUpdate("DELETE FROM roleborders WHERE "
                 + "guildid = " + guildid
                 + " AND roleid = " + roleid);
     }
@@ -32,7 +32,8 @@ public class SQL
         try
         {
             if (set.next()) return true;
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }

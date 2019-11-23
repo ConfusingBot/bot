@@ -5,12 +5,15 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ReactRolesCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
     SQL sql = new SQL();
 
     @Override
@@ -39,20 +42,20 @@ public class ReactRolesCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                strings.GeneralUsage(channel);
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -61,7 +64,7 @@ public class ReactRolesCommand implements ServerCommand
     //=====================================================================================================================================
     private void addCommand(Message message, String[] args, TextChannel channel)
     {
-        if (args.length >= 5)
+        if (args.length >= 6)
         {
             List<TextChannel> channels = message.getMentionedChannels();
             List<Role> roles = message.getMentionedRoles();
@@ -71,131 +74,113 @@ public class ReactRolesCommand implements ServerCommand
                 TextChannel textChannel = channels.get(0);//args 2
                 Role role = roles.get(0);//args 5
                 String messageIDString = args[3]; //args 3
-                String emoteString = getEmote(message, args);
+                String emoteString = CommandsUtil.getEmotes(message, Arrays.asList(args[4])).get(0);
 
-                try
+                if (CommandsUtil.isNumeric(messageIDString))
                 {
                     long messageID = Long.parseLong(messageIDString);
 
-                    if (!sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                    if (!emoteString.isEmpty() && emoteString != null)
                     {
-                        reactEmote(emoteString, channel, messageID, true);
+                        if (!sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                        {
+                            CommandsUtil.reactEmote(emoteString, channel, messageID, true);
 
-                        //SQL
-                        sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
+                            //SQL
+                            sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
 
-                        //Message
-                        strings.SuccessfullyAddedReactRole(channel, role);
+                            //Message
+                            embeds.SuccessfullyAddedReactRole(channel, role);
+                        }
+                        else
+                        {
+                            //Error
+                            embeds.ReactRoleAlreadyExistsError(channel);
+                        }
                     }
                     else
                     {
                         //Error
-                        strings.ReactRoleAlreadyExistsError(channel);
+                        embeds.YouHaveNotMentionedAValidEmoteError(channel);
                     }
-
-                } catch (NumberFormatException e)
+                }
+                else
                 {
                     //Error
-                    strings.NoMessageIDError(channel, messageIDString);
+                    embeds.NoMessageIDError(channel, messageIDString);
                 }
             }
             else
             {
                 //Usage
-                strings.AddUsage(channel);
+                embeds.AddUsage(channel);
             }
         }
         else
         {
             //Usage
-            strings.AddUsage(channel);
+            embeds.AddUsage(channel);
         }
-
     }
 
     private void removeCommand(Message message, String[] args, TextChannel channel)
     {
-        List<TextChannel> channels = message.getMentionedChannels();
-        List<Role> roles = message.getMentionedRoles();
-
-        if (!channels.isEmpty() && !roles.isEmpty())
+        if (args.length >= 6)
         {
-            Role role = roles.get(0);
-            String messageIDString = args[3];
-            String emoteString = getEmote(message, args);
+            List<TextChannel> channels = message.getMentionedChannels();
+            List<Role> roles = message.getMentionedRoles();
 
-            try
+            if (!channels.isEmpty() && !roles.isEmpty())
             {
-                long messageID = Long.parseLong(messageIDString);
-                if (sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                Role role = roles.get(0);
+                String messageIDString = args[3];
+                String emoteString = CommandsUtil.getEmotes(message, Arrays.asList(args[4])).get(0);
+
+                if (CommandsUtil.isNumeric(messageIDString))
                 {
-                    reactEmote(emoteString, channel, messageID, false);
+                    long messageID = Long.parseLong(messageIDString);
 
-                    //SQL
-                    sql.removeFromSQL(message.getGuild().getIdLong(), channel.getIdLong(), messageID, emoteString, role.getIdLong());
+                    if (!emoteString.isEmpty() && emoteString != null)
+                    {
+                        if (sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                        {
+                            //React
+                            CommandsUtil.reactEmote(emoteString, channel, messageID, false);
 
-                    //Message
-                    strings.SuccessfullyRemovedReactRole(channel, role);
+                            //SQL
+                            sql.removeFromSQL(message.getGuild().getIdLong(), channel.getIdLong(), messageID, emoteString, role.getIdLong());
+
+                            //Message
+                            embeds.SuccessfullyRemovedReactRole(channel, role);
+                        }
+                        else
+                        {
+                            //Error
+                            embeds.ReactRoleNotExistsError(channel);
+                        }
+                    }
+                    else
+                    {
+                        embeds.YouHaveNotMentionedAValidEmoteError(channel);
+                    }
                 }
                 else
                 {
                     //Error
-                    strings.ReactRoleNotExistsError(channel);
+                    embeds.NoMessageIDError(channel, messageIDString);
                 }
-
-            } catch (NumberFormatException e)
+            }
+            else
             {
-                //Error
-                strings.NoMessageIDError(channel, messageIDString);
+                //Usage
+                embeds.RemoveUsage(channel);
             }
         }
         else
         {
             //Usage
-            strings.RemoveUsage(channel);
+            embeds.AddUsage(channel);
         }
     }
-
-    //=====================================================================================================================================
-    //Helper
-    //=====================================================================================================================================
-    private String getEmote(Message message, String[] args)
-    {
-        List<Emote> emotes = message.getEmotes();
-
-        String emoteString = "";
-        if (!emotes.isEmpty())
-        {
-            Emote emote = emotes.get(0);
-            emoteString += emote.getIdLong();
-        }
-        else
-        {
-            String emote = args[4];
-            emoteString += emote;
-        }
-        return emoteString;
-    }
-
-    private static void reactEmote(String emoteString, TextChannel channel, long messageid, boolean add)
-    {
-        if (CommandsUtil.isNumeric(emoteString))//if emoteString is a emoteID
-        {
-            Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
-            if (add)
-                channel.addReactionById(messageid, emote).queue();
-            else
-                channel.removeReactionById(messageid, emote).queue();
-        }
-        else
-        {
-            if (add)
-                channel.addReactionById(messageid, emoteString).queue();
-            else
-                channel.removeReactionById(messageid, emoteString).queue();
-        }
-    }
-
-
 }
 

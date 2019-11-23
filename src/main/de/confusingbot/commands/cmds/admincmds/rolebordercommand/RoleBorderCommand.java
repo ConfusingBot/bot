@@ -1,24 +1,18 @@
 package main.de.confusingbot.commands.cmds.admincmds.rolebordercommand;
 
-import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.strings.StringsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.restaction.RoleAction;
 
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class RoleBorderCommand implements ServerCommand
 {
     private SQL sql = new SQL();
-    private Strings strings = new Strings();
+    private Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -33,7 +27,6 @@ public class RoleBorderCommand implements ServerCommand
 
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))
         {
-
             if (args.length >= 2)
             {
                 switch (args[1])
@@ -42,22 +35,27 @@ public class RoleBorderCommand implements ServerCommand
                         AddCommand(args, message, channel);
                         break;
                     case "create":
-                        CreateCommand(args, message.getGuild(), channel);
+                        CreateCommand(args, channel);
                         break;
                     case "remove":
                         RemoveCommand(args, message, channel);
                         break;
                     default:
                         //Usage
-                        strings.GeneralUsage(channel);
+                        embeds.GeneralUsage(channel);
                         break;
                 }
+            }
+            else
+            {
+                //Usage
+                embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            strings.NoPermissionError(channel);
+            embeds.NoPermissionError(channel);
         }
     }
 
@@ -66,6 +64,7 @@ public class RoleBorderCommand implements ServerCommand
     //=====================================================================================================================================
     private void AddCommand(String[] args, Message message, TextChannel channel)
     {
+        Guild guild = channel.getGuild();
         if (args.length >= 3)
         {
             List<Role> roles = message.getMentionedRoles();
@@ -73,65 +72,80 @@ public class RoleBorderCommand implements ServerCommand
             {
                 Role role = roles.get(0);
 
-                if (!sql.ExistsInSQL(channel.getGuild().getIdLong(), role.getIdLong()))
+                if (!sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
                 {
                     //SQL
-                    sql.addToSQL(channel.getIdLong(), role.getIdLong(), role.getName());
+                    sql.addToSQL(guild.getIdLong(), role.getIdLong(), role.getName());
 
                     //Message
-                    strings.SuccessfullyAddedRoleBorder(channel, role.getName());
+                    embeds.SuccessfullyAddedRoleBorder(channel, role.getName());
                 }
                 else
                 {
                     //Error
-                    strings.RoleBorderAlreadyExistsError(channel);
+                    embeds.RoleBorderAlreadyExistsError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.HaveNotMentionedRoleError(channel);
+                embeds.HaveNotMentionedRoleError(channel);
             }
         }
         else
         {
             //Usage
-            strings.AddUsage(channel);
+            embeds.AddUsage(channel);
         }
     }
 
-    private void CreateCommand(String[] args, Guild guild, TextChannel channel)
+    private void CreateCommand(String[] args, TextChannel channel)
     {
+        Guild guild = channel.getGuild();
         if (args.length >= 3)
         {
             //get role name
             StringBuilder builder = new StringBuilder();
             for (int i = 2; i < args.length; i++) builder.append(args[i] + " ");
+            String name = builder.toString().trim();
+            int maxRoleCharLength = 30;
 
-            String roleName = "\u2063     " + builder.toString().trim() + "     \u2063";
+            if (name.length() <= maxRoleCharLength)
+            {
+                String space = createSpace(name, maxRoleCharLength);
 
-            //create role
-            RoleAction roleAction = guild.createRole();
-            roleAction.setName(roleName);
-            roleAction.setColor(Color.decode("#2f3136"));
-            roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
-            long roleid = roleAction.complete().getIdLong();
+                String roleName = "\u2063" + space + "" + name + "" + space + "\u2063";
 
-            //SQLite
-            sql.addToSQL(channel.getIdLong(), roleid, roleName);
+                //create role
+                RoleAction roleAction = guild.createRole();
+                roleAction.setName(roleName);
+                roleAction.setColor(Color.decode("#2f3136"));
+                roleAction.setMentionable(true);
+                roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
+                long roleid = roleAction.complete().getIdLong();
 
-            //Message
-            strings.SuccessfullyCreateRoleBorder(channel, roleName);
+                //SQLite
+                sql.addToSQL(guild.getIdLong(), roleid, name);
+
+                //Message
+                embeds.SuccessfullyCreateRoleBorder(channel, name);
+            }
+            else
+            {
+                embeds.RoleBorderNameIsToLongError(channel, name);
+            }
+
         }
         else
         {
             //Usage
-            strings.CreateUsage(channel);
+            embeds.CreateUsage(channel);
         }
     }
 
     private void RemoveCommand(String[] args, Message message, TextChannel channel)
     {
+        Guild guild = channel.getGuild();
         if (args.length >= 3)
         {
             List<Role> roles = message.getMentionedRoles();
@@ -139,35 +153,50 @@ public class RoleBorderCommand implements ServerCommand
             {
                 Role role = roles.get(0);
 
-                if (sql.ExistsInSQL(channel.getGuild().getIdLong(), role.getIdLong()))
+                if (sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
                 {
                     //SQLite
-                    sql.removeFromSQL(channel.getGuild().getIdLong(), role.getIdLong());
+                    sql.removeFromSQL(guild.getIdLong(), role.getIdLong());
 
                     //delete Role
                     role.delete().queue();
 
+                    String roleName = role.getName().trim();
                     //Message
-                    strings.SuccessfullyRemovedRoleBorder(channel, role.getName());
+                    embeds.SuccessfullyRemovedRoleBorder(channel, roleName);
                 }
                 else
                 {
                     //Error
-                    strings.RoleDoesNotExistError(channel);
+                    embeds.RoleDoesNotExistError(channel);
                 }
             }
             else
             {
                 //Error
-                strings.HaveNotMentionedRoleError(channel);
+                embeds.HaveNotMentionedRoleError(channel);
             }
         }
         else
         {
             //Usage
-            strings.RemoveUsage(channel);
+            embeds.RemoveUsage(channel);
         }
-
     }
 
+    //=====================================================================================================================================
+    //Helper
+    //=====================================================================================================================================
+    private String createSpace(String roleName, int maxLength)
+    {
+        //30 chars is the max length of a roleshown on the side U+2002
+        String space = "";
+        int nameLength = roleName.length();
+        int spaceLength = (maxLength - nameLength);
+        if(nameLength % 2 != 0) spaceLength--;
+
+        for(int i = 1; i <= spaceLength / 2; i++) space += "\u2002";
+
+        return space;
+    }
 }

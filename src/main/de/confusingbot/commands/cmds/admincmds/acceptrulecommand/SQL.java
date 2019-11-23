@@ -1,9 +1,13 @@
 package main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQL
 {
@@ -14,7 +18,7 @@ public class SQL
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+            ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
                     + "guildid = " + guildid);
 
             if (set.next()) return true;
@@ -33,9 +37,88 @@ public class SQL
                 + notAcceptedRoleID + ", " + acceptedRoleID + ")");
     }
 
-    public void removeFormSQL(long guildid){
+    public void removeFormSQL(long guildid)
+    {
         LiteSQL.onUpdate("DELETE FROM acceptrules WHERE "
                 + "guildid = " + guildid);
     }
 
+    public long getRoleNotAcceptedIDFormSQL(long guildid)
+    {
+        long rolenotacceptedid = -1;
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+
+        try
+        {
+            if (set.next())
+            {
+                rolenotacceptedid = set.getLong("rolenotacceptedid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rolenotacceptedid;
+    }
+
+    public long getRoleAcceptedIDFormSQL(long guildid)
+    {
+        long rolenotacceptedid = -1;
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid
+        );
+        try
+        {
+            if (set.next())
+            {
+                rolenotacceptedid = set.getLong("roleacceptedid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rolenotacceptedid;
+    }
+
+    public boolean containsMessageID(long guildid, long messageID)
+    {
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+        try
+        {
+            while (set.next())
+            {
+                if (messageID == set.getLong("messageid")) return true;
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public List<Role> getRoleBorders(Guild guild)
+    {
+        List<Role> roleBorders = new ArrayList<>();
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE "
+                + "guildid = " + guild.getIdLong());
+
+        try
+        {
+            while (set.next())
+            {
+                Role role = guild.getRoleById(set.getLong("roleid"));
+                roleBorders.add(role);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return roleBorders;
+    }
 }

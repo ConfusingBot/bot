@@ -1,6 +1,5 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.rulescommand;
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -14,7 +13,7 @@ import java.awt.*;
 public class RulesCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -66,7 +65,7 @@ public class RulesCommand implements ServerCommand
         else
         {
             //Usage
-            strings.RulesCommandUsage(channel);
+            embeds.RulesCommandUsage(channel);
         }
 
     }

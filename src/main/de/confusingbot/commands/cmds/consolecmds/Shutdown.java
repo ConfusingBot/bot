@@ -9,43 +9,54 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Shutdown {
+public class Shutdown
+{
 
-    public static void discrodBot(ShardManager shardManager){
+    public static void Bot(ShardManager shardManager)
+    {
         new Thread(() -> {
             String line = "";
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            try{
-                while ((line = reader.readLine()) != null && !Main.botOffline){
-                    if(line.equalsIgnoreCase("exit")){
+            try
+            {
+                while ((line = reader.readLine()) != null && !Main.botOffline)
+                {
+                    if (line.equalsIgnoreCase("exit"))
+                    {
                         Main.botOffline = true;
-                          if(shardManager != null){
-                              shardManager.setStatus(OnlineStatus.OFFLINE);
-                              shardManager.shutdown();
-                              LiteSQL.disconnect();
-                              System.out.println("Bot offline!");
+                        if (shardManager != null)
+                        {
+                            shardManager.setStatus(OnlineStatus.OFFLINE);
+                            shardManager.shutdown();
+                            LiteSQL.disconnect();
+                            System.out.println("Bot offline!");
 
-                              Main.INSTANCE.status.stopLoop();
-                              stopTimer();
+                            //Stop Timer
+                            stopTimer();
 
-                              reader.close();
-                              break;
+                            reader.close();
+                            break;
 
-                          }
-                    }else{
+                        }
+                    }
+                    else
+                    {
                         System.out.println("Use 'exit' to shutdown.");
                     }
                 }
-            } catch (IOException e) {
-
+            } catch (IOException e)
+            {
+                e.printStackTrace();
             }
 
         }).start();
     }
 
-    private static void stopTimer(){
+    private static void stopTimer()
+    {
         Main.INSTANCE.checkQuestionTimer.stopTimer();
-        Main.INSTANCE.bumpTimer.stopTimer();
+        Main.INSTANCE.infoTimer.stopTimer();
+        Main.INSTANCE.statusTimer.stopTimer();
     }
 
 

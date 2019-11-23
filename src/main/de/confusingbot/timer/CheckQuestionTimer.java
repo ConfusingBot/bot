@@ -1,6 +1,6 @@
 package main.de.confusingbot.timer;
 
-import main.de.confusingbot.channels.CheckQuestionChannel;
+import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.UpdateQuestionChannels;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,13 +8,13 @@ import java.util.TimerTask;
 public class CheckQuestionTimer
 {
 
-    private CheckQuestionChannel checkQuestionChannel;
+    private UpdateQuestionChannels updateQuestionChannels;
     private Timer timer;
 
     public CheckQuestionTimer()
     {
         timer = new Timer();
-        this.checkQuestionChannel = new CheckQuestionChannel();
+        this.updateQuestionChannels = new UpdateQuestionChannels();
     }
 
     //Timer
@@ -26,7 +26,7 @@ public class CheckQuestionTimer
             @Override
             public void run()
             {
-                checkQuestionChannel.loopQuestionCommands();
+                updateQuestionChannels.onSecond();
             }
         };
 

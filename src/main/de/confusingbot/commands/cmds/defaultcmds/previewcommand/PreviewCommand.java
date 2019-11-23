@@ -2,7 +2,6 @@ package main.de.confusingbot.commands.cmds.defaultcmds.previewcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -11,7 +10,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class PreviewCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -40,7 +39,7 @@ public class PreviewCommand implements ServerCommand
         else
         {
             //Usage
-            strings.PreviewUsage(channel);
+            embeds.PreviewUsage(channel);
         }
 
 

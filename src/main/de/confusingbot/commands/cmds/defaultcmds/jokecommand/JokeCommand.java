@@ -1,22 +1,15 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.jokecommand;
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class JokeCommand implements ServerCommand
 {
 
-    Strings strings = new Strings();
+    Embeds embeds = new Embeds();
     JokeManager manager = new JokeManager();
 
     @Override
@@ -27,13 +20,26 @@ public class JokeCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-        if (!manager.perform(args[1], channel))
+        if (args.length == 1)
+        {
+            //- joke
+            manager.perform("", channel);
+        }
+        else if (args.length == 2)
+        {
+            //- joke mother
+            if (!manager.perform(args[1], channel))
+            {
+                //Usage
+                embeds.JokeUsage(channel);
+            }
+        }
+        else
         {
             //Usage
-            strings.JokeUsage(channel);
+            embeds.JokeUsage(channel);
         }
 
+
     }
-
-
 }

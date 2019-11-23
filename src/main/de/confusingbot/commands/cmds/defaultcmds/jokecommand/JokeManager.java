@@ -1,9 +1,8 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.jokecommand;
 
 import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.GeneralJokes;
-import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.JackNorisJokes;
+import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.JackNorrisJokes;
 import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.categories.MotherJokes;
-import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -16,12 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JokeManager
 {
     public ConcurrentHashMap<String, JokeCategory> jokes;
+    private int showJokeTime = 30;
 
     public JokeManager()
     {
-        this.jokes.put("jacknoris", new JackNorisJokes());
+        jokes = new ConcurrentHashMap<>();
+        this.jokes.put("jacknorris", new JackNorrisJokes());
         this.jokes.put("mother", new MotherJokes());
-        this.jokes.put("general", new GeneralJokes());
+        this.jokes.put("", new GeneralJokes());
     }
 
     public boolean perform(String command, TextChannel channel)
@@ -43,7 +44,7 @@ public class JokeManager
         {
             Random rand = new Random();
             int i = rand.nextInt(outputJokes.size());
-            EmbedManager.SendCustomEmbed(title, outputJokes.get(i), Color.decode("#7145c4"), channel, 30);
+            EmbedManager.SendCustomEmbed(title, outputJokes.get(i), Color.decode("#7145c4"), channel, showJokeTime);
             outputJokes.clear();
         }
 
