@@ -27,7 +27,7 @@ public class Main {
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-
+    //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.XdbdJA.U2xgV7PHxPkKIfqpFXt37h8bpIM
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4
     private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.XdbdJA.U2xgV7PHxPkKIfqpFXt37h8bpIM";
     public static String prefix = "- ";

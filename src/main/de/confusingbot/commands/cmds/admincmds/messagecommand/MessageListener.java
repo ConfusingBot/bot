@@ -47,5 +47,4 @@ public class MessageListener
         }
         return builder.toString().trim();
     }
-
 }
