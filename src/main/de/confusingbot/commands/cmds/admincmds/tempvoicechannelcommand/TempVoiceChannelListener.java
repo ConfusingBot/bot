@@ -1,10 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
-import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class TempVoiceChannelListener
     public void onJoin(VoiceChannel joinedChannel, Member member)
     {
         Guild guild = joinedChannel.getGuild();
-        List<Long> channelJoinIds = sql.getTempChannelsFromGuild(guild.getIdLong());
+        List<Long> channelJoinIds = sql.getTempChannelsFromSQL(guild.getIdLong());
 
         if (channelJoinIds != null && channelJoinIds.contains(joinedChannel.getIdLong()))
         {

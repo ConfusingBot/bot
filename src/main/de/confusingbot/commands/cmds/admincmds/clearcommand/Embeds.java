@@ -22,7 +22,7 @@ public class Embeds
     //=====================================================================================================================================
     public void ClearUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "clear [# messages]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "clear [# messages]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================

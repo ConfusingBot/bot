@@ -29,7 +29,6 @@ public class QuestionCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-
         if (args.length >= 2)
         {
             //other Commands

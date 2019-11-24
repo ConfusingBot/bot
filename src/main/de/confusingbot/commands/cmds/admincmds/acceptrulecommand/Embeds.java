@@ -11,14 +11,9 @@ public class Embeds
 
     public Embeds()
     {
-        HelpManager.admin.add("```fix\n" + Main.prefix + "acceptrule [#channel] [messageID] [emote] [@role rules not accepted] [@role rules accepted]\n``` " +
-                "```▶ ️Create a [#channel] where you wirte your rule message [messageID]\n" +
-                "▶ ️Create a @role [role rules not accepted] which you deny by every Voice/TextChannel, \n" +
-                "▶️ Create another @role [role rules accepted]\n" +
-                "▶️ Think about a [emote] with which you want to \"unlock\" the channels```" +
-                "```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n" +
-                "```fix\n" + Main.prefix + "acceptrule remove\n```" +
-                "```Remove hte AcceptRule```\n");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "acceptrule``` " +
+                "```Create a awesome rule system, where the user have to accept your rules to unlock the server```\n"
+               );
     }
 
     //=====================================================================================================================================
@@ -26,7 +21,12 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule add/remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed(
+                "```yaml\n" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules not accepted] [@role rules accepted]\n```"
+                +"```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n"
+                + "```yaml\n" + Main.prefix + "acceptrule remove\n```"
+                +  "```Remove the AcceptRule```\n"
+                , channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)

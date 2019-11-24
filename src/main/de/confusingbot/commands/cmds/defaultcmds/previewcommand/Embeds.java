@@ -10,7 +10,7 @@ public class Embeds
 {
     public Embeds()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "preview [your text]\n``` ```Preview your text in a box```");
+        HelpManager.useful.add("```yaml\n" + Main.prefix + "preview [text]\n``` ```Preview your text in a box```");
     }
 
     //=====================================================================================================================================

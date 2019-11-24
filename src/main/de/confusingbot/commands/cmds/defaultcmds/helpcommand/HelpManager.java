@@ -25,6 +25,50 @@ public class HelpManager
         start.add("```yaml\n" + Main.prefix + "help admin\n``` ```Show you the admin commands```");
     }
 
+    public static EmbedBuilder getHelp(String[] args)
+    {
+        EmbedBuilder helpBuilder;
+        if (args.length == 1)
+        {
+            helpBuilder = Start();
+        }
+        else
+        {
+            switch (args[1])
+            {
+                case "fun":
+                    helpBuilder = Fun();
+                    break;
+                case "useful":
+                    helpBuilder = Useful();
+                    break;
+                case "music":
+                    helpBuilder = Music();
+                    break;
+                case "admin":
+                    helpBuilder = Admin();
+                    break;
+                default:
+                    helpBuilder = Start();
+                    break;
+            }
+        }
+        return helpBuilder;
+    }
+
+    private static EmbedBuilder buildEmbed(String description)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(0x23cba7);
+
+        builder.setDescription(description);
+        builder.setFooter("Powerd by ConfusingGames");
+        builder.setTimestamp(OffsetDateTime.now());
+
+        return builder;
+    }
+
+
     //=====================================================================================================================================
     //Embeds
     //=====================================================================================================================================
@@ -87,52 +131,4 @@ public class HelpManager
 
         return buildEmbed(description);
     }
-
-    //=====================================================================================================================================
-    //Helper
-    //=====================================================================================================================================
-    private static EmbedBuilder buildEmbed(String description)
-    {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(0x23cba7);
-
-        builder.setDescription(description);
-        builder.setFooter("Powerd by ConfusingGames");
-        builder.setTimestamp(OffsetDateTime.now());
-
-        return builder;
-    }
-
-    public static EmbedBuilder getHelp(String[] args)
-    {
-        EmbedBuilder helpBuilder;
-        if (args.length == 1)
-        {
-            helpBuilder = Start();
-        }
-        else
-        {
-            switch (args[1])
-            {
-                case "fun":
-                    helpBuilder = Fun();
-                    break;
-                case "useful":
-                    helpBuilder = Useful();
-                    break;
-                case "music":
-                    helpBuilder = Music();
-                    break;
-                case "admin":
-                    helpBuilder = Admin();
-                    break;
-                default:
-                    helpBuilder = Start();
-                    break;
-            }
-        }
-        return helpBuilder;
-
-    }
-
 }

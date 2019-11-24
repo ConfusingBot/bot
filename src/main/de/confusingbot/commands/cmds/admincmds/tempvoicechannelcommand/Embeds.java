@@ -4,15 +4,17 @@ import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.awt.*;
 
 public class Embeds
 {
     public Embeds()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "tempchannel add [VoiceChannelID]\n``` " +
-                "```▶Create a VoiceChannel [VoiceChannelID]```" +
-                "```Creates a special VoiceChannel, which automatically creates a new VoiceChannel by joining, which bears the name of the user```");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "tempchannel\n```" +
+                "```Create special VoiceChannels, which automatically creates a new VoiceChannel by joining it(named after the joining user)```");
     }
 
     //=====================================================================================================================================
@@ -20,8 +22,12 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel add [channelId]`\n`"
-                + Main.prefix + "tempchannel remove [channelId]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "tempchannel add [VoiceChannelID]\n```"
+                + "```Creates a special VoiceChannel, which automatically creates a new VoiceChannel by joining it```"
+                + "```yaml\n" + Main.prefix + "tempchannel remove [VoiceChannelID]\n```"
+                + "```Remove the VoiceChannel form the tempchannels```"
+                + "```yaml\n" + Main.prefix + "tempchannel list\n```"
+                + "```List all tempchannels of this server```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)
@@ -33,7 +39,6 @@ public class Embeds
     {
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel remove [channelId]`", channel, EmbedsUtil.showUsageTime);
     }
-
 
     //=====================================================================================================================================
     //Error
@@ -76,7 +81,6 @@ public class Embeds
         EmbedsUtil.SuccessfulRemoved(channel, "**" + name + "**", "the TempChannel!");
     }
 
-
     //=====================================================================================================================================
     //Info
     //=====================================================================================================================================
@@ -85,5 +89,16 @@ public class Embeds
         EmbedManager.SendInfoEmbed("This guild has **no Tempchannels**! \nYou can add TempChannels with`" + Main.prefix + "tempchannel add [id]`", channel, 5);
     }
 
+    //=====================================================================================================================================
+    //Other
+    //=====================================================================================================================================
+    public void SendTempVoiceChannelListEmbed(TextChannel channel, String description){
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode("#15d1cb"));
+        builder.setTitle("⏳TempChannels: ");
+        builder.setDescription(description);
+
+        EmbedManager.SendEmbed(builder, channel, 10);
+    }
 
 }

@@ -4,6 +4,8 @@ import main.de.confusingbot.manage.sql.LiteSQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQL
 {
@@ -39,5 +41,25 @@ public class SQL
         }
 
         return false;
+    }
+
+    public List<Long> getRoleBordersFromSQL(long guildid)
+    {
+        List<Long> roles = new ArrayList<>();
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE guildid = " + guildid);
+        try
+        {
+            while (set.next())
+            {
+                long roleid = set.getLong("roleid");
+                roles.add(roleid);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return roles;
     }
 }

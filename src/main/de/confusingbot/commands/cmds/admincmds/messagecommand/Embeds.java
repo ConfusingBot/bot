@@ -14,10 +14,8 @@ public class Embeds
 {
     public Embeds()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "message [add] [welcome] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember) to the server look at (#rule)]\n``` " +
-                "```Create a welcome Message which will send if a new Member join your channel```\n" +
-                "```yaml\n" + Main.prefix + "message remove welcome\n```" +
-                "```Remove the welcome Message");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "message\n``` " +
+                "```You can create welcome/leave messages will be sent if a member join/leave the server```\n");
     }
 
     //=====================================================================================================================================
@@ -25,7 +23,11 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message [add/remove] [welcome/leave]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed(
+                "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember) to the server look at (#rule)]\n``` " +
+                        "```Create a welcome/leave message which will be sent if member join/leave the server```" +
+                        "```yaml\n" + Main.prefix + "message remove [welcome/leave]\n```" +
+                        "```Remove the welcome/leave message```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void MessageAddUsage(TextChannel channel, String messagetype)

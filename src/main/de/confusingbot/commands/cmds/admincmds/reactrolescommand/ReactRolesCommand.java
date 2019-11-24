@@ -6,15 +6,15 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
 import java.lang.reflect.Array;
+import java.nio.channels.Channel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ReactRolesCommand implements ServerCommand
 {
-
-    Embeds embeds = new Embeds();
-    SQL sql = new SQL();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -40,28 +40,88 @@ public class ReactRolesCommand implements ServerCommand
                     case "remove":
                         removeCommand(message, args, channel);
                         break;
+                    case "list":
+                        ListCommand(channel.getGuild(), channel);
+                        break;
                     default:
                         //Usage
-                        embeds.GeneralUsage(channel);
+                        ReactRoleManager.embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                embeds.GeneralUsage(channel);
+                ReactRoleManager.embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            ReactRoleManager.embeds.NoPermissionError(channel);
         }
     }
 
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
+    private void ListCommand(Guild guild, TextChannel channel)
+    {
+        List<Long> reactrolesIds = new ArrayList<>();
+        List<Long> messageIDs = new ArrayList<>();
+        List<Long> channelIDs = new ArrayList<>();
+        List<String> emoteStrings = new ArrayList<>();
+
+        try
+        {
+            ResultSet set = ReactRoleManager.sql.GetReactRolesResultSet(guild.getIdLong());
+
+            while (set.next())
+            {
+                reactrolesIds.add(set.getLong("roleid"));
+                messageIDs.add(set.getLong("messageid"));
+                channelIDs.add(set.getLong("channelid"));
+                emoteStrings.add(set.getString("emote"));
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (reactrolesIds.size() != 0 && reactrolesIds != null)
+        {
+            //Create Description -> all voice channel
+            String description = "";
+            for (int i = 0; i < reactrolesIds.size(); i++)
+            {
+                Role role = guild.getRoleById(reactrolesIds.get(i));
+                TextChannel roleAddChannel = guild.getTextChannelById(channelIDs.get(i));
+                String emoteString = emoteStrings.get(i);
+                long messageID = messageIDs.get(i);
+                if (role != null && roleAddChannel != null && getLatestMessages(roleAddChannel).contains(messageID))
+                {
+                    if (CommandsUtil.isNumeric(emoteString))
+                        emoteString = guild.getEmoteById(emoteString).getAsMention();
+
+                    description += "" + emoteString + "   " + role.getAsMention() + "   in" + roleAddChannel.getAsMention() + "\n\n";
+                }
+                else
+                {
+                    description += "⚠️**ReactRole does not exists!**\n";
+                    //SQL
+                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelIDs.get(i), messageID, emoteString, reactrolesIds.get(i));
+                }
+            }
+
+            //Message
+            ReactRoleManager.embeds.SendReactRoleListEmbed(channel, description);
+        }
+        else
+        {
+            ReactRoleManager.embeds.HasNoReactRoleInformation(channel);
+        }
+    }
+
     private void addCommand(Message message, String[] args, TextChannel channel)
     {
         if (args.length >= 6)
@@ -82,44 +142,44 @@ public class ReactRolesCommand implements ServerCommand
 
                     if (!emoteString.isEmpty() && emoteString != null)
                     {
-                        if (!sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                        if (!ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
                         {
                             CommandsUtil.reactEmote(emoteString, channel, messageID, true);
 
                             //SQL
-                            sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
+                            ReactRoleManager.sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
 
                             //Message
-                            embeds.SuccessfullyAddedReactRole(channel, role);
+                            ReactRoleManager.embeds.SuccessfullyAddedReactRole(channel, role);
                         }
                         else
                         {
                             //Error
-                            embeds.ReactRoleAlreadyExistsError(channel);
+                            ReactRoleManager.embeds.ReactRoleAlreadyExistsError(channel);
                         }
                     }
                     else
                     {
                         //Error
-                        embeds.YouHaveNotMentionedAValidEmoteError(channel);
+                        ReactRoleManager.embeds.YouHaveNotMentionedAValidEmoteError(channel);
                     }
                 }
                 else
                 {
                     //Error
-                    embeds.NoMessageIDError(channel, messageIDString);
+                    ReactRoleManager.embeds.NoMessageIDError(channel, messageIDString);
                 }
             }
             else
             {
                 //Usage
-                embeds.AddUsage(channel);
+                ReactRoleManager.embeds.AddUsage(channel);
             }
         }
         else
         {
             //Usage
-            embeds.AddUsage(channel);
+            ReactRoleManager.embeds.AddUsage(channel);
         }
     }
 
@@ -142,45 +202,60 @@ public class ReactRolesCommand implements ServerCommand
 
                     if (!emoteString.isEmpty() && emoteString != null)
                     {
-                        if (sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                        if (ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
                         {
                             //React
                             CommandsUtil.reactEmote(emoteString, channel, messageID, false);
 
                             //SQL
-                            sql.removeFromSQL(message.getGuild().getIdLong(), channel.getIdLong(), messageID, emoteString, role.getIdLong());
+                            ReactRoleManager.sql.removeFromSQL(message.getGuild().getIdLong(), channel.getIdLong(), messageID, emoteString, role.getIdLong());
 
                             //Message
-                            embeds.SuccessfullyRemovedReactRole(channel, role);
+                            ReactRoleManager.embeds.SuccessfullyRemovedReactRole(channel, role);
                         }
                         else
                         {
                             //Error
-                            embeds.ReactRoleNotExistsError(channel);
+                            ReactRoleManager.embeds.ReactRoleNotExistsError(channel);
                         }
                     }
                     else
                     {
-                        embeds.YouHaveNotMentionedAValidEmoteError(channel);
+                        ReactRoleManager.embeds.YouHaveNotMentionedAValidEmoteError(channel);
                     }
                 }
                 else
                 {
                     //Error
-                    embeds.NoMessageIDError(channel, messageIDString);
+                    ReactRoleManager.embeds.NoMessageIDError(channel, messageIDString);
                 }
             }
             else
             {
                 //Usage
-                embeds.RemoveUsage(channel);
+                ReactRoleManager.embeds.RemoveUsage(channel);
             }
         }
         else
         {
             //Usage
-            embeds.AddUsage(channel);
+            ReactRoleManager.embeds.AddUsage(channel);
         }
+    }
+
+    //=====================================================================================================================================
+    //Helper
+    //=====================================================================================================================================
+    private List<Long> getLatestMessages(MessageChannel channel)
+    {
+        CommandsUtil.sleepXSeconds(0.5f);
+        List<Long> messages = new ArrayList<>();
+
+        for (Message message : channel.getIterableHistory().cache(false))
+        {
+            messages.add(message.getIdLong());
+        }
+        return messages;
     }
 }
 

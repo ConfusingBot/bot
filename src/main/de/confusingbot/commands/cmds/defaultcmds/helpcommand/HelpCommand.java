@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.helpcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;

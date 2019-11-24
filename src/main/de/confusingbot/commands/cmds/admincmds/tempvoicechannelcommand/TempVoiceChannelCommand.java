@@ -2,12 +2,9 @@ package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.manage.embeds.EmbedManager;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.awt.*;
 import java.util.List;
 
 public class TempVoiceChannelCommand implements ServerCommand
@@ -28,11 +25,7 @@ public class TempVoiceChannelCommand implements ServerCommand
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))
         {
 
-            if (args.length == 1)
-            {
-                ListCommand(guild, channel);
-            }
-            else if (args.length >= 2)
+            if (args.length >= 2)
             {
                 switch (args[1])
                 {
@@ -41,6 +34,9 @@ public class TempVoiceChannelCommand implements ServerCommand
                         break;
                     case "remove":
                         RemoveCommand(args, member, guild, channel);
+                        break;
+                    case "list":
+                        ListCommand(guild, channel);
                         break;
                     default:
                         //Usage
@@ -66,28 +62,35 @@ public class TempVoiceChannelCommand implements ServerCommand
     //=====================================================================================================================================
     private void ListCommand(Guild guild, TextChannel channel)
     {
-        List<Long> tempChannels = sql.getTempChannelsFromGuild(guild.getIdLong());
-        if (tempChannels.size() != 0 && tempChannels != null)
+        List<Long> tempVoiceChannelIds = sql.getTempChannelsFromSQL(guild.getIdLong());
+        if (tempVoiceChannelIds.size() != 0 && tempVoiceChannelIds != null)
         {
             //Create Description -> all voice channel
             String description = "";
-            for (long tempChannel : tempChannels)
+            for (long tempVoiceChannelID : tempVoiceChannelIds)
             {
-                description += "" + guild.getVoiceChannelById(tempChannel).getName() + "\n";
+                VoiceChannel tempChannel = guild.getVoiceChannelById(tempVoiceChannelID);
+                if (tempChannel != null)
+                {
+                    description += "\uD83D\uDCCC " + tempChannel.getName() + "\n";
+                }
+                else
+                {
+                    description += "\uD83D\uDCCC **VoiceChannel does not exists!**\n";
+                    //SQL
+                    sql.removeFromSQL(tempVoiceChannelID, guild.getIdLong());
+                }
             }
 
-            //create Embed
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.setColor(Color.decode("#15d1cb"));
-            builder.setTitle("⏳TempChannels: ");
-            builder.setDescription(description);
-
-            EmbedManager.SendEmbed(builder, channel, 10);
+            //Message
+            embeds.SendTempVoiceChannelListEmbed(channel, description);
         }
         else
+
         {
             embeds.HasNoTempChannelInformation(channel);
         }
+
     }
 
     private void AddCommand(String[] args, Member member, Guild guild, TextChannel channel)

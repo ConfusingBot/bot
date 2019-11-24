@@ -46,7 +46,8 @@ public class SQL
         return false;
     }
 
-    public long GetRoleIdFromSQL(long guildid, long channelid, long messageid, String emote){
+    public long GetRoleIdFromSQL(long guildid, long channelid, long messageid, String emote)
+    {
         long roleid = -1;
 
         ResultSet set = LiteSQL.onQuery("SELECT roleid FROM reactroles WHERE "
@@ -55,28 +56,44 @@ public class SQL
                 + " AND messageid = " + messageid
                 + " AND emote = '" + emote + "'");
 
-        try {
-            if (set.next()) {
+        try
+        {
+            if (set.next())
+            {
                 roleid = set.getLong("roleid");
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
         return roleid;
     }
 
-    public boolean containsMessageID(long guildid, long messageID) {
+    public boolean containsMessageID(long guildid, long messageID)
+    {
         ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
                 + "guildid = " + guildid);
-        try {
-            while (set.next()) {
-                if(messageID == set.getLong("messageid")) return true;
+        try
+        {
+            while (set.next())
+            {
+                if (messageID == set.getLong("messageid")) return true;
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
         return false;
     }
+
+    public ResultSet GetReactRolesResultSet(long guildid){
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+                + "guildid = " + guildid);
+
+        return set;
+    }
+
+
 }

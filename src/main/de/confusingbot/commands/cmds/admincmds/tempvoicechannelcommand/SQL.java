@@ -41,7 +41,7 @@ public class SQL
                 + " AND channelid = " + channelID);
     }
 
-    public List<Long> getTempChannelsFromGuild(long guildid)
+    public List<Long> getTempChannelsFromSQL(long guildid)
     {
         List<Long> channels = new ArrayList<>();
 

@@ -2,6 +2,8 @@ package main.de.confusingbot.commands.cmds.admincmds.rolebordercommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.restaction.RoleAction;
@@ -40,6 +42,9 @@ public class RoleBorderCommand implements ServerCommand
                     case "remove":
                         RemoveCommand(args, message, channel);
                         break;
+                    case "list":
+                        ListCommand(channel.getGuild(), channel);
+                        break;
                     default:
                         //Usage
                         embeds.GeneralUsage(channel);
@@ -62,6 +67,37 @@ public class RoleBorderCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
+    private void ListCommand(Guild guild, TextChannel channel)
+    {
+        List<Long> roleborderIds = sql.getRoleBordersFromSQL(guild.getIdLong());
+        if (roleborderIds.size() != 0 && roleborderIds != null)
+        {
+            //Create Description -> all voice channel
+            String description = "";
+            for (long roleborderID : roleborderIds)
+            {
+                Role roleborder = guild.getRoleById(roleborderID);
+                if (roleborder != null)
+                {
+                    description += "\uD83D\uDCCC  ️" + roleborder.getName() + "\n";
+                }
+                else
+                {
+                    description += "\uD83D\uDCCC **RoleBorder does not exists!**\n";
+                    //SQLite
+                    sql.removeFromSQL(guild.getIdLong(), roleborderID);
+                }
+            }
+
+            //Message
+            embeds.SendRoleBorderListEmbed(channel, description);
+        }
+        else
+        {
+            embeds.HasNoRoleBordersInformation(channel);
+        }
+    }
+
     private void AddCommand(String[] args, Message message, TextChannel channel)
     {
         Guild guild = channel.getGuild();
@@ -193,9 +229,9 @@ public class RoleBorderCommand implements ServerCommand
         String space = "";
         int nameLength = roleName.length();
         int spaceLength = (maxLength - nameLength);
-        if(nameLength % 2 != 0) spaceLength--;
+        if (nameLength % 2 != 0) spaceLength--;
 
-        for(int i = 1; i <= spaceLength / 2; i++) space += "\u2002";
+        for (int i = 1; i <= spaceLength / 2; i++) space += "\u2002";
 
         return space;
     }

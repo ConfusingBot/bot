@@ -13,7 +13,8 @@ public class Embeds
 
     public Embeds()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "createrole [name] ([#HexColor])\n``` ```Create a new role```");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "role\n``` " +
+                "```Create or remove roles in a simple way```");
     }
 
     //=====================================================================================================================================
@@ -21,9 +22,12 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`"
-                + Main.prefix + "role create [roleName] ([#HexColor])`\n`"
-                + Main.prefix + "role delete [@role]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed(
+                "```yaml\n" + Main.prefix + "role create [name] ([#HexColor])\n```"
+                        + "```Create a new role```"
+                        + "```yaml\n" + Main.prefix + "role delete [@role]\n```"
+                        + "```Delete the @role```"
+                , channel, EmbedsUtil.showUsageTime);
     }
 
     public void CreateUsage(TextChannel channel)
