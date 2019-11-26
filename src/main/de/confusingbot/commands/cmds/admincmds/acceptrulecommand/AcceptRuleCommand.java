@@ -11,9 +11,6 @@ import java.util.List;
 public class AcceptRuleCommand implements ServerCommand
 {
 
-    private SQL sql = new SQL();
-    private Embeds embeds = new Embeds();
-
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
@@ -37,20 +34,20 @@ public class AcceptRuleCommand implements ServerCommand
                         break;
                     default:
                         //Usage
-                        embeds.GeneralUsage(channel);
+                        AcceptRuleManager.embeds.GeneralUsage(channel);
                         break;
                 }
             }
             else
             {
                 //Usage
-                embeds.GeneralUsage(channel);
+                AcceptRuleManager.embeds.GeneralUsage(channel);
             }
         }
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            AcceptRuleManager.embeds.NoPermissionError(channel);
         }
     }
 
@@ -59,7 +56,7 @@ public class AcceptRuleCommand implements ServerCommand
     //=====================================================================================================================================
     private void addCommand(Message message, String[] args, TextChannel channel)
     {
-        if (!sql.ExistsInSQL(message.getGuild().getIdLong()))
+        if (!AcceptRuleManager.sql.ExistsInSQL(message.getGuild().getIdLong()))
         {
             if (args.length == 7)
             {
@@ -81,33 +78,33 @@ public class AcceptRuleCommand implements ServerCommand
                         CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
 
                         //SQL
-                        sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole.getIdLong(), acceptedRole.getIdLong());
+                        AcceptRuleManager.sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole.getIdLong(), acceptedRole.getIdLong());
 
                         //Message
-                        embeds.SuccessfulAddedAcceptRule(channel);
+                        AcceptRuleManager.embeds.SuccessfulAddedAcceptRule(channel);
 
                     } catch (NumberFormatException e)
                     {
                         //Error
-                        embeds.ThisIsNoIDError(channel, messageIDString);
+                        AcceptRuleManager.embeds.ThisIsNoIDError(channel, messageIDString);
                     }
                 }
                 else
                 {
                     //Usage
-                    embeds.AddUsage(channel);
+                    AcceptRuleManager.embeds.AddUsage(channel);
                 }
             }
             else
             {
                 //Usage
-                embeds.AddUsage(channel);
+                AcceptRuleManager.embeds.AddUsage(channel);
             }
         }
         else
         {
             //Error
-            embeds.OnlyOneAcceptRuleAllowedError(channel);
+            AcceptRuleManager.embeds.OnlyOneAcceptRuleAllowedError(channel);
         }
     }
 
@@ -115,24 +112,24 @@ public class AcceptRuleCommand implements ServerCommand
     {
         if (args.length == 2)
         {
-            if (sql.ExistsInSQL(guild.getIdLong()))
+            if (AcceptRuleManager.sql.ExistsInSQL(guild.getIdLong()))
             {
                 //SQL
-                sql.removeFormSQL(guild.getIdLong());
+                AcceptRuleManager.sql.removeFormSQL(guild.getIdLong());
 
                 //Message
-                embeds.SuccessfulRemovedAcceptRule(channel);
+                AcceptRuleManager.embeds.SuccessfulRemovedAcceptRule(channel);
             }
             else
             {
                 //Error
-                embeds.NoExistingAcceptRuleError(channel);
+                AcceptRuleManager.embeds.NoExistingAcceptRuleError(channel);
             }
         }
         else
         {
             //Usage
-            embeds.RemoveUsage(channel);
+            AcceptRuleManager.embeds.RemoveUsage(channel);
         }
     }
 

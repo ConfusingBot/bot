@@ -98,7 +98,7 @@ public class ReactRolesCommand implements ServerCommand
                 TextChannel roleAddChannel = guild.getTextChannelById(channelIDs.get(i));
                 String emoteString = emoteStrings.get(i);
                 long messageID = messageIDs.get(i);
-                if (role != null && roleAddChannel != null && getLatestMessages(roleAddChannel).contains(messageID))
+                if (role != null && roleAddChannel != null && CommandsUtil.getLatestMessages(roleAddChannel).contains(messageID))
                 {
                     if (CommandsUtil.isNumeric(emoteString))
                         emoteString = guild.getEmoteById(emoteString).getAsMention();
@@ -243,19 +243,5 @@ public class ReactRolesCommand implements ServerCommand
         }
     }
 
-    //=====================================================================================================================================
-    //Helper
-    //=====================================================================================================================================
-    private List<Long> getLatestMessages(MessageChannel channel)
-    {
-        CommandsUtil.sleepXSeconds(0.5f);
-        List<Long> messages = new ArrayList<>();
-
-        for (Message message : channel.getIterableHistory().cache(false))
-        {
-            messages.add(message.getIdLong());
-        }
-        return messages;
-    }
 }
 

@@ -101,6 +101,44 @@ public class SQL
         return false;
     }
 
+    public long getMessageID(long guildid)
+    {
+        long messageID = -1;
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+        try
+        {
+            if (set.next())
+            {
+                messageID = set.getLong("messageid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return messageID;
+    }
+
+    public long getChannelID(long guildid)
+    {
+        long channelID = -1;
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+        try
+        {
+            if (set.next())
+            {
+                channelID = set.getLong("channelid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return channelID;
+    }
+
     public List<Role> getRoleBorders(Guild guild)
     {
         List<Role> roleBorders = new ArrayList<>();

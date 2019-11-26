@@ -38,7 +38,7 @@ public class MessageCommand implements ServerCommand
                                     MessageAddCommand(channel, args, message, MessageManager.welcomeMessageKey);
                                     break;
                                 case "leave":
-                                    //TODO
+                                    MessageAddCommand(channel, args, message, MessageManager.leaveMessageKey);
                                     break;
                                 default:
                                     //Usage
@@ -61,7 +61,7 @@ public class MessageCommand implements ServerCommand
                                     MessageRemoveCommand(channel, args, MessageManager.welcomeMessageKey);
                                     break;
                                 case "leave":
-                                    //TODO
+                                    MessageRemoveCommand(channel, args, MessageManager.leaveMessageKey);
                                     break;
                                 default:
                                     //Usage

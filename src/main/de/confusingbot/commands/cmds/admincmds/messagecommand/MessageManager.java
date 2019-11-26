@@ -7,8 +7,9 @@ public class MessageManager
     public static Embeds embeds = new Embeds();
     public static String messageStartKey = "MESSAGE:";
     public static String NewMemberKeyWord = "@newMember";
-    public static String LeftedMemberKeyWord = "@leftedMember";
+    public static String LeaveMemberKeyWord = "@leaveMember";
 
     public static String welcomeMessageKey = "welcome";
+    public static String leaveMessageKey = "leave";
 
 }

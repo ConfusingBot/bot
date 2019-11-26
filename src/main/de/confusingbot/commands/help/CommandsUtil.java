@@ -3,6 +3,7 @@ package main.de.confusingbot.commands.help;
 import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -102,4 +103,17 @@ public class CommandsUtil
                 channel.removeReactionById(messageid, emoteString).queue();
         }
     }
+
+    public static List<Long> getLatestMessages(MessageChannel channel)
+    {
+        CommandsUtil.sleepXSeconds(0.5f);
+        List<Long> messages = new ArrayList<>();
+
+        for (Message message : channel.getIterableHistory().cache(false))
+        {
+            messages.add(message.getIdLong());
+        }
+        return messages;
+    }
 }
+
