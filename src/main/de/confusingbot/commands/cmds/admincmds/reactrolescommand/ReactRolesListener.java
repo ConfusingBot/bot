@@ -56,33 +56,40 @@ public class ReactRolesListener
 
     public void onReactionRemove(MessageReactionRemoveEvent event)
     {
-        if (event.getChannelType() == ChannelType.TEXT)
+        try
         {
-            long guildid = event.getGuild().getIdLong();
-            long channelid = event.getChannel().getIdLong();
-            long messageid = event.getMessageIdLong();
-            if (ReactRoleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+            if (event.getChannelType() == ChannelType.TEXT)
             {
-                if (!event.getUser().isBot())
+                long guildid = event.getGuild().getIdLong();
+                long channelid = event.getChannel().getIdLong();
+                long messageid = event.getMessageIdLong();
+                if (ReactRoleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
                 {
-                    String emote = "";
-
-                    if (event.getReactionEmote().isEmoji())
+                    if (!event.getUser().isBot())
                     {
-                        emote = event.getReactionEmote().getEmoji();
-                    }
-                    else
-                    {
-                        emote = event.getReactionEmote().getId();
-                    }
+                        String emote = "";
 
-                    long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                    Guild guild = event.getGuild();
+                        if (event.getReactionEmote().isEmoji())
+                        {
+                            emote = event.getReactionEmote().getEmoji();
+                        }
+                        else
+                        {
+                            emote = event.getReactionEmote().getId();
+                        }
 
-                    //Remove Role from member
-                    guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
+                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                        Guild guild = event.getGuild();
+
+                        //Remove Role from member
+                        guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
+                    }
                 }
             }
+        } catch (HierarchyException e)
+        {
+            //Error
+            ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel());
         }
     }
 }

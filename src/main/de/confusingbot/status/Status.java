@@ -38,7 +38,6 @@ public class Status
                         .replaceAll("%members", "" + jda.getUsers().size())
                         .replaceAll("%servers", "" + jda.getGuilds().size());
 
-
                 jda.getPresence().setActivity(Activity.playing((text)));
             });
             currentTime = timeBetweenStatuses;

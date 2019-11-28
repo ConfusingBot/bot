@@ -55,12 +55,13 @@ public class AcceptRulesListener
                 if (!event.getUser().isBot())
                 {
                     Guild guild = event.getGuild();
+                    Member member = event.getMember();
                     long rolenotacceptedid = AcceptRuleManager.sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong());
                     long roleacceptedid = AcceptRuleManager.sql.getRoleAcceptedIDFormSQL(event.getGuild().getIdLong());
 
                     //add blocked and remove member
-                    guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
-                    guild.addRoleToMember(event.getMember(), guild.getRoleById(rolenotacceptedid)).queue();
+                    guild.removeRoleFromMember(member, guild.getRoleById(roleacceptedid)).queue();
+                    guild.addRoleToMember(member, guild.getRoleById(rolenotacceptedid)).queue();
 
                     //remove roleborders
                     List<Role> roleBorders = AcceptRuleManager.sql.getRoleBorders(guild);
@@ -68,7 +69,7 @@ public class AcceptRulesListener
                     {
                         for (int i = 0; i < roleBorders.size(); i++)
                         {
-                            guild.removeRoleFromMember(event.getMember(), roleBorders.get(i)).queue();
+                            guild.removeRoleFromMember(member, roleBorders.get(i)).queue();
                         }
                     }
                 }

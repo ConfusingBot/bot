@@ -27,6 +27,7 @@ import main.de.confusingbot.commands.cmds.musiccmds.queuecommand.QueueCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.shufflecommand.ShuffleCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.skipcommand.SkipCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand.TrackInfoCommand;
+import main.de.confusingbot.commands.cmds.ownercmds.leavecommand.LeaveServerCommand;
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
@@ -74,6 +75,9 @@ public class CommandManager {
         this.commands.put("queue", new QueueCommand());
         this.commands.put("skip", new SkipCommand());
         this.commands.put("pause", new PauseCommand());
+
+        //Owner
+        this.commands.put("leaveserver", new LeaveServerCommand());
 
         //PRIVATE
         this.privateCommands.put("help", new PrivateHelpCommand());

@@ -11,16 +11,19 @@ public class SQL
     //=====================================================================================================================================
     //SQL
     //=====================================================================================================================================
-    public void AddGuildToSQL(long guildid, String name) {
+    public void AddGuildToSQL(long guildid, String name)
+    {
         LiteSQL.onUpdate("INSERT INTO servers(guildid, name) VALUES(" +
                 guildid + ", '" + name + "')");
     }
 
-    public void RemoveGuildFromSQL(long guildid) {
-        for (String name : SQLManager.tabelNames) {
+    public void RemoveGuildFromSQL(long guildid)
+    {
+        //TODO does not work!
+        for (String name : SQLManager.tabelNames)
+        {
             LiteSQL.onUpdate("DELETE FROM " + name + " WHERE "
                     + "guildid = " + guildid);
         }
     }
-
 }

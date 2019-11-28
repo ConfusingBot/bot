@@ -3,11 +3,13 @@ package main.de.confusingbot.manage.sql;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLManager {
+public class SQLManager
+{
 
-    public static  List<String> tabelNames = new ArrayList<>();
+    public static List<String> tabelNames = new ArrayList<>();
 
-    public static void onCreate() {
+    public static void onCreate()
+    {
 
         tabelNames.add("servers");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS servers(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -60,8 +62,9 @@ public class SQLManager {
                 "roleid INTEGER, " +
                 "name TEXT)");
 
+
         tabelNames.add("repeatinfo");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS bumpcommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS repeatinfo(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
                 "channelid INTEGER, " +
                 "info TEXT, " +

@@ -1,7 +1,5 @@
 package main.de.confusingbot.listener.botlistener;
 
-import main.de.confusingbot.manage.sql.LiteSQL;
-import main.de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
