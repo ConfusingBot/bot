@@ -117,7 +117,7 @@ public class MusicEmbeds {
     }
 
     public void LoadFailedError(TextChannel channel, String uri){
-        EmbedManager.SendErrorEmbed("`Couldn't Find`" + uri, channel, 3);
+        EmbedManager.SendErrorEmbed("`Couldn't Load`" + uri, channel, 3);
     }
 
 }

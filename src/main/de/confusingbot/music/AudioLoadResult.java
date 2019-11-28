@@ -10,6 +10,7 @@ import main.de.confusingbot.music.manage.MusicController;
 import main.de.confusingbot.music.queue.Queue;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.awt.*;
 
@@ -76,6 +77,10 @@ public class AudioLoadResult implements AudioLoadResultHandler
     {
         //Error
         controller.getMusicEmbedManager().getMusicEmbed().NoMatchesError(channel, uri);
+
+        //End Music
+        AudioManager manager = controller.getGuild().getAudioManager();
+        manager.closeAudioConnection();
     }
 
     @Override
@@ -83,6 +88,10 @@ public class AudioLoadResult implements AudioLoadResultHandler
     {
         //Error
         controller.getMusicEmbedManager().getMusicEmbed().LoadFailedError(channel, uri);
+
+        //End Music
+        AudioManager manager = controller.getGuild().getAudioManager();
+        manager.closeAudioConnection();
     }
 
 }

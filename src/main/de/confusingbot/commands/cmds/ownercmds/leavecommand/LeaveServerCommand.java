@@ -3,8 +3,6 @@ package main.de.confusingbot.commands.cmds.ownercmds.leavecommand;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
-import main.de.confusingbot.listener.botlistener.SQL;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -40,15 +38,15 @@ public class LeaveServerCommand implements ServerCommand
             long id = Long.parseLong(idString);
             Guild guild = channel.getGuild(); //TODO change this
 
-                if (guild != null)
-                {
-                    guild.leave().queue();
-                    System.out.println("You successfully removed the bot form: " + guild.getName());
-                }
-                else
-                {
-                    embeds.CouldNotFindGuildByIDError(channel, idString);
-                }
+            if (guild != null)
+            {
+                guild.leave().queue();
+                System.out.println("You successfully removed the bot form: " + guild.getName());
+            }
+            else
+            {
+                embeds.CouldNotFindGuildByIDError(channel, idString);
+            }
         }
         else
         {
