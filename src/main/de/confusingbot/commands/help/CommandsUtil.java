@@ -36,18 +36,6 @@ public class CommandsUtil
         return true;
     }
 
-    public static void sleepXSeconds(float seconds)
-    {
-        int milliseconds = (int) (seconds * 1000);
-        try
-        {
-            TimeUnit.MILLISECONDS.sleep(milliseconds);
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public static boolean isColor(String hexColor)
     {
         try
@@ -106,7 +94,6 @@ public class CommandsUtil
 
     public static List<Long> getLatestMessages(MessageChannel channel)
     {
-        CommandsUtil.sleepXSeconds(0.5f);
         List<Long> messages = new ArrayList<>();
 
         for (Message message : channel.getIterableHistory().cache(false))

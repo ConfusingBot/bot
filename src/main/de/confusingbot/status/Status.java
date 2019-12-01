@@ -4,12 +4,7 @@ package main.de.confusingbot.status;
 import java.util.List;
 import java.util.Random;
 
-import main.de.confusingbot.Main;
-import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class Status

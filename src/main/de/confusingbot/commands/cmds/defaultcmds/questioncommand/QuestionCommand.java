@@ -7,10 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.awt.*;
-import java.time.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class QuestionCommand implements ServerCommand
 {
@@ -172,13 +169,8 @@ public class QuestionCommand implements ServerCommand
                     //Message
                     embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
 
-                    CommandsUtil.sleepXSeconds(deletedInSeconds);
-
-                    //SQL
-                    sql.RemoveQuestionChannelFromSQL(guild.getIdLong(), channel.getIdLong(), memberid);
-
-                    //Delete Channel
-                    channel.delete().queue();
+                    Runnable r = new DeleteQuestionRunnable(guild, channel, memberid, deletedInSeconds, sql);
+                    new Thread(r).start();
                 }
                 else
                 {

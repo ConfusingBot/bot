@@ -1,5 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 
+import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQuestionRunnable;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
@@ -21,7 +22,7 @@ public class ClearCommand implements ServerCommand
         //- clear [comments number x]
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+       // message.delete().queue();
 
         if (member.hasPermission(channel, Permission.MESSAGE_MANAGE))
         {
@@ -32,7 +33,8 @@ public class ClearCommand implements ServerCommand
                     long amount = Long.parseLong(args[1]);
                     if (amount > 0)
                     {
-                        List<Message> messages = getMessagesToDelete(channel, amount);
+                        List<Message> messages = getMessagesToDelete(channel, amount + 1);
+
                         channel.purgeMessages(messages);
 
                         //Message
@@ -67,7 +69,6 @@ public class ClearCommand implements ServerCommand
     //=====================================================================================================================================
     private List<Message> getMessagesToDelete(MessageChannel channel, long amount)
     {
-        CommandsUtil.sleepXSeconds(0.5f);
         List<Message> messages = new ArrayList<>();
         long i = amount;
 
