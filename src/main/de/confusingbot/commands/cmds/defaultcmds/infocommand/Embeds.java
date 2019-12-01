@@ -36,7 +36,7 @@ public class Embeds
     //=====================================================================================================================================
     public void CouldNotFindMentionedMember(TextChannel channel, String member)
     {
-        EmbedManager.SendErrorEmbed("Could not find member " + member , channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendErrorEmbed("Could not find member " + member, channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -84,8 +84,15 @@ public class Embeds
 
         File file = new File("images/ConfusingGangBanner.png");
 
-        builder.setImage("attachment://ConfusingGangBanner.png");
-        channel.sendFile(file, "ConfusingGangBanner.png").embed(builder.build()).queue();
-    }
+        if (file != null)
+        {
+            builder.setImage("attachment://ConfusingGangBanner.png");
+            channel.sendFile(file, "ConfusingGangBanner.png").embed(builder.build()).queue();
+        }
+        else
+        {
+            EmbedManager.SendEmbed(builder, channel, 30);
+        }
 
+    }
 }
