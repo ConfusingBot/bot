@@ -139,7 +139,7 @@ public class InfoCommand implements ServerCommand
             {
                 if (roleBorder.getIdLong() == role.getIdLong())
                 {
-                    roleBuilder.append("\n**" + role.getName() + "**\n\n");
+                    roleBuilder.append("\n\n**" + role.getName() + "**\n");
                     borderRole = true;
                 }
             }

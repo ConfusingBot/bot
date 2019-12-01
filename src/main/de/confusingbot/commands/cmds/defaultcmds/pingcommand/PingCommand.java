@@ -15,8 +15,10 @@ public class PingCommand implements ServerCommand
     {
         message.delete().queue();
 
-        channel.sendMessage("Pong\uD83C\uDFD3\n**"
-                + Main.INSTANCE.shardManager.getAverageGatewayPing() + "ms**")
-                .complete().delete().queueAfter(3, TimeUnit.SECONDS);
+        long time = System.currentTimeMillis();
+        channel.sendMessage("Pong\uD83C\uDFD3\n**") /* => RestAction<Message> */
+                .queue(response /* => Message */ -> {
+                    response.editMessageFormat("Pong\uD83C\uDFD3 %d ms", System.currentTimeMillis() - time).queue();
+                });
     }
 }
