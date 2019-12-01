@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class HugCommand implements ServerCommand
 {
-
     Embeds embeds = new Embeds();
 
     private double waitTime = 30000.0d;

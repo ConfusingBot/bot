@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.clientinfocommand;
+package main.de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
