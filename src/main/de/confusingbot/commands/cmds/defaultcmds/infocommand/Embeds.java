@@ -82,8 +82,8 @@ public class Embeds
         builder.addField("**Creator:** ", creator, false);
         builder.addField("**Help:** ", "https://discord.gg/xc82F8M", true);
 
-        /* TODO load image also in a jar file.. doesn't work yet
-        File file = new File("images/ConfusingGangBanner.png");
+        //TODO load image also in a jar file.. doesn't work yet
+        InputStream file = this.getClass().getResourceAsStream("/images/ConfusingGangBanner.png");
 
         if (file != null)
         {
@@ -94,8 +94,8 @@ public class Embeds
         {
             EmbedManager.SendEmbed(builder, channel, 30);
         }
-        */
 
-        EmbedManager.SendEmbed(builder, channel, 30);
+
+        //EmbedManager.SendEmbed(builder, channel, 30);
     }
 }

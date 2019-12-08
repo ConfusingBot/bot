@@ -78,5 +78,13 @@ public class SQLManager
                 "messagetype TEXT, " +
                 "title TEXT, " +
                 "message TEXT)");
+
+        tabelNames.add("votecommand");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS votecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildid INTEGER, " +
+                "channelid INTEGER, " +
+                "messageid INTEGER, " +
+                "endTime INTEGER, " +
+                "creationtime TEXT)");
     }
 }

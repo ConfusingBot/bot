@@ -41,14 +41,8 @@ public class SQL
         return false;
     }
 
-    public void AddGeneratedQuestionToSQL(Member member, TextChannel textChannel)
+    public void AddGeneratedQuestionToSQL(long guildID, long channelID, long memberID, String creationTime)
     {
-        //SQLDatabase
-        long channelID = textChannel.getIdLong();
-        long guildID = textChannel.getGuild().getIdLong();
-        long memberID = member.getIdLong();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String creationTime = textChannel.getTimeCreated().toLocalDateTime().format(formatter);
 
         LiteSQL.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime) VALUES(" +
                 guildID + ", " + channelID + ", " + memberID + ", '" + creationTime + "')");

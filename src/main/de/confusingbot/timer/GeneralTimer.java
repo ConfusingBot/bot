@@ -1,20 +1,24 @@
 package main.de.confusingbot.timer;
 
+import main.de.confusingbot.commands.cmds.admincmds.votecommand.UpdateVotes;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.UpdateQuestionChannels;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CheckQuestionTimer
+public class GeneralTimer
 {
 
     private UpdateQuestionChannels updateQuestionChannels;
+    private UpdateVotes updateVotes;
+
     private Timer timer;
 
-    public CheckQuestionTimer()
+    public GeneralTimer()
     {
         timer = new Timer();
         this.updateQuestionChannels = new UpdateQuestionChannels();
+        this.updateVotes = new UpdateVotes();
     }
 
     //Timer
@@ -27,10 +31,11 @@ public class CheckQuestionTimer
             public void run()
             {
                 updateQuestionChannels.onSecond();
+                updateVotes.onSecond();
             }
         };
 
-        timer.schedule(timeTask, 0l, 1000 * 60);//TODO to hours
+        timer.schedule(timeTask, 0l, 1000 * 60);//TODO 5min
     }
 
     public void stopTimer()

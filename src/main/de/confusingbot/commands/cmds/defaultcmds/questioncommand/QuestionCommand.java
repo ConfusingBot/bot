@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class QuestionCommand implements ServerCommand
@@ -233,8 +234,15 @@ public class QuestionCommand implements ServerCommand
                 EmbedBuilder builder = embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
                 EmbedManager.SendEmbed(builder, textChannel, 0);
 
+                //SQLDatabase
+                long channelID = textChannel.getIdLong();
+                long guildID = textChannel.getGuild().getIdLong();
+                long memberID = member.getIdLong();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String creationTime = textChannel.getTimeCreated().toLocalDateTime().format(formatter);
+
                 //SQL
-                sql.AddGeneratedQuestionToSQL(member, textChannel);
+                sql.AddGeneratedQuestionToSQL(channelID, guildID, memberID, creationTime);
             }
             else
             {

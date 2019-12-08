@@ -8,6 +8,7 @@ import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoles
 import main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.RoleBorderCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolecommand.RoleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand.TempVoiceChannelCommand;
+import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.InfoCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.hugcommand.HugCommand;
@@ -65,6 +66,7 @@ public class CommandManager {
         this.commands.put("roleborder", new RoleBorderCommand());
         this.commands.put("repeatinfo", new main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.InfoCommand());
         this.commands.put("message", new MessageCommand());
+        this.commands.put("vote", new VoteCommand());
 
         //Music
         this.commands.put("play", new PlayCommand());

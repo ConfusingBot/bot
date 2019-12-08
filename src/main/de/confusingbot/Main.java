@@ -11,8 +11,7 @@ import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
-import main.de.confusingbot.timer.InfoTimer;
-import main.de.confusingbot.timer.CheckQuestionTimer;
+import main.de.confusingbot.timer.GeneralTimer;
 import main.de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -27,9 +26,9 @@ public class Main {
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-    //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.XdbdJA.U2xgV7PHxPkKIfqpFXt37h8bpIM
+    //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4
-    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.XdbdJA.U2xgV7PHxPkKIfqpFXt37h8bpIM";
+    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
     public static String version = "0.0.03";
     public static String prefix = "- ";
 
@@ -86,8 +85,7 @@ public class Main {
         Shutdown.Bot(shardManager);
     }
 
-    public CheckQuestionTimer checkQuestionTimer;
-    public InfoTimer infoTimer;
+    public GeneralTimer generalTimer;
     public StatusTimer statusTimer;
     private void StartTimer(){
         //Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
@@ -99,11 +97,8 @@ public class Main {
             e.printStackTrace();
         }
 
-        checkQuestionTimer = new CheckQuestionTimer();
-        checkQuestionTimer.startTimer();
-
-        infoTimer = new InfoTimer();
-        infoTimer.startTimer();
+        generalTimer = new GeneralTimer();
+        generalTimer.startTimer();
 
         statusTimer = new StatusTimer(shardManager);
         statusTimer.startTimer();
