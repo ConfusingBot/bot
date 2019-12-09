@@ -67,8 +67,10 @@ public class SQLManager
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS repeatinfo(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
                 "channelid INTEGER, " +
-                "info TEXT, " +
-                "time INTEGER)");
+                "time INTEGER, " +
+                "color TEXT, " +
+                "title TEXT, " +
+                "info TEXT)");
 
         tabelNames.add("messagecommand");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS messagecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +

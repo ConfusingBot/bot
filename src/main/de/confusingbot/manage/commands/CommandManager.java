@@ -5,7 +5,7 @@ import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRule
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
 import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageCommand;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesCommand;
-import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.RepeatInfoInfoCommand;
+import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.RepeatInfoCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.RoleBorderCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolecommand.RoleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand.TempVoiceChannelCommand;
@@ -64,7 +64,7 @@ public class CommandManager {
         this.commands.put("clear", new ClearCommand());
         this.commands.put("acceptrule", new AcceptRuleCommand());
         this.commands.put("roleborder", new RoleBorderCommand());
-        this.commands.put("repeatinfo", new RepeatInfoInfoCommand());
+        this.commands.put("repeatinfo", new RepeatInfoCommand());
         this.commands.put("message", new MessageCommand());
         this.commands.put("vote", new VoteCommand());
 

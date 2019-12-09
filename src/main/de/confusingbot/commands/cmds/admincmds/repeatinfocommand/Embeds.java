@@ -20,12 +20,19 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add/remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed(
+                "```yaml\n" + Main.prefix + "repeatinfo add [@channel] [time] ([color]) ([title]) [info]\n```"
+                        + "```Add a RepeatInfo to this server which shows every [time]```"
+                        + "```yaml\n" + Main.prefix + "repeatinfo remove [index See repeatinfo list]\n``` "
+                        + "```Remove the RepeatInfo a the index```"
+                        + "```yaml\n" + Main.prefix + "repeatinfo list\n``` "
+                        + "```List all of the RepeatInfos of this server and offers you the index!```"
+                , channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [#channel] [info]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [@channel] [time] ([color]) ([title]) [info]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
@@ -37,7 +44,6 @@ public class Embeds
     {
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo list`", channel, EmbedsUtil.showUsageTime);
     }
-
 
     //=====================================================================================================================================
     //Error
@@ -67,9 +73,9 @@ public class Embeds
         EmbedsUtil.NoNumberError(channel, number);
     }
 
-    public void NoExistingRepeatInfos(TextChannel channel)
+    public void NoExistingRepeatInfosInformation(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("This server has no RepeatInfos!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("This server has no RepeatInfos!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoMentionedTimeError(TextChannel channel)
@@ -80,26 +86,37 @@ public class Embeds
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfulAddedBumpCommand(TextChannel channel)
+    public void SuccessfulAddedRepeatInfo(TextChannel channel)
     {
         EmbedsUtil.SuccessfulAdded(channel, "RepeatInfo", "this server");
     }
 
-    public void SuccessfulRemovedRepeatInfo(TextChannel channel)
+    public void SuccessfulRemovedRepeatInfo(TextChannel channel, int index)
     {
-        EmbedsUtil.SuccessfulRemoved(channel, "RepeatInfo", "this server");
+        EmbedsUtil.SuccessfulRemoved(channel, "RepeatInfo", "this server at index: " + index);
     }
 
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void ListRepeatInfosEmbed(TextChannel channel, String text){
+    public void ListRepeatInfosEmbed(TextChannel channel, String text)
+    {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
         builder.setTitle("RepeatInfos: ");
         builder.setDescription(text);
 
         EmbedManager.SendEmbed(builder, channel, 10);
+    }
+
+    public void SendInfoEmbed(TextChannel channel, String color, String title, String info)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode(color));
+        builder.setTitle(title);
+        builder.setDescription(info);
+
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 
 }

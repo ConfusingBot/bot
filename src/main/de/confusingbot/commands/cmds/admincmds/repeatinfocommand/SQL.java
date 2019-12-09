@@ -7,55 +7,67 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQL {
+public class SQL
+{
     //=====================================================================================================================================
     //SQL
     //=====================================================================================================================================
-    public void addToSQL(long guildid, long channelid, String info, int time) {
-        LiteSQL.onUpdate("INSERT INTO repeatinfo(guildid, channelid, info, time) VALUES(" +
-                guildid + ", " + channelid + ", '" + info + "', " + time + ")");
+    public void addToSQL(long guildid, long channelid, int time, String color, String title, String info)
+    {
+        LiteSQL.onUpdate("INSERT INTO repeatinfo(guildid, channelid, time, color, title, info) VALUES(" +
+                guildid + ", " + channelid + ", " + time + ", '" + color + "', '" + title + "', '" + info +"')");
     }
 
-    public void removeFormSQL(long guildid, int id) {
+    public void removeFormSQL(long guildid, int id)
+    {
         LiteSQL.onUpdate("DELETE FROM repeatinfo WHERE "
                 + "guildid = " + guildid
-                + "id = " + id);
+                + " AND id = " + id);
     }
 
-    public List<Integer> getRepeatInfoIDs(long guildid) {
+    public List<Integer> getRepeatInfoIDs(long guildid)
+    {
         List<Integer> list = new ArrayList<>();
 
-        try {
+        try
+        {
             ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
                     + "guildid = " + guildid);
 
-            while (set.next()) {
+            while (set.next())
+            {
                 list.add(set.getInt("id"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return list;
     }
 
-    public String getRepeatInfoByID(long guildid, int id) {
+    public String getRepeatInfoByID(long guildid, int id)
+    {
         String repeatInfoString = "error";
 
-        try {
+        try
+        {
             ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
                     + "guildid = " + guildid
-                    + "AND id = " + id);
+                    + " AND id = " + id);
 
-            while (set.next()) {
+            while (set.next())
+            {
                 repeatInfoString = set.getString("info");
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return repeatInfoString;
     }
 
-    public ResultSet GetRepeatInfoResultSet(long guildid) {
+    public ResultSet GetRepeatInfoResultSet(long guildid)
+    {
         ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
                 + "guildid = " + guildid);
 

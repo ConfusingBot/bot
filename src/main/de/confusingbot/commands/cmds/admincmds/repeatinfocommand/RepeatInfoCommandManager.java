@@ -1,9 +1,12 @@
 package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
-public class RepeatInfoCommandManager {
+public class RepeatInfoCommandManager
+{
 
     public static SQL sql = new SQL();
     public static Embeds embeds = new Embeds();
+
+    public static String infoKey = "INFO:";
 
     public static int maxInfos = 3;
 }
