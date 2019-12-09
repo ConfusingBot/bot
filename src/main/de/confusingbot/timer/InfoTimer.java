@@ -1,19 +1,19 @@
 package main.de.confusingbot.timer;
 
-import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.InfoHandler;
+import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.UpdateInfo;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class InfoTimer
 {
-    private InfoHandler infoHandler;
+    private UpdateInfo updateInfo;
     private Timer timer;
 
     public InfoTimer()
     {
         timer = new Timer();
-        infoHandler = new InfoHandler();
+        updateInfo = new UpdateInfo();
     }
 
     //Timer
@@ -25,7 +25,7 @@ public class InfoTimer
             @Override
             public void run()
             {
-                infoHandler.loopInfos();
+                updateInfo.onSecond();
             }
         };
 
