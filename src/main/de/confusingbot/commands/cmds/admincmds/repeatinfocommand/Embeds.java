@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -12,7 +13,8 @@ public class Embeds
 {
     public Embeds()
     {
-
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "repeatinfo\n``` " +
+                "```Create a text which every timestep repeats!```");
     }
 
     //=====================================================================================================================================
@@ -21,8 +23,8 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "repeatinfo add [@channel] [time] ([color]) ([title]) [info]\n```"
-                        + "```Add a RepeatInfo to this server which shows every [time]```"
+                "```yaml\n" + Main.prefix + "repeatinfo add [@channel] [timestep] ([color]) ([title]) [info]\n```"
+                        + "```Add a RepeatInfo to this server which shows every [timestep]```"
                         + "```yaml\n" + Main.prefix + "repeatinfo remove [index See repeatinfo list]\n``` "
                         + "```Remove the RepeatInfo a the index```"
                         + "```yaml\n" + Main.prefix + "repeatinfo list\n``` "
@@ -32,7 +34,7 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [@channel] [time] ([color]) ([title]) [info]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [@channel] [timestep] ([color]) ([title]) [info]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
