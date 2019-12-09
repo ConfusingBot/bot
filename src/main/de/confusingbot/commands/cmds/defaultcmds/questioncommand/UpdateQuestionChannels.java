@@ -55,7 +55,7 @@ public class UpdateQuestionChannels
 
                 //HANDLE TIME
 
-                long timeleft = getTimeLeft(creationTime, channel);
+                long timeleft = getTimeLeft(creationTime);
                 //System.out.println("TimeLeft of question: " + timeleft);
 
                 for (Integer notificationTime : notificationTimes)
@@ -85,7 +85,7 @@ public class UpdateQuestionChannels
     }
 
     //Calculate TimeLeft
-    private long getTimeLeft(String creationTimeString, TextChannel channel)
+    private long getTimeLeft(String creationTimeString)
     {
         long timeLeft = -1;
 

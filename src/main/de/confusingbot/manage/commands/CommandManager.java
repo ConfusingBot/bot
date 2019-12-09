@@ -5,6 +5,7 @@ import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRule
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
 import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageCommand;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesCommand;
+import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.RepeatInfoInfoCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.RoleBorderCommand;
 import main.de.confusingbot.commands.cmds.admincmds.rolecommand.RoleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand.TempVoiceChannelCommand;
@@ -30,7 +31,6 @@ import main.de.confusingbot.commands.cmds.ownercmds.leavecommand.LeaveServerComm
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.sharding.ShardManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -63,7 +63,7 @@ public class CommandManager {
         this.commands.put("clear", new ClearCommand());
         this.commands.put("acceptrule", new AcceptRuleCommand());
         this.commands.put("roleborder", new RoleBorderCommand());
-        this.commands.put("repeatinfo", new main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.InfoCommand());
+        this.commands.put("repeatinfo", new RepeatInfoInfoCommand());
         this.commands.put("message", new MessageCommand());
 
         //Music
