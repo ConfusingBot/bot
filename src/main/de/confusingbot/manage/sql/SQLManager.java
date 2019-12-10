@@ -87,6 +87,7 @@ public class SQLManager
                 "channelid INTEGER, " +
                 "messageid INTEGER, " +
                 "endTime INTEGER, " +
-                "creationtime TEXT)");
+                "creationtime TEXT, " +
+                "emotes TEXT)");
     }
 }

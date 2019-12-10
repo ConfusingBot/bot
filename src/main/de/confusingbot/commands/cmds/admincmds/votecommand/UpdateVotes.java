@@ -2,10 +2,10 @@ package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -15,6 +15,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UpdateVotes
 {
@@ -32,6 +35,8 @@ public class UpdateVotes
                 long messageid = set.getLong("messageid");
                 int endTime = set.getInt("endTime");
                 String creationTime = set.getString("creationtime");
+                String emotesString = set.getString("emotes");
+                List<String> selectEmotes = Arrays.asList(emotesString.split(" "));
 
                 long timeleft = getTimeLeft(creationTime, endTime);
 
@@ -47,12 +52,39 @@ public class UpdateVotes
                         TextChannel channel = guild.getTextChannelById(channelid);
                         if (channel != null)
                         {
+                            Message message = getMessage(channel, messageid);
                             if (CommandsUtil.getLatestMessages(channel).contains(messageid))
                             {
+                                //Show that the vote has ended
                                 CommandsUtil.reactEmote("❌", channel, messageid, true);
 
+                                //Get Votes
+                                List<Integer> votes = new ArrayList<>();
+                                List<String> emotes = new ArrayList<>();
+                                if (message != null)
+                                {
+                                    List<MessageReaction> messageReactions = message.getReactions();
+                                    for (MessageReaction reaction : messageReactions)
+                                    {
+                                        String emote = reaction.getReactionEmote().getEmoji();
+                                        int vote = reaction.getCount();
+                                        if (!emotes.contains(emote) && selectEmotes.contains(emote))
+                                        {
+                                            emotes.add(emote);
+                                            votes.add(vote);
+                                        }
+                                    }
+                                }
+
+                                //BuildMessage
+                                StringBuilder builder = new StringBuilder();
+                                for (int i = 0; i < votes.size(); i++)
+                                {
+                                    builder.append(emotes.get(i) + " | " + votes.get(i) + "\n");
+                                }
+
                                 //Message
-                                VoteCommandManager.embeds.SendResultEmbed(channel);
+                                VoteCommandManager.embeds.SendResultEmbed(channel, builder.toString().trim());
                             }
                             else
                             {
@@ -90,5 +122,18 @@ public class UpdateVotes
         timeLeft = endTime - differentInHours;
 
         return timeLeft;
+    }
+
+    private Message getMessage(TextChannel channel, long messageid){
+        Message message = null;
+
+        for (Message m : channel.getIterableHistory().cache(false))
+        {
+            if (m.getIdLong() == messageid)
+            {
+                message = m;
+            }
+        }
+        return message;
     }
 }

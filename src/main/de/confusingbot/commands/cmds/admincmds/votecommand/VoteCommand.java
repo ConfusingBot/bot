@@ -15,7 +15,6 @@ public class VoteCommand implements ServerCommand
 {
 
 
-
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
@@ -73,13 +72,12 @@ public class VoteCommand implements ServerCommand
             {
                 if (channelString.contains(mentionedChannels.get(0).getName()))
                 {
-                    if(CommandsUtil.isNumeric(args[3]))
+                    if (CommandsUtil.isNumeric(args[3]))
                     {
-                        String[] emotes = new String[]{"1️⃣", "2️⃣", "2️⃣"};
-                        int maxVotePoints = emotes.length;
+                        String[] voteEmotes = new String[]{"1️⃣", "2️⃣", "2️⃣"};
+                        int maxVotePoints = voteEmotes.length;
 
                         TextChannel textChannel = mentionedChannels.get(0);
-                        List<String> texts = new ArrayList<>();
                         String title = "Vote!";
                         int timeInHours = Integer.parseInt(args[3]);
 
@@ -90,21 +88,22 @@ public class VoteCommand implements ServerCommand
                         }
                         wholeCommand.trim();
 
+                        List<String> voteTexts = new ArrayList<>();
                         int index = 1;
                         String text = "";
-                        String[] words = wholeCommand.split(" ");
+                        String[] wholeCommandWords = wholeCommand.split(" ");
                         boolean addToTexts = false;
-                        for (int i = 0; i < words.length; i++)
+                        for (int i = 0; i < wholeCommandWords.length; i++)
                         {
                             if (index <= maxVotePoints + 1)
                             {
                                 String searchWord = index + ":";
-                                if (words[i].equals(searchWord))
+                                if (wholeCommandWords[i].equals(searchWord))
                                 {
                                     if (addToTexts)
                                     {
                                         text.trim();
-                                        texts.add(text);
+                                        voteTexts.add(text);
                                     }
                                     else
                                     {
@@ -118,31 +117,34 @@ public class VoteCommand implements ServerCommand
                                 }
                                 else
                                 {
-                                    text += (words[i] + " ");
+                                    text += (wholeCommandWords[i] + " ");
                                 }
                             }
                         }
-                        texts.add(text);
+                        voteTexts.add(text);
 
+                        List<String> usedEmotes = new ArrayList<>();
                         String voteText = "";
-                        for(int i = 0; i < texts.size(); i++){
-                            voteText += (emotes[i] + " " + texts.get(i) + "\n\n");
+                        for (int i = 0; i < voteTexts.size(); i++)
+                        {
+                            voteText += (voteEmotes[i] + " " + voteTexts.get(i) + "\n\n");
+                            usedEmotes.add(voteEmotes[i]);
                         }
 
                         //Message
                         long messageID = VoteCommandManager.embeds.SendVoteEmbed(textChannel, title, voteText, timeInHours);
 
-                        for(String emote : emotes){
+                        for (String emote : voteEmotes)
+                        {
                             CommandsUtil.reactEmote(emote, channel, messageID, true);
                         }
-
 
                         //SQL
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
-                        VoteCommandManager.sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), messageID, timeInHours, creationTime);
+                        VoteCommandManager.sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), messageID, timeInHours, creationTime, buildEmoteString(usedEmotes));
 
-                        System.out.println("Points: " + texts + " Title: " + title + " TextChannel: " + textChannel + " Time: " + timeInHours + " CreationTime: " + creationTime);
+                        System.out.println("Points: " + voteTexts + " Title: " + title + " TextChannel: " + textChannel + " Time: " + timeInHours + " CreationTime: " + creationTime);
                     }
                     else
                     {
@@ -164,5 +166,18 @@ public class VoteCommand implements ServerCommand
             //Usage
             VoteCommandManager.embeds.CreateUsage(channel);
         }
+    }
+
+    //=====================================================================================================================================
+    //Commands
+    //=====================================================================================================================================
+    private String buildEmoteString(List<String> emotes)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (String emote : emotes)
+        {
+            builder.append(emote + " ");
+        }
+        return builder.toString().trim();
     }
 }

@@ -27,10 +27,10 @@ public class SQL
         return false;
     }
 
-    public void addToSQL(long guildid, long channelID, long messageid, long endTime, String creationtime)
+    public void addToSQL(long guildid, long channelID, long messageid, long endTime, String creationtime, String emotes)
     {
-        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, endTime, creationtime) VALUES(" +
-                guildid + ", " + channelID + ", " + messageid + ", " + endTime +", '" + creationtime + "')");
+        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, endTime, creationtime, emotes) VALUES(" +
+                guildid + ", " + channelID + ", " + messageid + ", " + endTime + ", '" + creationtime +  "', '" + emotes + "')");
     }
 
     public void removeFromSQL(long guildid, long id)
