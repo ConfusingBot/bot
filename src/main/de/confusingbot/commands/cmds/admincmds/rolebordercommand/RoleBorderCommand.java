@@ -110,6 +110,9 @@ public class RoleBorderCommand implements ServerCommand
 
                 if (!sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
                 {
+                    //Add border to every Member
+                    CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, role.getIdLong(), true);
+
                     //SQL
                     sql.addToSQL(guild.getIdLong(), role.getIdLong(), role.getName());
 
@@ -160,6 +163,9 @@ public class RoleBorderCommand implements ServerCommand
                 roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
                 long roleid = roleAction.complete().getIdLong();
 
+                //Add border to every Member
+                CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, roleid, true);
+
                 //SQLite
                 sql.addToSQL(guild.getIdLong(), roleid, name);
 
@@ -191,6 +197,9 @@ public class RoleBorderCommand implements ServerCommand
 
                 if (sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
                 {
+                    //Remove border to every Member
+                    CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, role.getIdLong(), false);
+
                     //SQLite
                     sql.removeFromSQL(guild.getIdLong(), role.getIdLong());
 
@@ -235,4 +244,5 @@ public class RoleBorderCommand implements ServerCommand
 
         return space;
     }
+
 }

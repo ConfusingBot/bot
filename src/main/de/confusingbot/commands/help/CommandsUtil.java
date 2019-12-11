@@ -1,10 +1,7 @@
 package main.de.confusingbot.commands.help;
 
 import main.de.confusingbot.Main;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -101,6 +98,19 @@ public class CommandsUtil
             messages.add(message.getIdLong());
         }
         return messages;
+    }
+
+    public static void AddOrRemoveRoleFromAllMembers(Guild guild, long roleid, boolean add){
+        List<Member> members = guild.getMembers();
+
+        for(Member member : members){
+            if(!member.getUser().isBot()){
+                if(add)
+                    guild.addRoleToMember(member, guild.getRoleById(roleid)).queue();
+                else
+                    guild.removeRoleFromMember(member, guild.getRoleById(roleid)).queue();
+            }
+        }
     }
 }
 

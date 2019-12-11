@@ -77,6 +77,9 @@ public class AcceptRuleCommand implements ServerCommand
 
                         CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
 
+                        //Add acceptedRole to all members
+                        CommandsUtil.AddOrRemoveRoleFromAllMembers(textChannel.getGuild(), acceptedRole.getIdLong(), true);
+
                         //SQL
                         AcceptRuleManager.sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole.getIdLong(), acceptedRole.getIdLong());
 
