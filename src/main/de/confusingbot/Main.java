@@ -29,7 +29,7 @@ public class Main {
     //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.Xbp5ow.YvLOJN7rsL_4kJ90tQdluYa5TR4
     private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
-    public static String version = "0.0.03";
+    public static String version = "0.0.04";
     public static String prefix = "- ";
 
     public static boolean botOffline = false;
