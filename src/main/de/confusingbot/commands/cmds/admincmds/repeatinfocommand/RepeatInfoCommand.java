@@ -10,6 +10,7 @@ import java.util.List;
 public class RepeatInfoCommand implements ServerCommand
 {
 
+    RepeatInfoCommandManager repeatInfoCommandManager = new RepeatInfoCommandManager();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -95,7 +96,6 @@ public class RepeatInfoCommand implements ServerCommand
     //AddCommand
     private void addCommand(Message message, String[] args, TextChannel channel)
     {
-
         if (args.length >= 5)
         {
             TextChannel textChannel = message.getMentionedChannels().get(0);
@@ -155,21 +155,18 @@ public class RepeatInfoCommand implements ServerCommand
                         //Error
                         RepeatInfoCommandManager.embeds.OnlyXAllowedInfoCommandsError(channel, RepeatInfoCommandManager.maxInfos);
                     }
-
                 }
                 else
                 {
                     //Error
                     RepeatInfoCommandManager.embeds.NoMentionedTimeError(channel);
                 }
-
             }
             else
             {
                 //Error
                 RepeatInfoCommandManager.embeds.NoMentionedTextChannelError(channel);
             }
-
         }
         else
         {

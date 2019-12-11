@@ -39,7 +39,7 @@ public class GeneralTimer
             }
         };
 
-        timer.schedule(timeTask, 0l, 1000 * 60);//TODO 5min
+        timer.schedule(timeTask, 0l, 1000 * 60 * 5);
     }
 
     public void stopTimer()

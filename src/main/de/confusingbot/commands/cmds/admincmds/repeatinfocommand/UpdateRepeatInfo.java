@@ -60,7 +60,7 @@ public class UpdateRepeatInfo
 
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toMinutes());//if in toMinutes - 60 and not - 1!
+        long differentInHours = (duration.toHours());
 
         return differentInHours;
     }

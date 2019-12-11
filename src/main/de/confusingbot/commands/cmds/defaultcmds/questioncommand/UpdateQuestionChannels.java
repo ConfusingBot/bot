@@ -100,7 +100,7 @@ public class UpdateQuestionChannels
 
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toHours() - -1);//if in toMinutes - 60 and not - 1!
+        long differentInHours = (duration.toHours() - 1);//if in toMinutes - 60 and not - 1!
         //System.out.println("Different in minutes " + differentInHours);
         timeLeft = maxTimeInHours - differentInHours;
 

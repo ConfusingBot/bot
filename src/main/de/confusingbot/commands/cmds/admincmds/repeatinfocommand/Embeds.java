@@ -14,7 +14,7 @@ public class Embeds
     public Embeds()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "repeatinfo\n``` " +
-                "```Create a text which every timestep repeats!```");
+                "```Create a text which repeats every timestap!```");
     }
 
     //=====================================================================================================================================

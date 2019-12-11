@@ -5,7 +5,6 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,13 +13,14 @@ import java.util.List;
 public class VoteCommand implements ServerCommand
 {
 
+    //TODO fix this dirty work auround.. for passing the AdminHelp Part into the admin help
+    VoteCommandManager voteCommandManager = new VoteCommandManager();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
         //vote create [#channel] [time in hours] [Header] 1: text1 2: text2 3: text3
         //vote remove messageid
-
 
         Guild guild = channel.getGuild();
         String[] args = CommandsUtil.messageToArgs(message);

@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -17,7 +16,6 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class UpdateVotes
@@ -140,7 +138,7 @@ public class UpdateVotes
 
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toMinutes());//if in toMinutes - 60 and not - 1!
+        long differentInHours = (duration.toHours());
         //System.out.println("Different in minutes " + differentInHours);
         timeLeft = endTime - differentInHours;
 
