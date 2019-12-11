@@ -86,6 +86,7 @@ public class SQLManager
                 "guildid INTEGER, " +
                 "channelid INTEGER, " +
                 "messageid INTEGER, " +
+                "title TEXT, " +
                 "endTime INTEGER, " +
                 "creationtime TEXT, " +
                 "emotes TEXT)");

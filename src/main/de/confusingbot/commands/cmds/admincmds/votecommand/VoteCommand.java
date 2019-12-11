@@ -34,7 +34,7 @@ public class VoteCommand implements ServerCommand
                 switch (args[1])
                 {
                     case "create":
-                        CreateCommand(args, member, guild, channel, message);
+                        CreateCommand(args, guild, channel, message);
                         break;
                     case "remove":
 
@@ -61,7 +61,7 @@ public class VoteCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void CreateCommand(String[] args, Member member, Guild guild, TextChannel channel, Message message)
+    private void CreateCommand(String[] args, Guild guild, TextChannel channel, Message message)
     {
         if (args.length > 6)
         {
@@ -74,77 +74,42 @@ public class VoteCommand implements ServerCommand
                 {
                     if (CommandsUtil.isNumeric(args[3]))
                     {
-                        String[] voteEmotes = new String[]{"1️⃣", "2️⃣", "2️⃣"};
-                        int maxVotePoints = voteEmotes.length;
-
                         TextChannel textChannel = mentionedChannels.get(0);
                         String title = "Vote!";
                         int timeInHours = Integer.parseInt(args[3]);
+                        List<String> voteStrings = getVoteStrings(args, 4);
 
-                        String wholeCommand = "";
-                        for (int i = 4; i < args.length; i++)
-                        {
-                            wholeCommand += (args[i] + " ");
+                        //Get title out of voteStrings
+                        if(voteStrings.get(0).startsWith("TITLE: ")){
+                            title = voteStrings.get(0);
+                            title = title.replace("TITLE:", "");
+                            title.trim();
+                            voteStrings.remove(0);
                         }
-                        wholeCommand.trim();
-
-                        List<String> voteTexts = new ArrayList<>();
-                        int index = 1;
-                        String text = "";
-                        String[] wholeCommandWords = wholeCommand.split(" ");
-                        boolean addToTexts = false;
-                        for (int i = 0; i < wholeCommandWords.length; i++)
-                        {
-                            if (index <= maxVotePoints + 1)
-                            {
-                                String searchWord = index + ":";
-                                if (wholeCommandWords[i].equals(searchWord))
-                                {
-                                    if (addToTexts)
-                                    {
-                                        text.trim();
-                                        voteTexts.add(text);
-                                    }
-                                    else
-                                    {
-                                        if (!text.isEmpty())
-                                            title = text;
-                                    }
-                                    text = "";
-                                    index++;
-
-                                    addToTexts = true;
-                                }
-                                else
-                                {
-                                    text += (wholeCommandWords[i] + " ");
-                                }
-                            }
-                        }
-                        voteTexts.add(text);
 
                         List<String> usedEmotes = new ArrayList<>();
                         String voteText = "";
-                        for (int i = 0; i < voteTexts.size(); i++)
+                        for (int i = 0; i < voteStrings.size(); i++)
                         {
-                            voteText += (voteEmotes[i] + " " + voteTexts.get(i) + "\n\n");
-                            usedEmotes.add(voteEmotes[i]);
+                            voteText += (VoteCommandManager.voteEmotes[i] + " " + voteStrings.get(i) + "\n\n");
+                            usedEmotes.add(VoteCommandManager.voteEmotes[i]);
                         }
 
                         //Message
                         long messageID = VoteCommandManager.embeds.SendVoteEmbed(textChannel, title, voteText, timeInHours);
 
-                        for (String emote : voteEmotes)
+                        //React with Emotes
+                        for (String emote : usedEmotes)
                         {
                             CommandsUtil.reactEmote(emote, channel, messageID, true);
                         }
 
-                        //SQL
+                        //Get CurrentTime
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
-                        VoteCommandManager.sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), messageID, timeInHours, creationTime, buildEmoteString(usedEmotes));
 
-                        System.out.println("Points: " + voteTexts + " Title: " + title + " TextChannel: " + textChannel + " Time: " + timeInHours + " CreationTime: " + creationTime);
+                        //SQL
+                        VoteCommandManager.sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), messageID, title, timeInHours, creationTime, buildEmoteString(usedEmotes));
                     }
                     else
                     {
@@ -169,7 +134,7 @@ public class VoteCommand implements ServerCommand
     }
 
     //=====================================================================================================================================
-    //Commands
+    //Help
     //=====================================================================================================================================
     private String buildEmoteString(List<String> emotes)
     {
@@ -179,5 +144,74 @@ public class VoteCommand implements ServerCommand
             builder.append(emote + " ");
         }
         return builder.toString().trim();
+    }
+
+    private List<String> getVoteStrings(String[] args, int startIndex){
+
+        //Build wholeString out of args after the start Index.. so where the Title and the votes comes
+        String wholeString = "";
+        for (int i = startIndex; i < args.length; i++)
+        {
+            wholeString += (args[i] + " ");
+        }
+        wholeString.trim();
+
+        //TODO make this easier
+        String[] wholeStringWords = wholeString.split(" ");
+        List<String> voteTexts = new ArrayList<>();
+        int voteMarkNumber = 1;
+        String text = "";
+
+        boolean isNoTitle = false;
+        boolean hasTitle = false;
+
+        //Seperate the votes and the title
+        for (int i = 0; i < wholeStringWords.length; i++)
+        {
+                String searchWord = voteMarkNumber + ":";
+                if (wholeStringWords[i].equals(searchWord))
+                {
+                    if (isNoTitle)
+                    {
+                        text.trim();
+                        voteTexts.add(text);
+                    }
+                    else
+                    {
+                        if (!text.isEmpty()){
+                            voteTexts.add("TITLE: " + text);
+                            hasTitle = true;
+                        }
+                    }
+                    text = "";
+                    voteMarkNumber++;
+
+                    isNoTitle = true;
+                }
+                else
+                {
+                    text += (wholeStringWords[i] + " ");
+                }
+        }
+        text.trim();
+        voteTexts.add(text);
+
+        //Calculate ListSize
+        int allowedListSize = VoteCommandManager.voteEmotes.length;
+        if(hasTitle) allowedListSize += 1;
+        if(voteTexts.size() < VoteCommandManager.voteEmotes.length ){
+            allowedListSize = voteTexts.size();
+        }
+
+        return perepareListSize(voteTexts, allowedListSize);
+    }
+
+    private List<String> perepareListSize(List<String> list, int size){
+        List<String> newList = new ArrayList<>();
+        for(int i = 0; i < size; i++){
+            newList.add(list.get(i));
+        }
+
+        return newList;
     }
 }

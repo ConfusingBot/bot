@@ -113,10 +113,18 @@ public class AcceptRuleCommand implements ServerCommand
 
     private void removeCommand(Guild guild, String[] args, TextChannel channel)
     {
+        long guildID = channel.getGuild().getIdLong();
         if (args.length == 2)
         {
-            if (AcceptRuleManager.sql.ExistsInSQL(guild.getIdLong()))
+            if (AcceptRuleManager.sql.ExistsInSQL(guildID))
             {
+                long acceptedRoleID = AcceptRuleManager.sql.getAcceptedRoleID(guildID);
+                long notAcceptedRoleID = AcceptRuleManager.sql.getNotAcceptedRoleID(guildID);
+
+                //RemoveRoles
+                CommandsUtil.AddOrRemoveRoleFromAllMembers(channel.getGuild(), acceptedRoleID, false);
+                CommandsUtil.AddOrRemoveRoleFromAllMembers(channel.getGuild(), notAcceptedRoleID, false);
+
                 //SQL
                 AcceptRuleManager.sql.removeFormSQL(guild.getIdLong());
 

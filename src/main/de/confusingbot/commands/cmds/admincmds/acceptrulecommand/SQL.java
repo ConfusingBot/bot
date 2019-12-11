@@ -43,7 +43,7 @@ public class SQL
                 + "guildid = " + guildid);
     }
 
-    public long getRoleNotAcceptedIDFormSQL(long guildid)
+    public long getNotAcceptedRoleID(long guildid)
     {
         long rolenotacceptedid = -1;
 
@@ -63,7 +63,7 @@ public class SQL
         return rolenotacceptedid;
     }
 
-    public long getRoleAcceptedIDFormSQL(long guildid)
+    public long getAcceptedRoleID(long guildid)
     {
         long rolenotacceptedid = -1;
 

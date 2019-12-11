@@ -194,12 +194,10 @@ public class RoleBorderCommand implements ServerCommand
             if (!roles.isEmpty())
             {
                 Role role = roles.get(0);
+                long roleid = role.getIdLong();
 
-                if (sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
+                if (sql.ExistsInSQL(guild.getIdLong(), roleid))
                 {
-                    //Remove border to every Member
-                    CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, role.getIdLong(), false);
-
                     //SQLite
                     sql.removeFromSQL(guild.getIdLong(), role.getIdLong());
 

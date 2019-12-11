@@ -103,12 +103,15 @@ public class CommandsUtil
     public static void AddOrRemoveRoleFromAllMembers(Guild guild, long roleid, boolean add){
         List<Member> members = guild.getMembers();
 
+        Role role = guild.getRoleById(roleid);
+        if(role == null) return;
+
         for(Member member : members){
             if(!member.getUser().isBot()){
                 if(add)
-                    guild.addRoleToMember(member, guild.getRoleById(roleid)).queue();
+                    guild.addRoleToMember(member, role).queue();
                 else
-                    guild.removeRoleFromMember(member, guild.getRoleById(roleid)).queue();
+                    guild.removeRoleFromMember(member, role).queue();
             }
         }
     }

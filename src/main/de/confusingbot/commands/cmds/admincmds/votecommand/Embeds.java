@@ -85,11 +85,11 @@ public class Embeds
         return EmbedManager.SendEmbedGetMessageID(builder, channel);
     }
 
-    public void SendResultEmbed(TextChannel channel, String result)
+    public void SendResultEmbed(TextChannel channel, String title, String result)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
-        builder.setTitle("Result");
+        builder.setTitle("Result form " + title);
         builder.setDescription(result);
 
          EmbedManager.SendEmbed(builder, channel, 0);

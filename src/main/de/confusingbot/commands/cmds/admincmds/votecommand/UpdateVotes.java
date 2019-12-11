@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class UpdateVotes
@@ -36,6 +37,7 @@ public class UpdateVotes
                 int endTime = set.getInt("endTime");
                 String creationTime = set.getString("creationtime");
                 String emotesString = set.getString("emotes");
+                String title = set.getString("title");
                 List<String> selectEmotes = Arrays.asList(emotesString.split(" "));
 
                 long timeleft = getTimeLeft(creationTime, endTime);
@@ -67,7 +69,7 @@ public class UpdateVotes
                                     for (MessageReaction reaction : messageReactions)
                                     {
                                         String emote = reaction.getReactionEmote().getEmoji();
-                                        int vote = reaction.getCount();
+                                        int vote = reaction.getCount() - 1;
                                         if (!emotes.contains(emote) && selectEmotes.contains(emote))
                                         {
                                             emotes.add(emote);
@@ -76,21 +78,42 @@ public class UpdateVotes
                                     }
                                 }
 
+                                //Sort Vote and Emotes
+                                int voteTemp;
+                                String emoteTemp;
+                                for (int i = 1; i < votes.size(); i++)
+                                {
+                                    for (int j = 0; j < votes.size() - i; j++)
+                                    {
+                                        if (votes.get(j) < votes.get(j + 1))
+                                        {
+                                            //Votes
+                                            voteTemp = votes.get(j);
+                                            votes.set(j, votes.get(j + 1));
+                                            votes.set(j + 1, voteTemp);
+
+                                            //Emotes
+                                            emoteTemp = emotes.get(j);
+                                            emotes.set(j, emotes.get(j + 1));
+                                            emotes.set(j + 1, emoteTemp);
+                                        }
+                                    }
+                                }
+
                                 //BuildMessage
                                 StringBuilder builder = new StringBuilder();
                                 for (int i = 0; i < votes.size(); i++)
                                 {
-                                    builder.append(emotes.get(i) + " | " + votes.get(i) + "\n");
+                                    builder.append(emotes.get(i) + " | " + votes.get(i) + "\n\n");
                                 }
 
                                 //Message
-                                VoteCommandManager.embeds.SendResultEmbed(channel, builder.toString().trim());
+                                VoteCommandManager.embeds.SendResultEmbed(channel, title, builder.toString().trim());
                             }
                             else
                             {
                                 channel.sendMessage("Couldn't Send result!").queue();
                             }
-
                         }
                     }
                 }
@@ -124,7 +147,8 @@ public class UpdateVotes
         return timeLeft;
     }
 
-    private Message getMessage(TextChannel channel, long messageid){
+    private Message getMessage(TextChannel channel, long messageid)
+    {
         Message message = null;
 
         for (Message m : channel.getIterableHistory().cache(false))

@@ -12,25 +12,10 @@ public class SQL
     //=====================================================================================================================================
     //SQL
     //=====================================================================================================================================
-    public boolean ExistInSQL(long guildid, long channelID)
+    public void addToSQL(long guildid, long channelID, long messageid, String title, long endTime, String creationtime, String emotes)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM votecommand WHERE " +
-                "guildid = " + guildid);
-
-        try
-        {
-            if (set.next()) return true;
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public void addToSQL(long guildid, long channelID, long messageid, long endTime, String creationtime, String emotes)
-    {
-        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, endTime, creationtime, emotes) VALUES(" +
-                guildid + ", " + channelID + ", " + messageid + ", " + endTime + ", '" + creationtime +  "', '" + emotes + "')");
+        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, title, endTime, creationtime, emotes) VALUES(" +
+                guildid + ", " + channelID + ", " + messageid + ", '" + title + "', " + endTime + ", '" + creationtime +  "', '" + emotes + "')");
     }
 
     public void removeFromSQL(long guildid, long id)

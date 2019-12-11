@@ -23,8 +23,8 @@ public class AcceptRulesListener
                 if (!event.getUser().isBot())
                 {
                     Guild guild = event.getGuild();
-                    long rolenotacceptedid = AcceptRuleManager.sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong());
-                    long roleacceptedid = AcceptRuleManager.sql.getRoleAcceptedIDFormSQL(event.getGuild().getIdLong());
+                    long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(event.getGuild().getIdLong());
+                    long roleacceptedid = AcceptRuleManager.sql.getAcceptedRoleID(event.getGuild().getIdLong());
 
                     //add member and remove blocked
                     guild.addRoleToMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
@@ -56,8 +56,8 @@ public class AcceptRulesListener
                 {
                     Guild guild = event.getGuild();
                     Member member = event.getMember();
-                    long rolenotacceptedid = AcceptRuleManager.sql.getRoleNotAcceptedIDFormSQL(event.getGuild().getIdLong());
-                    long roleacceptedid = AcceptRuleManager.sql.getRoleAcceptedIDFormSQL(event.getGuild().getIdLong());
+                    long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(event.getGuild().getIdLong());
+                    long roleacceptedid = AcceptRuleManager.sql.getAcceptedRoleID(event.getGuild().getIdLong());
 
                     //add blocked and remove member
                     guild.removeRoleFromMember(member, guild.getRoleById(roleacceptedid)).queue();
@@ -80,7 +80,7 @@ public class AcceptRulesListener
     public void onMemberJoinListener(GuildMemberJoinEvent event)
     {
         long guildid = event.getGuild().getIdLong();
-        long rolenotacceptedid = AcceptRuleManager.sql.getRoleNotAcceptedIDFormSQL(guildid);
+        long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(guildid);
 
         if (rolenotacceptedid != -1)
         {
