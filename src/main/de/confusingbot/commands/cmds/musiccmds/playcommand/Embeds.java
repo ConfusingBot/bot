@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.music.add("```yaml\n" + Main.prefix + "play [song/playlist Title/URL]\n``` " +
                 "```Start playing a track and add aditional songs to the queue```");

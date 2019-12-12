@@ -13,6 +13,11 @@ public class TempVoiceChannelCommand implements ServerCommand
     private SQL sql = new SQL();
     private Embeds embeds = new Embeds();
 
+    public TempVoiceChannelCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

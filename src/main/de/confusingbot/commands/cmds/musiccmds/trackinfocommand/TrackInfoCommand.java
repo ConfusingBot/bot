@@ -15,6 +15,11 @@ public class TrackInfoCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public TrackInfoCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

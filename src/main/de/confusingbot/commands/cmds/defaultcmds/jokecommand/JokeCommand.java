@@ -12,6 +12,11 @@ public class JokeCommand implements ServerCommand
     Embeds embeds = new Embeds();
     JokeManager manager = new JokeManager();
 
+    public JokeCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class Embeds
 {
 
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "react [textchannel] [messageID] [Emotji's]\n``` ```React with the [Emotji's] on a message[messageID]\uD83D\uDC39```");
     }

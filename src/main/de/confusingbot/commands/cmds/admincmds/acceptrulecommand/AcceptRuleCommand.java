@@ -11,6 +11,10 @@ import java.util.List;
 public class AcceptRuleCommand implements ServerCommand
 {
 
+    public AcceptRuleCommand(){
+        AcceptRuleManager.embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

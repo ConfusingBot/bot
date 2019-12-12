@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "vote\n```" +
                 "```You can create special VoteMessages where member can vote for a specific thing!```");
@@ -53,22 +53,6 @@ public class Embeds
     public void NoPermissionError(TextChannel channel)
     {
         EmbedsUtil.NoPermissionError(channel);
-    }
-
-    //=====================================================================================================================================
-    //Success
-    //=====================================================================================================================================
-    public void SuccessfullyRemovedTempchannel(TextChannel channel, String name)
-    {
-        EmbedsUtil.SuccessfulRemoved(channel, "**" + name + "**", "the TempChannel!");
-    }
-
-    //=====================================================================================================================================
-    //Info
-    //=====================================================================================================================================
-    public void HasNoTempChannelInformation(TextChannel channel)
-    {
-        EmbedManager.SendInfoEmbed("This guild has **no Tempchannels**! \nYou can add TempChannels with`" + Main.prefix + "tempchannel add [id]`", channel, 5);
     }
 
     //=====================================================================================================================================

@@ -8,14 +8,16 @@ import main.de.confusingbot.music.manage.MusicController;
 import main.de.confusingbot.music.queue.Queue;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.TextChannel;
-
-import javax.sound.midi.Track;
 
 public class SkipCommand implements ServerCommand
 {
     Embeds embeds = new Embeds();
+
+    public SkipCommand()
+    {
+        embeds.HelpEmbed();
+    }
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)

@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "repeatinfo\n``` " +
                 "```Create a text which repeats every timestap!```");
@@ -23,7 +23,7 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "repeatinfo add [@channel] [timestep] ([color]) ([title]) [info]\n```"
+                "```yaml\n" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title]) " + RepeatInfoCommandManager.infoKey + " [info]\n```"
                         + "```Add a RepeatInfo to this server which shows every [timestep]```"
                         + "```yaml\n" + Main.prefix + "repeatinfo remove [index See repeatinfo list]\n``` "
                         + "```Remove the RepeatInfo a the index```"
@@ -34,7 +34,7 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [@channel] [timestep] ([color]) ([title]) [info]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title]) " + RepeatInfoCommandManager.infoKey + " [info]\n`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)

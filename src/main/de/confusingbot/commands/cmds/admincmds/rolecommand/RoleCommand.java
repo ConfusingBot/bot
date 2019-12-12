@@ -16,6 +16,11 @@ public class RoleCommand implements ServerCommand
 
     private Embeds embeds = new Embeds();
 
+    public RoleCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

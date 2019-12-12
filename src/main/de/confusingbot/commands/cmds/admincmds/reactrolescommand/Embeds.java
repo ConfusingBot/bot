@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "reactrole\n``` " +
                 "```Create a awesome role add/take away system```");

@@ -23,6 +23,11 @@ public class InfoCommand implements ServerCommand
     Embeds embeds = new Embeds();
     SQL sql = new SQL();
 
+    public InfoCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member requester, TextChannel channel, Message message)
     {

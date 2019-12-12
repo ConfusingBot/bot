@@ -9,12 +9,15 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class VoteCommand implements ServerCommand
 {
 
-    //TODO fix this dirty work auround.. for passing the AdminHelp Part into the admin help
-    VoteCommandManager voteCommandManager = new VoteCommandManager();
+    public VoteCommand()
+    {
+        VoteCommandManager.embeds.HelpEmbed();
+    }
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -37,7 +40,7 @@ public class VoteCommand implements ServerCommand
                         CreateCommand(args, guild, channel, message);
                         break;
                     case "remove":
-
+                        RemoveCommand(args, guild, channel, message);
                         break;
                     default:
                         //Usage
@@ -80,7 +83,8 @@ public class VoteCommand implements ServerCommand
                         List<String> voteStrings = getVoteStrings(args, 4);
 
                         //Get title out of voteStrings
-                        if(voteStrings.get(0).startsWith("TITLE: ")){
+                        if (voteStrings.get(0).startsWith("TITLE: "))
+                        {
                             title = voteStrings.get(0);
                             title = title.replace("TITLE:", "");
                             title.trim();
@@ -101,7 +105,7 @@ public class VoteCommand implements ServerCommand
                         //React with Emotes
                         for (String emote : usedEmotes)
                         {
-                            CommandsUtil.reactEmote(emote, channel, messageID, true);
+                            CommandsUtil.reactEmote(emote, textChannel, messageID, true);
                         }
 
                         //Get CurrentTime
@@ -133,6 +137,12 @@ public class VoteCommand implements ServerCommand
         }
     }
 
+    private void RemoveCommand(String[] args, Guild guild, TextChannel channel, Message message)
+    {
+        //TODO create RemoveCommand
+        channel.sendMessage("```You can simply delete the VoteMessage for now```").complete().delete().queueAfter(5, TimeUnit.SECONDS);
+    }
+
     //=====================================================================================================================================
     //Help
     //=====================================================================================================================================
@@ -146,7 +156,8 @@ public class VoteCommand implements ServerCommand
         return builder.toString().trim();
     }
 
-    private List<String> getVoteStrings(String[] args, int startIndex){
+    private List<String> getVoteStrings(String[] args, int startIndex)
+    {
 
         //Build wholeString out of args after the start Index.. so where the Title and the votes comes
         String wholeString = "";
@@ -168,47 +179,51 @@ public class VoteCommand implements ServerCommand
         //Seperate the votes and the title
         for (int i = 0; i < wholeStringWords.length; i++)
         {
-                String searchWord = voteMarkNumber + ":";
-                if (wholeStringWords[i].equals(searchWord))
+            String searchWord = voteMarkNumber + ":";
+            if (wholeStringWords[i].equals(searchWord))
+            {
+                if (isNoTitle)
                 {
-                    if (isNoTitle)
-                    {
-                        text.trim();
-                        voteTexts.add(text);
-                    }
-                    else
-                    {
-                        if (!text.isEmpty()){
-                            voteTexts.add("TITLE: " + text);
-                            hasTitle = true;
-                        }
-                    }
-                    text = "";
-                    voteMarkNumber++;
-
-                    isNoTitle = true;
+                    text.trim();
+                    voteTexts.add(text);
                 }
                 else
                 {
-                    text += (wholeStringWords[i] + " ");
+                    if (!text.isEmpty())
+                    {
+                        voteTexts.add("TITLE: " + text);
+                        hasTitle = true;
+                    }
                 }
+                text = "";
+                voteMarkNumber++;
+
+                isNoTitle = true;
+            }
+            else
+            {
+                text += (wholeStringWords[i] + " ");
+            }
         }
         text.trim();
         voteTexts.add(text);
 
         //Calculate ListSize
         int allowedListSize = VoteCommandManager.voteEmotes.length;
-        if(hasTitle) allowedListSize += 1;
-        if(voteTexts.size() < VoteCommandManager.voteEmotes.length ){
+        if (hasTitle) allowedListSize += 1;
+        if (voteTexts.size() < VoteCommandManager.voteEmotes.length)
+        {
             allowedListSize = voteTexts.size();
         }
 
         return perepareListSize(voteTexts, allowedListSize);
     }
 
-    private List<String> perepareListSize(List<String> list, int size){
+    private List<String> perepareListSize(List<String> list, int size)
+    {
         List<String> newList = new ArrayList<>();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++)
+        {
             newList.add(list.get(i));
         }
 

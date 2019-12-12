@@ -16,6 +16,11 @@ import java.util.List;
 public class ReactRolesCommand implements ServerCommand
 {
 
+    public ReactRolesCommand()
+    {
+        ReactRoleManager.embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

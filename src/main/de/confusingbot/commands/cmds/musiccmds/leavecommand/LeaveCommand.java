@@ -14,6 +14,11 @@ public class LeaveCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public LeaveCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
@@ -27,7 +32,8 @@ public class LeaveCommand implements ServerCommand
             if (state != null)
             {
                 VoiceChannel voiceChannel = state.getChannel();
-                if(voiceChannel != null){
+                if (voiceChannel != null)
+                {
                     MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
                     AudioManager manager = voiceChannel.getGuild().getAudioManager();
                     AudioPlayer player = controller.getPlayer();
@@ -58,7 +64,9 @@ public class LeaveCommand implements ServerCommand
                         //Error
                         EmbedsUtil.BotNotInVoiceChannelError(channel);
                     }
-                }else{
+                }
+                else
+                {
                     EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                 }
             }

@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "tempchannel\n```" +
                 "```Create special VoiceChannels, which automatically creates a new VoiceChannel by joining it(named after the joining user)```");

@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 public class Embeds
 {
 
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "question ([Title]) QUESTION: [Question] [roles to mention]\n```" +
                 " ```Create a custom TextChannel (in the QuestionCategory) where only your question exists```");
@@ -36,7 +36,8 @@ public class Embeds
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question close`", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void QuestionCategoryGeneralUsage(TextChannel channel){
+    public void QuestionCategoryGeneralUsage(TextChannel channel)
+    {
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category [create/remove]`", channel, EmbedsUtil.showUsageTime);
     }
 

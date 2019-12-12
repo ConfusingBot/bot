@@ -12,6 +12,11 @@ public class PreviewCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public PreviewCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

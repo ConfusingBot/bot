@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class Embeds
 {
 
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "rules\n``` ```Shows you the rules of this server```");
     }

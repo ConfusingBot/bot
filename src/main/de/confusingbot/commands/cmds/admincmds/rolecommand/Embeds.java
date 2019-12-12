@@ -11,7 +11,7 @@ import java.awt.*;
 public class Embeds
 {
 
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "role\n``` " +
                 "```Create or remove roles in a simple way```");

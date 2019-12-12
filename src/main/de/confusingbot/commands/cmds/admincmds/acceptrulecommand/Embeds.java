@@ -9,10 +9,10 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class Embeds
 {
 
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "acceptrule``` " +
-                "```Create a awesome rule system, where the user have to accept your rules to unlock the server```\n"
+                "```Create a awesome rule system, where the user has to accept your rules to unlock the server```\n"
                );
     }
 

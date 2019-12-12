@@ -10,7 +10,10 @@ import java.util.List;
 public class RepeatInfoCommand implements ServerCommand
 {
 
-    RepeatInfoCommandManager repeatInfoCommandManager = new RepeatInfoCommandManager();
+    public RepeatInfoCommand()
+    {
+        RepeatInfoCommandManager.embeds.HelpEmbed();
+    }
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -122,7 +125,7 @@ public class RepeatInfoCommand implements ServerCommand
                         }
                     }
 
-                    if (RepeatInfoCommandManager.sql.getRepeatInfoIDs(guild.getIdLong()).size() < RepeatInfoCommandManager.maxInfos)
+                    if (RepeatInfoCommandManager.sql.getRepeatInfoIDs(guild.getIdLong()).size() < RepeatInfoCommandManager.maxRepeatInfos)
                     {
                         //SetTitle And Info
                         StringBuilder command = new StringBuilder();
@@ -153,7 +156,7 @@ public class RepeatInfoCommand implements ServerCommand
                     else
                     {
                         //Error
-                        RepeatInfoCommandManager.embeds.OnlyXAllowedInfoCommandsError(channel, RepeatInfoCommandManager.maxInfos);
+                        RepeatInfoCommandManager.embeds.OnlyXAllowedInfoCommandsError(channel, RepeatInfoCommandManager.maxRepeatInfos);
                     }
                 }
                 else

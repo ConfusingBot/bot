@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "roleborder\n``` " +
                 "```Create RoleBorders which can be used as an seperator between roles```");

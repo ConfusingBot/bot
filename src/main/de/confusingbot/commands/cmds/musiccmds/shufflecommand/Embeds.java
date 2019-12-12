@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.music.add("```yaml\n" + Main.prefix + "shuffle\n``` ```Shuffle your queue```");
     }

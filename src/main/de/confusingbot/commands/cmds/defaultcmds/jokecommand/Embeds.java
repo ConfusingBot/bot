@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.fun.add("```yaml\n" + Main.prefix + "joke ([mother, jacknorris])\n``` ```ConfusingBot will make you laugh```");
     }

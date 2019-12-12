@@ -6,6 +6,5 @@ public class RepeatInfoCommandManager
     public static Embeds embeds = new Embeds();
 
     public static String infoKey = "INFO:";
-
-    public static int maxInfos = 3;
+    public static int maxRepeatInfos = 3;
 }

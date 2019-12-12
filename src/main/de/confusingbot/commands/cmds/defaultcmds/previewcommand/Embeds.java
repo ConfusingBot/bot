@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "preview [text]\n``` ```Preview your text in a box```");
     }

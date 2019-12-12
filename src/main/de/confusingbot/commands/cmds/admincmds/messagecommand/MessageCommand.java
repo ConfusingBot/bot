@@ -11,7 +11,10 @@ import java.util.stream.Collectors;
 
 public class MessageCommand implements ServerCommand
 {
-
+    public MessageCommand()
+    {
+        MessageManager.embeds.HelpEmbed();
+    }
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)

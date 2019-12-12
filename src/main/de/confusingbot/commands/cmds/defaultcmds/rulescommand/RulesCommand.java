@@ -15,6 +15,11 @@ public class RulesCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public RulesCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

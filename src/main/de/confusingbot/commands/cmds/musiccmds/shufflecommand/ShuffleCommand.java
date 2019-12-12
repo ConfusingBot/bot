@@ -13,6 +13,11 @@ public class ShuffleCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public ShuffleCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

@@ -14,18 +14,18 @@ public class HugCommand implements ServerCommand
 {
     Embeds embeds = new Embeds();
 
-    private double waitTime = 30000.0d;
-
     private ConcurrentHashMap<Long, Long> timestamps;//save when the message was sent from which id
 
     String[] messages = new String[]{
             "come over %member\uD83E\uDDDF",
             "%member hugs himself\uD83D\uDE1C",
             "%member hugs ConfusingBot\uD83C\uDF08"};
+    private double waitTime = 30000.0d;
 
     public HugCommand()
     {
         this.timestamps = new ConcurrentHashMap<>();
+        embeds.HelpEmbed();
     }
 
     @Override

@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.musiccmds.queuecommand;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.music.manage.Music;
@@ -17,6 +18,11 @@ import java.util.List;
 public class QueueCommand implements ServerCommand
 {
     Embeds embeds = new Embeds();
+
+    public QueueCommand()
+    {
+        embeds.HelpEmbed();
+    }
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)

@@ -16,13 +16,18 @@ public class ClearCommand implements ServerCommand
 {
     private Embeds embeds = new Embeds();
 
+    public ClearCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
         //- clear [comments number x]
 
         String[] args = CommandsUtil.messageToArgs(message);
-       // message.delete().queue();
+        // message.delete().queue();
 
         if (member.hasPermission(channel, Permission.MESSAGE_MANAGE))
         {

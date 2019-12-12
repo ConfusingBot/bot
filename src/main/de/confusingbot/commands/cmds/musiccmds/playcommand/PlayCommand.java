@@ -14,6 +14,11 @@ public class PlayCommand implements ServerCommand
 {
     Embeds embeds = new Embeds();
 
+    public PlayCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

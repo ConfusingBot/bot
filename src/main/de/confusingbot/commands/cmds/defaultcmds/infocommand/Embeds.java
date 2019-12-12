@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 public class Embeds
 {
 
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "info [@User/bot]\n``` ```Give you some informations about the @User or the bot```");
     }

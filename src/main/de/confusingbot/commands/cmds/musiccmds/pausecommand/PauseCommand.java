@@ -13,6 +13,11 @@ public class PauseCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public PauseCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

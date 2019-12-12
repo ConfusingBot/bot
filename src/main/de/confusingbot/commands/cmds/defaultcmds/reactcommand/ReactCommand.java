@@ -13,6 +13,10 @@ public class ReactCommand implements ServerCommand
 
     Embeds embeds = new Embeds();
 
+    public ReactCommand()
+    {
+        embeds.HelpEmbed();
+    }
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)

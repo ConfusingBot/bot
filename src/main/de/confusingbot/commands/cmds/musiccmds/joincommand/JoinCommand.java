@@ -15,6 +15,11 @@ public class JoinCommand implements ServerCommand
 {
     Embeds embeds = new Embeds();
 
+    public JoinCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

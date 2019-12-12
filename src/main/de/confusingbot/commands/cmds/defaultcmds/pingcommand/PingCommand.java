@@ -9,6 +9,13 @@ import java.util.concurrent.TimeUnit;
 
 public class PingCommand implements ServerCommand
 {
+    Embeds embeds = new Embeds();
+
+    public PingCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {

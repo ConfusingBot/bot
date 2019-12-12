@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class Embeds
 {
-    public Embeds()
+    public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "message\n``` " +
                 "```You can create welcome/leave messages will be sent if a member join/leave the server```\n");

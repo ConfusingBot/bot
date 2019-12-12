@@ -18,6 +18,10 @@ public class QuestionCommand implements ServerCommand
 
     String questionKey = "QUESTION:";
 
+    public QuestionCommand(){
+        embeds.HelpEmbed();
+    }
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
