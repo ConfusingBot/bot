@@ -7,19 +7,17 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class QuestionCommand implements ServerCommand
 {
 
-    Embeds embeds = new Embeds();
-    SQL sql = new SQL();
 
-    String questionKey = "QUESTION:";
 
     public QuestionCommand(){
-        embeds.HelpEmbed();
+        QuestionManager.embeds.HelpEmbed();
     }
 
     @Override
@@ -55,20 +53,20 @@ public class QuestionCommand implements ServerCommand
                                     break;
                                 default:
                                     //Usage
-                                    embeds.QuestionCategoryGeneralUsage(channel);
+                                    QuestionManager.embeds.QuestionCategoryGeneralUsage(channel);
                                     break;
                             }
                         }
                         else
                         {
                             //Usage
-                            embeds.QuestionCategoryGeneralUsage(channel);
+                            QuestionManager.embeds.QuestionCategoryGeneralUsage(channel);
                         }
                     }
                     else
                     {
                         //Error
-                        embeds.NoPermissionError(channel);
+                        QuestionManager.embeds.NoPermissionError(channel);
                     }
                     break;
 
@@ -81,7 +79,7 @@ public class QuestionCommand implements ServerCommand
                     else
                     {
                         //Usage
-                        embeds.GeneralUsage(channel);
+                        QuestionManager.embeds.GeneralUsage(channel);
                     }
                     break;
             }
@@ -89,7 +87,7 @@ public class QuestionCommand implements ServerCommand
         else
         {
             //Usage
-            embeds.GeneralUsage(channel);
+            QuestionManager.embeds.GeneralUsage(channel);
         }
     }
 
@@ -103,29 +101,29 @@ public class QuestionCommand implements ServerCommand
             try
             {
                 long categoryid = Long.parseLong(args[3]);
-                if (!sql.ServerHasQuestionCategory(guild.getIdLong()))
+                if (!QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
                 {
                     //SQL
-                    sql.AddQuestionCategorieToSQL(guild.getIdLong(), categoryid);
+                    QuestionManager.sql.AddQuestionCategorieToSQL(guild.getIdLong(), categoryid);
 
                     //Message
-                    embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, guild.getCategoryById(categoryid).getName());
+                    QuestionManager.embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, guild.getCategoryById(categoryid).getName());
                 }
                 else
                 {
                     //Error
-                    embeds.OnlyOneAllowedQuestionCategory(channel);
+                    QuestionManager.embeds.OnlyOneAllowedQuestionCategory(channel);
                 }
             } catch (NumberFormatException e)
             {
                 //Error
-                embeds.ThisIsNoIDError(channel, args[3]);
+                QuestionManager.embeds.ThisIsNoIDError(channel, args[3]);
             }
         }
         else
         {
             //Usage
-            embeds.QuestionCategoryCreateUsage(channel);
+            QuestionManager.embeds.QuestionCategoryCreateUsage(channel);
         }
     }
 
@@ -133,26 +131,26 @@ public class QuestionCommand implements ServerCommand
     {
         if (args.length == 3)
         {
-            if (sql.ServerHasQuestionCategory(guild.getIdLong()))
+            if (QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
             {
-                Category category = sql.GetQuestionCategory(guild);
+                Category category = QuestionManager.sql.GetQuestionCategory(guild);
 
                 //SQL
-                sql.RemoveQuestionCategoryFromSQL(guild.getIdLong());
+                QuestionManager.sql.RemoveQuestionCategoryFromSQL(guild.getIdLong());
 
                 //Message
-                embeds.SuccessfullyRemovedCategoryToQuestionCategory(channel, category.getName());
+                QuestionManager.embeds.SuccessfullyRemovedCategoryToQuestionCategory(channel, category.getName());
             }
             else
             {
                 //Error
-                embeds.ServerHasNoQuestionCategoryError(channel);
+                QuestionManager.embeds.ServerHasNoQuestionCategoryError(channel);
             }
         }
         else
         {
             //Usage
-            embeds.QuestionCategoryRemoveUsage(channel);
+            QuestionManager.embeds.QuestionCategoryRemoveUsage(channel);
         }
     }
 
@@ -161,7 +159,7 @@ public class QuestionCommand implements ServerCommand
         if (args.length == 2)
         {
             //SQL
-            Member sentQuestionMember = sql.GetQuestionAskMember(guild, channel.getIdLong());
+            Member sentQuestionMember = QuestionManager.sql.GetQuestionAskMember(guild, channel.getIdLong());
 
             if (sentQuestionMember != null)
             {
@@ -172,27 +170,27 @@ public class QuestionCommand implements ServerCommand
                 {
                     int deletedInSeconds = 5;
                     //Message
-                    embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
+                    QuestionManager.embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
 
-                    Runnable r = new DeleteQuestionRunnable(guild, channel, memberid, deletedInSeconds, sql);
+                    Runnable r = new DeleteQuestionRunnable(guild, channel, memberid, deletedInSeconds, QuestionManager.sql);
                     new Thread(r).start();
                 }
                 else
                 {
                     //Error
-                    embeds.NoPermissionForClosingThisQuestionChannelError(channel);
+                    QuestionManager.embeds.NoPermissionForClosingThisQuestionChannelError(channel);
                 }
             }
             else
             {
                 //Error
-                embeds.YouAreNotInAQuestionChannelError(channel);
+                QuestionManager.embeds.YouAreNotInAQuestionChannelError(channel);
             }
         }
         else
         {
             //Usage
-            embeds.QuestionCloseUsage(channel);
+            QuestionManager.embeds.QuestionCloseUsage(channel);
         }
     }
 
@@ -203,7 +201,7 @@ public class QuestionCommand implements ServerCommand
         int mentionableRoles = 3;
         if (roles.size() <= mentionableRoles)
         {
-            Category category = sql.GetQuestionCategory(guild);
+            Category category = QuestionManager.sql.GetQuestionCategory(guild);
             if (category != null)
             {
                 TextChannel textChannel;
@@ -223,9 +221,9 @@ public class QuestionCommand implements ServerCommand
                 String question = "";
                 String roleString = createRoleString(roles);
 
-                if (wholeQuestion.contains(questionKey))
+                if (wholeQuestion.contains(QuestionManager.questionKey))
                 {
-                    String[] questionParts = wholeQuestion.split(questionKey);
+                    String[] questionParts = wholeQuestion.split(QuestionManager.questionKey);
                     questionTitle = "**" + questionParts[0] + "**";
                     question = questionParts[1];
                 }
@@ -235,28 +233,29 @@ public class QuestionCommand implements ServerCommand
                 }
 
                 //Send Question Message
-                EmbedBuilder builder = embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
+                EmbedBuilder builder = QuestionManager.embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
                 EmbedManager.SendEmbed(builder, textChannel, 0);
 
                 //SQLDatabase
                 long channelID = textChannel.getIdLong();
                 long guildID = textChannel.getGuild().getIdLong();
                 long memberID = member.getIdLong();
+                //Get CurrentTime
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String creationTime = textChannel.getTimeCreated().toLocalDateTime().format(formatter);
+                String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
 
                 //SQL
-                sql.AddGeneratedQuestionToSQL(channelID, guildID, memberID, creationTime);
+                QuestionManager.sql.AddGeneratedQuestionToSQL(guildID, channelID, memberID, creationTime);
             }
             else
             {
                 //Error
-                embeds.ThisServerHasNoExistingQuestionCategoryError(channel);
+                QuestionManager.embeds.ThisServerHasNoExistingQuestionCategoryError(channel);
             }
         }
         else
         {
-            embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
+            QuestionManager.embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
         }
     }
 

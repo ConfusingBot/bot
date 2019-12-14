@@ -54,21 +54,20 @@ public class UpdateQuestionChannels
                 if (channel == null) return;
 
                 //HANDLE TIME
+                long timeleft = getTimeLeft(creationTime, maxTimeInHours);
+                System.out.println("TimeLeft of question: " + timeleft);
 
-                long timeleft = getTimeLeft(creationTime);
-                //System.out.println("TimeLeft of question: " + timeleft);
-
+                List<Integer> overdueNotificationTimes = new ArrayList<>();
                 for (Integer notificationTime : notificationTimes)
                 {
-                    if (timeleft == notificationTime)
+                    if (timeleft <= notificationTime)
                     {
-                        //System.out.println("Notification " + timeleft);
-
-                        EmbedManager.SendCustomEmbedGetMessageID("This question will be closed in " + timeleft + " hours!",
-                                member.getAsMention() + " If nobody writes anything within " + timeleft + " hours, this question will be deleted\uD83D\uDE10",
-                                Color.decode("#e03d14"), channel);
+                        overdueNotificationTimes.add(notificationTime);
                     }
                 }
+
+                //Message
+                QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, overdueNotificationTimes.get(overdueNotificationTimes.size() - 1));
 
                 if (timeleft <= 0)
                 {
@@ -85,7 +84,7 @@ public class UpdateQuestionChannels
     }
 
     //Calculate TimeLeft
-    private long getTimeLeft(String creationTimeString)
+    private long getTimeLeft(String creationTimeString, int endTime)
     {
         long timeLeft = -1;
 
@@ -100,32 +99,10 @@ public class UpdateQuestionChannels
 
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toHours() - 1);//if in toMinutes - 60 and not - 1!
+        long differentInHours = (duration.toHours());
         //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = maxTimeInHours - differentInHours;
-
-        //TODO optimize Ausnahme wenn nachricht versendet wurde wieder um 2h verlängern oder so..
-        /*
-        duration = Duration.between(creationTime, getLastChannelMessageSentTime(channel));
-        long timeBetweenlastMessage = (duration.toHours() - 60);//if in toMinutes - 60 and not - 1!
-        if (timeBetweenlastMessage <= 3 && timeLeft <= 10)
-        {
-            timeLeft += timeBetweenlastMessage;
-        }
-        */
+        timeLeft = endTime - differentInHours;
 
         return timeLeft;
-    }
-
-    private LocalDateTime getLastChannelMessageSentTime(TextChannel channel)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime lastMessageTime;
-
-        Message lastMessage = channel.getHistory().getMessageById(channel.getLatestMessageIdLong());
-        String lastMessageTimeString = lastMessage.getTimeCreated().toLocalDateTime().format(formatter);
-        lastMessageTime = LocalDateTime.parse(lastMessageTimeString, formatter);
-
-        return lastMessageTime;
     }
 }

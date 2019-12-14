@@ -29,6 +29,12 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question [Title] QUESTION: [Question] [mentioned role]`", channel, EmbedsUtil.showUsageTime);
+
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "question [Title] QUESTION: [Question] [mentioned role]\n```"
+                        + "```Create a custom TextChannel (in the QuestionCategory) where only your question exists```"
+                        + "```yaml\n" + Main.prefix + "question close```"
+                        + "```Close the question in which you wrote this command```",
+                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCloseUsage(TextChannel channel)
@@ -127,5 +133,11 @@ public class Embeds
         builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
 
         return builder;
+    }
+
+    public void SendDeleteQuestionInfo(TextChannel channel, Member member, long timeleft){
+        EmbedManager.SendCustomEmbedGetMessageID("This question will be closed in " + timeleft + " hours!",
+                member.getAsMention() + " If nobody writes anything within " + timeleft + " hours, this question will be deleted\uD83D\uDE10",
+                Color.decode("#e03d14"), channel);
     }
 }

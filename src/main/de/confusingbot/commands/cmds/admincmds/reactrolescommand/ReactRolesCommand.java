@@ -149,7 +149,7 @@ public class ReactRolesCommand implements ServerCommand
                     {
                         if (!ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
                         {
-                            CommandsUtil.reactEmote(emoteString, channel, messageID, true);
+                            CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
 
                             //SQL
                             ReactRoleManager.sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
