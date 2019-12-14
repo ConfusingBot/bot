@@ -38,11 +38,10 @@ public class UpdateVotes
                 String title = set.getString("title");
                 List<String> selectEmotes = Arrays.asList(emotesString.split(" "));
 
-                long timeleft = getTimeLeft(creationTime, endTime);
+                long timeleft = CommandsUtil.getTimeLeft(creationTime, endTime);
 
                 if (timeleft <= 0)
                 {
-
                     //SQL
                     VoteCommandManager.sql.removeFromSQL(guildid, id);
 
@@ -120,29 +119,6 @@ public class UpdateVotes
         {
             e.printStackTrace();
         }
-    }
-
-    //Calculate TimeLeft
-    private long getTimeLeft(String creationTimeString, int endTime)
-    {
-        long timeLeft = -1;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        //get CreationTime
-        LocalDateTime creationTime = LocalDateTime.parse(creationTimeString, formatter);
-
-        //Get currentTime
-        String currentTimeString = OffsetDateTime.now().toLocalDateTime().format(formatter);
-        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString, formatter);
-
-        //Calculate timeleft
-        Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toHours());
-        //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = endTime - differentInHours;
-
-        return timeLeft;
     }
 
     private Message getMessage(TextChannel channel, long messageid)

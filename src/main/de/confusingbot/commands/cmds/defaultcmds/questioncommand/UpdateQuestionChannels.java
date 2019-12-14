@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
@@ -54,20 +55,17 @@ public class UpdateQuestionChannels
                 if (channel == null) return;
 
                 //HANDLE TIME
-                long timeleft = getTimeLeft(creationTime, maxTimeInHours);
-                System.out.println("TimeLeft of question: " + timeleft);
+                long timeleft = CommandsUtil.getTimeLeft(creationTime, maxTimeInHours);
+                //System.out.println("TimeLeft of question: " + timeleft);
 
-                List<Integer> overdueNotificationTimes = new ArrayList<>();
                 for (Integer notificationTime : notificationTimes)
                 {
-                    if (timeleft <= notificationTime)
+                    if (timeleft == notificationTime)
                     {
-                        overdueNotificationTimes.add(notificationTime);
+                        //Message
+                        QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, timeleft);
                     }
                 }
-
-                //Message
-                QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, overdueNotificationTimes.get(overdueNotificationTimes.size() - 1));
 
                 if (timeleft <= 0)
                 {
@@ -81,28 +79,5 @@ public class UpdateQuestionChannels
         {
             e.printStackTrace();
         }
-    }
-
-    //Calculate TimeLeft
-    private long getTimeLeft(String creationTimeString, int endTime)
-    {
-        long timeLeft = -1;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        //get CreationTime
-        LocalDateTime creationTime = LocalDateTime.parse(creationTimeString, formatter);
-
-        //Get currentTime
-        String currentTimeString = OffsetDateTime.now().toLocalDateTime().format(formatter);
-        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString, formatter);
-
-        //Calculate timeleft
-        Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toHours());
-        //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = endTime - differentInHours;
-
-        return timeLeft;
     }
 }

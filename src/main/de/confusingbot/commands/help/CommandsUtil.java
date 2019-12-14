@@ -4,6 +4,10 @@ import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -114,6 +118,29 @@ public class CommandsUtil
                     guild.removeRoleFromMember(member, role).queue();
             }
         }
+    }
+
+    //Calculate TimeLeft
+    public static long getTimeLeft(String creationTimeString, int endTime)
+    {
+        long timeLeft = -1;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        //get CreationTime
+        LocalDateTime creationTime = LocalDateTime.parse(creationTimeString, formatter);
+
+        //Get currentTime
+        String currentTimeString = OffsetDateTime.now().toLocalDateTime().format(formatter);
+        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString, formatter);
+
+        //Calculate timeleft
+        Duration duration = Duration.between(creationTime, currentTime);
+        long differentInHours = (duration.toHours());
+        //System.out.println("Different in minutes " + differentInHours);
+        timeLeft = endTime - differentInHours;
+
+        return timeLeft;
     }
 }
 
