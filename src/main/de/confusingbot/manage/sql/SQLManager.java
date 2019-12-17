@@ -90,5 +90,10 @@ public class SQLManager
                 "endTime INTEGER, " +
                 "creationtime TEXT, " +
                 "emotes TEXT)");
+
+        tabelNames.add("joinrole");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS joinrole(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildid INTEGER, " +
+                "roleid INTEGER)");
     }
 }
