@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.help;
 
 import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -89,15 +90,24 @@ public class CommandsUtil
         }
     }
 
-    public static List<Long> getLatestMessages(MessageChannel channel)
+    public static List<Long> getLatestMessageIds(MessageChannel channel)
     {
-        List<Long> messages = new ArrayList<>();
+        List<Long> messageIds = new ArrayList<>();
 
         for (Message message : channel.getIterableHistory().cache(false))
         {
-            messages.add(message.getIdLong());
+            messageIds.add(message.getIdLong());
         }
-        return messages;
+        return messageIds;
+    }
+
+    public static Message getLatestesMessageByID(TextChannel channel, long messageid) {
+        Message message = null;
+        MessageHistory history = channel.getHistory();
+
+        message = history.getMessageById(messageid);
+
+        return message;
     }
 
     public static void AddOrRemoveRoleFromAllMembers(Guild guild, long roleid, boolean add){
@@ -115,5 +125,7 @@ public class CommandsUtil
             }
         }
     }
+
+
 }
 

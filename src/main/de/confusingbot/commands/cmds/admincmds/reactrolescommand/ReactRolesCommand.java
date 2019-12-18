@@ -5,8 +5,6 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.lang.reflect.Array;
-import java.nio.channels.Channel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -103,7 +101,7 @@ public class ReactRolesCommand implements ServerCommand
                 TextChannel roleAddChannel = guild.getTextChannelById(channelIDs.get(i));
                 String emoteString = emoteStrings.get(i);
                 long messageID = messageIDs.get(i);
-                if (role != null && roleAddChannel != null && CommandsUtil.getLatestMessages(roleAddChannel).contains(messageID))
+                if (role != null && roleAddChannel != null && CommandsUtil.getLatestMessageIds(roleAddChannel).contains(messageID))
                 {
                     if (CommandsUtil.isNumeric(emoteString))
                         emoteString = guild.getEmoteById(emoteString).getAsMention();
