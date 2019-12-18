@@ -66,10 +66,10 @@ public class Embeds
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
-    public void BotHasNoPermissionToAssignRole(TextChannel channel)
+    public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendErrorEmbed("The bot has no right to assign this role\n" +
-                "Please give the bot a role over the role to be assigned", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The bot has no right to assign this " + role.getAsMention() + "\n" +
+                "Please give the bot a role over the role to be assign this role!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void YouHaveNotMentionedAValidEmoteError(TextChannel channel)
@@ -77,17 +77,21 @@ public class Embeds
         EmbedManager.SendErrorEmbed("You haven't mentioned valid a Emote!", channel, EmbedsUtil.showErrorTime);
     }
 
+    public void RoleDoesNotExistError(TextChannel channel, long roleid){
+        EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
     public void SuccessfullyAddedReactRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully added the @" + role.getName() + " to ReactRoles", channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully added @" + role.getName() + " to the ReactRoles", channel, EmbedsUtil.showSuccessTime);
     }
 
     public void SuccessfullyRemovedReactRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully removed the @" + role.getName() + " to ReactRoles", channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully removed @" + role.getName() + " from the ReactRoles", channel, EmbedsUtil.showSuccessTime);
     }
 
     //=====================================================================================================================================

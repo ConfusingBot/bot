@@ -93,7 +93,7 @@ public class ReactRolesCommand implements ServerCommand
             e.printStackTrace();
         }
 
-        if (reactrolesIds.size() != 0 && reactrolesIds != null)
+        if (!reactrolesIds.isEmpty())
         {
             //Create Description -> all voice channel
             String description = "";

@@ -1,11 +1,13 @@
 package main.de.confusingbot.commands.cmds.admincmds.joinrole;
 
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
+import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JoinRoleCommand implements ServerCommand {
@@ -73,7 +75,7 @@ public class JoinRoleCommand implements ServerCommand {
                     JoinRoleManager.sql.addToSQL(guildID, roleid);
 
                     //Message
-                    JoinRoleManager.embeds.SuccessfulAddedJoinRole(channel);
+                    JoinRoleManager.embeds.SuccessfulAddedJoinRole(channel, role);
                 }
                 else
                 {
@@ -84,7 +86,6 @@ public class JoinRoleCommand implements ServerCommand {
                 //Error
                 JoinRoleManager.embeds.NoMentionedRoleError(channel);
             }
-
         }
         else
         {
@@ -108,7 +109,7 @@ public class JoinRoleCommand implements ServerCommand {
                     JoinRoleManager.sql.removeFormSQL(guildID, roleid);
 
                     //Message
-                    JoinRoleManager.embeds.SuccessfulRemovedJoinRole(channel);
+                    JoinRoleManager.embeds.SuccessfulRemovedJoinRole(channel, role);
                 }
                 else
                 {
@@ -129,8 +130,41 @@ public class JoinRoleCommand implements ServerCommand {
 
     private void listCommand(String[] args, TextChannel channel, Message message)
     {
+        Guild guild = channel.getGuild();
      if (args.length == 2){
 
+         //SQL
+         List<Long> roleids = JoinRoleManager.sql.getRoleIDs(guild.getIdLong());
+
+         if (!roleids.isEmpty())
+         {
+             //Create Description -> all voice channel
+             String description = "";
+             for (long roleid : roleids)
+             {
+                 Role role = guild.getRoleById(roleid);
+
+                 if (role != null)
+                 {
+
+                     description +=  "⚫️" + role.getAsMention() + "\n\n";
+                 }
+                 else
+                 {
+                     description += "⚠️**Role does not exist**\n";
+
+                     //SQL
+                     JoinRoleManager.sql.removeFormSQL(guild.getIdLong(), roleid);
+                 }
+             }
+
+             //Message
+             JoinRoleManager.embeds.SendJoinRoleList(channel, description);
+         }
+         else
+         {
+             JoinRoleManager.embeds.HasNoJoinRoleInformation(channel);
+         }
      }else{
          JoinRoleManager.embeds.ListUsage(channel);
      }
