@@ -52,7 +52,7 @@ public class UpdateVotes
                         if (channel != null)
                         {
                             Message message = getMessage(channel, messageid);
-                            if (CommandsUtil.getLatestMessages(channel).contains(messageid))
+                            if (CommandsUtil.getLatestMessageIds(channel).contains(messageid))
                             {
                                 //Show that the vote has ended
                                 CommandsUtil.reactEmote("❌", channel, messageid, true);

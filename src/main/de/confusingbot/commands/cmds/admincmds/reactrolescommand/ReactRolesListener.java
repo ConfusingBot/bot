@@ -3,6 +3,7 @@ package main.de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
@@ -15,8 +16,7 @@ public class ReactRolesListener
 
     public void onReactionAdd(MessageReactionAddEvent event)
     {
-        try
-        {
+        Guild guild = event.getGuild();
             if (event.getChannelType() == ChannelType.TEXT)
             {
                 long guildid = event.getGuild().getIdLong();
@@ -38,26 +38,34 @@ public class ReactRolesListener
                         }
 
                         long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                        Guild guild = event.getGuild();
+                        Role role = guild.getRoleById(roleid);
 
-                        //Add Role to member
-                        guild.addRoleToMember(event.getMember(), guild.getRoleById(roleid)).queue();
+                        if(role != null){
 
+                            try
+                            {
+                                //Add Role to member
+                                guild.addRoleToMember(event.getMember(), guild.getRoleById(roleid)).queue();
+                            } catch (HierarchyException e)
+                            {
+                                //Error
+                                ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);
+                            }
+                        }
+                        else
+                        {
+                            ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+                        }
                     }
                 }
             }
-        } catch (HierarchyException e)
-        {
-            //Error
-            ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel());
-        }
+
 
     }
 
     public void onReactionRemove(MessageReactionRemoveEvent event)
     {
-        try
-        {
+        Guild guild = event.getGuild();
             if (event.getChannelType() == ChannelType.TEXT)
             {
                 long guildid = event.getGuild().getIdLong();
@@ -79,17 +87,27 @@ public class ReactRolesListener
                         }
 
                         long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                        Guild guild = event.getGuild();
+                        Role role = guild.getRoleById(roleid);
 
-                        //Remove Role from member
-                        guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
+                        if(role != null) {
+                            try {
+                                //Remove Role from member
+                                guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
+                            } catch (HierarchyException e) {
+                                //Error
+                                ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);
+                            }
+                        }
+                         else
+                            {
+                                //Error
+                                ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+
+                                //SQL
+                                ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
+                            }
                     }
                 }
             }
-        } catch (HierarchyException e)
-        {
-            //Error
-            ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel());
-        }
     }
 }

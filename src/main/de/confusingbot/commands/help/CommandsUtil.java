@@ -2,12 +2,9 @@ package main.de.confusingbot.commands.help;
 
 import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import java.awt.*;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -93,15 +90,24 @@ public class CommandsUtil
         }
     }
 
-    public static List<Long> getLatestMessages(MessageChannel channel)
+    public static List<Long> getLatestMessageIds(MessageChannel channel)
     {
-        List<Long> messages = new ArrayList<>();
+        List<Long> messageIds = new ArrayList<>();
 
         for (Message message : channel.getIterableHistory().cache(false))
         {
-            messages.add(message.getIdLong());
+            messageIds.add(message.getIdLong());
         }
-        return messages;
+        return messageIds;
+    }
+
+    public static Message getLatestesMessageByID(TextChannel channel, long messageid) {
+        Message message = null;
+        MessageHistory history = channel.getHistory();
+
+        message = history.getMessageById(messageid);
+
+        return message;
     }
 
     public static void AddOrRemoveRoleFromAllMembers(Guild guild, long roleid, boolean add){
@@ -120,27 +126,6 @@ public class CommandsUtil
         }
     }
 
-    //Calculate TimeLeft
-    public static long getTimeLeft(String creationTimeString, int endTime)
-    {
-        long timeLeft = -1;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        //get CreationTime
-        LocalDateTime creationTime = LocalDateTime.parse(creationTimeString, formatter);
-
-        //Get currentTime
-        String currentTimeString = OffsetDateTime.now().toLocalDateTime().format(formatter);
-        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString, formatter);
-
-        //Calculate timeleft
-        Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toHours());
-        //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = endTime - differentInHours;
-
-        return timeLeft;
-    }
 }
 

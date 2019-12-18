@@ -92,6 +92,7 @@ public class AcceptRulesListener
         }
     }
 
+    //TODO never tried
     public void onMemberLeaveListener(GuildMemberLeaveEvent event)
     {
         Guild guild = event.getGuild();
@@ -100,10 +101,18 @@ public class AcceptRulesListener
 
         if(messageID != -1 && channelID != -1){
             TextChannel channel = guild.getTextChannelById(channelID);
+            Message message = CommandsUtil.getLatestesMessageByID(channel, messageID);
 
-            List<Long> latestMessages = CommandsUtil.getLatestMessages(channel);
+            if(message != null){
+                List<MessageReaction> reactions = message.getReactions();
 
-            //TODO get message by id
+                for(MessageReaction reaction : reactions){
+                    User user = reaction.getPrivateChannel().getUser();
+                    if(user != null){
+                        message.removeReaction((Emote) reaction.getReactionEmote(), user);
+                    }
+                }
+            }
 
         }
     }

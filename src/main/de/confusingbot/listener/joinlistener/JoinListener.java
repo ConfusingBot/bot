@@ -1,6 +1,7 @@
 package main.de.confusingbot.listener.joinlistener;
 
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRulesListener;
+import main.de.confusingbot.commands.cmds.admincmds.joinrole.JoinRoleListener;
 import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageListener;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
@@ -22,13 +23,14 @@ public class JoinListener extends ListenerAdapter
 
     AcceptRulesListener acceptRulesListener = new AcceptRulesListener();
     MessageListener messageListener = new MessageListener();
+    JoinRoleListener joinRoleListener = new JoinRoleListener();
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event)
     {
         acceptRulesListener.onMemberJoinListener(event);
         messageListener.onMemberJoinListener(event);
-
+        joinRoleListener.onMemberJoinListener(event);
     }
 
     @Override

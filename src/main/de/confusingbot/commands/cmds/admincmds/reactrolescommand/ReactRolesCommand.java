@@ -5,8 +5,6 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.lang.reflect.Array;
-import java.nio.channels.Channel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +70,7 @@ public class ReactRolesCommand implements ServerCommand
     //=====================================================================================================================================
     private void ListCommand(Guild guild, TextChannel channel)
     {
-        List<Long> reactrolesIds = new ArrayList<>();
+        List<Long> reactroleIds = new ArrayList<>();
         List<Long> messageIDs = new ArrayList<>();
         List<Long> channelIDs = new ArrayList<>();
         List<String> emoteStrings = new ArrayList<>();
@@ -83,7 +81,7 @@ public class ReactRolesCommand implements ServerCommand
 
             while (set.next())
             {
-                reactrolesIds.add(set.getLong("roleid"));
+                reactroleIds.add(set.getLong("roleid"));
                 messageIDs.add(set.getLong("messageid"));
                 channelIDs.add(set.getLong("channelid"));
                 emoteStrings.add(set.getString("emote"));
@@ -93,17 +91,17 @@ public class ReactRolesCommand implements ServerCommand
             e.printStackTrace();
         }
 
-        if (reactrolesIds.size() != 0 && reactrolesIds != null)
+        if (!reactroleIds.isEmpty())
         {
             //Create Description -> all voice channel
             String description = "";
-            for (int i = 0; i < reactrolesIds.size(); i++)
+            for (int i = 0; i < reactroleIds.size(); i++)
             {
-                Role role = guild.getRoleById(reactrolesIds.get(i));
+                Role role = guild.getRoleById(reactroleIds.get(i));
                 TextChannel roleAddChannel = guild.getTextChannelById(channelIDs.get(i));
                 String emoteString = emoteStrings.get(i);
                 long messageID = messageIDs.get(i);
-                if (role != null && roleAddChannel != null && CommandsUtil.getLatestMessages(roleAddChannel).contains(messageID))
+                if (role != null && roleAddChannel != null && CommandsUtil.getLatestMessageIds(roleAddChannel).contains(messageID))
                 {
                     if (CommandsUtil.isNumeric(emoteString))
                         emoteString = guild.getEmoteById(emoteString).getAsMention();
@@ -114,7 +112,7 @@ public class ReactRolesCommand implements ServerCommand
                 {
                     description += "⚠️**ReactRole does not exists!**\n";
                     //SQL
-                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelIDs.get(i), messageID, emoteString, reactrolesIds.get(i));
+                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelIDs.get(i), messageID, emoteString, reactroleIds.get(i));
                 }
             }
 
