@@ -139,6 +139,25 @@ public class SQL
         return channelID;
     }
 
+    public String getEmote(long guildid)
+    {
+        String emote = "Error";
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+                + "guildid = " + guildid);
+        try
+        {
+            if (set.next())
+            {
+                emote = set.getString("emote");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return emote;
+    }
+
     public List<Role> getRoleBorders(Guild guild)
     {
         List<Role> roleBorders = new ArrayList<>();

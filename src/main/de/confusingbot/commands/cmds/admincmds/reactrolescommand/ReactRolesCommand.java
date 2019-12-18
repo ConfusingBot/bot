@@ -70,7 +70,7 @@ public class ReactRolesCommand implements ServerCommand
     //=====================================================================================================================================
     private void ListCommand(Guild guild, TextChannel channel)
     {
-        List<Long> reactrolesIds = new ArrayList<>();
+        List<Long> reactroleIds = new ArrayList<>();
         List<Long> messageIDs = new ArrayList<>();
         List<Long> channelIDs = new ArrayList<>();
         List<String> emoteStrings = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ReactRolesCommand implements ServerCommand
 
             while (set.next())
             {
-                reactrolesIds.add(set.getLong("roleid"));
+                reactroleIds.add(set.getLong("roleid"));
                 messageIDs.add(set.getLong("messageid"));
                 channelIDs.add(set.getLong("channelid"));
                 emoteStrings.add(set.getString("emote"));
@@ -91,13 +91,13 @@ public class ReactRolesCommand implements ServerCommand
             e.printStackTrace();
         }
 
-        if (!reactrolesIds.isEmpty())
+        if (!reactroleIds.isEmpty())
         {
             //Create Description -> all voice channel
             String description = "";
-            for (int i = 0; i < reactrolesIds.size(); i++)
+            for (int i = 0; i < reactroleIds.size(); i++)
             {
-                Role role = guild.getRoleById(reactrolesIds.get(i));
+                Role role = guild.getRoleById(reactroleIds.get(i));
                 TextChannel roleAddChannel = guild.getTextChannelById(channelIDs.get(i));
                 String emoteString = emoteStrings.get(i);
                 long messageID = messageIDs.get(i);
@@ -112,7 +112,7 @@ public class ReactRolesCommand implements ServerCommand
                 {
                     description += "⚠️**ReactRole does not exists!**\n";
                     //SQL
-                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelIDs.get(i), messageID, emoteString, reactrolesIds.get(i));
+                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelIDs.get(i), messageID, emoteString, reactroleIds.get(i));
                 }
             }
 

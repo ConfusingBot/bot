@@ -3,6 +3,7 @@ package main.de.confusingbot.manage.commands;
 import main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
+import main.de.confusingbot.commands.cmds.admincmds.joinrole.JoinRoleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageCommand;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesCommand;
 import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.RepeatInfoCommand;
@@ -56,6 +57,7 @@ public class CommandManager {
         this.commands.put("ping", new PingCommand());
         this.commands.put("joke", new JokeCommand());
         this.commands.put("question", new QuestionCommand());
+        this.commands.put("joinrole", new JoinRoleCommand());
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());

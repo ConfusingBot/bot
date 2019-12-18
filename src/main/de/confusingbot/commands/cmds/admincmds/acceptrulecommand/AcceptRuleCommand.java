@@ -36,6 +36,9 @@ public class AcceptRuleCommand implements ServerCommand
                     case "remove":
                         removeCommand(message.getGuild(), args, channel);
                         break;
+                    case "show":
+                        showCommand(message.getGuild(), args, channel);
+                        break;
                     default:
                         //Usage
                         AcceptRuleManager.embeds.GeneralUsage(channel);
@@ -145,6 +148,42 @@ public class AcceptRuleCommand implements ServerCommand
         {
             //Usage
             AcceptRuleManager.embeds.RemoveUsage(channel);
+        }
+    }
+
+    private void showCommand(Guild guild, String[] args, TextChannel channel){
+        long guildID = guild.getIdLong();
+        if (args.length == 2)
+        {
+            if(AcceptRuleManager.sql.ExistsInSQL(guildID)){
+
+                long acceptedRoleID = AcceptRuleManager.sql.getAcceptedRoleID(guildID);
+                long notAcceptedRoleID = AcceptRuleManager.sql.getNotAcceptedRoleID(guildID);
+                long channelID = AcceptRuleManager.sql.getChannelID(guildID);
+                String emote = AcceptRuleManager.sql.getEmote(guildID);
+
+                Role acceptedRole = guild.getRoleById(acceptedRoleID);
+                Role notAcceptedRole = guild.getRoleById(notAcceptedRoleID);
+                TextChannel textChannel = guild.getTextChannelById(channelID);
+
+                String acceptedRoleString = "Not Existing";
+                String notAcceptedRoleString = "Not Existing";
+                String textChannelString = "Not Existing";
+
+                if(acceptedRole != null) acceptedRoleString = acceptedRole.getAsMention();
+                if(notAcceptedRole != null) notAcceptedRoleString = notAcceptedRole.getAsMention();
+                if(textChannel != null) textChannelString = textChannel.getAsMention();
+
+                //Message
+                AcceptRuleManager.embeds.ShowAcceptRule(channel, textChannelString, notAcceptedRoleString, acceptedRoleString, emote);
+
+            }else{
+                //Information
+                AcceptRuleManager.embeds.ServerHasNoAcceptedRuleInformation(channel);
+            }
+        }else {
+            //Usage
+            AcceptRuleManager.embeds.ShowUsage(channel);
         }
     }
 
