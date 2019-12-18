@@ -30,8 +30,8 @@ public class Embeds
                 +"```Add a JoinRole to your server```\n"
                 + "```yaml\n" + Main.prefix + "joinrole remove [@role]\n```"
                 +  "```Remove the @role form the JoinRoles```\n"
-                        + "```yaml\n" + Main.prefix + "joinrole listn```"
-                        +  "```List all JoinRoles of this server``\n"
+                        + "```yaml\n" + Main.prefix + "joinrole list```"
+                        +  "```List all JoinRoles of this server```\n"
                 , channel, EmbedsUtil.showUsageTime);
     }
 
@@ -78,15 +78,15 @@ public class Embeds
     //Information
     //=====================================================================================================================================
     public void AlreadyExistingJoinRoleInformation(TextChannel channel, Role role){
-        EmbedsUtil.AlreadyExistsError(channel, "JoinRole" + "(@" + role.getName() + ")");
+        EmbedsUtil.AlreadyExistsError(channel, "JoinRole" + " (" + role.getAsMention() + ")");
     }
 
     public void NoExistingJoinRoleInformation(TextChannel channel, Role role){
-        EmbedsUtil.NotExistingError(channel, "JoinRole" + "(@" + role.getName() + ")");
+        EmbedsUtil.NotExistingError(channel, "JoinRole" + " (" + role.getAsMention() + ")");
     }
 
     public void HasNoJoinRoleInformation(TextChannel channel){
-        EmbedManager.SendInfoEmbed("This guild has **no JoinRoles**! \nYou can add JoinRoles with`" + Main.prefix + "joinrole add`", channel, 5);
+        EmbedManager.SendInfoEmbed("This guild has **no JoinRoles**! \nYou can add JoinRoles with `" + Main.prefix + "joinrole add`", channel, 5);
     }
 
     //=====================================================================================================================================
@@ -94,12 +94,12 @@ public class Embeds
     //=====================================================================================================================================
     public void SuccessfulRemovedJoinRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully removed @" + role.getName() + " from the JoinRoles", channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully removed " + role.getAsMention() + " from the JoinRoles", channel, EmbedsUtil.showSuccessTime);
     }
 
     public void SuccessfulAddedJoinRole(TextChannel channel, Role role)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully added @" + role.getName() + " to the JoinRoles", channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully added " + role.getAsMention() + " to the JoinRoles", channel, EmbedsUtil.showSuccessTime);
     }
 
     //=====================================================================================================================================

@@ -54,7 +54,12 @@ public class ReactRolesListener
                         }
                         else
                         {
+                            //Error
                             ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+
+                            //SQL
+                            ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
+
                         }
                     }
                 }

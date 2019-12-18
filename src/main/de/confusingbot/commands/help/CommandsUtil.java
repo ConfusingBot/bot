@@ -5,6 +5,10 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import java.awt.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -101,24 +105,28 @@ public class CommandsUtil
         return messageIds;
     }
 
-    public static Message getLatestesMessageByID(TextChannel channel, long messageid) {
-        Message message = null;
-        MessageHistory history = channel.getHistory();
+    public static Message getLatestesMessageByID(TextChannel channel, long messageid)
+    {
+        for (Message m : channel.getIterableHistory().cache(false))
+        {
+            if(m.getIdLong() == messageid) return m;
+        }
 
-        message = history.getMessageById(messageid);
-
-        return message;
+        return null;
     }
 
-    public static void AddOrRemoveRoleFromAllMembers(Guild guild, long roleid, boolean add){
+    public static void AddOrRemoveRoleFromAllMembers(Guild guild, long roleid, boolean add)
+    {
         List<Member> members = guild.getMembers();
 
         Role role = guild.getRoleById(roleid);
-        if(role == null) return;
+        if (role == null) return;
 
-        for(Member member : members){
-            if(!member.getUser().isBot()){
-                if(add)
+        for (Member member : members)
+        {
+            if (!member.getUser().isBot())
+            {
+                if (add)
                     guild.addRoleToMember(member, role).queue();
                 else
                     guild.removeRoleFromMember(member, role).queue();
@@ -126,6 +134,27 @@ public class CommandsUtil
         }
     }
 
+    //Calculate TimeLeft
+    public static long getTimeLeft(String creationTimeString, int endTime)
+    {
+        long timeLeft = -1;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        //get CreationTime
+        LocalDateTime creationTime = LocalDateTime.parse(creationTimeString, formatter);
+
+        //Get currentTime
+        String currentTimeString = OffsetDateTime.now().toLocalDateTime().format(formatter);
+        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString, formatter);
+
+        //Calculate timeleft
+        Duration duration = Duration.between(creationTime, currentTime);
+        long differentInHours = (duration.toHours());
+        //System.out.println("Different in minutes " + differentInHours);
+        timeLeft = endTime - differentInHours;
+
+        return timeLeft;
+    }
 }
 

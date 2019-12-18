@@ -37,5 +37,6 @@ public class JoinListener extends ListenerAdapter
     public void onGuildMemberLeave(@Nonnull GuildMemberLeaveEvent event)
     {
         messageListener.onMemberLeaveEvent(event);
+        acceptRulesListener.onMemberLeaveListener(event);
     }
 }

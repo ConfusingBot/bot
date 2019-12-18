@@ -18,7 +18,7 @@ public class SQL
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+            ResultSet set = LiteSQL.onQuery("SELECT * FROM joinrole WHERE "
                     + "guildid = " + guildid
                     + " AND roleid = " + roleid);
 
@@ -53,7 +53,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            while (set.next())
             {
                 roleids.add(set.getLong("roleid"));
             }

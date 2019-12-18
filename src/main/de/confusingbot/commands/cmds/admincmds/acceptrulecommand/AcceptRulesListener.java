@@ -46,30 +46,35 @@ public class AcceptRulesListener
 
     public void onReactionRemove(MessageReactionRemoveEvent event)
     {
-        if (event.getChannelType() == ChannelType.TEXT)
+        Member member = event.getMember();
+        if (member != null)
         {
-            long messageid = event.getMessageIdLong();
-
-            if (AcceptRuleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+            if (event.getChannelType() == ChannelType.TEXT)
             {
-                if (!event.getUser().isBot())
+                long messageid = event.getMessageIdLong();
+
+                if (AcceptRuleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
                 {
-                    Guild guild = event.getGuild();
-                    Member member = event.getMember();
-                    long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(event.getGuild().getIdLong());
-                    long roleacceptedid = AcceptRuleManager.sql.getAcceptedRoleID(event.getGuild().getIdLong());
-
-                    //add blocked and remove member
-                    guild.removeRoleFromMember(member, guild.getRoleById(roleacceptedid)).queue();
-                    guild.addRoleToMember(member, guild.getRoleById(rolenotacceptedid)).queue();
-
-                    //remove roleborders
-                    List<Role> roleBorders = AcceptRuleManager.sql.getRoleBorders(guild);
-                    if (roleBorders != null)
+                    if (!event.getUser().isBot())
                     {
-                        for (int i = 0; i < roleBorders.size(); i++)
+                        Guild guild = event.getGuild();
+
+                        long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(event.getGuild().getIdLong());
+                        long roleacceptedid = AcceptRuleManager.sql.getAcceptedRoleID(event.getGuild().getIdLong());
+
+                        //add blocked and remove member
+                        guild.removeRoleFromMember(member, guild.getRoleById(roleacceptedid)).queue();
+                        guild.addRoleToMember(member, guild.getRoleById(rolenotacceptedid)).queue();
+
+
+                        //remove roleborders
+                        List<Role> roleBorders = AcceptRuleManager.sql.getRoleBorders(guild);
+                        if (roleBorders != null)
                         {
-                            guild.removeRoleFromMember(member, roleBorders.get(i)).queue();
+                            for (int i = 0; i < roleBorders.size(); i++)
+                            {
+                                guild.removeRoleFromMember(member, roleBorders.get(i)).queue();
+                            }
                         }
                     }
                 }
@@ -92,24 +97,27 @@ public class AcceptRulesListener
         }
     }
 
-    //TODO never tried
     public void onMemberLeaveListener(GuildMemberLeaveEvent event)
     {
         Guild guild = event.getGuild();
         long messageID = AcceptRuleManager.sql.getMessageID(guild.getIdLong());
         long channelID = AcceptRuleManager.sql.getChannelID(guild.getIdLong());
 
-        if(messageID != -1 && channelID != -1){
+        if (messageID != -1 && channelID != -1)
+        {
             TextChannel channel = guild.getTextChannelById(channelID);
             Message message = CommandsUtil.getLatestesMessageByID(channel, messageID);
 
-            if(message != null){
+            if (message != null)
+            {
                 List<MessageReaction> reactions = message.getReactions();
 
-                for(MessageReaction reaction : reactions){
-                    User user = reaction.getPrivateChannel().getUser();
-                    if(user != null){
-                        message.removeReaction((Emote) reaction.getReactionEmote(), user);
+                for (MessageReaction reaction : reactions)
+                {
+                    User user = event.getUser();
+                    if (user != null)
+                    {
+                        message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
                     }
                 }
             }

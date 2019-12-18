@@ -10,14 +10,17 @@ import net.dv8tion.jda.api.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoinRoleCommand implements ServerCommand {
+public class JoinRoleCommand implements ServerCommand
+{
 
-    public JoinRoleCommand(){
+    public JoinRoleCommand()
+    {
         JoinRoleManager.embeds.HelpEmbed();
     }
 
     @Override
-    public void performCommand(Member member, TextChannel channel, Message message) {
+    public void performCommand(Member member, TextChannel channel, Message message)
+    {
 
         //- joinrole add @role
         String[] args = CommandsUtil.messageToArgs(message);
@@ -63,10 +66,11 @@ public class JoinRoleCommand implements ServerCommand {
     private void addCommand(String[] args, TextChannel channel, Message message)
     {
         long guildID = channel.getGuild().getIdLong();
-        if (args.length == 3)
+        if (args.length >= 2)
         {
             List<Role> roles = message.getMentionedRoles();
-            if(roles.isEmpty()){
+            if (!roles.isEmpty())
+            {
                 Role role = roles.get(0);
                 long roleid = role.getIdLong();
                 if (!JoinRoleManager.sql.ExistsInSQL(guildID, roleid))
@@ -82,7 +86,9 @@ public class JoinRoleCommand implements ServerCommand {
                     //Error
                     JoinRoleManager.embeds.AlreadyExistingJoinRoleInformation(channel, role);
                 }
-            }else{
+            }
+            else
+            {
                 //Error
                 JoinRoleManager.embeds.NoMentionedRoleError(channel);
             }
@@ -97,10 +103,11 @@ public class JoinRoleCommand implements ServerCommand {
     private void removeCommand(String[] args, TextChannel channel, Message message)
     {
         long guildID = channel.getGuild().getIdLong();
-        if (args.length == 3)
+        if (args.length >= 2)
         {
             List<Role> roles = message.getMentionedRoles();
-            if(roles.isEmpty()){
+            if (!roles.isEmpty())
+            {
                 Role role = roles.get(0);
                 long roleid = role.getIdLong();
                 if (JoinRoleManager.sql.ExistsInSQL(guildID, roleid))
@@ -116,7 +123,9 @@ public class JoinRoleCommand implements ServerCommand {
                     //Error
                     JoinRoleManager.embeds.NoExistingJoinRoleInformation(channel, role);
                 }
-            }else{
+            }
+            else
+            {
                 //Error
                 JoinRoleManager.embeds.NoMentionedRoleError(channel);
             }
@@ -131,43 +140,45 @@ public class JoinRoleCommand implements ServerCommand {
     private void listCommand(String[] args, TextChannel channel, Message message)
     {
         Guild guild = channel.getGuild();
-     if (args.length == 2){
+        if (args.length == 2)
+        {
 
-         //SQL
-         List<Long> roleids = JoinRoleManager.sql.getRoleIDs(guild.getIdLong());
+            //SQL
+            List<Long> roleids = JoinRoleManager.sql.getRoleIDs(guild.getIdLong());
 
-         if (!roleids.isEmpty())
-         {
-             //Create Description -> all voice channel
-             String description = "";
-             for (long roleid : roleids)
-             {
-                 Role role = guild.getRoleById(roleid);
+            if (!roleids.isEmpty())
+            {
+                //Create Description -> all voice channel
+                String description = "";
+                for (long roleid : roleids)
+                {
+                    Role role = guild.getRoleById(roleid);
 
-                 if (role != null)
-                 {
+                    if (role != null)
+                    {
+                        description += "⚫️" + role.getAsMention() + "\n\n";
+                    }
+                    else
+                    {
+                        description += "⚠️**Role does not exist**\n";
 
-                     description +=  "⚫️" + role.getAsMention() + "\n\n";
-                 }
-                 else
-                 {
-                     description += "⚠️**Role does not exist**\n";
+                        //SQL
+                        JoinRoleManager.sql.removeFormSQL(guild.getIdLong(), roleid);
+                    }
+                }
 
-                     //SQL
-                     JoinRoleManager.sql.removeFormSQL(guild.getIdLong(), roleid);
-                 }
-             }
-
-             //Message
-             JoinRoleManager.embeds.SendJoinRoleList(channel, description);
-         }
-         else
-         {
-             JoinRoleManager.embeds.HasNoJoinRoleInformation(channel);
-         }
-     }else{
-         JoinRoleManager.embeds.ListUsage(channel);
-     }
+                //Message
+                JoinRoleManager.embeds.SendJoinRoleList(channel, description);
+            }
+            else
+            {
+                JoinRoleManager.embeds.HasNoJoinRoleInformation(channel);
+            }
+        }
+        else
+        {
+            JoinRoleManager.embeds.ListUsage(channel);
+        }
     }
 
 }

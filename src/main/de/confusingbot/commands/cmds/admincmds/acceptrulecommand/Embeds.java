@@ -99,7 +99,7 @@ public class Embeds
     public void ShowAcceptRule(TextChannel channel, String textChannelString, String notAcceptedRoleString, String acceptedRoleString, String emote){
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
-        builder.setTitle("\uD83D\uDC51AcceptedRule: ");
+        builder.setTitle("✅AcceptedRule: ");
         builder.addField("TextChannel", textChannelString, false);
         builder.addField("NotAcceptedRole", notAcceptedRoleString, false);
         builder.addField("AcceptedRole", acceptedRoleString, false);
