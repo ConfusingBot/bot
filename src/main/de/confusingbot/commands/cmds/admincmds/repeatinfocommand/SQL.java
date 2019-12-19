@@ -45,6 +45,27 @@ public class SQL
         return list;
     }
 
+    public int getRepeatInfoTimeByID(long guildid, int id)
+    {
+        int time = -1;
+
+        try
+        {
+            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                    + "guildid = " + guildid
+                    + " AND id = " + id);
+
+            while (set.next())
+            {
+                time = set.getInt("time");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return time;
+    }
+
     public String getRepeatInfoByID(long guildid, int id)
     {
         String repeatInfoString = "error";

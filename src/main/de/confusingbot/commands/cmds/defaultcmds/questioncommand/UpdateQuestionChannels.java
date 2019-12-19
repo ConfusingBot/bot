@@ -2,20 +2,13 @@ package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +48,7 @@ public class UpdateQuestionChannels
                 if (channel == null) return;
 
                 //HANDLE TIME
-                long timeleft = CommandsUtil.getTimeLeft(creationTime, maxTimeInHours);
+                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, maxTimeInHours);
                 //System.out.println("TimeLeft of question: " + timeleft);
 
                 for (Integer notificationTime : notificationTimes)

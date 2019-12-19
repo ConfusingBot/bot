@@ -41,7 +41,6 @@ public class Main {
         } catch (LoginException e) {
             e.printStackTrace();
         }
-
     }
 
     public Main() throws LoginException {

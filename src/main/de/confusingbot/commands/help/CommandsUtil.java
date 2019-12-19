@@ -109,7 +109,7 @@ public class CommandsUtil
     {
         for (Message m : channel.getIterableHistory().cache(false))
         {
-            if(m.getIdLong() == messageid) return m;
+            if (m.getIdLong() == messageid) return m;
         }
 
         return null;
@@ -135,9 +135,20 @@ public class CommandsUtil
     }
 
     //Calculate TimeLeft
-    public static long getTimeLeft(String creationTimeString, int endTime)
+    public static long getTimeLeftInHours(String creationTimeString, int endTime)
     {
         long timeLeft = -1;
+
+        long differentInHours = getTimeLeftDifference(creationTimeString, true);
+        //System.out.println("Different in minutes " + differentInHours);
+        timeLeft = endTime - differentInHours;
+
+        return timeLeft;
+    }
+
+    public static long getTimeLeftDifference(String creationTimeString, boolean hours)
+    {
+        long timeDifference = -1;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -150,11 +161,12 @@ public class CommandsUtil
 
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
-        long differentInHours = (duration.toHours());
-        //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = endTime - differentInHours;
+        if (hours)
+            timeDifference = (duration.toHours());
+        else
+            timeDifference = (duration.toMinutes());
 
-        return timeLeft;
+        return timeDifference;
     }
 }
 

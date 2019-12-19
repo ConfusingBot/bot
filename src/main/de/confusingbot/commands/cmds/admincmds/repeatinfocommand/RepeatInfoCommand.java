@@ -77,7 +77,9 @@ public class RepeatInfoCommand implements ServerCommand
 
                 for (int i = 0; i < repeatInfoIDs.size(); i++)
                 {
-                    builder.append((i + 1) + "| " + RepeatInfoCommandManager.sql.getRepeatInfoByID(guild.getIdLong(), repeatInfoIDs.get(i)) + "\n\n");
+                    String repeatinfoText = RepeatInfoCommandManager.sql.getRepeatInfoByID(guild.getIdLong(), repeatInfoIDs.get(i));
+                    int time = RepeatInfoCommandManager.sql.getRepeatInfoTimeByID(guild.getIdLong(), repeatInfoIDs.get(i));
+                    builder.append("**" + (i + 1) + "**  ▶️  " + repeatinfoText + "  ⌛  ️" + time + "\n\n");
                 }
 
                 //Message

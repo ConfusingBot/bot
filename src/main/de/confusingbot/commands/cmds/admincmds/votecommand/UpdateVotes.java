@@ -10,10 +10,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +34,7 @@ public class UpdateVotes
                 String title = set.getString("title");
                 List<String> selectEmotes = Arrays.asList(emotesString.split(" "));
 
-                long timeleft = CommandsUtil.getTimeLeft(creationTime, endTime);
+                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
 
                 if (timeleft <= 0)
                 {
