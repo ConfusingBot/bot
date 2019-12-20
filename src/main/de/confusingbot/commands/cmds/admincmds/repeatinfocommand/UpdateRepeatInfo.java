@@ -37,8 +37,10 @@ public class UpdateRepeatInfo
                 if (channel == null) return;
 
                 long difference = CommandsUtil.getTimeLeftDifference(creationTime, false);
+                System.out.println("Difference in Minutes: " + difference);
+                System.out.println("Difference in Hours: " + CommandsUtil.getTimeLeftDifference(creationTime, true));
 
-                if (difference % (time * 60) == 0)//difference % time == 0
+                if (difference % (time * 60) == 0)
                 {
                       RepeatInfoCommandManager.embeds.SendInfoEmbed(channel, color, title, info);
                 }

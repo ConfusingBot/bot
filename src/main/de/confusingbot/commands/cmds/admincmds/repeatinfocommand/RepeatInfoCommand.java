@@ -61,7 +61,7 @@ public class RepeatInfoCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    
+
     //ListCommand
     private void listInfoCommand(String[] args, TextChannel channel, Guild guild)
     {
@@ -104,68 +104,78 @@ public class RepeatInfoCommand implements ServerCommand
     {
         if (args.length >= 5)
         {
-            TextChannel textChannel = message.getMentionedChannels().get(0);
-            Guild guild = textChannel.getGuild();
 
-            if (textChannel != null && args[2].contains(textChannel.getName()))
+            List<TextChannel> mentionedTextChannels = message.getMentionedChannels();
+
+            if (!mentionedTextChannels.isEmpty())
             {
-                //SetTime
-                int time = 0;
-                String timeString = args[3];
-                if (CommandsUtil.isNumeric(timeString))
+                TextChannel textChannel = mentionedTextChannels.get(0);
+                if (args[2].contains(textChannel.getName()))
                 {
-                    time = Integer.parseInt(timeString);
-                    int textStartIndex = 4;
-
-                    //SetColor
-                    String hexColor = "#fff";
-                    if (args[4].startsWith("#"))
+                    Guild guild = textChannel.getGuild();
+                    //SetTime
+                    int time = 0;
+                    String timeString = args[3];
+                    if (CommandsUtil.isNumeric(timeString))
                     {
-                        if (CommandsUtil.isColor(args[4]))
-                        {
-                            hexColor = args[4];
-                            textStartIndex = 5;
-                        }
-                    }
+                        time = Integer.parseInt(timeString);
+                        int textStartIndex = 4;
 
-                    if (RepeatInfoCommandManager.sql.getRepeatInfoIDs(guild.getIdLong()).size() < RepeatInfoCommandManager.maxRepeatInfos)
-                    {
-                        //SetTitle And Info
-                        StringBuilder command = new StringBuilder();
-                        for (int i = textStartIndex; i < args.length; i++)
+                        //SetColor
+                        String hexColor = "#fff";
+                        if (args[4].startsWith("#"))
                         {
-                            command.append(args[i] + " ");
+                            if (CommandsUtil.isColor(args[4]))
+                            {
+                                hexColor = args[4];
+                                textStartIndex = 5;
+                            }
                         }
-                        String wholeString = command.toString().trim();
-                        String info = " ";
-                        String title = " ";
-                        if (wholeString.contains(RepeatInfoCommandManager.infoKey))
+
+                        if (RepeatInfoCommandManager.sql.getRepeatInfoIDs(guild.getIdLong()).size() < RepeatInfoCommandManager.maxRepeatInfos)
                         {
-                            String[] titleAndInfoString = wholeString.split(RepeatInfoCommandManager.infoKey);
-                            title = titleAndInfoString[0];
-                            info = titleAndInfoString[1];
+                            //SetTitle And Info
+                            StringBuilder command = new StringBuilder();
+                            for (int i = textStartIndex; i < args.length; i++)
+                            {
+                                command.append(args[i] + " ");
+                            }
+                            String wholeString = command.toString().trim();
+                            String info = " ";
+                            String title = " ";
+                            if (wholeString.contains(RepeatInfoCommandManager.infoKey))
+                            {
+                                String[] titleAndInfoString = wholeString.split(RepeatInfoCommandManager.infoKey);
+                                title = titleAndInfoString[0];
+                                info = titleAndInfoString[1];
+                            }
+                            else
+                            {
+                                info = wholeString;
+                            }
+
+                            //SQL
+                            RepeatInfoCommandManager.sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), time, hexColor, title, info);
+
+                            //Message
+                            RepeatInfoCommandManager.embeds.SuccessfulAddedRepeatInfo(channel);
                         }
                         else
                         {
-                            info = wholeString;
+                            //Error
+                            RepeatInfoCommandManager.embeds.OnlyXAllowedInfoCommandsError(channel, RepeatInfoCommandManager.maxRepeatInfos);
                         }
-
-                        //SQL
-                        RepeatInfoCommandManager.sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), time, hexColor, title, info);
-
-                        //Message
-                        RepeatInfoCommandManager.embeds.SuccessfulAddedRepeatInfo(channel);
                     }
                     else
                     {
                         //Error
-                        RepeatInfoCommandManager.embeds.OnlyXAllowedInfoCommandsError(channel, RepeatInfoCommandManager.maxRepeatInfos);
+                        RepeatInfoCommandManager.embeds.NoMentionedTimeError(channel);
                     }
                 }
                 else
                 {
                     //Error
-                    RepeatInfoCommandManager.embeds.NoMentionedTimeError(channel);
+                    RepeatInfoCommandManager.embeds.NoMentionedTextChannelError(channel);
                 }
             }
             else
