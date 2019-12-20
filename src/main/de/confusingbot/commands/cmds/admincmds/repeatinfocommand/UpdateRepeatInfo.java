@@ -36,9 +36,9 @@ public class UpdateRepeatInfo
                 TextChannel channel = guild.getTextChannelById(channelID);
                 if (channel == null) return;
 
-                long difference = CommandsUtil.getTimeLeftDifference(creationTime, true);
+                long difference = CommandsUtil.getTimeLeftDifference(creationTime, false);
 
-                if (difference % time == 0)
+                if (difference % (time * 60) == 0)//difference % time == 0
                 {
                       RepeatInfoCommandManager.embeds.SendInfoEmbed(channel, color, title, info);
                 }
