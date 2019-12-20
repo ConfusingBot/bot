@@ -70,8 +70,8 @@ public class ReactRolesCommand implements ServerCommand
     //=====================================================================================================================================
     private void ListCommand(Guild guild, TextChannel channel)
     {
-        ReactRoleManager.embeds.SendWaitMessage(channel);
-        Runnable r = new ListReactRolesRunnable(guild, channel);
+        long messageid = ReactRoleManager.embeds.SendWaitMessage(channel);
+        Runnable r = new ListReactRolesRunnable(guild, channel, messageid);
         Thread t = new Thread(r);
         t.start();
     }
@@ -196,6 +196,5 @@ public class ReactRolesCommand implements ServerCommand
             ReactRoleManager.embeds.AddUsage(channel);
         }
     }
-
 }
 

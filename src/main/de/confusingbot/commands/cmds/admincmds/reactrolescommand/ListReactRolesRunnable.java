@@ -14,10 +14,12 @@ public class ListReactRolesRunnable implements Runnable
 {
     Guild guild;
     TextChannel channel;
+    long messageid;
 
-    public ListReactRolesRunnable(Guild guild, TextChannel channel){
+    public ListReactRolesRunnable(Guild guild, TextChannel channel, long messageid){
         this.guild = guild;
         this.channel = channel;
+        this.messageid = messageid;
     }
 
     @Override
@@ -68,6 +70,9 @@ public class ListReactRolesRunnable implements Runnable
                 }
             }
 
+            //Delete Wait Message
+            channel.deleteMessageById(messageid).queue();
+
             //Message
             ReactRoleManager.embeds.SendReactRoleListEmbed(channel, description);
         }
@@ -76,6 +81,4 @@ public class ListReactRolesRunnable implements Runnable
             ReactRoleManager.embeds.HasNoReactRoleInformation(channel);
         }
     }
-
-
 }

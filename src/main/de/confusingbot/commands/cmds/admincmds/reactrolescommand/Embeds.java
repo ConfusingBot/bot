@@ -77,7 +77,8 @@ public class Embeds
         EmbedManager.SendErrorEmbed("You haven't mentioned valid a Emote!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void RoleDoesNotExistError(TextChannel channel, long roleid){
+    public void RoleDoesNotExistError(TextChannel channel, long roleid)
+    {
         EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, EmbedsUtil.showErrorTime);
     }
 
@@ -105,7 +106,8 @@ public class Embeds
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendReactRoleListEmbed(TextChannel channel, String description){
+    public void SendReactRoleListEmbed(TextChannel channel, String description)
+    {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
         builder.setTitle("\uD83D\uDC51ReactRoles: ");
@@ -114,8 +116,9 @@ public class Embeds
         EmbedManager.SendEmbed(builder, channel, 10);
     }
 
-    public void SendWaitMessage(TextChannel channel){
-        EmbedManager.SendInfoEmbed("Please wait for a few seconds.. we will create the list!", channel, 5);
+    public long SendWaitMessage(TextChannel channel)
+    {
+        return EmbedManager.SendCustomEmbedGetMessageID("Please Wait", "This needs upto 10s!", Color.pink, channel);
     }
 
 }
