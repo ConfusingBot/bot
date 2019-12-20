@@ -131,7 +131,6 @@ public class ReactRolesListener
         {
             while (set.next())
             {
-
                 long channelID = set.getLong("channelid");
                 long messageID = set.getLong("messageid");
 

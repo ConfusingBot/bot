@@ -114,4 +114,8 @@ public class Embeds
         EmbedManager.SendEmbed(builder, channel, 10);
     }
 
+    public void SendWaitMessage(TextChannel channel){
+        EmbedManager.SendInfoEmbed("Please wait for a few seconds.. we will create the list!", channel, 5);
+    }
+
 }
