@@ -14,7 +14,10 @@ public class EventCommand implements ServerCommand
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
-        //- event create [#channel] [messageid] [eventName] [time] [eventRole] [takePartEmote]
+        //- event create [#channel] [messageid] [eventName] [color] [time] [eventRole] [takePartEmote]
+        //- event remove [@eventRole]
+        //- event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]
+        //- event vote
 
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();

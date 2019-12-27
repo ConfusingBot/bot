@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +32,8 @@ public class CommandsUtil
         try
         {
             long l = Long.parseLong(strNum);
-        } catch (NumberFormatException | NullPointerException nfe)
+        }
+        catch (NumberFormatException | NullPointerException nfe)
         {
             return false;
         }
@@ -44,7 +46,8 @@ public class CommandsUtil
         {
             Color color = Color.decode(hexColor);
             return true;
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
         {
 
         }
@@ -75,22 +78,30 @@ public class CommandsUtil
         return emotes;
     }
 
-    public static void reactEmote(String emoteString, TextChannel channel, long messageid, boolean add)
+    public static boolean reactEmote(String emoteString, TextChannel channel, long messageid, boolean add)
     {
-        if (CommandsUtil.isNumeric(emoteString))//if emoteString is a emoteID
+        try
         {
-            Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
-            if (add)
-                channel.addReactionById(messageid, emote).queue();
+            if (CommandsUtil.isNumeric(emoteString))//if emoteString is a emoteID
+            {
+                Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
+                if (add)
+                    channel.addReactionById(messageid, emote).queue();
+                else
+                    channel.removeReactionById(messageid, emote).queue();
+            }
             else
-                channel.removeReactionById(messageid, emote).queue();
+            {
+                if (add)
+                    channel.addReactionById(messageid, emoteString).queue();
+                else
+                    channel.removeReactionById(messageid, emoteString).queue();
+            }
+            return true;
         }
-        else
+        catch (Exception e)
         {
-            if (add)
-                channel.addReactionById(messageid, emoteString).queue();
-            else
-                channel.removeReactionById(messageid, emoteString).queue();
+            return false;
         }
     }
 
@@ -167,6 +178,27 @@ public class CommandsUtil
             timeDifference = (duration.toMinutes());
 
         return timeDifference;
+    }
+
+    public static List<String> encodeString(String string, String splitChar)
+    {
+        List<String> words = Arrays.asList(string.split(splitChar));
+
+        return words;
+    }
+
+    public static String codeString(List<String> strings, String splitChar)
+    {
+        String finalString = "";
+        if (!strings.isEmpty())
+        {
+            for (String string : strings)
+            {
+                finalString += string + splitChar;
+            }
+            finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
+        }
+        return finalString;
     }
 }
 
