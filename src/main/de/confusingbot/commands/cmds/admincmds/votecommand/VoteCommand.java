@@ -231,29 +231,57 @@ public class VoteCommand implements ServerCommand
 
             if (CommandsUtil.isNumeric(emoteString))
             {
-                long emoteID = Long.parseLong(emoteString);
-                Emote emote = guild.getEmoteById(emoteID);
-                if (emote != null)
-                    emoteString = emote.getAsMention();
+                if (emoteString.length() == 1)
+                {
+                    //is 1, 2, 3, 4, 5, 6, 7, 8, 9 ..
+                    emoteString = VoteCommandManager.voteEmotes[i];
+                }
+                else
+                {
+                    //React with emote ID
+                    long emoteID = Long.parseLong(emoteString);
+                    Emote emote = guild.getEmoteById(emoteID);
+                    if (emote != null)
+                        emoteString = emote.getAsMention();
+                }
             }
 
             builder.append(emoteString + "   " + text + "\n\n");
         }
 
         voteText = builder.toString().trim();
+
         return voteText;
     }
 
 
     private boolean addEmotesToMessage(List<String> emotes, long messageid, TextChannel channel)
     {
-        for (String emote : emotes)
+        for (int i = 0; i < emotes.size(); i++)
         {
+            String emote = emotes.get(i);
             if (!CommandsUtil.reactEmote(emote, channel, messageid, true))
             {
-                VoteCommandManager.embeds.NoEmoteError(channel, emote);
-                channel.deleteMessageById(messageid);
-                return false;
+                if (VoteCommandManager.voteEmotes.length > i)
+                {
+                    //if it is not 1, 2, 3, 4, 5, 6, 7, 8, 9
+                    if (!CommandsUtil.isNumeric(emote) && emote.length() != 1)
+                    {
+                        VoteCommandManager.embeds.NoEmoteError(channel, emote);
+                    }
+
+                    //add defaut Vote Emote at the position i
+                    String numberEmote = VoteCommandManager.voteEmotes[i];
+                    CommandsUtil.reactEmote(numberEmote, channel, messageid, true);
+                    emotes.set(i, numberEmote);
+                }
+                else
+                {
+                    VoteCommandManager.embeds.NoEmoteError(channel, emote);
+                    channel.deleteMessageById(messageid);
+
+                    return false;
+                }
             }
 
         }
