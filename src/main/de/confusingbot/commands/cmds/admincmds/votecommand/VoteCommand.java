@@ -1,6 +1,5 @@
 package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 
-import javafx.scene.web.HTMLEditorSkin;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
@@ -135,6 +134,10 @@ public class VoteCommand implements ServerCommand
                         //=============================================================================================
                         //Get Title
                         //=============================================================================================
+
+                        //=============================================================================================
+                        //Get Emotes and Texts
+                        //=============================================================================================
                         wholeStringWordList = new ArrayList<>(Arrays.asList(newString.split(" ")));
 
                         String sentence = "";
@@ -143,14 +146,20 @@ public class VoteCommand implements ServerCommand
                             if (word.startsWith("-") && word.endsWith("-"))
                             {
                                 word = word.replace("-", "");
+                                boolean added = false;
                                 //TODO test if the mentionedEmotes save the same emote twice
                                 for (Emote emote : mentionedEmotes)
                                 {
                                     if (word.equals(":" + emote.getName() + ":"))
+                                    {
                                         emojiStrings.add(emote.getIdLong() + "");
-                                    else
-                                        emojiStrings.add(word);
+                                        added = true;
+                                    }
+
                                 }
+
+                                if (!added)
+                                    emojiStrings.add(word);
 
                                 word = "";
 
@@ -165,6 +174,9 @@ public class VoteCommand implements ServerCommand
 
                         }
                         text.add(sentence);
+                        //=============================================================================================
+                        //Get Emotes and Texts
+                        //=============================================================================================
 
                         String voteText = buildVoteText(text, emojiStrings, guild);
 
@@ -231,19 +243,21 @@ public class VoteCommand implements ServerCommand
 
             if (CommandsUtil.isNumeric(emoteString))
             {
-                if (emoteString.length() == 1)
+                //React with emote ID
+                long emoteID = Long.parseLong(emoteString);
+                Emote emote = guild.getEmoteById(emoteID);
+                if (emote != null)
                 {
-                    //is 1, 2, 3, 4, 5, 6, 7, 8, 9 ..
-                    emoteString = VoteCommandManager.voteEmotes[i];
+                    emoteString = emote.getAsMention();
                 }
                 else
                 {
-                    //React with emote ID
-                    long emoteID = Long.parseLong(emoteString);
-                    Emote emote = guild.getEmoteById(emoteID);
-                    if (emote != null)
-                        emoteString = emote.getAsMention();
+                    emoteString = VoteCommandManager.voteEmotes[i];
                 }
+            }
+            else
+            {
+                emoteString = VoteCommandManager.voteEmotes[i] + "(**" + emoteString + "**)";
             }
 
             builder.append(emoteString + "   " + text + "\n\n");

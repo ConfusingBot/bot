@@ -1,7 +1,9 @@
 package main.de.confusingbot.commands.help;
 
+import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.ContextException;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import java.awt.*;
@@ -32,8 +34,7 @@ public class CommandsUtil
         try
         {
             long l = Long.parseLong(strNum);
-        }
-        catch (NumberFormatException | NullPointerException nfe)
+        } catch (NumberFormatException | NullPointerException nfe)
         {
             return false;
         }
@@ -46,8 +47,7 @@ public class CommandsUtil
         {
             Color color = Color.decode(hexColor);
             return true;
-        }
-        catch (NumberFormatException e)
+        } catch (NumberFormatException e)
         {
 
         }
@@ -92,17 +92,41 @@ public class CommandsUtil
             }
             else
             {
-                if (add)
-                    channel.addReactionById(messageid, emoteString).queue();
+                //System.out.println(emoteString);
+                if (EmojiManager.containsEmoji(emoteString) || !isAlpha(emoteString))
+                {
+                    if (add)
+                        channel.addReactionById(messageid, emoteString).queue();
+                    else
+                        channel.removeReactionById(messageid, emoteString).queue();
+                }
                 else
-                    channel.removeReactionById(messageid, emoteString).queue();
+                {
+                    return false;
+                }
             }
             return true;
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             return false;
         }
+    }
+
+    public static boolean isAlpha(String str)
+    {
+        if (str == null)
+        {
+            return false;
+        }
+        int sz = str.length();
+        for (int i = 0; i < sz; i++)
+        {
+            if (Character.isLetter(str.charAt(i)) == false)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static List<Long> getLatestMessageIds(MessageChannel channel)
@@ -153,6 +177,17 @@ public class CommandsUtil
         long differentInHours = getTimeLeftDifference(creationTimeString, true);
         //System.out.println("Different in minutes " + differentInHours);
         timeLeft = endTime - differentInHours;
+
+        return timeLeft;
+    }
+
+    public static long getTimeLeftInMinutes(String creationTimeString, int endTime)
+    {
+        long timeLeft = -1;
+
+        long differentInMinutes = getTimeLeftDifference(creationTimeString, false);
+        //System.out.println("Different in minutes " + differentInHours);
+        timeLeft = endTime - differentInMinutes;
 
         return timeLeft;
     }

@@ -32,9 +32,10 @@ public class UpdateVotes
                 String creationTime = set.getString("creationtime");
                 String emotesString = set.getString("emotes");
                 String title = set.getString("title");
-                List<String> selectEmotes = Arrays.asList(emotesString.split(" "));
+                List<String> selectEmotes = CommandsUtil.encodeString(emotesString, ", ");
 
-                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
+                long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
+                //long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
 
                 if (timeleft <= 0)
                 {
@@ -47,8 +48,8 @@ public class UpdateVotes
                         TextChannel channel = guild.getTextChannelById(channelid);
                         if (channel != null)
                         {
-                            Message message = getMessage(channel, messageid);
-                            if (CommandsUtil.getLatestMessageIds(channel).contains(messageid))
+                            Message message = CommandsUtil.getLatestesMessageByID(channel, messageid);
+                            if (message != null)
                             {
                                 //Show that the vote has ended
                                 CommandsUtil.reactEmote("❌", channel, messageid, true);

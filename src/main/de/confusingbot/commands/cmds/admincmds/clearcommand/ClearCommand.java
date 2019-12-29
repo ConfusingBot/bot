@@ -79,7 +79,7 @@ public class ClearCommand implements ServerCommand
 
         for (Message message : channel.getIterableHistory().cache(false))
         {
-            if (!message.isPinned() && !message.getMember().getUser().isBot())
+            if (!message.isPinned())
             {
                 messages.add(message);
                 if (--i <= 0) break;

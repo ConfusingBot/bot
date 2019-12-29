@@ -37,8 +37,8 @@ public class UpdateRepeatInfo
                 if (channel == null) return;
 
                 long difference = CommandsUtil.getTimeLeftDifference(creationTime, false);
-                System.out.println("Difference in Minutes: " + difference);
-                System.out.println("Difference in Hours: " + CommandsUtil.getTimeLeftDifference(creationTime, true));
+                //System.out.println("Difference in Minutes: " + difference);
+                //System.out.println("Difference in Hours: " + CommandsUtil.getTimeLeftDifference(creationTime, true));
 
                 if (difference % (time * 60) == 0)
                 {

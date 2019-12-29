@@ -22,7 +22,7 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote create [#channel] [time in hours] [Header] 1: [text1] 2: [text2] [...]\n```"
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -2- [text2] [...]\n```"
                         + "```Create a Vote Message with up to 9 vote points!```"
                         + "```yaml\n" + Main.prefix + "vote remove [messageID]\n```"
                         + "```Remove the Vote form the tempchannels```",
@@ -31,7 +31,7 @@ public class Embeds
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "vote create [#channel] [time in hours] [Header] 1: [text1] 2: [text2] [...]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -2- [text2] [...]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
@@ -59,7 +59,7 @@ public class Embeds
 
     public void NoEmoteError(TextChannel channel, String emote)
     {
-        EmbedManager.SendErrorEmbed(emote + " is no valid Emote!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("**" + emote + "** is no valid Emote!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
