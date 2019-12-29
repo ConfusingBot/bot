@@ -193,7 +193,7 @@ public class VoteCommand implements ServerCommand
                         //SQL
                         VoteCommandManager.sql.addToSQL(guild.getIdLong(),
                                 textChannel.getIdLong(),
-                                message.getIdLong(),
+                                messageid,
                                 title,
                                 timeInHours,
                                 CommandsUtil.codeString(allowedRoleIDs, ", "),
