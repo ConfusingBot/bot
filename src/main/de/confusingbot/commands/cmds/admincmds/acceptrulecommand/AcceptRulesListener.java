@@ -117,7 +117,16 @@ public class AcceptRulesListener
                     User user = event.getUser();
                     if (user != null)
                     {
-                        message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
+                        try
+                        {
+                            message.removeReaction(reaction.getReactionEmote().getEmote(), user).queue();
+                        }
+                        catch (IllegalStateException e)
+                        {
+                            message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
+                        }
+
+
                     }
                 }
             }

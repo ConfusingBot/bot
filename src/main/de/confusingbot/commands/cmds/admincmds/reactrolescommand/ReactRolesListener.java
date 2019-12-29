@@ -49,8 +49,7 @@ public class ReactRolesListener
                         {
                             //Add Role to member
                             guild.addRoleToMember(event.getMember(), guild.getRoleById(roleid)).queue();
-                        }
-                        catch (HierarchyException e)
+                        } catch (HierarchyException e)
                         {
                             //Error
                             ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);
@@ -75,6 +74,9 @@ public class ReactRolesListener
         Guild guild = event.getGuild();
         if (event.getChannelType() == ChannelType.TEXT)
         {
+            Member member = event.getMember();
+            if (member == null) return;
+
             long guildid = event.getGuild().getIdLong();
             long channelid = event.getChannel().getIdLong();
             long messageid = event.getMessageIdLong();
@@ -101,9 +103,8 @@ public class ReactRolesListener
                         try
                         {
                             //Remove Role from member
-                            guild.removeRoleFromMember(event.getMember(), guild.getRoleById(roleid)).queue();
-                        }
-                        catch (HierarchyException e)
+                            guild.removeRoleFromMember(member, guild.getRoleById(roleid)).queue();
+                        } catch (HierarchyException e)
                         {
                             //Error
                             ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);
@@ -137,7 +138,7 @@ public class ReactRolesListener
                 TextChannel channel = guild.getTextChannelById(channelID);
                 Message message = CommandsUtil.getLatestesMessageByID(channel, messageID);
 
-                if (message != null && channel != null)
+                if (message != null)
                 {
                     List<MessageReaction> reactions = message.getReactions();
 
@@ -146,13 +147,19 @@ public class ReactRolesListener
                         User user = event.getUser();
                         if (user != null)
                         {
-                            message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
+                            try
+                            {
+                                message.removeReaction(reaction.getReactionEmote().getEmote(), user).queue();
+                            }
+                            catch (IllegalStateException e)
+                            {
+                                message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
+                            }
                         }
                     }
                 }
             }
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             e.printStackTrace();
         }
