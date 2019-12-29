@@ -1,5 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 
+import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.Permission;
@@ -106,15 +107,14 @@ public class VoteCommand implements ServerCommand
                             {
                                 String roleString = role.getName();
                                 word = word.trim();
-                                System.out.println("|" + word + "|");
                                 if (word.equals(roleString))
                                 {
                                     allowedRoleIDs.add("" + role.getIdLong());
-                                    wholeStringWordList.remove(i);
                                     removed = true;
-                                    break;
                                 }
                             }
+
+                            //because of the split it lose the @ also for the roles mentioned for example in the header
                             if (!removed && i != 0)
                             {
                                 wholeStringWordList.set(i, "@" + word);
@@ -178,7 +178,7 @@ public class VoteCommand implements ServerCommand
                         //Get Emotes and Texts
                         //=============================================================================================
 
-                        String voteText = buildVoteText(text, emojiStrings, guild);
+                        String voteText = buildVoteText(text, emojiStrings, guild, allowedRoleIDs);
 
                         //Message
                         long messageid = VoteCommandManager.embeds.SendVoteEmbed(textChannel, title, voteText, timeInHours);
@@ -231,11 +231,12 @@ public class VoteCommand implements ServerCommand
     //=====================================================================================================================================
     //Help
     //=====================================================================================================================================
-    private String buildVoteText(List<String> texts, List<String> emotes, Guild guild)
+    private String buildVoteText(List<String> texts, List<String> emotes, Guild guild, List<String> allowedRoleIDs)
     {
         String voteText = "";
         StringBuilder builder = new StringBuilder();
 
+        //Add
         for (int i = 0; i < emotes.size(); i++)
         {
             String emoteString = emotes.get(i);
@@ -257,10 +258,31 @@ public class VoteCommand implements ServerCommand
             }
             else
             {
-                emoteString = VoteCommandManager.voteEmotes[i] + "(**" + emoteString + "**)";
+                if (CommandsUtil.isAlpha(emoteString) && !EmojiManager.isEmoji(emoteString))
+                {
+                    emoteString = VoteCommandManager.voteEmotes[i] + "(**" + emoteString + "**)";
+                }
             }
 
             builder.append(emoteString + "   " + text + "\n\n");
+        }
+
+        //Add the allowed roles
+        builder.append("\n**Allowed Roles:** ");
+        if (!allowedRoleIDs.isEmpty())
+        {
+            for (String roleId : allowedRoleIDs)
+            {
+                long id = Long.parseLong(roleId);
+                Role role = guild.getRoleById(id);
+
+                builder.append(role.getAsMention() + " ");
+            }
+
+        }
+        else
+        {
+            builder.append("@everyone");
         }
 
         voteText = builder.toString().trim();
