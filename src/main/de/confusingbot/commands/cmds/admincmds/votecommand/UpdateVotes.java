@@ -31,8 +31,8 @@ public class UpdateVotes
                 String title = set.getString("title");
                 List<String> selectEmotes = CommandsUtil.encodeString(emotesString, ", ");
 
-                //long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
-                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
+                long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
+                //long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
 
                 if (timeleft <= 0)
                 {
@@ -60,21 +60,35 @@ public class UpdateVotes
                                     for (MessageReaction reaction : messageReactions)
                                     {
                                         String emoteString = "";
+                                        Emote emote = null;
 
                                         try
                                         {
                                             emoteString = reaction.getReactionEmote().getEmoji();
-                                        }
-                                        catch (IllegalStateException e)
+                                        } catch (IllegalStateException e)
                                         {
-                                            emotesString = reaction.getReactionEmote().getEmote().getAsMention();
+                                            emote = reaction.getReactionEmote().getEmote();
                                         }
 
                                         int vote = reaction.getCount() - 1;
-                                        if (!emotes.contains(emoteString) && selectEmotes.contains(emoteString))
+                                        if (!emotes.contains(emoteString))
                                         {
-                                            emotes.add(emoteString);
-                                            votes.add(vote);
+                                            if (emote == null)
+                                            {
+                                                if (selectEmotes.contains(emoteString))
+                                                {
+                                                    emotes.add(emoteString);
+                                                    votes.add(vote);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (selectEmotes.contains("" + emote.getIdLong()))
+                                                {
+                                                    emotes.add(emote.getAsMention());
+                                                    votes.add(vote);
+                                                }
+                                            }
                                         }
                                     }
                                 }

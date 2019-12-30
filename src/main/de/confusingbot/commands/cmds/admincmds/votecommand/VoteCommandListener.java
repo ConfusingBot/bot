@@ -14,7 +14,7 @@ public class VoteCommandListener
     public void onReactionAdd(MessageReactionAddEvent event)
     {
 
-        if (event.getChannelType() == ChannelType.TEXT)
+        if (event.getChannelType() == ChannelType.TEXT && !event.getMember().getUser().isBot())
         {
             Guild guild = event.getGuild();
             long messageid = event.getMessageIdLong();
@@ -36,7 +36,6 @@ public class VoteCommandListener
                                 break;
                             }
                         }
-
                     }
                 }
 
