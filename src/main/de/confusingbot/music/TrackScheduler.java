@@ -40,7 +40,7 @@ public class TrackScheduler extends AudioEventAdapter
         maxMinutes %= 60;
 
         //Message
-        controller.getMusicEmbedManager().getMusicEmbed().PauseTrackEmbed(name, isStream, hours, seconds, minutes, maxHours, maxMinutes, maxSeconds);
+        controller.getMusicEmbedManager().getMusicEmbed().PauseTrackEmbed(name, isStream, seconds, minutes, hours, maxSeconds, maxMinutes, maxHours);
     }
 
     @Override

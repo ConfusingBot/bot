@@ -22,6 +22,5 @@ public class EventCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         message.delete().queue();
 
-
     }
 }
