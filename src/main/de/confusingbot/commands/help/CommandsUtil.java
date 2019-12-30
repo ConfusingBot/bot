@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.help;
 
 import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.ContextException;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
@@ -93,8 +94,9 @@ public class CommandsUtil
             else
             {
                 //System.out.println(emoteString);
-                if (EmojiManager.containsEmoji(emoteString) || !isAlpha(emoteString))
+                if (EmojiManager.containsEmoji(emoteString) || VoteCommandManager.voteEmotes.contains(emoteString))
                 {
+                    System.out.println("|" + emoteString + "|");
                     if (add)
                         channel.addReactionById(messageid, emoteString).queue();
                     else
@@ -111,23 +113,6 @@ public class CommandsUtil
         {
             return false;
         }
-    }
-
-    public static boolean isAlpha(String str)
-    {
-        if (str == null)
-        {
-            return false;
-        }
-        int sz = str.length();
-        for (int i = 0; i < sz; i++)
-        {
-            if (Character.isLetter(str.charAt(i)) == false)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     public static List<Long> getLatestMessageIds(MessageChannel channel)

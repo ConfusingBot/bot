@@ -40,6 +40,14 @@ public class Embeds
     }
 
     //=====================================================================================================================================
+    //Information
+    //=====================================================================================================================================
+    public void ToManyVotesInformation(TextChannel channel, int maxVotes)
+    {
+         EmbedManager.SendInfoEmbed("We are sorry but you can only add `" + maxVotes + "` vote possibilities!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
     public void NoMentionedTextChannelError(TextChannel channel)

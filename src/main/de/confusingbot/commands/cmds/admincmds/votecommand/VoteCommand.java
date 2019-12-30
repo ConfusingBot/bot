@@ -172,9 +172,21 @@ public class VoteCommand implements ServerCommand
                                 }
                             }
                             sentence += word + " ";
-
                         }
                         text.add(sentence);
+
+                        //Trim the Votes to a specific size
+                        if (emojiStrings.size() > VoteCommandManager.voteEmotes.size())
+                        {
+                            for (int i = (VoteCommandManager.voteEmotes.size() - 1); i < emojiStrings.size(); i++)
+                            {
+                                emojiStrings.remove(i);
+                                text.remove(i);
+                            }
+
+                            //Message
+                            VoteCommandManager.embeds.ToManyVotesInformation(channel, VoteCommandManager.voteEmotes.size());
+                        }
                         //=============================================================================================
                         //Get Emotes and Texts
                         //=============================================================================================
@@ -260,14 +272,14 @@ public class VoteCommand implements ServerCommand
                 }
                 else
                 {
-                    emoteString = VoteCommandManager.voteEmotes[i];
+                    emoteString = VoteCommandManager.voteEmotes.get(i);
                 }
             }
             else
             {
-                if (CommandsUtil.isAlpha(emoteString) && !EmojiManager.isEmoji(emoteString))
+                if (!EmojiManager.isEmoji(emoteString))
                 {
-                    emoteString = VoteCommandManager.voteEmotes[i] + "(**" + emoteString + "**)";
+                    emoteString = VoteCommandManager.voteEmotes.get(i) + "(**" + emoteString + "**)";
                 }
             }
 
@@ -305,7 +317,7 @@ public class VoteCommand implements ServerCommand
             String emote = emotes.get(i);
             if (!CommandsUtil.reactEmote(emote, channel, messageid, true))
             {
-                if (VoteCommandManager.voteEmotes.length > i)
+                if (VoteCommandManager.voteEmotes.size() > i)
                 {
                     //if it is not 1, 2, 3, 4, 5, 6, 7, 8, 9
                     if (!CommandsUtil.isNumeric(emote) && emote.length() != 1)
@@ -314,7 +326,7 @@ public class VoteCommand implements ServerCommand
                     }
 
                     //add defaut Vote Emote at the position i
-                    String numberEmote = VoteCommandManager.voteEmotes[i];
+                    String numberEmote = VoteCommandManager.voteEmotes.get(i);
                     CommandsUtil.reactEmote(numberEmote, channel, messageid, true);
                     emotes.set(i, numberEmote);
                 }
