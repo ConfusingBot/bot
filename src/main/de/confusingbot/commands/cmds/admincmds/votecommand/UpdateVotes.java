@@ -3,10 +3,7 @@ package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.manage.sql.LiteSQL;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageReaction;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,11 +59,21 @@ public class UpdateVotes
                                     List<MessageReaction> messageReactions = message.getReactions();
                                     for (MessageReaction reaction : messageReactions)
                                     {
-                                        String emote = reaction.getReactionEmote().getEmoji();
-                                        int vote = reaction.getCount() - 1;
-                                        if (!emotes.contains(emote) && selectEmotes.contains(emote))
+                                        String emoteString = "";
+
+                                        try
                                         {
-                                            emotes.add(emote);
+                                            emoteString = reaction.getReactionEmote().getEmoji();
+                                        }
+                                        catch (IllegalStateException e)
+                                        {
+                                            emotesString = reaction.getReactionEmote().getEmote().getAsMention();
+                                        }
+
+                                        int vote = reaction.getCount() - 1;
+                                        if (!emotes.contains(emoteString) && selectEmotes.contains(emoteString))
+                                        {
+                                            emotes.add(emoteString);
                                             votes.add(vote);
                                         }
                                     }

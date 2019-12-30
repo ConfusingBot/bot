@@ -105,6 +105,5 @@ public class TrackScheduler extends AudioEventAdapter
         AudioManager manager = guild.getAudioManager();
         player.stopTrack();
         manager.closeAudioConnection();
-
     }
 }
