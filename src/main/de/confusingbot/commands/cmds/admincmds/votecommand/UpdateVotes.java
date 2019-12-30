@@ -31,8 +31,8 @@ public class UpdateVotes
                 String title = set.getString("title");
                 List<String> selectEmotes = CommandsUtil.encodeString(emotesString, ", ");
 
-                long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
-                //long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
+                //long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
+                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
 
                 if (timeleft <= 0)
                 {
