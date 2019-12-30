@@ -19,7 +19,8 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import javax.security.auth.login.LoginException;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class Main
+{
 
     public static Main INSTANCE;
 
@@ -34,16 +35,20 @@ public class Main {
 
     public static boolean botOffline = false;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
 
-        try {
+        try
+        {
             new Main();
-        } catch (LoginException e) {
+        } catch (LoginException e)
+        {
             e.printStackTrace();
         }
     }
 
-    public Main() throws LoginException {
+    public Main() throws LoginException
+    {
         INSTANCE = this;
 
         LiteSQL.connect();
@@ -71,7 +76,8 @@ public class Main {
         ConsoleCommands();
     }
 
-    private void Listener(DefaultShardManagerBuilder builder) {
+    private void Listener(DefaultShardManagerBuilder builder)
+    {
         builder.addEventListeners(new CommandListener());
         builder.addEventListeners(new VoiceListener());
         builder.addEventListeners(new ReactionListener());
@@ -80,13 +86,16 @@ public class Main {
 
     }
 
-    private void ConsoleCommands() {
+    private void ConsoleCommands()
+    {
         Shutdown.Bot(shardManager);
     }
 
     public GeneralTimer generalTimer;
     public StatusTimer statusTimer;
-    private void StartTimer(){
+
+    private void StartTimer()
+    {
         //Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
         try
         {
@@ -105,7 +114,8 @@ public class Main {
     }
 //Getter
 
-    public CommandManager getCmdManager() {
+    public CommandManager getCmdManager()
+    {
         return cmdManager;
     }
 }
