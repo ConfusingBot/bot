@@ -47,6 +47,11 @@ public class Embeds
         EmbedManager.SendErrorEmbed("You haven't mentioned a TextChannel!", channel, EmbedsUtil.showErrorTime);
     }
 
+    public void OnlyOneVoteTopic(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("It is useless to create a Vote with only one vote point!", channel, EmbedsUtil.showErrorTime);
+    }
+
     public void NoMentionedTimeInHours(TextChannel channel)
     {
         EmbedManager.SendErrorEmbed("You haven't mentioned a exist Time!", channel, EmbedsUtil.showErrorTime);

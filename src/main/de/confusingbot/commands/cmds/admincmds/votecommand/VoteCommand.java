@@ -68,7 +68,7 @@ public class VoteCommand implements ServerCommand
     //=====================================================================================================================================
     private void CreateCommand(String[] args, Guild guild, TextChannel channel, Message message)
     {
-        if (args.length > 6)
+        if (args.length > 5)
         {
             String channelString = args[2];
             List<TextChannel> mentionedChannels = message.getMentionedChannels();
@@ -110,6 +110,7 @@ public class VoteCommand implements ServerCommand
                                 if (word.equals(roleString))
                                 {
                                     allowedRoleIDs.add("" + role.getIdLong());
+                                    wholeStringWordList.set(i, "");
                                     removed = true;
                                 }
                             }
@@ -177,6 +178,12 @@ public class VoteCommand implements ServerCommand
                         //=============================================================================================
                         //Get Emotes and Texts
                         //=============================================================================================
+
+                        if (emojiStrings.size() < 2)
+                        {
+                            VoteCommandManager.embeds.OnlyOneVoteTopic(channel);
+                            return;
+                        }
 
                         String voteText = buildVoteText(text, emojiStrings, guild, allowedRoleIDs);
 

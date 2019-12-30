@@ -118,17 +118,4 @@ public class UpdateVotes
         }
     }
 
-    private Message getMessage(TextChannel channel, long messageid)
-    {
-        Message message = null;
-
-        for (Message m : channel.getIterableHistory().cache(false))
-        {
-            if (m.getIdLong() == messageid)
-            {
-                message = m;
-            }
-        }
-        return message;
-    }
 }
