@@ -22,16 +22,16 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote create [#channel] [time in hours] [Header] 1: [text1] 2: [text2] [...]\n```"
-                + "```Create a Vote Message with up to 9 vote points!```"
-                + "```yaml\n" + Main.prefix + "vote remove [messageID]\n```"
-                + "```Remove the Vote form the tempchannels```",
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -2- [text2] [...] ([@allowedRole @allowedRole2 ..])\n```"
+                        + "```Create a Vote Message with up to 9 vote points!```"
+                        + "```yaml\n" + Main.prefix + "vote remove [messageID]\n```"
+                        + "```Remove the Vote form the tempchannels```",
                 channel, EmbedsUtil.showUsageTime);
     }
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "vote create [#channel] [time in hours] [Header] 1: [text1] 2: [text2] [...]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -2- [text2] [...] ([@allowedRole @allowedRole2 ..])`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
@@ -40,13 +40,28 @@ public class Embeds
     }
 
     //=====================================================================================================================================
+    //Information
+    //=====================================================================================================================================
+    public void ToManyVotesInformation(TextChannel channel, int maxVotes)
+    {
+         EmbedManager.SendInfoEmbed("We are sorry but you can only add `" + maxVotes + "` vote possibilities!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void NoMentionedTextChannelError(TextChannel channel){
+    public void NoMentionedTextChannelError(TextChannel channel)
+    {
         EmbedManager.SendErrorEmbed("You haven't mentioned a TextChannel!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void NoMentionedTimeInHours(TextChannel channel){
+    public void OnlyOneVoteTopic(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("It is useless to create a Vote with only one vote point!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public void NoMentionedTimeInHours(TextChannel channel)
+    {
         EmbedManager.SendErrorEmbed("You haven't mentioned a exist Time!", channel, EmbedsUtil.showErrorTime);
     }
 
@@ -55,10 +70,15 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel);
     }
 
+    public void NoEmoteError(TextChannel channel, String emote)
+    {
+        EmbedManager.SendErrorEmbed("**" + emote + "** is no valid Emote!", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public long SendVoteEmbed(TextChannel channel, String title, String voteText, int timeInHours)
+    public long SendVoteEmbed(TextChannel channel, String title, String voteText, long timeInHours)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
@@ -76,7 +96,7 @@ public class Embeds
         builder.setTitle("Result form " + title);
         builder.setDescription(result);
 
-         EmbedManager.SendEmbed(builder, channel, 0);
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 
 }

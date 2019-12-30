@@ -3,6 +3,7 @@ package main.de.confusingbot.listener.joinlistener;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRulesListener;
 import main.de.confusingbot.commands.cmds.admincmds.joinrole.JoinRoleListener;
 import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageListener;
+import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesListener;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
@@ -24,6 +25,7 @@ public class JoinListener extends ListenerAdapter
     AcceptRulesListener acceptRulesListener = new AcceptRulesListener();
     MessageListener messageListener = new MessageListener();
     JoinRoleListener joinRoleListener = new JoinRoleListener();
+    ReactRolesListener reactRolesListener = new ReactRolesListener();
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event)
@@ -38,5 +40,6 @@ public class JoinListener extends ListenerAdapter
     {
         messageListener.onMemberLeaveEvent(event);
         acceptRulesListener.onMemberLeaveListener(event);
+        reactRolesListener.onMemberLeaveListener(event);
     }
 }

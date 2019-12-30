@@ -3,10 +3,7 @@ package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.manage.sql.LiteSQL;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageReaction;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,8 +29,9 @@ public class UpdateVotes
                 String creationTime = set.getString("creationtime");
                 String emotesString = set.getString("emotes");
                 String title = set.getString("title");
-                List<String> selectEmotes = Arrays.asList(emotesString.split(" "));
+                List<String> selectEmotes = CommandsUtil.encodeString(emotesString, ", ");
 
+                //long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
                 long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
 
                 if (timeleft <= 0)
@@ -47,8 +45,8 @@ public class UpdateVotes
                         TextChannel channel = guild.getTextChannelById(channelid);
                         if (channel != null)
                         {
-                            Message message = getMessage(channel, messageid);
-                            if (CommandsUtil.getLatestMessageIds(channel).contains(messageid))
+                            Message message = CommandsUtil.getLatestesMessageByID(channel, messageid);
+                            if (message != null)
                             {
                                 //Show that the vote has ended
                                 CommandsUtil.reactEmote("❌", channel, messageid, true);
@@ -61,12 +59,36 @@ public class UpdateVotes
                                     List<MessageReaction> messageReactions = message.getReactions();
                                     for (MessageReaction reaction : messageReactions)
                                     {
-                                        String emote = reaction.getReactionEmote().getEmoji();
-                                        int vote = reaction.getCount() - 1;
-                                        if (!emotes.contains(emote) && selectEmotes.contains(emote))
+                                        String emoteString = "";
+                                        Emote emote = null;
+
+                                        try
                                         {
-                                            emotes.add(emote);
-                                            votes.add(vote);
+                                            emoteString = reaction.getReactionEmote().getEmoji();
+                                        } catch (IllegalStateException e)
+                                        {
+                                            emote = reaction.getReactionEmote().getEmote();
+                                        }
+
+                                        int vote = reaction.getCount() - 1;
+                                        if (!emotes.contains(emoteString))
+                                        {
+                                            if (emote == null)
+                                            {
+                                                if (selectEmotes.contains(emoteString))
+                                                {
+                                                    emotes.add(emoteString);
+                                                    votes.add(vote);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (selectEmotes.contains("" + emote.getIdLong()))
+                                                {
+                                                    emotes.add(emote.getAsMention());
+                                                    votes.add(vote);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -105,7 +127,7 @@ public class UpdateVotes
                             }
                             else
                             {
-                                channel.sendMessage("Couldn't Send result!").queue();
+                                channel.sendMessage("This Vote has been deleted").queue();
                             }
                         }
                     }
@@ -117,17 +139,4 @@ public class UpdateVotes
         }
     }
 
-    private Message getMessage(TextChannel channel, long messageid)
-    {
-        Message message = null;
-
-        for (Message m : channel.getIterableHistory().cache(false))
-        {
-            if (m.getIdLong() == messageid)
-            {
-                message = m;
-            }
-        }
-        return message;
-    }
 }

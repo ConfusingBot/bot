@@ -1,7 +1,10 @@
 package main.de.confusingbot.commands.help;
 
+import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.ContextException;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import java.awt.*;
@@ -10,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -75,22 +79,39 @@ public class CommandsUtil
         return emotes;
     }
 
-    public static void reactEmote(String emoteString, TextChannel channel, long messageid, boolean add)
+    public static boolean reactEmote(String emoteString, TextChannel channel, long messageid, boolean add)
     {
-        if (CommandsUtil.isNumeric(emoteString))//if emoteString is a emoteID
+        try
         {
-            Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
-            if (add)
-                channel.addReactionById(messageid, emote).queue();
+            if (CommandsUtil.isNumeric(emoteString))//if emoteString is a emoteID
+            {
+                Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
+                if (add)
+                    channel.addReactionById(messageid, emote).queue();
+                else
+                    channel.removeReactionById(messageid, emote).queue();
+            }
             else
-                channel.removeReactionById(messageid, emote).queue();
+            {
+                //System.out.println(emoteString);
+                if (EmojiManager.containsEmoji(emoteString) || VoteCommandManager.voteEmotes.contains(emoteString))
+                {
+                    System.out.println("|" + emoteString + "|");
+                    if (add)
+                        channel.addReactionById(messageid, emoteString).queue();
+                    else
+                        channel.removeReactionById(messageid, emoteString).queue();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
-        else
+        catch (Exception e)
         {
-            if (add)
-                channel.addReactionById(messageid, emoteString).queue();
-            else
-                channel.removeReactionById(messageid, emoteString).queue();
+            return false;
         }
     }
 
@@ -146,6 +167,17 @@ public class CommandsUtil
         return timeLeft;
     }
 
+    public static long getTimeLeftInMinutes(String creationTimeString, int endTime)
+    {
+        long timeLeft = -1;
+
+        long differentInMinutes = getTimeLeftDifference(creationTimeString, false);
+        //System.out.println("Different in minutes " + differentInHours);
+        timeLeft = endTime - differentInMinutes;
+
+        return timeLeft;
+    }
+
     public static long getTimeLeftDifference(String creationTimeString, boolean hours)
     {
         long timeDifference = -1;
@@ -167,6 +199,27 @@ public class CommandsUtil
             timeDifference = (duration.toMinutes());
 
         return timeDifference;
+    }
+
+    public static List<String> encodeString(String string, String splitChar)
+    {
+        List<String> words = Arrays.asList(string.split(splitChar));
+
+        return words;
+    }
+
+    public static String codeString(List<String> strings, String splitChar)
+    {
+        String finalString = "";
+        if (!strings.isEmpty())
+        {
+            for (String string : strings)
+            {
+                finalString += string + splitChar;
+            }
+            finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
+        }
+        return finalString;
     }
 }
 

@@ -70,59 +70,10 @@ public class ReactRolesCommand implements ServerCommand
     //=====================================================================================================================================
     private void ListCommand(Guild guild, TextChannel channel)
     {
-        List<Long> reactroleIds = new ArrayList<>();
-        List<Long> messageIDs = new ArrayList<>();
-        List<Long> channelIDs = new ArrayList<>();
-        List<String> emoteStrings = new ArrayList<>();
-
-        try
-        {
-            ResultSet set = ReactRoleManager.sql.GetReactRolesResultSet(guild.getIdLong());
-
-            while (set.next())
-            {
-                reactroleIds.add(set.getLong("roleid"));
-                messageIDs.add(set.getLong("messageid"));
-                channelIDs.add(set.getLong("channelid"));
-                emoteStrings.add(set.getString("emote"));
-            }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        if (!reactroleIds.isEmpty())
-        {
-            //Create Description -> all voice channel
-            String description = "";
-            for (int i = 0; i < reactroleIds.size(); i++)
-            {
-                Role role = guild.getRoleById(reactroleIds.get(i));
-                TextChannel roleAddChannel = guild.getTextChannelById(channelIDs.get(i));
-                String emoteString = emoteStrings.get(i);
-                long messageID = messageIDs.get(i);
-                if (role != null && roleAddChannel != null && CommandsUtil.getLatestMessageIds(roleAddChannel).contains(messageID))
-                {
-                    if (CommandsUtil.isNumeric(emoteString))
-                        emoteString = guild.getEmoteById(emoteString).getAsMention();
-
-                    description += "" + emoteString + "   " + role.getAsMention() + "   in" + roleAddChannel.getAsMention() + "\n\n";
-                }
-                else
-                {
-                    description += "⚠️**ReactRole does not exists!**\n";
-                    //SQL
-                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelIDs.get(i), messageID, emoteString, reactroleIds.get(i));
-                }
-            }
-
-            //Message
-            ReactRoleManager.embeds.SendReactRoleListEmbed(channel, description);
-        }
-        else
-        {
-            ReactRoleManager.embeds.HasNoReactRoleInformation(channel);
-        }
+        long messageid = ReactRoleManager.embeds.SendWaitMessage(channel);
+        Runnable r = new ListReactRolesRunnable(guild, channel, messageid);
+        Thread t = new Thread(r);
+        t.start();
     }
 
     private void addCommand(Message message, String[] args, TextChannel channel)
@@ -245,6 +196,5 @@ public class ReactRolesCommand implements ServerCommand
             ReactRoleManager.embeds.AddUsage(channel);
         }
     }
-
 }
 

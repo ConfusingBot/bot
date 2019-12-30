@@ -79,8 +79,11 @@ public class AudioLoadResult implements AudioLoadResultHandler
         controller.getMusicEmbedManager().getMusicEmbed().NoMatchesError(channel, uri);
 
         //End Music
-        AudioManager manager = controller.getGuild().getAudioManager();
-        manager.closeAudioConnection();
+        if (controller.getPlayer().getPlayingTrack() == null)
+        {
+            AudioManager manager = controller.getGuild().getAudioManager();
+            manager.closeAudioConnection();
+        }
     }
 
     @Override
@@ -90,8 +93,10 @@ public class AudioLoadResult implements AudioLoadResultHandler
         controller.getMusicEmbedManager().getMusicEmbed().LoadFailedError(channel, uri);
 
         //End Music
-        AudioManager manager = controller.getGuild().getAudioManager();
-        manager.closeAudioConnection();
+        if (controller.getPlayer().getPlayingTrack() == null)
+        {
+            AudioManager manager = controller.getGuild().getAudioManager();
+            manager.closeAudioConnection();
+        }
     }
-
 }

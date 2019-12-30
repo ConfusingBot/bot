@@ -88,6 +88,7 @@ public class SQLManager
                 "messageid INTEGER, " +
                 "title TEXT, " +
                 "endTime INTEGER, " +
+                "allowedroles STRING, " +
                 "creationtime TEXT, " +
                 "emotes TEXT)");
 
