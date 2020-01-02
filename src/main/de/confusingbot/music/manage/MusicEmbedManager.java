@@ -1,5 +1,7 @@
 package main.de.confusingbot.music.manage;
 
+import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.MusicEmbeds;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -55,36 +57,21 @@ public class MusicEmbedManager
 
     public void DeleteLastSongEmbed()
     {
-        try
+        if (musicLastPlayMessageID != -1)
         {
-            if (musicLastPlayMessageID != -1)
-            {
+            TextChannel channel = getLastUsedChannel();
 
-                TextChannel channel = getLastUsedChannel();
-
-                channel.deleteMessageById(musicLastPlayMessageID).queue();
-
-            }
-        } catch (Exception e)
-        {
-            System.err.println("Couldn't delete LastSongEmbed");
+            EmbedManager.DeleteMessageByID(channel, musicLastPlayMessageID);
         }
-
     }
 
     public void DeletePauseSongEmbed()
     {
-        try
+        if (pauseLastMessageID != -1)
         {
-            if (pauseLastMessageID != -1)
-            {
-                TextChannel channel = getLastUsedChannel();
+            TextChannel channel = getLastUsedChannel();
 
-                channel.deleteMessageById(pauseLastMessageID).queue();
-            }
-        } catch (Exception e)
-        {
-            System.err.println("Couldn't delete LastSongEmbed");
+            EmbedManager.DeleteMessageByID(channel, pauseLastMessageID);
         }
     }
 

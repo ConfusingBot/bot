@@ -1,8 +1,11 @@
 package main.de.confusingbot.manage.embeds;
 
 import java.awt.Color;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQuestionRunnable;
+import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -23,7 +26,15 @@ public class EmbedManager
         }
         else
         {
-            channel.sendMessage(error.build()).complete().delete().queueAfter(timeInSeconds, TimeUnit.SECONDS);
+            channel.sendMessage(error.build()).queue(message -> {
+                try
+                {
+                    message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e)
+                {
+                    System.err.println("Couldn't delete Message by ID " + message.getIdLong());
+                }
+            });
         }
     }
 
@@ -41,7 +52,15 @@ public class EmbedManager
         }
         else
         {
-            channel.sendMessage(success.build()).complete().delete().queueAfter(timeInSeconds, TimeUnit.SECONDS);
+            channel.sendMessage(success.build()).queue(message -> {
+                try
+                {
+                    message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e)
+                {
+                    System.err.println("Couldn't delete Message by ID " + message.getIdLong());
+                }
+            });
         }
     }
 
@@ -59,24 +78,40 @@ public class EmbedManager
         }
         else
         {
-            channel.sendMessage(info.build()).complete().delete().queueAfter(timeInSeconds, TimeUnit.SECONDS);
+            channel.sendMessage(info.build()).queue(message -> {
+                try
+                {
+                    message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e)
+                {
+                    System.err.println("Couldn't delete Message by ID " + message.getIdLong());
+                }
+            });
         }
     }
 
     public static void SendUsageEmbed(String description, TextChannel channel, int timeInSeconds)
     {
-        EmbedBuilder info = new EmbedBuilder();
-        info.setColor(0xBF00FF);
-        info.setTitle("💡 Usage");
-        info.setDescription(description);
+        EmbedBuilder usage = new EmbedBuilder();
+        usage.setColor(0xBF00FF);
+        usage.setTitle("💡 Usage");
+        usage.setDescription(description);
 
         if (timeInSeconds <= 0)
         {
-            channel.sendMessage(info.build()).queue();
+            channel.sendMessage(usage.build()).queue();
         }
         else
         {
-            channel.sendMessage(info.build()).complete().delete().queueAfter(timeInSeconds, TimeUnit.SECONDS);
+            channel.sendMessage(usage.build()).queue(message -> {
+                try
+                {
+                    message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e)
+                {
+                    System.err.println("Couldn't delete Message by ID " + message.getIdLong());
+                }
+            });
         }
     }
 
@@ -94,7 +129,15 @@ public class EmbedManager
         }
         else
         {
-            channel.sendMessage(custom.build()).complete().delete().queueAfter(timeInSeconds, TimeUnit.SECONDS);
+            channel.sendMessage(custom.build()).queue(message -> {
+                try
+                {
+                    message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e)
+                {
+                    System.err.println("Couldn't delete Message by ID " + message.getIdLong());
+                }
+            });
         }
     }
 
@@ -121,7 +164,15 @@ public class EmbedManager
         }
         else
         {
-            channel.sendMessage(builder.build()).complete().delete().queueAfter(timeInSeconds, TimeUnit.SECONDS);
+            channel.sendMessage(builder.build()).queue(message -> {
+                try
+                {
+                    message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e)
+                {
+                    System.err.println("Couldn't delete Message by ID " + message.getIdLong());
+                }
+            });
         }
     }
 
@@ -133,6 +184,18 @@ public class EmbedManager
         messageID = channel.sendMessage(builder.build()).complete().getIdLong();
 
         return messageID;
+    }
+
+    public static void DeleteMessageByID(TextChannel channel, long messageID)
+    {
+        try
+        {
+            channel.deleteMessageById(messageID).submit().get();
+
+        } catch (Exception e)
+        {
+            System.err.println("Couldn't delete Message by ID " + messageID);
+        }
     }
 }
 

@@ -7,22 +7,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Queue {
+public class Queue
+{
 
     private List<AudioTrack> queueList;
     private MusicController controller;
 
-    public Queue(MusicController controller) {
+    public Queue(MusicController controller)
+    {
         this.controller = controller;
         this.queueList = new ArrayList<AudioTrack>();
     }
 
-    public boolean hasNext() {
-
-        if (this.queueList.size() >= 1) {
+    public boolean hasNext()
+    {
+        if (this.queueList.size() >= 1)
+        {
             AudioTrack track = queueList.remove(0);//the last played song
 
-            if (track != null) {
+            if (track != null)
+            {
+                if (this.controller.getPlayer().getPlayingTrack() != null)
+                    this.controller.getPlayer().stopTrack();
+
                 this.controller.getPlayer().playTrack(track);
                 return true;
             }
@@ -30,36 +37,44 @@ public class Queue {
         return false;
     }
 
-    public void addTrackToQueue(AudioTrack track) {
+    public void addTrackToQueue(AudioTrack track)
+    {
         this.queueList.add(track);
 
-        if (controller.getPlayer().getPlayingTrack() == null) {
+        if (controller.getPlayer().getPlayingTrack() == null)
+        {
             hasNext();
         }
     }
 
-    public void Shuffle(){
+    public void Shuffle()
+    {
         Collections.shuffle(queueList);
     }
 
-    public void DeleteAtIndex(int index){
+    public void DeleteAtIndex(int index)
+    {
         queueList.remove(index);
     }
 
     //Getter Setter
-    public MusicController getController() {
+    public MusicController getController()
+    {
         return controller;
     }
 
-    public void setController(MusicController controller) {
+    public void setController(MusicController controller)
+    {
         this.controller = controller;
     }
 
-    public List<AudioTrack> getQueueList() {
+    public List<AudioTrack> getQueueList()
+    {
         return queueList;
     }
 
-    public void setQueueList(List<AudioTrack> queueList) {
+    public void setQueueList(List<AudioTrack> queueList)
+    {
         this.queueList = queueList;
     }
 

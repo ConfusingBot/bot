@@ -104,7 +104,8 @@ public class ReactRolesListener
                         {
                             //Remove Role from member
                             guild.removeRoleFromMember(member, guild.getRoleById(roleid)).queue();
-                        } catch (HierarchyException e)
+                        }
+                        catch (HierarchyException e)
                         {
                             //Error
                             ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);

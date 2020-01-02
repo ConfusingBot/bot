@@ -93,10 +93,8 @@ public class CommandsUtil
             }
             else
             {
-                //System.out.println(emoteString);
                 if (EmojiManager.containsEmoji(emoteString) || VoteCommandManager.voteEmotes.contains(emoteString))
                 {
-                    System.out.println("|" + emoteString + "|");
                     if (add)
                         channel.addReactionById(messageid, emoteString).queue();
                     else

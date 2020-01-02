@@ -15,8 +15,12 @@ public class UpdateVoiceChannel
         {
             MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
 
-            controller.getPlayer().setPaused(false);
-            controller.getPlayer().stopTrack();
+            if (controller.getPlayer().isPaused())
+                controller.getPlayer().setPaused(false);
+
+            if (controller.getPlayer().getPlayingTrack() != null)
+                controller.getPlayer().stopTrack();
+
             AudioManager manager = channel.getGuild().getAudioManager();
             manager.closeAudioConnection();
         }
