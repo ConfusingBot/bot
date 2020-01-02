@@ -28,38 +28,46 @@ public class JoinCommand implements ServerCommand
 
         if (args.length == 1)
         {
-            GuildVoiceState state = member.getVoiceState();
-
-            if (state != null)
+            AudioManager manager = channel.getGuild().getAudioManager();
+            if (!manager.isConnected())
             {
-                VoiceChannel voiceChannel = state.getChannel();
-                if (voiceChannel != null)
+                GuildVoiceState state = member.getVoiceState();
+
+                if (state != null)
                 {
-                    MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                    Music.channelID = voiceChannel.getIdLong();
-
-                    //SQL
-                    controller.updateChannel(channel, member);
-
-                    List<AudioTrack> queue = controller.getQueue().getQueueList();
-                    if (queue.size() > 0)
+                    VoiceChannel voiceChannel = state.getChannel();
+                    if (voiceChannel != null)
                     {
-                        Connect(voiceChannel);
+                        MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                        Music.channelID = voiceChannel.getIdLong();
 
-                        //PlayTrack
-                        controller.getPlayer().playTrack(queue.get(0));
+                        //SQL
+                        controller.updateChannel(channel, member);
+
+                        List<AudioTrack> queue = controller.getQueue().getQueueList();
+                        if (queue.size() > 0)
+                        {
+                            Connect(voiceChannel, manager);
+
+                            //PlayTrack
+                            controller.getPlayer().playTrack(queue.get(0));
+                        }
+                        else
+                        {
+                            //Information
+                            embeds.YourQueueIsEmptyInformation(channel);
+                        }
                     }
                     else
                     {
                         //Information
-                        embeds.YourQueueIsEmptyInformation(channel);
+                        EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                     }
                 }
-                else
-                {
-                    //Information
-                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
-                }
+            }
+            else
+            {
+                embeds.IsAlreadyInAVoiceChannel(channel);
             }
         }
         else
@@ -72,9 +80,8 @@ public class JoinCommand implements ServerCommand
     //=====================================================================================================================================
     //Helper
     //=====================================================================================================================================
-    private void Connect(VoiceChannel voiceChannel)
+    private void Connect(VoiceChannel voiceChannel, AudioManager manager)
     {
-        AudioManager manager = voiceChannel.getGuild().getAudioManager();
         if (!manager.isConnected())
             manager.openAudioConnection(voiceChannel);
 

@@ -27,13 +27,11 @@ public class Queue
 
             if (track != null)
             {
-                if (this.controller.getPlayer().getPlayingTrack() != null)
-                    this.controller.getPlayer().stopTrack();
-
                 this.controller.getPlayer().playTrack(track);
                 return true;
             }
         }
+
         return false;
     }
 

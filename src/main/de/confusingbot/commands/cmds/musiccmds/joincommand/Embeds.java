@@ -29,4 +29,9 @@ public class Embeds
         EmbedManager.SendInfoEmbed("`Ups, your Queue is empty`⚠️", channel, EmbedsUtil.showInfoTime);
     }
 
+    public void IsAlreadyInAVoiceChannel(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("`Ups, the bot is already in a VoiceChannel`⚠️", channel, EmbedsUtil.showInfoTime);
+    }
+
 }

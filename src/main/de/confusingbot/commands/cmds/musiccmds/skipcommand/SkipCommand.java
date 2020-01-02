@@ -32,6 +32,12 @@ public class SkipCommand implements ServerCommand
             Queue queue = controller.getQueue();
             AudioTrack lastPlayingTrack = controller.getPlayer().getPlayingTrack();
 
+            //Unpause song if song is paused
+            if (controller.getPlayer().isPaused())
+            {
+                controller.getPlayer().setPaused(false);
+            }
+
             if (queue.hasNext())
             {
                 //Message

@@ -86,10 +86,9 @@ public class TrackScheduler extends AudioEventAdapter
 
         controller.getMusicEmbedManager().DeleteLastSongEmbed();
 
+        Queue queue = controller.getQueue();
         if (endReason.mayStartNext)
         {
-            Queue queue = controller.getQueue();
-
             if (queue.hasNext()) return;
 
             //Message
