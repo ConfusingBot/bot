@@ -30,20 +30,22 @@ import main.de.confusingbot.commands.cmds.musiccmds.shufflecommand.ShuffleComman
 import main.de.confusingbot.commands.cmds.musiccmds.skipcommand.SkipCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand.TrackInfoCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.leavecommand.LeaveServerCommand;
+import main.de.confusingbot.commands.cmds.ownercmds.listcommand.ListServerCommand;
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CommandManager {
+public class CommandManager
+{
 
     public ConcurrentHashMap<String, ServerCommand> commands;
     public ConcurrentHashMap<String, PrivateCommand> privateCommands;
 
 
-
-    public CommandManager(){
+    public CommandManager()
+    {
         this.commands = new ConcurrentHashMap<>();
         this.privateCommands = new ConcurrentHashMap<>();
 
@@ -82,25 +84,29 @@ public class CommandManager {
 
         //Owner
         this.commands.put("leaveserver", new LeaveServerCommand());
+        this.commands.put("listserver", new ListServerCommand());
 
         //PRIVATE
         this.privateCommands.put("help", new PrivateHelpCommand());
-
     }
 
-    public boolean perform(String command, Member member, TextChannel channel, Message message){
+    public boolean perform(String command, Member member, TextChannel channel, Message message)
+    {
 
         ServerCommand cmd = this.commands.get(command.toLowerCase());
-        if(cmd != null){
+        if (cmd != null)
+        {
             cmd.performCommand(member, channel, message);
             return true;
         }
         return false;
     }
 
-    public boolean performPrivate(String command, User user, PrivateChannel channel, Message message){
+    public boolean performPrivate(String command, User user, PrivateChannel channel, Message message)
+    {
         PrivateCommand cmd = this.privateCommands.get(command.toLowerCase());
-        if(cmd != null){
+        if (cmd != null)
+        {
             cmd.performPrivateCommand(user, channel, message);
             return true;
         }

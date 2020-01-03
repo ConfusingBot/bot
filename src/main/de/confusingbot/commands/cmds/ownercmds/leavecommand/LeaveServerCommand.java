@@ -4,13 +4,12 @@ import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class LeaveServerCommand implements ServerCommand
 {
 
     Embeds embeds = new Embeds();
-    ShardManager shardManager = Main.INSTANCE.shardManager;
+    main.de.confusingbot.listener.commandlistener.Embeds commandsListenerEmbeds = new main.de.confusingbot.listener.commandlistener.Embeds();
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
@@ -20,14 +19,23 @@ public class LeaveServerCommand implements ServerCommand
 
         if (member.getUser().getName().equals("ConfusingFutureGames"))
         {
-            if (args.length == 1)
+            if (args.length == 2)
             {
-                LeaveServerByID(channel.getGuild().getId(), channel);
+                if (args[1].equals("this"))
+                {
+                    LeaveServerByID(channel.getGuild().getId(), channel);
+                }
+                else
+                {
+                    String idString = args[1];
+                    LeaveServerByID(idString, channel);
+                }
             }
-            else if (args.length == 2)
-            {
-                LeaveServerByID(args[1], channel);
-            }
+        }
+        else
+        {
+            //UnknownCommand Information
+            commandsListenerEmbeds.CommandDoesNotExistsInformation(channel);
         }
     }
 
@@ -36,7 +44,8 @@ public class LeaveServerCommand implements ServerCommand
         if (CommandsUtil.isNumeric(idString))
         {
             long id = Long.parseLong(idString);
-            Guild guild = channel.getGuild(); //TODO change this
+
+            Guild guild = Main.INSTANCE.shardManager.getGuildById(id);
 
             if (guild != null)
             {
