@@ -7,7 +7,7 @@ import main.de.confusingbot.listener.joinlistener.JoinListener;
 import main.de.confusingbot.listener.reactionlistener.ReactionListener;
 import main.de.confusingbot.listener.voicelistener.VoiceListener;
 import main.de.confusingbot.manage.commands.CommandManager;
-import main.de.confusingbot.commands.cmds.consolecmds.Shutdown;
+import main.de.confusingbot.commands.cmds.consolecmds.ConsoleCommandManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
@@ -29,7 +29,7 @@ public class Main
 
     //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.XfE6Bw.cU3VwVONecggNHrdLAVEES88AbY
-    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
+    private String token = "NjM4NzYwNDYwODEyMDI1ODY2.XfE6Bw.cU3VwVONecggNHrdLAVEES88AbY";
     public static String version = "0.0.06";
     public static String prefix = "- ";
 
@@ -37,7 +37,6 @@ public class Main
 
     public static void main(String[] args)
     {
-
         try
         {
             new Main();
@@ -88,7 +87,7 @@ public class Main
 
     private void ConsoleCommands()
     {
-        Shutdown.Bot(shardManager);
+        ConsoleCommandManager.Bot(shardManager);
     }
 
     public GeneralTimer generalTimer;

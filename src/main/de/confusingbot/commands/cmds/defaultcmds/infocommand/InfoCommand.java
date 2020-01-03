@@ -218,7 +218,6 @@ public class InfoCommand implements ServerCommand
         Main.INSTANCE.shardManager.getShards().forEach(jda -> {
 
             total.set(jda.getGuilds().size());
-
         });
 
         if (total == null)
