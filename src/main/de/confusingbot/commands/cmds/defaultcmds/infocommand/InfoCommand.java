@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -32,7 +33,7 @@ public class InfoCommand implements ServerCommand
     public void performCommand(Member requester, TextChannel channel, Message message)
     {
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length > 1)
         {

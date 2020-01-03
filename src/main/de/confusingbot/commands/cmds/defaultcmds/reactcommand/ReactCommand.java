@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.defaultcmds.reactcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.ContextException;
 
@@ -26,7 +27,7 @@ public class ReactCommand implements ServerCommand
         //- react [channel] [message id] [emotjis]
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length > 3)
         {

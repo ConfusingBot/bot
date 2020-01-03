@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.defaultcmds.hugcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -32,7 +33,7 @@ public class HugCommand implements ServerCommand
     public void performCommand(Member member, TextChannel channel, Message message)
     {
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length == 1)
         {

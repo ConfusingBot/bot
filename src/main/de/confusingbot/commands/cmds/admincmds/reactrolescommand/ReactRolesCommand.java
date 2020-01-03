@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
@@ -28,7 +29,7 @@ public class ReactRolesCommand implements ServerCommand
         //- reactrole    add     [channel]  [message id]   [emotjis]  [Rolle]
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         //Check Permission
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))

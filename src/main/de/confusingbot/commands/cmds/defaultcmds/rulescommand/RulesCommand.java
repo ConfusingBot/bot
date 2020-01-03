@@ -25,7 +25,7 @@ public class RulesCommand implements ServerCommand
     {
         //- rules
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length == 1)
         {

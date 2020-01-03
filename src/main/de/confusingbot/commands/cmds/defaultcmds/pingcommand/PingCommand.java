@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.pingcommand;
 
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -19,7 +20,7 @@ public class PingCommand implements ServerCommand
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         long time = System.currentTimeMillis();
         channel.sendMessage("Pong\uD83C\uDFD3\n**")

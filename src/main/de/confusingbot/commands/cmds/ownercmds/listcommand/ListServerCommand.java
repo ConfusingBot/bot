@@ -23,7 +23,7 @@ public class ListServerCommand implements ServerCommand
     public void performCommand(Member member, TextChannel channel, Message message)
     {
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (member.getUser().getName().equals("ConfusingFutureGames"))
         {

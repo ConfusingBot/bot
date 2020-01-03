@@ -5,6 +5,7 @@ import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
 import main.de.confusingbot.music.queue.Queue;
@@ -28,7 +29,7 @@ public class QueueCommand implements ServerCommand
     public void performCommand(Member member, TextChannel channel, Message message)
     {
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
         Queue queue = controller.getQueue();

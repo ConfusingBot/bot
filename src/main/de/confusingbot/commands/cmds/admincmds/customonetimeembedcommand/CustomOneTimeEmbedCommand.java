@@ -24,7 +24,7 @@ public class CustomOneTimeEmbedCommand implements ServerCommand
         {
 
             String[] args = CommandsUtil.messageToArgs(message);
-            message.delete().queue();
+            EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
             if (args.length == 1)
             {

@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.*;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
@@ -24,7 +25,7 @@ public class PlayCommand implements ServerCommand
     {
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length >= 2)
         {

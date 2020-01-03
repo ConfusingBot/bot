@@ -30,7 +30,7 @@ public class RoleBorderCommand implements ServerCommand
         // - roleborder create [name] #2f3136
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))
         {

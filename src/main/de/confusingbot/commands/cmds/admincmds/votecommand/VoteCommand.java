@@ -3,6 +3,7 @@ package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
@@ -29,7 +30,7 @@ public class VoteCommand implements ServerCommand
 
         Guild guild = channel.getGuild();
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))
         {

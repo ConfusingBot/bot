@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
 import net.dv8tion.jda.api.entities.*;
@@ -27,7 +28,7 @@ public class TrackInfoCommand implements ServerCommand
         // - trackinfo
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length == 1)
         {

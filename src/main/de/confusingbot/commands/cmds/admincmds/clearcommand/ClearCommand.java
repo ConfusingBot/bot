@@ -3,6 +3,7 @@ package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQuestionRunnable;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,7 +28,7 @@ public class ClearCommand implements ServerCommand
         //- clear [comments number x]
 
         String[] args = CommandsUtil.messageToArgs(message);
-        // message.delete().queue();
+        //EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (member.hasPermission(channel, Permission.MESSAGE_MANAGE))
         {

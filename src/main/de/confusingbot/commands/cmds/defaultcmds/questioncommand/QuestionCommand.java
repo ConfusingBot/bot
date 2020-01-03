@@ -27,7 +27,7 @@ public class QuestionCommand implements ServerCommand
         //- question close
         //-question category create ID
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (args.length >= 2)
         {

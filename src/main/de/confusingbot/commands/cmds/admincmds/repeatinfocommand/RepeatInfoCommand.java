@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
@@ -22,7 +23,7 @@ public class RepeatInfoCommand implements ServerCommand
         //- repeatinfo remove [1, 2, 3]
 
         String[] args = CommandsUtil.messageToArgs(message);
-        message.delete().queue();
+        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (member.hasPermission(channel, Permission.ADMINISTRATOR))
         {
