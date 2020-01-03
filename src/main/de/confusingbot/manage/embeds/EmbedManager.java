@@ -194,7 +194,7 @@ public class EmbedManager
 
         } catch (Exception e)
         {
-            System.err.println("Couldn't delete Message by ID " + messageID);
+            System.err.println("Couldn't delete Message by ID " + messageID + " on Guild " + channel.getGuild().getIdLong());
         }
     }
 }
