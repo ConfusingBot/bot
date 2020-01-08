@@ -3,6 +3,7 @@ package main.de.confusingbot.manage.commands;
 import main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
+import main.de.confusingbot.commands.cmds.admincmds.eventcommand.EventCommand;
 import main.de.confusingbot.commands.cmds.admincmds.joinrole.JoinRoleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageCommand;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRolesCommand;
@@ -71,6 +72,8 @@ public class CommandManager
         this.commands.put("repeatinfo", new RepeatInfoCommand());
         this.commands.put("message", new MessageCommand());
         this.commands.put("vote", new VoteCommand());
+        //TODO just for testing
+        this.commands.put("event", new EventCommand());
 
         //Music
         this.commands.put("play", new PlayCommand());

@@ -96,5 +96,18 @@ public class SQLManager
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS joinrole(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
                 "roleid INTEGER)");
+
+        //SQL: event -> guildID channelId messageID #color 5 eventroleID emote
+
+        tabelNames.add("event");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS event(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildid INTEGER, " +
+                "channelid INTEGER, " +
+                "messageid INTEGER, " +
+                "roleid INTEGER, " +
+                "time INTEGER, " +
+                "color TEXT, " +
+                "emote TEXT, " +
+                "name TEXT)");
     }
 }

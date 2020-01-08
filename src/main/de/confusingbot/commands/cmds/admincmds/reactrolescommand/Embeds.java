@@ -106,7 +106,7 @@ public class Embeds
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendReactRoleListEmbed(TextChannel channel, String description)
+    public void SendListEmbed(TextChannel channel, String description)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));

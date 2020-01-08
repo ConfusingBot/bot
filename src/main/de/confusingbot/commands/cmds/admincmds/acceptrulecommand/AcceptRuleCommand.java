@@ -12,7 +12,8 @@ import java.util.List;
 public class AcceptRuleCommand implements ServerCommand
 {
 
-    public AcceptRuleCommand(){
+    public AcceptRuleCommand()
+    {
         AcceptRuleManager.embeds.HelpEmbed();
     }
 
@@ -79,11 +80,15 @@ public class AcceptRuleCommand implements ServerCommand
                     Role notAcceptedRole = roles.get(0);//args 5
                     Role acceptedRole = roles.get(1);//args 6
 
-                    try
+                    if (CommandsUtil.isNumeric(messageIDString))
                     {
                         long messageID = Long.parseLong(messageIDString);
 
-                        CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
+                        if (!CommandsUtil.reactEmote(emoteString, textChannel, messageID, true))
+                        {
+                            //Error
+                            AcceptRuleManager.embeds.ThisIsNoIDError(channel, messageIDString);
+                        }
 
                         //Add acceptedRole to all members
                         CommandsUtil.AddOrRemoveRoleFromAllMembers(textChannel.getGuild(), acceptedRole.getIdLong(), true);
@@ -93,8 +98,8 @@ public class AcceptRuleCommand implements ServerCommand
 
                         //Message
                         AcceptRuleManager.embeds.SuccessfulAddedAcceptRule(channel);
-
-                    } catch (NumberFormatException e)
+                    }
+                    else
                     {
                         //Error
                         AcceptRuleManager.embeds.ThisIsNoIDError(channel, messageIDString);
@@ -152,11 +157,13 @@ public class AcceptRuleCommand implements ServerCommand
         }
     }
 
-    private void showCommand(Guild guild, String[] args, TextChannel channel){
+    private void showCommand(Guild guild, String[] args, TextChannel channel)
+    {
         long guildID = guild.getIdLong();
         if (args.length == 2)
         {
-            if(AcceptRuleManager.sql.ExistsInSQL(guildID)){
+            if (AcceptRuleManager.sql.ExistsInSQL(guildID))
+            {
 
                 long acceptedRoleID = AcceptRuleManager.sql.getAcceptedRoleID(guildID);
                 long notAcceptedRoleID = AcceptRuleManager.sql.getNotAcceptedRoleID(guildID);
@@ -171,18 +178,22 @@ public class AcceptRuleCommand implements ServerCommand
                 String notAcceptedRoleString = "Not Existing";
                 String textChannelString = "Not Existing";
 
-                if(acceptedRole != null) acceptedRoleString = acceptedRole.getAsMention();
-                if(notAcceptedRole != null) notAcceptedRoleString = notAcceptedRole.getAsMention();
-                if(textChannel != null) textChannelString = textChannel.getAsMention();
+                if (acceptedRole != null) acceptedRoleString = acceptedRole.getAsMention();
+                if (notAcceptedRole != null) notAcceptedRoleString = notAcceptedRole.getAsMention();
+                if (textChannel != null) textChannelString = textChannel.getAsMention();
 
                 //Message
                 AcceptRuleManager.embeds.ShowAcceptRule(channel, textChannelString, notAcceptedRoleString, acceptedRoleString, emote);
 
-            }else{
+            }
+            else
+            {
                 //Information
                 AcceptRuleManager.embeds.ServerHasNoAcceptedRuleInformation(channel);
             }
-        }else {
+        }
+        else
+        {
             //Usage
             AcceptRuleManager.embeds.ShowUsage(channel);
         }

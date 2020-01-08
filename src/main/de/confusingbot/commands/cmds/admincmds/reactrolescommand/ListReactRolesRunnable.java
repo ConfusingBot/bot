@@ -74,7 +74,7 @@ public class ListReactRolesRunnable implements Runnable
             channel.deleteMessageById(messageid).queue();
 
             //Message
-            ReactRoleManager.embeds.SendReactRoleListEmbed(channel, description);
+            ReactRoleManager.embeds.SendListEmbed(channel, description);
         }
         else
         {
