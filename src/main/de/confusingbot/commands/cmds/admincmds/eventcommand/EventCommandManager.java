@@ -5,4 +5,6 @@ public class EventCommandManager
 
     public static SQL sql = new SQL();
     public static Embeds embeds = new Embeds();
+
+    public static String messageStartKey = "MESSAGE:";
 }

@@ -1,5 +1,6 @@
 package main.de.confusingbot.timer;
 
+import main.de.confusingbot.commands.cmds.admincmds.eventcommand.UpdateEvents;
 import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.UpdateRepeatInfo;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.UpdateVotes;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.UpdateQuestionChannels;
@@ -13,6 +14,7 @@ public class GeneralTimer
     private UpdateQuestionChannels updateQuestionChannels;
     private UpdateVotes updateVotes;
     private UpdateRepeatInfo updateRepeatInfo;
+    private UpdateEvents updateEvents;
 
     private Timer timer;
 
@@ -22,6 +24,7 @@ public class GeneralTimer
         this.updateQuestionChannels = new UpdateQuestionChannels();
         this.updateVotes = new UpdateVotes();
         this.updateRepeatInfo = new UpdateRepeatInfo();
+        this.updateEvents = new UpdateEvents();
     }
 
     //Timer
@@ -36,6 +39,7 @@ public class GeneralTimer
                 updateQuestionChannels.onSecond();
                 updateVotes.onSecond();
                 updateRepeatInfo.onSecond();
+                updateEvents.onSecond();
             }
         };
 

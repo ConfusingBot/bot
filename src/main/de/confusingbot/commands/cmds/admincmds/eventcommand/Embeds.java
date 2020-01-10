@@ -24,9 +24,11 @@ public class Embeds
     {
         EmbedManager.SendUsageEmbed(
                 "```yaml\n" + Main.prefix + "event create [#channel] [messageid] [color] [time] [takePartEmote] [eventName] ROLE:[eventRoleName]\n```"
-                        + "```TODO```\n"
+                        + "```You can create awesome Event's!```\n"
                         + "```yaml\n" + Main.prefix + "event remove [@eventRole]\n```"
                         + "```Remove Event which is connected with this role!```\n"
+                        + "```yaml\n" + Main.prefix + "event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]\n```"
+                        + "```Create a Announcement for all EventMembers!```\n"
                         + "```yaml\n" + Main.prefix + "event list\n```"
                         + "```List all active Events of this guild!```\n"
                 , channel, EmbedsUtil.showUsageTime);
@@ -40,6 +42,11 @@ public class Embeds
     public void RemoveUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed("`" + Main.prefix + "event remove [@eventRole]`", channel, EmbedsUtil.showUsageTime);
+    }
+
+    public void AnnouncementUsage(TextChannel channel)
+    {
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]`", channel, EmbedsUtil.showUsageTime);
     }
 
 
@@ -91,6 +98,13 @@ public class Embeds
         EmbedsUtil.HavenNotMentionedError(channel, "role");
     }
 
+    public void NoMentionedEventRoleError(TextChannel channel)
+    {
+        EmbedsUtil.HavenNotMentionedError(channel, "EventRole");
+    }
+
+
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
@@ -138,5 +152,26 @@ public class Embeds
     public long SendWaitMessage(TextChannel channel)
     {
         return EmbedManager.SendCustomEmbedGetMessageID("Please Wait", "This needs upto 10s!", Color.pink, channel);
+    }
+
+    public void SendEventEndEmbed(TextChannel channel, String eventName, String color)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode(color));
+        builder.setTitle("\uD83D\uDC51Events Ends!");
+        builder.setDescription("**" + eventName + "** ends!");
+
+        EmbedManager.SendEmbed(builder, channel, 0);
+    }
+
+
+    public void SendAnnouncement(String title, String message, Color color, TextChannel channel)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(color);
+        builder.setTitle(title);
+        builder.setDescription(message);
+
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 }

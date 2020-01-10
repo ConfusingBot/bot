@@ -108,6 +108,7 @@ public class SQLManager
                 "time INTEGER, " +
                 "color TEXT, " +
                 "emote TEXT, " +
+                "creationtime TEXT, " +
                 "name TEXT)");
     }
 }

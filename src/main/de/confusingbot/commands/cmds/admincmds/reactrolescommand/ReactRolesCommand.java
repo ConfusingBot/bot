@@ -89,7 +89,7 @@ public class ReactRolesCommand implements ServerCommand
                 TextChannel textChannel = channels.get(0);//args 2
                 Role role = roles.get(0);//args 5
                 String messageIDString = args[3]; //args 3
-                String emoteString = CommandsUtil.getEmotes(message, Arrays.asList(args[4])).get(0);
+                String emoteString = CommandsUtil.getEmote(message, args[4]);//args 4
 
                 if (CommandsUtil.isNumeric(messageIDString))
                 {

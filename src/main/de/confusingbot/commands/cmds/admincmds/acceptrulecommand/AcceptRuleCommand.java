@@ -76,7 +76,7 @@ public class AcceptRuleCommand implements ServerCommand
                 {
                     TextChannel textChannel = channels.get(0);//args 2
                     String messageIDString = args[3];//args 3
-                    String emoteString = getEmote(message, args);//args 4
+                    String emoteString = CommandsUtil.getEmote(message, args[4]);//args 4
                     Role notAcceptedRole = roles.get(0);//args 5
                     Role acceptedRole = roles.get(1);//args 6
 
@@ -198,28 +198,6 @@ public class AcceptRuleCommand implements ServerCommand
             AcceptRuleManager.embeds.ShowUsage(channel);
         }
     }
-
-    //=====================================================================================================================================
-    //Helper
-    //=====================================================================================================================================
-    private String getEmote(Message message, String[] args)
-    {
-        List<Emote> emotes = message.getEmotes();
-
-        String emoteString = "";
-        if (!emotes.isEmpty())
-        {
-            Emote emote = emotes.get(0);
-            emoteString += emote.getIdLong();
-        }
-        else
-        {
-            String emote = args[4];
-            emoteString += emote;
-        }
-        return emoteString;
-    }
-
 }
 
 

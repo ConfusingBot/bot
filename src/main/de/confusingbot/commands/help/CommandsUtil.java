@@ -106,8 +106,7 @@ public class CommandsUtil
                 }
             }
             return true;
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             return false;
         }
@@ -218,6 +217,28 @@ public class CommandsUtil
             finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
         }
         return finalString;
+    }
+
+    public static String getEmote(Message message, String emoteString)
+    {
+        List<Emote> emotes = message.getEmotes();
+
+        String finalEmoteString = "";
+        if (!emotes.isEmpty())
+        {
+            for (Emote emote : emotes)
+            {
+                String emoteName = ":" + emote.getName() + ":";
+                if (emoteName.equals(emoteString))
+                    finalEmoteString += emote.getIdLong();
+            }
+        }
+        else
+        {
+            String emote = emoteString;
+            finalEmoteString += emote;
+        }
+        return finalEmoteString;
     }
 }
 

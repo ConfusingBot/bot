@@ -32,6 +32,8 @@ public class ListEventsRunnable implements Runnable
         List<String> emoteStrings = new ArrayList<>();
         List<Long> eventRoleIDs = new ArrayList<>();
         List<String> eventNames = new ArrayList<>();
+        List<Integer> times = new ArrayList<>();
+        List<String> creationTimes = new ArrayList<>();
 
         try
         {
@@ -44,6 +46,8 @@ public class ListEventsRunnable implements Runnable
                 channelIDs.add(set.getLong("channelid"));
                 emoteStrings.add(set.getString("emote"));
                 eventNames.add(set.getString("name"));
+                creationTimes.add(set.getString("creationtime"));
+                times.add(set.getInt("time"));
             }
         } catch (SQLException e)
         {
@@ -52,11 +56,10 @@ public class ListEventsRunnable implements Runnable
 
         if (!eventNames.isEmpty() || eventNames.size() > 0)
         {
-            //TODO is only a test
             StringBuilder builder = new StringBuilder();
-            for (String eventName : eventNames)
+            for (int i = 0; i < eventNames.size(); i++)
             {
-                builder.append(eventName + "\n");
+                builder.append("**" + eventNames.get(i) + "** ⏰ " + CommandsUtil.getTimeLeftInHours(creationTimes.get(i), times.get(i)) + "\n");
             }
 
             //Message

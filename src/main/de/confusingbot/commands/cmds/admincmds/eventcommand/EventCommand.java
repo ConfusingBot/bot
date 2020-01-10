@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.eventcommand;
 
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ListReactRolesRunnable;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
@@ -11,6 +12,8 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.restaction.RoleAction;
 
 import java.awt.*;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class EventCommand implements ServerCommand
@@ -49,6 +52,9 @@ public class EventCommand implements ServerCommand
                     case "list":
                         ListCommand(channel);
                         break;
+                    case "announcement":
+                        AnnouncementCommand(channel, message, args);
+                        break;
                     default:
                         //Usage
                         AcceptRuleManager.embeds.GeneralUsage(channel);
@@ -71,11 +77,73 @@ public class EventCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void ListCommand(TextChannel channel){
+    private void ListCommand(TextChannel channel)
+    {
         long messageid = ReactRoleManager.embeds.SendWaitMessage(channel);
         Runnable r = new ListEventsRunnable(channel.getGuild(), channel, messageid);
         Thread t = new Thread(r);
         t.start();
+    }
+
+    private void AnnouncementCommand(TextChannel channel, Message message, String[] args)
+    {
+        if (args.length >= 5)
+        {
+            List<TextChannel> channels = message.getMentionedChannels();
+            List<Role> roles = message.getMentionedRoles();
+            Guild guild = channel.getGuild();
+
+            if (!channels.isEmpty() && ("#" + channels.get(0).getName()).equals(args[2]))
+            {
+                if (!roles.isEmpty() && ("@" + roles.get(0).getName()).equals(args[3]))
+                {
+                    if (sql.eventRoleExist(guild.getIdLong(), roles.get(0).getIdLong()))
+                    {
+                        //Get Message and Title
+                        String wholeMessage = getWholeMessage(args, 4);
+                        String title = "Event Announcement!";
+                        String shownMessage = "";
+
+                        if (wholeMessage.contains(EventCommandManager.messageStartKey))
+                        {
+                            String[] messageAndTitle = wholeMessage.split(EventCommandManager.messageStartKey);
+                            title = messageAndTitle[0];
+                            shownMessage = messageAndTitle[1];
+                        }
+                        else
+                        {
+                            shownMessage = wholeMessage;
+                        }
+
+                        //Add eventRole as mentioned
+                        shownMessage += ("\n\n" + roles.get(0).getAsMention());
+
+                        //Message
+                        embeds.SendAnnouncement(title, shownMessage, roles.get(0).getColor(), channels.get(0));
+                    }
+                    else
+                    {
+                        //Error
+                        embeds.NoMentionedEventRoleError(channel);
+                    }
+                }
+                else
+                {
+                    //Error
+                    embeds.NoMentionedRoleError(channel);
+                }
+            }
+            else
+            {
+                //Error
+                embeds.NoMentionedTextChannelError(channel);
+            }
+        }
+        else
+        {
+            //Usage
+            embeds.AnnouncementUsage(channel);
+        }
     }
 
     private void CreateCommand(Message message, String[] args, TextChannel channel)
@@ -89,7 +157,7 @@ public class EventCommand implements ServerCommand
             String colorString = args[4];
             String timeString = args[5];
             int time = -1;
-            String emoteString = args[6];
+            String emoteString = CommandsUtil.getEmote(message, args[6]);
             String eventName = "empty";
             String roleName = "empty";
 
@@ -135,8 +203,11 @@ public class EventCommand implements ServerCommand
                                     int finalTime = time;
                                     String finalEventName = eventName;
                                     roleAction.queue(role -> {
+                                        //Get CurrentTime
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                        String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
                                         //SQL
-                                        sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), finalMessageID, role.getIdLong(), finalTime, colorString, emoteString, finalEventName);
+                                        sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), finalMessageID, role.getIdLong(), finalTime, colorString, emoteString, creationTime, finalEventName);
 
                                         //Message
                                         embeds.SuccessfullyAddedEvent(channel, Color.decode(colorString), finalEventName);
@@ -220,5 +291,53 @@ public class EventCommand implements ServerCommand
             //Usage
             embeds.RemoveUsage(channel);
         }
+    }
+
+    //=====================================================================================================================================
+    //Helper
+    //=====================================================================================================================================
+    private String getWholeMessage(String[] args, int startIndex)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int i = startIndex; i < args.length; i++)
+        {
+            builder.append(args[i] + " ");
+        }
+        String wholeMessage = builder.toString();
+        return wholeMessage.trim();
+    }
+
+    private String getMentionableMessage(String message, List<TextChannel> mentionedChannel, List<Role> mentionedRoles, List<User> mentionedUsers)
+    {
+        String mentionableMessage = "";
+        StringBuilder builder = new StringBuilder();
+        String[] words = message.split(" ");
+
+        for (String word : words)
+        {
+            for (TextChannel channel : mentionedChannel)
+            {
+                if (word.contains(channel.getName()))
+                    word = channel.getAsMention();
+            }
+
+            for (Role role : mentionedRoles)
+            {
+                if (word.contains(role.getName()))
+                    word = role.getAsMention();
+            }
+
+            for (User user : mentionedUsers)
+            {
+                if (word.contains(user.getName()))
+                    word = user.getAsMention();
+            }
+
+            builder.append(word + " ");
+        }
+
+        mentionableMessage = builder.toString().trim();
+
+        return mentionableMessage;
     }
 }

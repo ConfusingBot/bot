@@ -8,11 +8,11 @@ import java.sql.SQLException;
 public class SQL
 {
 
-    public void addToSQL(long guildid, long channelid, long messageid, long roleid, int time, String hexColor, String emoteString, String eventName)
+    public void addToSQL(long guildid, long channelid, long messageid, long roleid, int time, String hexColor, String emoteString, String creationTime, String eventName)
     {
-        LiteSQL.onUpdate("INSERT INTO event(guildid, channelid, messageid, roleid, time, color, emote, name) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO event(guildid, channelid, messageid, roleid, time, color, emote, creationtime, name) VALUES(" +
                 guildid + ", " + channelid + ", " + messageid + ", " + roleid + ", "
-                + time + ", '" + hexColor + "', '" + emoteString + "', '" + eventName + "')");
+                + time + ", '" + hexColor + "', '" + emoteString + "', '" + creationTime + "', '" + eventName + "')");
     }
 
     public void removeFormSQL(long guildid, long roleid)
@@ -78,12 +78,12 @@ public class SQL
         return roleID;
     }
 
-    public String getEventName(long guildid, long messageID)
+    public String getEventName(long guildid, long roleID)
     {
         String name = "";
         ResultSet set = LiteSQL.onQuery("SELECT * FROM event WHERE "
                 + "guildid = " + guildid
-                + " AND roleid = " + messageID);
+                + " AND roleid = " + roleID);
         try
         {
             if (set.next())
@@ -96,6 +96,25 @@ public class SQL
         }
 
         return name;
+    }
+
+    public boolean eventRoleExist(long guildid, long roleID)
+    {
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM event WHERE "
+                + "guildid = " + guildid
+                + " AND roleid = " + roleID);
+        try
+        {
+            if (set.next())
+            {
+               return true;
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public String getEventColor(long guildid, long messageID)
@@ -124,5 +143,12 @@ public class SQL
                 + "guildid = " + guildid);
 
         return set;
+    }
+
+    public void removeFromSQL(long guildid, long id)
+    {
+        LiteSQL.onUpdate("DELETE FROM event WHERE "
+                + "id = " + id
+                + " AND guildid = " + guildid);
     }
 }
