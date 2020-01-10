@@ -158,9 +158,9 @@ public class SQL
         return emote;
     }
 
-    public List<Role> getRoleBorders(Guild guild)
+    public List<Long> getRoleBorderIDs(Guild guild)
     {
-        List<Role> roleBorders = new ArrayList<>();
+        List<Long> roleBordersIds = new ArrayList<>();
 
         ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE "
                 + "guildid = " + guild.getIdLong());
@@ -169,13 +169,13 @@ public class SQL
         {
             while (set.next())
             {
-                Role role = guild.getRoleById(set.getLong("roleid"));
-                roleBorders.add(role);
+                roleBordersIds.add(set.getLong("roleid"));
             }
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
-        return roleBorders;
+        
+        return roleBordersIds;
     }
 }

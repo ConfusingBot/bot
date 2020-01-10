@@ -5,6 +5,7 @@ import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -71,6 +72,20 @@ public class Embeds
     public void NoPermissionError(TextChannel channel)
     {
         EmbedsUtil.NoPermissionError(channel);
+    }
+
+    public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
+    {
+        EmbedManager.SendErrorEmbed("The bot has no right to assign " + role.getAsMention() + "\n" +
+                "Please give the bot a role over the role which as do be assigned!", channel,10);
+    }
+
+    public void RoleDoesNotExistAnymore(TextChannel channel, long roleid){
+        EmbedManager.SendErrorEmbed("The Role with the id **" + roleid + "** from the AcceptRules doesn't exist anymore!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public void RoleBorderDoesNotExistAnymore(TextChannel channel, long roleid){
+        EmbedManager.SendErrorEmbed("The Role with the id **" + roleid + "** from the RoleBorders doesn't exist anymore!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================

@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class AcceptRulesListener
 
     public void onReactionAdd(MessageReactionAddEvent event)
     {
+        Member member = event.getMember();
         if (event.getChannelType() == ChannelType.TEXT)
         {
             long messageid = event.getMessageIdLong();
@@ -26,17 +28,68 @@ public class AcceptRulesListener
                     long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(event.getGuild().getIdLong());
                     long roleacceptedid = AcceptRuleManager.sql.getAcceptedRoleID(event.getGuild().getIdLong());
 
-                    //add member and remove blocked
-                    guild.addRoleToMember(event.getMember(), guild.getRoleById(roleacceptedid)).queue();
-                    guild.removeRoleFromMember(event.getMember(), guild.getRoleById(rolenotacceptedid)).queue();
+                    //Add roleAccepted to Member
+                    Role roleAccepted = guild.getRoleById(roleacceptedid);
+                    if (roleAccepted != null)
+                    {
+                        try
+                        {
+                            guild.addRoleToMember(event.getMember(), roleAccepted).queue();
+                        } catch (HierarchyException e)
+                        {
+                            //Error
+                            AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), roleAccepted);
+                        }
+                    }
+                    else
+                    {
+                        //Error
+                        AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), roleacceptedid);
+                    }
+
+                    //Remove NotAccepted from Member
+                    Role roleNotAccepted = guild.getRoleById(rolenotacceptedid);
+                    if (roleNotAccepted != null)
+                    {
+                        try
+                        {
+                            guild.removeRoleFromMember(event.getMember(), roleNotAccepted).queue();
+                        } catch (HierarchyException e)
+                        {
+                            //Error
+                            AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), roleNotAccepted);
+                        }
+                    }
+                    else
+                    {
+                        //Error
+                        AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), rolenotacceptedid);
+                    }
+
 
                     //add roleborder
-                    List<Role> roleBorders = AcceptRuleManager.sql.getRoleBorders(guild);
-                    if (roleBorders != null)
+                    List<Long> roleBorderIDs = AcceptRuleManager.sql.getRoleBorderIDs(guild);
+                    if (roleBorderIDs != null)
                     {
-                        for (int i = 0; i < roleBorders.size(); i++)
+                        for (int i = 0; i < roleBorderIDs.size(); i++)
                         {
-                            guild.addRoleToMember(event.getMember(), roleBorders.get(i)).queue();
+                            Role roleBorder = guild.getRoleById(roleBorderIDs.get(i));
+                            if (roleBorder != null)
+                            {
+                                try
+                                {
+                                    guild.addRoleToMember(member, roleBorder).queue();
+                                } catch (HierarchyException e)
+                                {
+                                    //Error
+                                    AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), roleBorder);
+                                }
+                            }
+                            else
+                            {
+                                //Error
+                                AcceptRuleManager.embeds.RoleBorderDoesNotExistAnymore(event.getTextChannel(), roleBorderIDs.get(i));
+                            }
                         }
                     }
                 }
@@ -62,18 +115,67 @@ public class AcceptRulesListener
                         long rolenotacceptedid = AcceptRuleManager.sql.getNotAcceptedRoleID(event.getGuild().getIdLong());
                         long roleacceptedid = AcceptRuleManager.sql.getAcceptedRoleID(event.getGuild().getIdLong());
 
-                        //add blocked and remove member
-                        guild.removeRoleFromMember(member, guild.getRoleById(roleacceptedid)).queue();
-                        guild.addRoleToMember(member, guild.getRoleById(rolenotacceptedid)).queue();
+                        //Remove roleAccepted from Member
+                        Role roleAccepted = guild.getRoleById(roleacceptedid);
+                        if (roleAccepted != null)
+                        {
+                            try
+                            {
+                                guild.removeRoleFromMember(event.getMember(), roleAccepted).queue();
+                            } catch (HierarchyException e)
+                            {
+                                //Error
+                                AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), roleAccepted);
+                            }
+                        }
+                        else
+                        {
+                            //Error
+                            AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), roleacceptedid);
+                        }
 
+                        //Add roleNotAccepted to Member
+                        Role roleNotAccepted = guild.getRoleById(rolenotacceptedid);
+                        if (roleNotAccepted != null)
+                        {
+                            try
+                            {
+                                guild.addRoleToMember(event.getMember(), roleNotAccepted).queue();
+                            } catch (HierarchyException e)
+                            {
+                                //Error
+                                AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), roleNotAccepted);
+                            }
+                        }
+                        else
+                        {
+                            //Error
+                            AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), rolenotacceptedid);
+                        }
 
                         //remove roleborders
-                        List<Role> roleBorders = AcceptRuleManager.sql.getRoleBorders(guild);
-                        if (roleBorders != null)
+                        List<Long> roleBorderIDs = AcceptRuleManager.sql.getRoleBorderIDs(guild);
+                        if (roleBorderIDs != null)
                         {
-                            for (int i = 0; i < roleBorders.size(); i++)
+                            for (int i = 0; i < roleBorderIDs.size(); i++)
                             {
-                                guild.removeRoleFromMember(member, roleBorders.get(i)).queue();
+                                Role roleBorder = guild.getRoleById(roleBorderIDs.get(i));
+                                if (roleBorder != null)
+                                {
+                                    try
+                                    {
+                                        guild.removeRoleFromMember(member, roleBorder).queue();
+                                    } catch (HierarchyException e)
+                                    {
+                                        //Error
+                                        AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), roleBorder);
+                                    }
+                                }
+                                else
+                                {
+                                    //Error
+                                    AcceptRuleManager.embeds.RoleBorderDoesNotExistAnymore(event.getTextChannel(), roleBorderIDs.get(i));
+                                }
                             }
                         }
                     }
@@ -92,8 +194,24 @@ public class AcceptRulesListener
             Member member = event.getMember();
             Guild guild = event.getGuild();
 
-            //Add member accept rolerole
-            addMemberRole(guild, member, rolenotacceptedid);
+            Role notAcceptedRole = guild.getRoleById(rolenotacceptedid);
+
+            if (notAcceptedRole != null)
+            {
+                try
+                {
+                    //Add Role to member
+                    guild.addRoleToMember(member, notAcceptedRole).queue();
+                } catch (HierarchyException e)
+                {
+                    //Error
+                    AcceptRuleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), notAcceptedRole);
+                }
+            }
+            else
+            {
+                AcceptRuleManager.embeds.RoleDoesNotExistAnymore(guild.getDefaultChannel(), rolenotacceptedid);
+            }
         }
     }
 
@@ -120,8 +238,7 @@ public class AcceptRulesListener
                         try
                         {
                             message.removeReaction(reaction.getReactionEmote().getEmote(), user).queue();
-                        }
-                        catch (IllegalStateException e)
+                        } catch (IllegalStateException e)
                         {
                             message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
                         }
