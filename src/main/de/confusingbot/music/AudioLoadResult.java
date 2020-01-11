@@ -89,6 +89,8 @@ public class AudioLoadResult implements AudioLoadResultHandler
     @Override
     public void loadFailed(FriendlyException e)
     {
+        System.err.println(e + "     Guild: " + controller.getGuild().getName());
+
         //Error
         controller.getMusicEmbedManager().getMusicEmbed().LoadFailedError(channel, uri);
 

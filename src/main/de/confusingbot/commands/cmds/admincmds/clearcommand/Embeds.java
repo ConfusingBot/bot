@@ -43,6 +43,6 @@ public class Embeds
     //=====================================================================================================================================
     public void SuccessfulRemovedXMessages(TextChannel channel, List<Message> messages)
     {
-        EmbedManager.SendSuccessEmbed("You successfully cleared " + (messages.size()) + " messages!", channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You successfully cleared **" + (messages.size() - 1) + " messages**!", channel, EmbedsUtil.showSuccessTime);
     }
 }
