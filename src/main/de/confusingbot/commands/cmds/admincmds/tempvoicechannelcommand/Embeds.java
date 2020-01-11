@@ -14,7 +14,8 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "tempchannel\n```" +
-                "```Create special VoiceChannels, which automatically creates a new VoiceChannel by joining it(named after the joining user)```");
+                "```Create special VoiceChannels, which automatically creates a new VoiceChannel by joining it(named after the joining user)```" +
+                "[[Example Video]](https://www.youtube.com/watch?v=M6z6gEaQ2_k&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=5)\n");
     }
 
     //=====================================================================================================================================

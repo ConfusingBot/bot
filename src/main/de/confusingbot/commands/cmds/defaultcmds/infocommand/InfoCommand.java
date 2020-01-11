@@ -42,6 +42,10 @@ public class InfoCommand implements ServerCommand
                     //Bot info
                     BotInfoCommand(channel, requester);
                     break;
+                case "server":
+                    //Bot info
+                    ServerInfoCommand(channel, requester);
+                    break;
                 default:
                     //Client info
                     ClientInfoCommand(args, message, channel, requester);
@@ -84,10 +88,21 @@ public class InfoCommand implements ServerCommand
 
     private void BotInfoCommand(TextChannel channel, Member requester)
     {
-        embeds.SendInfoBotEmbed(channel, requester, displayOnlineTime(fromDateTime), fromDateTime.format(formatter), Main.version
-                , "BennoDev#9351"
-                , Main.INSTANCE.shardManager.getShards().get(0).getSelfUser().getEffectiveAvatarUrl()
-                , getTotalServers(), getTotalMembers(), getTotalChannels());
+        embeds.SendInfoBotEmbed(channel,
+                requester,
+                displayOnlineTime(fromDateTime),
+                fromDateTime.format(formatter),
+                Main.version,
+                Main.linesOfCode,
+                "BennoDev#9351",
+                Main.INSTANCE.shardManager.getShards().get(0).getSelfUser().getEffectiveAvatarUrl(),
+                getTotalServers(), getTotalMembers(), getTotalChannels());
+    }
+
+    private void ServerInfoCommand(TextChannel channel, Member requester)
+    {
+        //TODO create ServerInfoCommand
+         channel.sendMessage("ServerInfoCommand doesn't exist!").queue();
     }
 
     //=====================================================================================================================================

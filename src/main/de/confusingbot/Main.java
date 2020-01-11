@@ -31,6 +31,7 @@ public class Main
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.XhjmyQ.jjGdRKCy8prSzczjp-8UfvPtTgM
     private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
     public static String version = "0.0.07";
+    public static long linesOfCode = 11636;
     public static String prefix = "- ";
 
     public static boolean botOffline = false;

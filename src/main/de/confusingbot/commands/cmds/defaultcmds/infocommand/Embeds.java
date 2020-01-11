@@ -63,7 +63,7 @@ public class Embeds
         EmbedManager.SendEmbed(builder, channel, 30);
     }
 
-    public void SendInfoBotEmbed(TextChannel channel, Member requester, String onlineTime, String lastUpdate, String version, String creator, String thumbnailURL, String totalServer, String totalUser, String totalChannels)
+    public void SendInfoBotEmbed(TextChannel channel, Member requester, String onlineTime, String lastUpdate, String version, long linesOfCode, String creator, String thumbnailURL, String totalServer, String totalUser, String totalChannels)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setThumbnail(thumbnailURL);
@@ -79,6 +79,7 @@ public class Embeds
         builder.addField("**Total Servers:** ", totalServer, true);
         builder.addField("**Total Users:** ", totalUser, true);
         builder.addField("**Total Channels:** ", totalChannels, true);
+        builder.addField("**Total Lines of Code:** ", Long.toString(linesOfCode), false);
         builder.addField("**Creator:** ", creator, false);
         builder.addField("**Help:** ", "https://discord.gg/xc82F8M", true);
 

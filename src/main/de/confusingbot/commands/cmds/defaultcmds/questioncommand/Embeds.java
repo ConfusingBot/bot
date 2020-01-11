@@ -17,10 +17,11 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "question ([Title]) QUESTION: [Question] [roles to mention]\n```" +
-                " ```Create a custom TextChannel (in the QuestionCategory) where only your question exists```");
+                " ```Create a custom TextChannel (in the QuestionCategory) where only your question exists```\n");
 
         HelpManager.admin.add("```yaml\n" + Main.prefix + "question category\n```" +
-                " ```Create a question category to unlock the question feature```");
+                " ```Create a question category to unlock the question feature```" +
+                "[[Example Video]](https://www.youtube.com/watch?v=N7HfwrymW0s&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=1)\n");
     }
 
     //=====================================================================================================================================

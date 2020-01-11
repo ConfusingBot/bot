@@ -14,7 +14,8 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "roleborder\n``` " +
-                "```Create RoleBorders which can be used as an seperator between roles```");
+                "```Create RoleBorders which can be used as an seperator between roles```" +
+                "[[Example Video]](https://www.youtube.com/watch?v=M6z6gEaQ2_k&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=3)\n");
     }
 
     //=====================================================================================================================================

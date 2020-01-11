@@ -16,7 +16,7 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "joinrole``` " +
-                "```Create a JoinRole which will be added to a member after he had joined your server!```\n"
+                "```Create a JoinRole which will be added to a member after he joined your server!```\n"
                );
     }
 

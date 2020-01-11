@@ -15,7 +15,8 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "message\n``` " +
-                "```You can create welcome/leave messages will be sent if a member join/leave the server```\n");
+                "```You can create welcome/leave messages will be sent if a member join/leave the server```" +
+                "[[Example Video]](https://www.youtube.com/watch?v=M6z6gEaQ2_k&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=8)\n");
     }
 
     //=====================================================================================================================================

@@ -13,9 +13,6 @@ import java.util.List;
 
 public class QuestionCommand implements ServerCommand
 {
-
-
-
     public QuestionCommand(){
         QuestionManager.embeds.HelpEmbed();
     }

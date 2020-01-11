@@ -15,7 +15,8 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "reactrole\n``` " +
-                "```Create a awesome role add/take away system```");
+                "```Create a awesome role add/take away system```" +
+                "[[Example Video]](https://www.youtube.com/watch?v=M6z6gEaQ2_k&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=2)\n");
     }
 
     //=====================================================================================================================================
