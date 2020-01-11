@@ -42,6 +42,7 @@ public class BotInfo
         try
         {
             String onlineTime = "";
+            String currentOnlineTime = "";
 
             LocalDateTime tempDateTime = LocalDateTime.from(fromDateTime);
 
@@ -100,6 +101,7 @@ public class BotInfo
                 totalMinutes++;
             }
 
+            //Set onlineTime
             if (totalYears > 0)
                 onlineTime += totalYears + " y ";
 
@@ -118,11 +120,32 @@ public class BotInfo
             if (totalSeconds > 0)
                 onlineTime += totalSeconds + " s";
 
+            //Set currentOnlineTime
+            if (years > 0)
+                currentOnlineTime += years + " y ";
+
+            if (months > 0)
+                currentOnlineTime += months + " m ";
+
+            if (days > 0)
+                currentOnlineTime += days + " d ";
+
+            if (hours > 0)
+                currentOnlineTime += hours + " h ";
+
+            if (minutes > 0)
+                currentOnlineTime += minutes + " m ";
+
+            if (seconds > 0)
+                currentOnlineTime += seconds + " s";
+
             if (saveToSQL)
             {
                 //SQL
                 String sqlOnlineTimeString = totalYears + ", " + totalMonths + ", " + totalDays + ", " + totalHours + ", " + totalMinutes + ", " + totalSeconds;
                 InfoCommandManager.sql.updateOnlineTime(sqlOnlineTimeString);
+
+                System.out.println("onlineTime: " + currentOnlineTime);
             }
 
             return onlineTime;
