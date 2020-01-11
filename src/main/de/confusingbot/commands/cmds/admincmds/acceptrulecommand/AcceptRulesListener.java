@@ -1,5 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
+import main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.SQL;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class AcceptRulesListener
 {
+    SQL roleBorderSQL = new SQL();
 
     public void onReactionAdd(MessageReactionAddEvent event)
     {
@@ -89,6 +91,9 @@ public class AcceptRulesListener
                             {
                                 //Error
                                 AcceptRuleManager.embeds.RoleBorderDoesNotExistAnymore(event.getTextChannel(), roleBorderIDs.get(i));
+
+                                //SQL
+                                roleBorderSQL.removeFromSQL(guild.getIdLong(), roleBorderIDs.get(i));
                             }
                         }
                     }
@@ -175,6 +180,9 @@ public class AcceptRulesListener
                                 {
                                     //Error
                                     AcceptRuleManager.embeds.RoleBorderDoesNotExistAnymore(event.getTextChannel(), roleBorderIDs.get(i));
+
+                                    //SQL
+                                    roleBorderSQL.removeFromSQL(guild.getIdLong(), roleBorderIDs.get(i));
                                 }
                             }
                         }

@@ -13,7 +13,6 @@ import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class InfoCommand implements ServerCommand
 {
@@ -68,7 +67,7 @@ public class InfoCommand implements ServerCommand
                 for (Member member : members)
                 {
                     //Client info
-                    embeds.SendInfoUserEmbed(channel, requester, member, displayJoinDate(member), displayCreateDate(member), displayActivityInfo(member), getRoles(member).toString());
+                    embeds.SendInfoUserEmbed(channel, requester, member, displayJoinDate(member), displayCreateDate(member), displayActivityInfo(member), getRolesFromMember(member));
                 }
             }
             else
@@ -131,34 +130,43 @@ public class InfoCommand implements ServerCommand
         }
     }
 
-    private StringBuilder getRoles(Member member)
+    private String getRolesFromMember(Member member)
     {
         StringBuilder roleBuilder = new StringBuilder();
+        Guild guild = member.getGuild();
 
         List<Role> roles = member.getRoles().stream().collect(Collectors.toList());
-        List<Role> roleBorders = sql.getRoleBorders(member.getGuild());
+        List<Long> roleBorderIDs = sql.getRoleBorders(guild.getIdLong());
 
         for (Role role : roles)
         {
             boolean borderRole = false;
-            for (Role roleBorder : roleBorders)
+            for (Long roleBorderID : roleBorderIDs)
             {
-                if (roleBorder.getIdLong() == role.getIdLong())
+                Role roleBorder = guild.getRoleById(roleBorderID);
+                if (roleBorder != null)
                 {
-                    roleBuilder.append("\n\n**" + role.getName() + "**\n");
-                    borderRole = true;
+                    if (roleBorder.getIdLong() == role.getIdLong())
+                    {
+                        roleBuilder.append("\n**" + role.getName() + "**\n");
+                        borderRole = true;
+                    }
+                }
+                else
+                {
+                    //Remove RoleBorder from SQL
+                    new main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.SQL().removeFromSQL(guild.getIdLong(), roleBorderID);
                 }
             }
             if (!borderRole)
                 roleBuilder.append("" + role.getAsMention() + "  ");
         }
-        return roleBuilder;
+        return roleBuilder.toString();
     }
 
     //=====================================================================================================================================
-    //Helper Bot
+    //Helper
     //=====================================================================================================================================
-
     private String displayOnlineTime(LocalDateTime fromDateTime)
     {
         LocalDateTime toDateTime = LocalDateTime.now();
