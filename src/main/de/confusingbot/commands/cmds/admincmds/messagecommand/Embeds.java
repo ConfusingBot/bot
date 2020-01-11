@@ -25,7 +25,7 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember) to the server look at (#rule)]\n``` " +
+                "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
                         "```Create a welcome/leave message which will be sent if member join/leave the server```" +
                         "```yaml\n" + Main.prefix + "message remove [welcome/leave]\n```" +
                         "```Remove the welcome/leave message```", channel, EmbedsUtil.showUsageTime);

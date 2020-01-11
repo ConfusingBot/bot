@@ -35,4 +35,54 @@ public class SQL
         return roleBorderIDs;
     }
 
+    public void updateOnlineTime(String onlineTime)
+    {
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
+        try
+        {
+            if (set.next())
+            {
+                LiteSQL.onUpdate("UPDATE bot SET onlinetime = '" + onlineTime + "'");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void addBotToSQL(){
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
+        try
+        {
+            if (!set.next())
+            {
+                LiteSQL.onUpdate("INSERT INTO bot(onlinetime, users) VALUES('" +
+                        InfoCommandManager.defaultOnlineTime + "', " + 0 + ")");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String getOnlineTime()
+    {
+        String onlineTime = "";
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
+
+        try
+        {
+            if (set.next())
+            {
+                onlineTime = set.getString("onlinetime");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return onlineTime;
+    }
+
 }

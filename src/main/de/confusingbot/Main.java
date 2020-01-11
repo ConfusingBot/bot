@@ -17,6 +17,8 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
 import javax.security.auth.login.LoginException;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 public class Main
@@ -33,6 +35,7 @@ public class Main
     public static String version = "0.0.07";
     public static long linesOfCode = 11636;
     public static String prefix = "- ";
+    public static LocalDateTime botStartTime = LocalDateTime.now();
 
     public static boolean botOffline = false;
 
@@ -112,6 +115,7 @@ public class Main
         statusTimer.startTimer();
 
     }
+
 //Getter
 
     public CommandManager getCmdManager()

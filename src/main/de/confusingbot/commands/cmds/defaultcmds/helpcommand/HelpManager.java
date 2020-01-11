@@ -61,7 +61,7 @@ public class HelpManager
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(0x23cba7);
 
-        builder.setDescription(description + "\nhttps://discord.gg/xc82F8M");
+        builder.setDescription(description + "\nYou need help?\nhttps://discord.gg/xc82F8M");
         builder.setFooter("Powerd by ConfusingGames");
         builder.setTimestamp(OffsetDateTime.now());
 

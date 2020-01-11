@@ -1,14 +1,13 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.BotInfo;
+import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.ClientInfo;
+import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.ServerInfo;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -16,16 +15,18 @@ import net.dv8tion.jda.api.entities.*;
 
 public class InfoCommand implements ServerCommand
 {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-    String noInformationString = "none";
-    LocalDateTime fromDateTime = LocalDateTime.now();
+    Embeds embeds = InfoCommandManager.embeds;
 
-    Embeds embeds = new Embeds();
-    SQL sql = new SQL();
+    BotInfo botInfo = InfoCommandManager.botInfo;
+    ServerInfo serverInfo = InfoCommandManager.serverInfo;
+    ClientInfo clientInfo = InfoCommandManager.clientInfo;
 
     public InfoCommand()
     {
         embeds.HelpEmbed();
+
+        //SQL
+        InfoCommandManager.sql.addBotToSQL();
     }
 
     @Override
@@ -71,7 +72,13 @@ public class InfoCommand implements ServerCommand
                 for (Member member : members)
                 {
                     //Client info
-                    embeds.SendInfoUserEmbed(channel, requester, member, displayJoinDate(member), displayCreateDate(member), displayActivityInfo(member), getRolesFromMember(member));
+                    embeds.SendInfoUserEmbed(channel,
+                            requester,
+                            member,
+                            clientInfo.displayJoinDate(member),
+                            clientInfo.displayCreateDate(member),
+                            clientInfo.displayActivityInfo(member),
+                            clientInfo.getRolesFromMemberAsString(member));
                 }
             }
             else
@@ -90,221 +97,20 @@ public class InfoCommand implements ServerCommand
     {
         embeds.SendInfoBotEmbed(channel,
                 requester,
-                displayOnlineTime(fromDateTime),
-                fromDateTime.format(formatter),
+                botInfo.updateBotOnlineTime(Main.botStartTime, false),
+                Main.botStartTime.format(InfoCommandManager.formatter),
                 Main.version,
                 Main.linesOfCode,
                 "BennoDev#9351",
                 Main.INSTANCE.shardManager.getShards().get(0).getSelfUser().getEffectiveAvatarUrl(),
-                getTotalServers(), getTotalMembers(), getTotalChannels());
+                botInfo.getTotalServers(),
+                botInfo.getTotalMembers(),
+                botInfo.getTotalChannels());
     }
 
     private void ServerInfoCommand(TextChannel channel, Member requester)
     {
         //TODO create ServerInfoCommand
-         channel.sendMessage("ServerInfoCommand doesn't exist!").queue();
+        channel.sendMessage("ServerInfoCommand doesn't exist!").queue();
     }
-
-    //=====================================================================================================================================
-    //Helper Client
-    //=====================================================================================================================================
-    private String displayActivityInfo(Member member)
-    {
-        try
-        {
-            String activity = member.getActivities().get(0).getName();
-
-            return activity;
-        } catch (Exception e)
-        {
-            return noInformationString;
-        }
-    }
-
-    private String displayJoinDate(Member member)
-    {
-        try
-        {
-            String joinedDate = formatter.format(member.getTimeJoined().toLocalDate());
-            return joinedDate;
-        } catch (Exception e)
-        {
-            return noInformationString;
-        }
-    }
-
-    private String displayCreateDate(Member member)
-    {
-        try
-        {
-            String createdDate = formatter.format(member.getTimeCreated().toLocalDate());
-            return createdDate;
-        } catch (Exception e)
-        {
-            return noInformationString;
-        }
-    }
-
-    private String getRolesFromMember(Member member)
-    {
-        StringBuilder roleBuilder = new StringBuilder();
-        Guild guild = member.getGuild();
-
-        List<Role> roles = member.getRoles().stream().collect(Collectors.toList());
-        List<Long> roleBorderIDs = sql.getRoleBorders(guild.getIdLong());
-
-        for (Role role : roles)
-        {
-            boolean borderRole = false;
-            for (Long roleBorderID : roleBorderIDs)
-            {
-                Role roleBorder = guild.getRoleById(roleBorderID);
-                if (roleBorder != null)
-                {
-                    if (roleBorder.getIdLong() == role.getIdLong())
-                    {
-                        roleBuilder.append("\n**" + role.getName() + "**\n");
-                        borderRole = true;
-                    }
-                }
-                else
-                {
-                    //Remove RoleBorder from SQL
-                    new main.de.confusingbot.commands.cmds.admincmds.rolebordercommand.SQL().removeFromSQL(guild.getIdLong(), roleBorderID);
-                }
-            }
-            if (!borderRole)
-                roleBuilder.append("" + role.getAsMention() + "  ");
-        }
-        return roleBuilder.toString();
-    }
-
-    //=====================================================================================================================================
-    //Helper Bot
-    //=====================================================================================================================================
-    private String displayOnlineTime(LocalDateTime fromDateTime)
-    {
-        LocalDateTime toDateTime = LocalDateTime.now();
-
-        try
-        {
-            String onlineTime = "";
-
-            LocalDateTime tempDateTime = LocalDateTime.from(fromDateTime);
-
-            long years = tempDateTime.until(toDateTime, ChronoUnit.YEARS);
-            tempDateTime = tempDateTime.plusYears(years);
-
-            long months = tempDateTime.until(toDateTime, ChronoUnit.MONTHS);
-            tempDateTime = tempDateTime.plusMonths(months);
-
-            long days = tempDateTime.until(toDateTime, ChronoUnit.DAYS);
-            tempDateTime = tempDateTime.plusDays(days);
-
-
-            long hours = tempDateTime.until(toDateTime, ChronoUnit.HOURS);
-            tempDateTime = tempDateTime.plusHours(hours);
-
-            long minutes = tempDateTime.until(toDateTime, ChronoUnit.MINUTES);
-            tempDateTime = tempDateTime.plusMinutes(minutes);
-
-            long seconds = tempDateTime.until(toDateTime, ChronoUnit.SECONDS);
-
-            if (years > 0)
-                onlineTime += years + " y ";
-
-            if (months > 0)
-                onlineTime += months + " m ";
-
-            if (days > 0)
-                onlineTime += days + " d ";
-
-            if (hours > 0)
-                onlineTime += hours + " h ";
-
-            if (minutes > 0)
-                onlineTime += minutes + " m ";
-
-            if (seconds > 0)
-                onlineTime += seconds + " s";
-
-
-            return onlineTime;
-        } catch (Exception e)
-        {
-            return noInformationString;
-        }
-    }
-
-    private String getTotalServers()
-    {
-        AtomicInteger total = new AtomicInteger();
-        Main.INSTANCE.shardManager.getShards().forEach(jda -> {
-
-            total.set(jda.getGuilds().size());
-        });
-
-        if (total == null)
-        {
-            return noInformationString;
-        }
-        else
-        {
-            return total.toString();
-        }
-    }
-
-    private String getTotalChannels()
-    {
-        AtomicInteger total = new AtomicInteger();
-        Main.INSTANCE.shardManager.getShards().forEach(jda -> {
-
-            int t = 0;
-            List<Guild> guilds = jda.getGuilds();
-
-            for (Guild guild : guilds)
-            {
-                t += guild.getChannels().size();
-            }
-
-            total.set(t);
-
-        });
-
-        if (total == null)
-        {
-            return noInformationString;
-        }
-        else
-        {
-            return total.toString();
-        }
-    }
-
-    private String getTotalMembers()
-    {
-        AtomicInteger total = new AtomicInteger();
-        Main.INSTANCE.shardManager.getShards().forEach(jda -> {
-
-            int t = 0;
-            List<Guild> guilds = jda.getGuilds();
-
-            for (Guild guild : guilds)
-            {
-                t += guild.getMembers().size();
-            }
-
-            total.set(t);
-        });
-
-        if (total == null)
-        {
-            return noInformationString;
-        }
-        else
-        {
-            return total.toString();
-        }
-    }
-
 }

@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.consolecmds;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.InfoCommandManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
@@ -29,6 +30,9 @@ public class ConsoleCommandManager
                             Main.botOffline = true;
                             if (shardManager != null)
                             {
+                                //save online time of bot
+                                InfoCommandManager.botInfo.updateBotOnlineTime(Main.botStartTime, true);
+
                                 shardManager.setStatus(OnlineStatus.OFFLINE);
                                 shardManager.shutdown();
                                 LiteSQL.disconnect();
@@ -38,8 +42,7 @@ public class ConsoleCommandManager
                                 stopTimer();
 
                                 reader.close();
-                                break;
-
+                                System.exit(0);
                             }
 
                             break;

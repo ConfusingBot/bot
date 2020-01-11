@@ -11,6 +11,10 @@ public class SQLManager
     public static void onCreate()
     {
 
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS bot(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "onlinetime TEXT, " +
+                "users TEXT)");
+
         tabelNames.add("servers");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS servers(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
