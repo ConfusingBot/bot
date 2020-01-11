@@ -13,6 +13,9 @@ public class SQL
     //=====================================================================================================================================
     public void AddGuildToSQL(long guildid, String name)
     {
+        //' will execute a near "s": syntax error
+        name = name.replace("'", "");
+
         LiteSQL.onUpdate("INSERT INTO servers(guildid, name) VALUES(" +
                 guildid + ", '" + name + "')");
     }
