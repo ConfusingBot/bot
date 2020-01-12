@@ -132,24 +132,30 @@ public class InfoCommand implements ServerCommand
         List<Integer> members = CommandsUtil.encodeInteger(InfoCommandManager.sql.GetMembersInServer(guild.getIdLong()), ", ");
         List<String> dates = CommandsUtil.encodeString(InfoCommandManager.sql.GetDatesInServer(guild.getIdLong()), ", ");
 
-        if(members == null || dates == null) return;
+        if (members == null || dates == null) return;
 
-        File chartFile = serverInfo.createChartFile(members, dates);
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
+                //Generate Graph
+                File chartFile = serverInfo.createChartFile(members, dates);
 
-        //Send file to Discord
-        embeds.SendInfoServerEmbed(channel,
-                requester,
-                chartFile,
-                dates.size(),
-                guild.getChannels().size(),
-                guild.getVoiceChannels().size(), guild.getMemberCount(),
-                serverInfo.getBots(guild),
-                guild.getEmotes().size(),
-                guild.getRoles().size(),
-                guild.getCategories().size(),
-                InfoCommandManager.formatter.format(guild.getTimeCreated()),
-                guild.getOwner());
-
+                //Send file to Discord
+                embeds.SendInfoServerEmbed(channel,
+                        requester,
+                        chartFile,
+                        dates.size(),
+                        guild.getChannels().size(),
+                        guild.getVoiceChannels().size(), guild.getMemberCount(),
+                        serverInfo.getBots(guild),
+                        guild.getEmotes().size(),
+                        guild.getRoles().size(),
+                        guild.getCategories().size(),
+                        InfoCommandManager.formatter.format(guild.getTimeCreated()),
+                        guild.getOwner());
+            }
+        }).start();
     }
 }
 
