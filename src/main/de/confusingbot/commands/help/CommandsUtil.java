@@ -224,6 +224,8 @@ public class CommandsUtil
 
     public static List<Integer> encodeInteger(String string, String splitChar)
     {
+        if(splitChar == null || splitChar.equals("")) return null;
+
         List<String> words = Arrays.asList(string.split(splitChar));
         List<Integer> integers = new ArrayList<>();
 

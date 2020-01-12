@@ -132,6 +132,8 @@ public class InfoCommand implements ServerCommand
         List<Integer> members = CommandsUtil.encodeInteger(InfoCommandManager.sql.GetMembersInServer(guild.getIdLong()), ", ");
         List<String> dates = CommandsUtil.encodeString(InfoCommandManager.sql.GetDatesInServer(guild.getIdLong()), ", ");
 
+        if(members == null || dates == null) return;
+
         File chartFile = serverInfo.createChartFile(members, dates);
 
         //Send file to Discord

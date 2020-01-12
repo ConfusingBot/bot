@@ -55,11 +55,11 @@ public class UpdateInfos
             Guild guild = Main.INSTANCE.shardManager.getGuildById(guildIDs.get(i));
 
             List<String> dates = new ArrayList<>();
-            if (datesString.get(i) != null && !datesString.equals(""))
+            if (datesString.get(i) != null && !datesString.get(i).equals(""))
                 dates = CommandsUtil.encodeString(datesString.get(i), ", ");
 
             List<Integer> members = new ArrayList<>();
-            if (membersString.get(i) != null && !members.equals(""))
+            if (membersString.get(i) != null && !membersString.get(i).equals(""))
                 members = CommandsUtil.encodeInteger(membersString.get(i), ", ");
 
             Date currentDate = new Date();
