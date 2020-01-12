@@ -39,5 +39,10 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.3" level="project" />
     <orderEntry type="library" name="Maven: com.vdurmont:emoji-java:5.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20170516" level="project" />
+    <orderEntry type="library" name="Maven: org.knowm.xchart:xchart:3.6.1" level="project" />
+    <orderEntry type="library" name="Maven: de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.13" level="project" />
+    <orderEntry type="library" name="Maven: de.rototor.pdfbox:graphics2d:0.25" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.pdfbox:pdfbox:2.0.17" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.pdfbox:fontbox:2.0.17" level="project" />
   </component>
 </module>

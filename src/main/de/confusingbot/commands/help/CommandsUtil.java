@@ -200,7 +200,10 @@ public class CommandsUtil
 
     public static List<String> encodeString(String string, String splitChar)
     {
-        List<String> words = Arrays.asList(string.split(splitChar));
+        List<String> wordsFixed = Arrays.asList(string.split(splitChar));
+        List<String> words = new ArrayList<>();
+
+        for(String wordFixed : wordsFixed) words.add(wordFixed);
 
         return words;
     }
@@ -213,6 +216,30 @@ public class CommandsUtil
             for (String string : strings)
             {
                 finalString += string + splitChar;
+            }
+            finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
+        }
+        return finalString;
+    }
+
+    public static List<Integer> encodeInteger(String string, String splitChar)
+    {
+        List<String> words = Arrays.asList(string.split(splitChar));
+        List<Integer> integers = new ArrayList<>();
+
+        for(String word : words) if(isNumeric(word)) integers.add(Integer.parseInt(word));
+
+        return integers;
+    }
+
+    public static String codeInteger(List<Integer> integers, String splitChar)
+    {
+        String finalString = "";
+        if (!integers.isEmpty())
+        {
+            for (Integer integer : integers)
+            {
+                finalString += integer + splitChar;
             }
             finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
         }
@@ -239,6 +266,16 @@ public class CommandsUtil
             finalEmoteString += emote;
         }
         return finalEmoteString;
+    }
+
+    public static double[] toPrimitiveDoubleArray(List<Double> arrayList)
+    {
+        double result[] = new double[arrayList.size()];
+        for (int i = 0; i < result.length; i++)
+        {
+            result[i] = arrayList.get(i);
+        }
+        return result;
     }
 }
 

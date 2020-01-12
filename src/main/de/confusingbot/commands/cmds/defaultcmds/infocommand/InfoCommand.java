@@ -1,7 +1,18 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
-import java.time.LocalDateTime;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 import main.de.confusingbot.Main;
@@ -11,7 +22,13 @@ import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.ServerIn
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import org.knowm.xchart.*;
+import org.knowm.xchart.style.Styler;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class InfoCommand implements ServerCommand
 {
@@ -108,9 +125,29 @@ public class InfoCommand implements ServerCommand
                 botInfo.getTotalChannels());
     }
 
+
     private void ServerInfoCommand(TextChannel channel, Member requester)
     {
-        //TODO create ServerInfoCommand
-        channel.sendMessage("ServerInfoCommand doesn't exist!").queue();
+        Guild guild = channel.getGuild();
+        List<Integer> members = CommandsUtil.encodeInteger(InfoCommandManager.sql.GetMembersInServer(guild.getIdLong()), ", ");
+        List<String> dates = CommandsUtil.encodeString(InfoCommandManager.sql.GetDatesInServer(guild.getIdLong()), ", ");
+
+        File chartFile = serverInfo.createChartFile(members, dates);
+
+        //Send file to Discord
+        embeds.SendInfoServerEmbed(channel,
+                requester,
+                chartFile,
+                dates.size(),
+                guild.getChannels().size(),
+                guild.getVoiceChannels().size(), guild.getMemberCount(),
+                serverInfo.getBots(guild),
+                guild.getEmotes().size(),
+                guild.getRoles().size(),
+                guild.getCategories().size(),
+                InfoCommandManager.formatter.format(guild.getTimeCreated()),
+                guild.getOwner());
+
     }
 }
+

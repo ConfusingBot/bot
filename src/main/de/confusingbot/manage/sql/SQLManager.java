@@ -18,7 +18,9 @@ public class SQLManager
         tabelNames.add("servers");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS servers(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
-                "name TEXT)");
+                "name TEXT, " +
+                "dates TEXT, " +
+                "members TEXT)");
 
         tabelNames.add("reactroles");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS reactroles(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +

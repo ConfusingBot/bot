@@ -73,6 +73,12 @@
             <version>5.1.1</version>
         </dependency>
 
+        <!-- Charts -->
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.6.1</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -43,6 +43,7 @@ public class GeneralTimer
                 updateVotes.onSecond();
                 updateRepeatInfo.onSecond();
                 updateEvents.onSecond();
+                updateInfos.onSecond();
             }
         };
 
