@@ -11,8 +11,8 @@ import java.util.List;
 public class TempVoiceChannelCommand implements ServerCommand
 {
 
-    private SQL sql = new SQL();
-    private Embeds embeds = new Embeds();
+    private SQL sql = TempVoiceChannelCommandManager.sql;
+    private Embeds embeds = TempVoiceChannelCommandManager.embeds;
 
     public TempVoiceChannelCommand()
     {
@@ -28,7 +28,7 @@ public class TempVoiceChannelCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, TempVoiceChannelCommandManager.permission))
         {
 
             if (args.length >= 2)
@@ -59,7 +59,7 @@ public class TempVoiceChannelCommand implements ServerCommand
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel, TempVoiceChannelCommandManager.permission);
         }
     }
 

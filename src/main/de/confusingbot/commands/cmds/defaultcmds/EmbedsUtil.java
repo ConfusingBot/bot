@@ -1,6 +1,7 @@
 package main.de.confusingbot.commands.cmds.defaultcmds;
 
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class EmbedsUtil
@@ -13,9 +14,9 @@ public class EmbedsUtil
     //Error
     //=====================================================================================================================================
     //Permission
-    public static void NoPermissionError(TextChannel channel)
+    public static void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedManager.SendErrorEmbed("Sry I am not allowed to execute this command⚡️", channel, showErrorTime);
+        EmbedManager.SendErrorEmbed("`Sry I am not allowed to execute this command⚡️`\n ```yaml\n" + permission.name() + "```\n", channel, showErrorTime);
     }
 
     //Number

@@ -4,6 +4,7 @@ import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -15,7 +16,8 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "message\n``` " +
-                "```You can create welcome/leave messages will be sent if a member join/leave the server```" +
+                "```Create welcome/leave messages which will be sent if a member joined/left your server```" +
+                "```fix\n" + MessageManager.permission.name() + "\n```" +
                 "[[Example Video]](https://www.youtube.com/watch?v=M6z6gEaQ2_k&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=8)\n");
     }
 
@@ -44,9 +46,9 @@ public class Embeds
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void NoMessageDefinedError(TextChannel channel, String messagetype)

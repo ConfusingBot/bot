@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RoleBorderCommand implements ServerCommand
 {
-    private SQL sql = new SQL();
-    private Embeds embeds = new Embeds();
+    private SQL sql = RoleBorderCommandManager.sql;
+    private Embeds embeds = RoleBorderCommandManager.embeds;
 
     public RoleBorderCommand()
     {
@@ -32,7 +32,7 @@ public class RoleBorderCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, RoleBorderCommandManager.permission))
         {
             if (args.length >= 2)
             {
@@ -65,7 +65,7 @@ public class RoleBorderCommand implements ServerCommand
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel, RoleBorderCommandManager.permission);
         }
     }
 

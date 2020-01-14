@@ -1,10 +1,12 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -21,6 +23,7 @@ public class Embeds
 
         HelpManager.admin.add("```yaml\n" + Main.prefix + "question category\n```" +
                 " ```Create a question category to unlock the question feature```" +
+                "```fix\n" + QuestionManager.questionCategoryPermission.name() + "\n```" +
                 "[[Example Video]](https://www.youtube.com/watch?v=N7HfwrymW0s&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=1)\n");
     }
 
@@ -67,9 +70,9 @@ public class Embeds
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void OnlyOneAllowedQuestionCategory(TextChannel channel)

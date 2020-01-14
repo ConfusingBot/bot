@@ -32,7 +32,7 @@ public class VoteCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, VoteCommandManager.permission))
         {
 
             if (args.length >= 2)
@@ -60,7 +60,7 @@ public class VoteCommand implements ServerCommand
         else
         {
             //Error
-            VoteCommandManager.embeds.NoPermissionError(channel);
+            VoteCommandManager.embeds.NoPermissionError(channel, VoteCommandManager.permission);
         }
     }
 
@@ -130,7 +130,7 @@ public class VoteCommand implements ServerCommand
                         //=============================================================================================
                         //Get Title
                         //=============================================================================================
-                        title = newString.substring(0, newString.indexOf("-"));
+                        title = newString.substring(0, newString.indexOf(VoteCommandManager.voteEmotePrefix));
                         newString = newString.replace(title, "");
                         if (title.isEmpty()) title = "Vote!";
                         //=============================================================================================
@@ -145,9 +145,9 @@ public class VoteCommand implements ServerCommand
                         String sentence = "";
                         for (String word : wholeStringWordList)
                         {
-                            if (word.startsWith("-") && word.endsWith("-"))
+                            if (word.startsWith(VoteCommandManager.voteEmotePrefix) && word.endsWith(VoteCommandManager.voteEmotePrefix))
                             {
-                                word = word.replace("-", "");
+                                word = word.replace(VoteCommandManager.voteEmotePrefix, "");
                                 boolean added = false;
                                 //TODO test if the mentionedEmotes save the same emote twice
                                 for (Emote emote : mentionedEmotes)

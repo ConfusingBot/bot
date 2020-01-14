@@ -36,7 +36,7 @@ public class QuestionCommand implements ServerCommand
                     CloseQuestionCommand(args, guild, member, channel);
                     break;
                 case "category":
-                    if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+                    if (member.hasPermission(channel, QuestionManager.questionCategoryPermission))
                     {
                         if (args.length == 3 || args.length == 4)
                         {
@@ -63,7 +63,7 @@ public class QuestionCommand implements ServerCommand
                     else
                     {
                         //Error
-                        QuestionManager.embeds.NoPermissionError(channel);
+                        QuestionManager.embeds.NoPermissionError(channel, QuestionManager.questionCategoryPermission);
                     }
                     break;
 

@@ -25,46 +25,52 @@ public class HelpManager
         start.add("```yaml\n" + Main.prefix + "help admin\n``` ```Show you the admin commands```");
     }
 
-    public static EmbedBuilder getHelp(String[] args)
+    public static ArrayList<EmbedBuilder> getHelpBuilder(String[] args)
     {
-        EmbedBuilder helpBuilder;
+        ArrayList<EmbedBuilder> helpBuilder = new ArrayList<>();
         if (args.length == 1)
         {
-            helpBuilder = Start();
+            helpBuilder.add(Start());
         }
         else
         {
             switch (args[1])
             {
                 case "fun":
-                    helpBuilder = Fun();
+                    helpBuilder.add(Fun());
                     break;
                 case "useful":
-                    helpBuilder = Useful();
+                    helpBuilder.add(Useful());
                     break;
                 case "music":
-                    helpBuilder = Music();
+                    helpBuilder.add(Music());
                     break;
                 case "admin":
-                    helpBuilder = Admin();
+                    helpBuilder.addAll(Admin());
                     break;
                 default:
-                    helpBuilder = Start();
+                    helpBuilder.add(Start());
                     break;
             }
         }
         return helpBuilder;
     }
 
-    private static EmbedBuilder buildEmbed(String description)
+    private static EmbedBuilder buildEmbed(String description, boolean isEnd)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(0x23cba7);
 
-        builder.setDescription(description + "\nYou need help?\nhttps://discord.gg/xc82F8M");
-        builder.setFooter("Powerd by ConfusingGames");
-        builder.setTimestamp(OffsetDateTime.now());
-
+        if (isEnd)
+        {
+            builder.setDescription(description + "\nYou need more help?\nhttps://discord.gg/xc82F8M");
+            builder.setFooter("Powered by ConfusingGames");
+            builder.setTimestamp(OffsetDateTime.now());
+        }
+        else
+        {
+            builder.setDescription(description);
+        }
         return builder;
     }
 
@@ -80,7 +86,7 @@ public class HelpManager
             description += (s + "\n");
         }
 
-        return buildEmbed(description);
+        return buildEmbed(description, true);
     }
 
     public static EmbedBuilder Fun()
@@ -92,7 +98,7 @@ public class HelpManager
             description += (f + "\n");
         }
 
-        return buildEmbed(description);
+        return buildEmbed(description, true);
     }
 
     public static EmbedBuilder Useful()
@@ -104,7 +110,7 @@ public class HelpManager
             description += (u + "\n");
         }
 
-        return buildEmbed(description);
+        return buildEmbed(description, true);
     }
 
     public static EmbedBuilder Music()
@@ -116,18 +122,25 @@ public class HelpManager
             description += (m + "\n");
         }
 
-        return buildEmbed(description);
+        return buildEmbed(description, true);
     }
 
-    public static EmbedBuilder Admin()
+    public static ArrayList<EmbedBuilder> Admin()
     {
+        ArrayList<EmbedBuilder> helpBuilder = new ArrayList<>();
         String description = "";
         description += "\n**⚠ADMIN**";
-        for (String a : admin)
+        for (int i = 0; i < admin.size(); i++)
         {
-            description += (a + "\n");
+            if (i % 5 == 0 && i != 0)
+            {
+                helpBuilder.add(buildEmbed(description, false));
+                description = "";
+            }
+            description += (admin.get(i) + "\n");
         }
+        helpBuilder.add(buildEmbed(description, true));
 
-        return buildEmbed(description);
+        return helpBuilder;
     }
 }

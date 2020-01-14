@@ -2,9 +2,11 @@ package main.de.confusingbot.commands.cmds.admincmds.joinrole;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -16,6 +18,7 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "joinrole``` " +
+                "```fix\n" + JoinRoleManager.permission.name() + "\n```" +
                 "```Create a JoinRole which will be added to a member after he joined your server!```\n"
                );
     }
@@ -59,9 +62,9 @@ public class Embeds
         EmbedsUtil.HavenNotMentionedError(channel, "@role");
     }
 
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)

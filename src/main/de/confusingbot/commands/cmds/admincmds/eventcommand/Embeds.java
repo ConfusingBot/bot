@@ -2,9 +2,11 @@ package main.de.confusingbot.commands.cmds.admincmds.eventcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -13,8 +15,9 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "message\n``` " +
-                "```You can create welcome/leave messages will be sent if a member join/leave the server```\n");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "event\n``` " +
+                "```fix\n" + EventCommandManager.permission.name() + "\n```" +
+                "```Create awesome Events!```\n");
     }
 
     //=====================================================================================================================================
@@ -58,9 +61,9 @@ public class Embeds
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
 
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void NoValidEmoteError(TextChannel channel, String emote)

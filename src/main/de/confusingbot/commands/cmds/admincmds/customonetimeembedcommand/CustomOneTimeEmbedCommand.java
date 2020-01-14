@@ -40,7 +40,7 @@ public class CustomOneTimeEmbedCommand implements ServerCommand
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel, Permission.ADMINISTRATOR);
         }
     }
 

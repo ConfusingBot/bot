@@ -2,9 +2,11 @@ package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -14,6 +16,7 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "vote\n```" +
+                "```fix\n" + VoteCommandManager.permission.name() + "\n```" +
                 "```You can create special VoteMessages where member can vote for a specific thing!```");
     }
 
@@ -65,9 +68,9 @@ public class Embeds
         EmbedManager.SendErrorEmbed("You haven't mentioned a exist Time!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void NoEmoteError(TextChannel channel, String emote)

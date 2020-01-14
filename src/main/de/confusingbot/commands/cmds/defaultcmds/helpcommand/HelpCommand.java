@@ -1,13 +1,14 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.helpcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
-import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.ArrayList;
 
 public class HelpCommand implements ServerCommand
 {
@@ -22,13 +23,14 @@ public class HelpCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-       sendEmbed(HelpManager.getHelp(args), member);
+        sendEmbed(HelpManager.getHelpBuilder(args), member);
     }
 
-    private void sendEmbed(EmbedBuilder builder, Member member)
+    private void sendEmbed(ArrayList<EmbedBuilder> builders, Member member)
     {
         member.getUser().openPrivateChannel().queue((privateChannel) -> {
-            privateChannel.sendMessage(builder.build()).queue();
+            for (EmbedBuilder builder : builders)
+                privateChannel.sendMessage(builder.build()).queue();
         });
     }
 

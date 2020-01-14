@@ -27,7 +27,7 @@ public class MessageCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(Permission.ADMINISTRATOR))
+        if (member.hasPermission(MessageManager.permission))
         {
             if (args.length >= 2)
             {
@@ -94,7 +94,7 @@ public class MessageCommand implements ServerCommand
         else
         {
             //Error
-            MessageManager.embeds.NoPermissionError(channel);
+            MessageManager.embeds.NoPermissionError(channel, MessageManager.permission);
         }
     }
 

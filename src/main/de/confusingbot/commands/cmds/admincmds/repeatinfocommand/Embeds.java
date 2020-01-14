@@ -2,9 +2,11 @@ package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -14,6 +16,7 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "repeatinfo\n``` " +
+                "```fix\n" + RepeatInfoCommandManager.permission.name() + "\n```" +
                 "```Create a text which repeats every timestap!```");
     }
 
@@ -50,9 +53,9 @@ public class Embeds
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void OnlyXAllowedInfoCommandsError(TextChannel channel, int maxInfos)

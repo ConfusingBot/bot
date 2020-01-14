@@ -1,11 +1,9 @@
-package main.de.confusingbot.commands.cmds.admincmds.joinrole;
+package main.de.confusingbot.commands.cmds.admincmds.rolecommand;
 
 import net.dv8tion.jda.api.Permission;
 
-public class JoinRoleManager {
-
-    public static SQL sql = new SQL();
+public class RoleCommandManager
+{
     public static Embeds embeds = new Embeds();
-
     public static Permission permission = Permission.MANAGE_ROLES;
 }

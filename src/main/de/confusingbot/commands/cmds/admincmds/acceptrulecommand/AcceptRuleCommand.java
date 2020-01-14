@@ -26,7 +26,7 @@ public class AcceptRuleCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, AcceptRuleManager.permission))
         {
             if (args.length >= 2)
             {
@@ -56,7 +56,7 @@ public class AcceptRuleCommand implements ServerCommand
         else
         {
             //Error
-            AcceptRuleManager.embeds.NoPermissionError(channel);
+            AcceptRuleManager.embeds.NoPermissionError(channel, AcceptRuleManager.permission);
         }
     }
 

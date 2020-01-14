@@ -1,5 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.messagecommand;
 
+import net.dv8tion.jda.api.Permission;
+
 public class MessageManager
 {
 
@@ -11,5 +13,7 @@ public class MessageManager
 
     public static String welcomeMessageKey = "welcome";
     public static String leaveMessageKey = "leave";
+
+    public static Permission permission = Permission.MANAGE_SERVER;
 
 }

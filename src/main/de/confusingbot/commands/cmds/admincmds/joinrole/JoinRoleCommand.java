@@ -27,7 +27,7 @@ public class JoinRoleCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, JoinRoleManager.permission))
         {
             if (args.length >= 2)
             {
@@ -57,7 +57,7 @@ public class JoinRoleCommand implements ServerCommand
         else
         {
             //Error
-            JoinRoleManager.embeds.NoPermissionError(channel);
+            JoinRoleManager.embeds.NoPermissionError(channel, JoinRoleManager.permission);
         }
     }
 

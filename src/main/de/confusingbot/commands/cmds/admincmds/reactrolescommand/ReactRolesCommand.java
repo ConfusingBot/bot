@@ -32,7 +32,7 @@ public class ReactRolesCommand implements ServerCommand
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         //Check Permission
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, ReactRoleManager.permission))
         {
             if (args.length >= 2)
             {
@@ -62,7 +62,7 @@ public class ReactRolesCommand implements ServerCommand
         else
         {
             //Error
-            ReactRoleManager.embeds.NoPermissionError(channel);
+            ReactRoleManager.embeds.NoPermissionError(channel, ReactRoleManager.permission);
         }
     }
 

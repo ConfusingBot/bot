@@ -25,7 +25,7 @@ public class RepeatInfoCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, RepeatInfoCommandManager.permission))
         {
             if (args.length >= 2)
             {
@@ -55,7 +55,7 @@ public class RepeatInfoCommand implements ServerCommand
         else
         {
             //Error
-            RepeatInfoCommandManager.embeds.NoPermissionError(channel);
+            RepeatInfoCommandManager.embeds.NoPermissionError(channel, RepeatInfoCommandManager.permission);
         }
     }
 
@@ -78,14 +78,13 @@ public class RepeatInfoCommand implements ServerCommand
 
                 for (int i = 0; i < repeatInfoIDs.size(); i++)
                 {
-                    String repeatinfoText = RepeatInfoCommandManager.sql.getRepeatInfoByID(guild.getIdLong(), repeatInfoIDs.get(i));
+                    String repeatInfoText = RepeatInfoCommandManager.sql.getRepeatInfoByID(guild.getIdLong(), repeatInfoIDs.get(i));
                     int time = RepeatInfoCommandManager.sql.getRepeatInfoTimeByID(guild.getIdLong(), repeatInfoIDs.get(i));
-                    builder.append("**" + (i + 1) + "**  ▶️  " + repeatinfoText + "  ⌛  ️" + time + "\n\n");
+                    builder.append("**" + (i + 1) + "**  ▶️  " + repeatInfoText + "  ⌛  ️" + time + "\n\n");
                 }
 
                 //Message
                 RepeatInfoCommandManager.embeds.ListRepeatInfosEmbed(channel, builder.toString().trim());
-
             }
             else
             {

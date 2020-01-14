@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ClearCommand implements ServerCommand
 {
-    private Embeds embeds = new Embeds();
+    private Embeds embeds = ClearCommandManager.embeds;
 
     public ClearCommand()
     {
@@ -30,7 +30,7 @@ public class ClearCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         //EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.MESSAGE_MANAGE))
+        if (member.hasPermission(channel, ClearCommandManager.permission))
         {
             if (args.length == 2)
             {
@@ -66,7 +66,7 @@ public class ClearCommand implements ServerCommand
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel, ClearCommandManager.permission);
         }
     }
 

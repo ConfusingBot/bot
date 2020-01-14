@@ -1,5 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
+import net.dv8tion.jda.api.Permission;
+
 public class RepeatInfoCommandManager
 {
     public static SQL sql = new SQL();
@@ -7,4 +9,6 @@ public class RepeatInfoCommandManager
 
     public static String infoKey = "INFO:";
     public static int maxRepeatInfos = 3;
+
+    public static Permission permission = Permission.MESSAGE_MANAGE;
 }

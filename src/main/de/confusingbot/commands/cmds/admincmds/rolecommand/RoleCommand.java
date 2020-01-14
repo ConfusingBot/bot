@@ -15,7 +15,7 @@ import java.util.List;
 public class RoleCommand implements ServerCommand
 {
 
-    private Embeds embeds = new Embeds();
+    private Embeds embeds = RoleCommandManager.embeds;
 
     public RoleCommand()
     {
@@ -34,7 +34,7 @@ public class RoleCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.MANAGE_ROLES))
+        if (member.hasPermission(channel, RoleCommandManager.permission))
         {
             if (args.length >= 2)
             {
@@ -61,7 +61,7 @@ public class RoleCommand implements ServerCommand
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel, RoleCommandManager.permission);
         }
     }
 

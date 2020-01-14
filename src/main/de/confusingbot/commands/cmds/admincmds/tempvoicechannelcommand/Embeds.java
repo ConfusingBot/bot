@@ -2,9 +2,11 @@ package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -15,6 +17,7 @@ public class Embeds
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "tempchannel\n```" +
                 "```Create special VoiceChannels, which automatically creates a new VoiceChannel by joining it(named after the joining user)```" +
+                "```fix\n" + TempVoiceChannelCommandManager.permission.name() + "\n```" +
                 "[[Example Video]](https://www.youtube.com/watch?v=M6z6gEaQ2_k&list=PLkI3ZL9zLpd4cUUzrwgawcN1Z3Wa6d7mm&index=5)\n");
     }
 
@@ -54,9 +57,9 @@ public class Embeds
         EmbedManager.SendErrorEmbed("Couldn't find VoiceChannel by ID: " + channelid, channel, EmbedsUtil.showErrorTime);
     }
 
-    public void NoPermissionError(TextChannel channel)
+    public void NoPermissionError(TextChannel channel, Permission permission)
     {
-        EmbedsUtil.NoPermissionError(channel);
+        EmbedsUtil.NoPermissionError(channel, permission);
     }
 
     public void NoValidVoiceChannelIDNumberError(TextChannel channel, String id)

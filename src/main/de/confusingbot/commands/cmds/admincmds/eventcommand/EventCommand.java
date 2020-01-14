@@ -37,7 +37,7 @@ public class EventCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (member.hasPermission(channel, EventCommandManager.permission))
         {
             if (args.length >= 2)
             {
@@ -70,7 +70,7 @@ public class EventCommand implements ServerCommand
         else
         {
             //Error
-            embeds.NoPermissionError(channel);
+            embeds.NoPermissionError(channel, EventCommandManager.permission);
         }
     }
 

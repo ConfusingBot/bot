@@ -22,7 +22,7 @@ public class Embeds
 
     public void HelpEmbed()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "info [@User/bot]\n``` ```Give you some informations about the @User or the bot```");
+        HelpManager.useful.add("```yaml\n" + Main.prefix + "info [@User/bot/server]\n``` ```Give you some informations about the @User/bot/server```");
     }
 
     //=====================================================================================================================================
@@ -121,7 +121,6 @@ public class Embeds
         builder.addField("**Creation Time:**", creationTime, true);
         builder.addField("**Owner:** ", owner.getAsMention(), true);
 
-
         int minDates = 3;
         if (dates < minDates)
             builder.addField("**Member Graph will be available in " + (minDates - dates) + " day!**", "", false);
@@ -130,7 +129,6 @@ public class Embeds
             builder.addField("**Member Graph:**", "", false);
             builder.setImage("attachment://memberStats.png");
         }
-
 
         //Send embed
         if (file.exists() && dates >= minDates)
