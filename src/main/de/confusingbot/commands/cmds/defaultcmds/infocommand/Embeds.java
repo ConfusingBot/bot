@@ -41,6 +41,11 @@ public class Embeds
         EmbedManager.SendErrorEmbed("Could not find member " + member, channel, EmbedsUtil.showUsageTime);
     }
 
+    public void UnknownErrorMessage(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("A unknown error appears\uD83D\uDE10 \nPleas try it later again!", channel, EmbedsUtil.showUsageTime);
+    }
+
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================

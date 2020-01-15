@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
@@ -15,7 +16,8 @@ public class Embeds
 
     public void HelpEmbed()
     {
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "clear [# of messages]\n``` ```Clear the last # messages```");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "clear [# of messages]\n``` ```Clear the last # messages```" +
+                "```fix\n" + ClearCommandManager.permission.name() + "\n```");
     }
 
     //=====================================================================================================================================

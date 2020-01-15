@@ -18,9 +18,8 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.admin.add("```yaml\n" + Main.prefix + "joinrole``` " +
-                "```fix\n" + JoinRoleManager.permission.name() + "\n```" +
-                "```Create a JoinRole which will be added to a member after he joined your server!```\n"
-               );
+                "```Create a JoinRole which will be added to a member after he joined your server!```\n" +
+                "```fix\n" + JoinRoleManager.permission.name() + "\n```");
     }
 
     //=====================================================================================================================================
@@ -30,11 +29,11 @@ public class Embeds
     {
         EmbedManager.SendUsageEmbed(
                 "```yaml\n" + Main.prefix + "joinrole add [@role]\n```"
-                +"```Add a JoinRole to your server```\n"
-                + "```yaml\n" + Main.prefix + "joinrole remove [@role]\n```"
-                +  "```Remove the @role form the JoinRoles```\n"
+                        + "```Add a JoinRole to your server```\n"
+                        + "```yaml\n" + Main.prefix + "joinrole remove [@role]\n```"
+                        + "```Remove the @role form the JoinRoles```\n"
                         + "```yaml\n" + Main.prefix + "joinrole list```"
-                        +  "```List all JoinRoles of this server```\n"
+                        + "```List all JoinRoles of this server```\n"
                 , channel, EmbedsUtil.showUsageTime);
     }
 
@@ -68,27 +67,31 @@ public class Embeds
     }
 
     public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
-{
-    EmbedManager.SendErrorEmbed("The bot has no right to assign this " + role.getAsMention() + "\n" +
-            "Please give the bot a role over the role to be assign this role!", channel, EmbedsUtil.showErrorTime);
-}
+    {
+        EmbedManager.SendErrorEmbed("The bot has no right to assign this " + role.getAsMention() + "\n" +
+                "Please give the bot a role over the role to be assign this role!", channel, EmbedsUtil.showErrorTime);
+    }
 
-    public void RoleDoesNotExistError(TextChannel channel, long roleid){
+    public void RoleDoesNotExistError(TextChannel channel, long roleid)
+    {
         EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
     //Information
     //=====================================================================================================================================
-    public void AlreadyExistingJoinRoleInformation(TextChannel channel, Role role){
+    public void AlreadyExistingJoinRoleInformation(TextChannel channel, Role role)
+    {
         EmbedsUtil.AlreadyExistsError(channel, "JoinRole" + " (" + role.getAsMention() + ")");
     }
 
-    public void NoExistingJoinRoleInformation(TextChannel channel, Role role){
+    public void NoExistingJoinRoleInformation(TextChannel channel, Role role)
+    {
         EmbedsUtil.NotExistingError(channel, "JoinRole" + " (" + role.getAsMention() + ")");
     }
 
-    public void HasNoJoinRoleInformation(TextChannel channel){
+    public void HasNoJoinRoleInformation(TextChannel channel)
+    {
         EmbedManager.SendInfoEmbed("This guild has **no JoinRoles**! \nYou can add JoinRoles with `" + Main.prefix + "joinrole add`", channel, 5);
     }
 
@@ -108,7 +111,8 @@ public class Embeds
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendJoinRoleList(TextChannel channel, String description){
+    public void SendJoinRoleList(TextChannel channel, String description)
+    {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
         builder.setTitle("\uD83D\uDC51JoinRoles: ");

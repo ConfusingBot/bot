@@ -129,10 +129,14 @@ public class InfoCommand implements ServerCommand
     private void ServerInfoCommand(TextChannel channel, Member requester)
     {
         Guild guild = channel.getGuild();
-        List<Integer> members = CommandsUtil.encodeInteger(InfoCommandManager.sql.GetMembersInServer(guild.getIdLong()), ", ");
-        List<String> dates = CommandsUtil.encodeString(InfoCommandManager.sql.GetDatesInServer(guild.getIdLong()), ", ");
+        String memberString = InfoCommandManager.sql.GetMembersInServer(guild.getIdLong());
+        String dateString = InfoCommandManager.sql.GetDatesInServer(guild.getIdLong());
 
-        if (members == null || dates == null) return;
+        if(dateString == null || memberString == null) {InfoCommandManager.embeds.UnknownErrorMessage(channel); return;}
+        List<String> dates = CommandsUtil.encodeString(dateString, ", ");
+        List<Integer> members = CommandsUtil.encodeInteger(memberString, ", ");
+
+        if (members == null || dates == null)  {InfoCommandManager.embeds.UnknownErrorMessage(channel); return;}
 
         new Thread(new Runnable()
         {
