@@ -56,7 +56,6 @@ public class PlayCommand implements ServerCommand
                             url = "ytsearch: " + url;
                         }
 
-                        //TODO will join channel although the bot could not find song
                         Connect(voiceChannel);
 
                         //Try to Play Song

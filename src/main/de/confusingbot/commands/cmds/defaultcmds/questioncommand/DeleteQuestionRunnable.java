@@ -27,7 +27,7 @@ public class DeleteQuestionRunnable implements Runnable
         sleepXSeconds(deletedInSeconds);
 
         //SQL
-        sql.RemoveQuestionChannelFromSQL(guild.getIdLong(), channel.getIdLong(), memberid);
+        sql.removeQuestionFromSQL(guild.getIdLong(), channel.getIdLong(), memberid);
 
         //Delete Channel
         channel.delete().queue();

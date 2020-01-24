@@ -7,8 +7,8 @@ import net.dv8tion.jda.api.entities.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UpdateVotes
@@ -25,14 +25,16 @@ public class UpdateVotes
                 long guildid = set.getLong("guildid");
                 long channelid = set.getLong("channelid");
                 long messageid = set.getLong("messageid");
-                int endTime = set.getInt("endTime");
+                String endTime = set.getString("endtime");
                 String creationTime = set.getString("creationtime");
                 String emotesString = set.getString("emotes");
                 String title = set.getString("title");
                 List<String> selectEmotes = CommandsUtil.encodeString(emotesString, ", ");
 
-                //long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
-                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
+                //CurrentTime
+                String currentTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
+
+                long timeleft = CommandsUtil.getTimeBetweenTwoDates(currentTime, endTime, true);
 
                 if (timeleft <= 0)
                 {

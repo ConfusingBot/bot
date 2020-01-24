@@ -22,7 +22,6 @@ public class SQL
 
     public void RemoveGuildFromSQL(long guildid)
     {
-        //TODO does not work!
         for (String name : SQLManager.tabelNames)
         {
             LiteSQL.onUpdate("DELETE FROM " + name + " WHERE "

@@ -233,16 +233,16 @@ public class QuestionCommand implements ServerCommand
                 EmbedBuilder builder = QuestionManager.embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
                 EmbedManager.SendEmbed(builder, textChannel, 0);
 
-                //SQLDatabase
+                //SQLData
                 long channelID = textChannel.getIdLong();
                 long guildID = textChannel.getGuild().getIdLong();
                 long memberID = member.getIdLong();
-                //Get CurrentTime
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
+
+                String creationTime = OffsetDateTime.now().toLocalDateTime().format(QuestionManager.formatter);
+                String deleteTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), QuestionManager.deleteMessageAfterXHours, QuestionManager.hours).format(QuestionManager.formatter);
 
                 //SQL
-                QuestionManager.sql.AddGeneratedQuestionToSQL(guildID, channelID, memberID, creationTime);
+                QuestionManager.sql.AddGeneratedQuestionToSQL(guildID, channelID, memberID, creationTime, deleteTime);
             }
             else
             {

@@ -1,8 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.eventcommand;
 
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
-import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ListReactRolesRunnable;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
@@ -13,7 +11,6 @@ import net.dv8tion.jda.api.requests.restaction.RoleAction;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class EventCommand implements ServerCommand
@@ -191,8 +188,6 @@ public class EventCommand implements ServerCommand
 
                                 if (CommandsUtil.reactEmote(emoteString, textChannel, messageID, true))
                                 {
-                                    //TODO Wait Message
-
                                     //Create Role
                                     RoleAction roleAction = guild.createRole();
                                     roleAction.setName(roleName);
@@ -203,11 +198,12 @@ public class EventCommand implements ServerCommand
                                     int finalTime = time;
                                     String finalEventName = eventName;
                                     roleAction.queue(role -> {
+
                                         //Get CurrentTime
-                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                                        String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
+                                        String creationTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
+                                        String endTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), finalTime, true).format(CommandsUtil.formatter);
                                         //SQL
-                                        sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), finalMessageID, role.getIdLong(), finalTime, colorString, emoteString, creationTime, finalEventName);
+                                        sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), finalMessageID, role.getIdLong(), colorString, emoteString, finalEventName, endTime, creationTime);
 
                                         //Message
                                         embeds.SuccessfullyAddedEvent(channel, Color.decode(colorString), finalEventName);

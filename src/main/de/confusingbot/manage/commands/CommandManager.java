@@ -72,7 +72,7 @@ public class CommandManager
         this.commands.put("repeatinfo", new RepeatInfoCommand());
         this.commands.put("message", new MessageCommand());
         this.commands.put("vote", new VoteCommand());
-        //TODO just for testing
+
         this.commands.put("event", new EventCommand());
 
         //Music

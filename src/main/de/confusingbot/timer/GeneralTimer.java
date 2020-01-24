@@ -47,7 +47,7 @@ public class GeneralTimer
             }
         };
 
-        timer.schedule(timeTask, 0l, 1000 * 60 * 5);
+        timer.schedule(timeTask, 0l, 1000 * 60); //TODO change TIMER !!!!!
     }
 
     public void stopTimer()

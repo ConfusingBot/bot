@@ -1,9 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.eventcommand;
 
-import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.sql.ResultSet;
@@ -32,7 +30,7 @@ public class ListEventsRunnable implements Runnable
         List<String> emoteStrings = new ArrayList<>();
         List<Long> eventRoleIDs = new ArrayList<>();
         List<String> eventNames = new ArrayList<>();
-        List<Integer> times = new ArrayList<>();
+        List<String> endTimes = new ArrayList<>();
         List<String> creationTimes = new ArrayList<>();
 
         try
@@ -47,31 +45,37 @@ public class ListEventsRunnable implements Runnable
                 emoteStrings.add(set.getString("emote"));
                 eventNames.add(set.getString("name"));
                 creationTimes.add(set.getString("creationtime"));
-                times.add(set.getInt("time"));
+                endTimes.add(set.getString("endtime"));
+
+                if (!eventNames.isEmpty() || eventNames.size() > 0)
+                {
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < eventNames.size(); i++)
+                    {
+                        long time = CommandsUtil.getTimeBetweenTwoDates(creationTimes.get(i), endTimes.get(i), true);
+                        builder.append("**" + eventNames.get(i) + "** ⏰ " + time + "\n");
+                    }
+
+                    //Message
+                    EventCommandManager.embeds.SendListEmbed(channel, builder.toString());
+                }
+                else
+                {
+                    //Information
+                    EventCommandManager.embeds.HasNoEventsInformation(channel);
+                }
+
+                //Delete Wait Message
+                channel.deleteMessageById(messageid).queue();
+
+
+
             }
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
 
-        if (!eventNames.isEmpty() || eventNames.size() > 0)
-        {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < eventNames.size(); i++)
-            {
-                builder.append("**" + eventNames.get(i) + "** ⏰ " + CommandsUtil.getTimeLeftInHours(creationTimes.get(i), times.get(i)) + "\n");
-            }
 
-            //Message
-            EventCommandManager.embeds.SendListEmbed(channel, builder.toString());
-        }
-        else
-        {
-            //Information
-            EventCommandManager.embeds.HasNoEventsInformation(channel);
-        }
-
-        //Delete Wait Message
-        channel.deleteMessageById(messageid).queue();
     }
 }

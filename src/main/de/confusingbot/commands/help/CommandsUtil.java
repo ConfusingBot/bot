@@ -4,21 +4,22 @@ import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.exceptions.ContextException;
-import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class CommandsUtil
 {
+
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static String[] messageToArgs(Message message)
     {
@@ -152,34 +153,14 @@ public class CommandsUtil
         }
     }
 
-    //Calculate TimeLeft
-    public static long getTimeLeftInHours(String creationTimeString, int endTime)
+    public static long getTimeLeft(String creationTimeString, int endAfter, boolean hours)
     {
-        long timeLeft = -1;
-
-        long differentInHours = getTimeLeftDifference(creationTimeString, true);
-        //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = endTime - differentInHours;
-
-        return timeLeft;
+        return endAfter - getTimeDifference(creationTimeString, hours);
     }
 
-    public static long getTimeLeftInMinutes(String creationTimeString, int endTime)
-    {
-        long timeLeft = -1;
-
-        long differentInMinutes = getTimeLeftDifference(creationTimeString, false);
-        //System.out.println("Different in minutes " + differentInHours);
-        timeLeft = endTime - differentInMinutes;
-
-        return timeLeft;
-    }
-
-    public static long getTimeLeftDifference(String creationTimeString, boolean hours)
+    public static long getTimeDifference(String creationTimeString, boolean hours)
     {
         long timeDifference = -1;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         //get CreationTime
         LocalDateTime creationTime = LocalDateTime.parse(creationTimeString, formatter);
@@ -191,11 +172,34 @@ public class CommandsUtil
         //Calculate timeleft
         Duration duration = Duration.between(creationTime, currentTime);
         if (hours)
-            timeDifference = (duration.toHours());
+            timeDifference = duration.toHours();
         else
-            timeDifference = (duration.toMinutes());
+            timeDifference = duration.toMinutes();
+
 
         return timeDifference;
+    }
+
+    public static long getTimeBetweenTwoDates(String fromDateTimeString, String toDateTimeString, boolean hours)
+    {
+        LocalDateTime fromDateTime = LocalDateTime.parse(fromDateTimeString, formatter);
+        LocalDateTime toDateTime = LocalDateTime.parse(toDateTimeString, formatter);
+
+        long time;
+        if (hours)
+            time = fromDateTime.until(toDateTime, ChronoUnit.HOURS);
+        else
+            time = fromDateTime.until(toDateTime, ChronoUnit.MINUTES);
+
+        return time;
+    }
+
+    public static LocalDateTime AddXTime(LocalDateTime date, long time, boolean hours)
+    {
+        if (hours)
+            return date.plusHours(time);
+        else
+            return date.plusMinutes(time);
     }
 
     public static List<String> encodeString(String string, String splitChar)
@@ -203,7 +207,7 @@ public class CommandsUtil
         List<String> wordsFixed = Arrays.asList(string.split(splitChar));
         List<String> words = new ArrayList<>();
 
-        for(String wordFixed : wordsFixed) words.add(wordFixed);
+        for (String wordFixed : wordsFixed) words.add(wordFixed);
 
         return words;
     }
@@ -224,12 +228,12 @@ public class CommandsUtil
 
     public static List<Integer> encodeInteger(String string, String splitChar)
     {
-        if(splitChar == null || splitChar.equals("")) return null;
+        if (splitChar == null || splitChar.equals("")) return null;
 
         List<String> words = Arrays.asList(string.split(splitChar));
         List<Integer> integers = new ArrayList<>();
 
-        for(String word : words) if(isNumeric(word)) integers.add(Integer.parseInt(word));
+        for (String word : words) if (isNumeric(word)) integers.add(Integer.parseInt(word));
 
         return integers;
     }

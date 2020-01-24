@@ -138,7 +138,7 @@ public class MessageCommand implements ServerCommand
 
                             String wholeMessage = getWholeMessage(args, startIndex);
                             String title = " ";
-                            String shownMessage = "";
+                            String shownMessage = " ";
 
                             if (wholeMessage.contains(MessageManager.messageStartKey))
                             {

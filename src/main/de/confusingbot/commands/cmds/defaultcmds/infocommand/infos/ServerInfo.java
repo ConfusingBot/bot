@@ -26,47 +26,6 @@ public class ServerInfo
 
     public File createChartFile(List<Integer> values, List<String> dates)
     {
-/*
-        //TODO DELETE!------------------------------------------------------------------
-        values.clear();
-        dates.clear();
-        Random random = new Random();
-        int day = 1;
-        int month = 1;
-        for (int i = 1; i < 3 + 1; i++)
-        {
-            if (i > 25 && i < 50)
-            {
-                values.add(random.nextInt(80) + 50);
-            }
-            else if (i > 50 && i < 75)
-            {
-                values.add(random.nextInt(100) + 90);
-            }
-            else if (i > 75)
-            {
-                values.add(random.nextInt(150) + 120);
-            }
-            else
-            {
-                values.add(random.nextInt(40) + 1);
-            }
-
-            dates.add((day <= 9 ? "0" + day : day) + "/" + (month <= 9 ? "0" + month : month) + "/2020");
-
-            if (i % 30 == 0)
-            {
-                day = 1;
-                month++;
-            }
-            else
-            {
-                day++;
-            }
-        }
-        //TODO DELETE!------------------------------------------------------------------
-*/
-
         //Add Fill-Dates
         int marksLeft = 13 - dates.size();
         if (marksLeft > 0)

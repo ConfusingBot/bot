@@ -41,11 +41,16 @@ public class SQL
         return false;
     }
 
-    public void AddGeneratedQuestionToSQL(long guildID, long channelID, long memberID, String creationTime)
+    public void AddGeneratedQuestionToSQL(long guildID, long channelID, long memberID, String creationTime, String deleteTime)
     {
 
-        LiteSQL.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime) VALUES(" +
-                guildID + ", " + channelID + ", " + memberID + ", '" + creationTime + "')");
+        LiteSQL.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime, deletetime) VALUES(" +
+                guildID + ", " + channelID + ", " + memberID + ", '" + creationTime + "', '" + deleteTime + "')");
+    }
+
+    public void UpdateDeleteTimeInSQL(long guildID, long channelID, String newDeleteTime)
+    {
+        LiteSQL.onUpdate("UPDATE questioncommand SET deletetime = " + newDeleteTime + " WHERE guildid = " + guildID + " AND channelid = " + channelID);
     }
 
     public Member GetQuestionAskMember(Guild guild, long channelid)
@@ -72,7 +77,6 @@ public class SQL
         }
 
         return sentQuestionMemeber;
-
     }
 
     public Category GetQuestionCategory(Guild guild)
@@ -94,14 +98,6 @@ public class SQL
         }
 
         return category;
-    }
-
-    public void RemoveQuestionChannelFromSQL(long guildid, long channelid, long memberid)
-    {
-        LiteSQL.onUpdate("DELETE FROM questioncommand WHERE "
-                + "guildid = " + guildid
-                + " AND channelid = " + channelid
-                + " AND memberid = " + memberid);
     }
 
     public void RemoveQuestionCategoryFromSQL(long guildid)

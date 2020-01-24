@@ -8,11 +8,11 @@ import java.sql.SQLException;
 public class SQL
 {
 
-    public void addToSQL(long guildid, long channelid, long messageid, long roleid, int time, String hexColor, String emoteString, String creationTime, String eventName)
+    public void addToSQL(long guildid, long channelid, long messageid, long roleid, String hexColor, String emoteString, String eventName, String endTime, String creationTime)
     {
-        LiteSQL.onUpdate("INSERT INTO event(guildid, channelid, messageid, roleid, time, color, emote, creationtime, name) VALUES(" +
-                guildid + ", " + channelid + ", " + messageid + ", " + roleid + ", "
-                + time + ", '" + hexColor + "', '" + emoteString + "', '" + creationTime + "', '" + eventName + "')");
+        LiteSQL.onUpdate("INSERT INTO event(guildid, channelid, messageid, roleid, color, emote, name, endtime, creationtime) VALUES(" +
+                guildid + ", " + channelid + ", " + messageid + ", " + roleid
+                + ", '" + hexColor + "', '" + emoteString + "', '" + eventName + "', '" + endTime + "', '" + creationTime + "')");
     }
 
     public void removeFormSQL(long guildid, long roleid)

@@ -41,7 +41,8 @@ public class SQLManager
                 "guildid INTEGER, " +
                 "channelid INTEGER, " +
                 "memberid INTEGER, " +
-                "creationtime TEXT)");
+                "creationtime TEXT, " +
+                "deletetime TEXT)");
 
         tabelNames.add("questioncategories");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS questioncategories(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -93,17 +94,15 @@ public class SQLManager
                 "channelid INTEGER, " +
                 "messageid INTEGER, " +
                 "title TEXT, " +
-                "endTime INTEGER, " +
-                "allowedroles STRING, " +
-                "creationtime TEXT, " +
-                "emotes TEXT)");
+                "allowedroles TEXT, " +
+                "emotes TEXT, " +
+                "endtime TEXT, " +
+                "creationtime TEXT)");
 
         tabelNames.add("joinrole");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS joinrole(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildid INTEGER, " +
                 "roleid INTEGER)");
-
-        //SQL: event -> guildID channelId messageID #color 5 eventroleID emote
 
         tabelNames.add("event");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS event(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -111,10 +110,10 @@ public class SQLManager
                 "channelid INTEGER, " +
                 "messageid INTEGER, " +
                 "roleid INTEGER, " +
-                "time INTEGER, " +
                 "color TEXT, " +
                 "emote TEXT, " +
-                "creationtime TEXT, " +
-                "name TEXT)");
+                "name TEXT, " +
+                "endtime TEXT, " +
+                "creationtime TEXT)");
     }
 }

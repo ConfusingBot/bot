@@ -7,10 +7,11 @@ import net.dv8tion.jda.api.entities.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 
 public class UpdateEvents
 {
-    //Called all 5Min
+
     public void onSecond()
     {
         try
@@ -26,11 +27,11 @@ public class UpdateEvents
                 String hexColor = set.getString("color");
                 String eventName = set.getString("name");
 
-                int endTime = set.getInt("time");
+                String endTime = set.getString("endTime");
                 String creationTime = set.getString("creationtime");
+                String currentTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
 
-                long timeleft = CommandsUtil.getTimeLeftInHours(creationTime, endTime);
-                //long timeleft = CommandsUtil.getTimeLeftInMinutes(creationTime, endTime);
+                long timeleft = CommandsUtil.getTimeBetweenTwoDates(currentTime, endTime, true);
 
                 if (timeleft <= 0)
                 {

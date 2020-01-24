@@ -4,7 +4,6 @@ import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
 import java.time.OffsetDateTime;
@@ -149,7 +148,7 @@ public class VoteCommand implements ServerCommand
                             {
                                 word = word.replace(VoteCommandManager.voteEmotePrefix, "");
                                 boolean added = false;
-                                //TODO test if the mentionedEmotes save the same emote twice
+
                                 for (Emote emote : mentionedEmotes)
                                 {
                                     if (word.equals(":" + emote.getName() + ":"))
@@ -192,12 +191,14 @@ public class VoteCommand implements ServerCommand
                         //Get Emotes and Texts
                         //=============================================================================================
 
+                        //Check if only one item for voting exists
                         if (emojiStrings.size() < 2)
                         {
                             VoteCommandManager.embeds.OnlyOneVoteTopic(channel);
                             return;
                         }
 
+                        //Build vote Text
                         String voteText = buildVoteText(text, emojiStrings, guild, allowedRoleIDs);
 
                         //Message
@@ -210,15 +211,20 @@ public class VoteCommand implements ServerCommand
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
 
+                        //Get RemoveTime
+                        String removeTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), timeInHours, true).format(CommandsUtil.formatter);
+
                         //SQL
-                        VoteCommandManager.sql.addToSQL(guild.getIdLong(),
+                        VoteCommandManager.sql.addToSQL(
+                                guild.getIdLong(),
                                 textChannel.getIdLong(),
                                 messageid,
                                 title,
-                                timeInHours,
                                 CommandsUtil.codeString(allowedRoleIDs, ", "),
-                                creationTime,
-                                CommandsUtil.codeString(emojiStrings, ", "));
+                                CommandsUtil.codeString(emojiStrings, ", "),
+                                removeTime,
+                                creationTime
+                        );
                     }
                     else
                     {
@@ -244,7 +250,6 @@ public class VoteCommand implements ServerCommand
 
     private void RemoveCommand(String[] args, Guild guild, TextChannel channel, Message message)
     {
-        //TODO create RemoveCommand
         channel.sendMessage("```You can simply delete the VoteMessage for now```").complete().delete().queueAfter(5, TimeUnit.SECONDS);
     }
 

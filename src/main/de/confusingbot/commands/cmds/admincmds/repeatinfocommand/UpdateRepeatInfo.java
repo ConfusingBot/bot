@@ -25,24 +25,32 @@ public class UpdateRepeatInfo
             {
                 long guildID = set.getLong("guildid");
                 long channelID = set.getLong("channelid");
-                int time = set.getInt("time");
+                int timeInHours = set.getInt("time");
+                int id = set.getInt("id");
                 String info = set.getString("info");
                 String title = set.getString("title");
                 String color = set.getString("color");
 
-                //TODO create a state when member guild or channel is null
+
+                //Check if RepeatInfo is sendable
                 Guild guild = Main.INSTANCE.shardManager.getGuildById(guildID);
-                if (guild == null) return;
-                TextChannel channel = guild.getTextChannelById(channelID);
-                if (channel == null) return;
-
-                long difference = CommandsUtil.getTimeLeftDifference(creationTime, false);
-                //System.out.println("Difference in Minutes: " + difference);
-                //System.out.println("Difference in Hours: " + CommandsUtil.getTimeLeftDifference(creationTime, true));
-
-                if (difference % (time * 60) == 0)
+                if (guild == null)
                 {
-                      RepeatInfoCommandManager.embeds.SendInfoEmbed(channel, color, title, info);
+                    RepeatInfoCommandManager.sql.removeFormSQL(guildID, id);
+                    return;
+                }
+                TextChannel channel = guild.getTextChannelById(channelID);
+                if (channel == null)
+                {
+                    RepeatInfoCommandManager.sql.removeFormSQL(guildID, id);
+                    return;
+                }
+
+                long differenceInMinutes = CommandsUtil.getTimeLeft(creationTime, timeInHours, false);
+
+                if (differenceInMinutes % (timeInHours * 60) == 0)
+                {
+                    RepeatInfoCommandManager.embeds.SendInfoEmbed(channel, color, title, info);
                 }
             }
         } catch (SQLException e)
