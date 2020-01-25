@@ -14,7 +14,8 @@ public class QuestionManager
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public static int deleteMessageAfterXHours = 24;
     public static int addHoursAfterActivity = 5;
-    public static boolean hours = false;//TODO to hours
+    public static int startAddingHoursAfterActivity = 5;
+    public static boolean hours = true;
 
     public static Permission questionCategoryPermission = Permission.MANAGE_CHANNEL;
 }

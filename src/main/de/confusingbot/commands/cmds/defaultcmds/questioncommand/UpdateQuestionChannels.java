@@ -63,25 +63,25 @@ public class UpdateQuestionChannels
                 String currentTimeString = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
 
                 //HANDLE TIME
-                long timeleft = CommandsUtil.getTimeBetweenTwoDates(currentTimeString, deleteTime, QuestionManager.hours);
-                System.out.println("TimeLeft of question in Minutes: " + timeleft);
+                long timeleftInMinutes = CommandsUtil.getTimeBetweenTwoDates(currentTimeString, deleteTime, false);
+                long timeleftInHours = CommandsUtil.getTimeBetweenTwoDates(currentTimeString, deleteTime, true);
 
-                //Update Channel Time
-                if (timeleft <= 5)
+                //Update Channel Time after 5 hours
+                if (timeleftInMinutes <= (QuestionManager.startAddingHoursAfterActivity * 60))
                     UpdateChannelTime(guild, channel);
 
                 //Send notifications
                 for (Integer notificationTime : notificationTimes)
                 {
-                    if (timeleft == notificationTime)
+                    if (timeleftInMinutes == (notificationTime * 60))
                     {
                         //Message
-                        QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, timeleft);
+                        QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, timeleftInHours);
                     }
                 }
 
                 //If time Ended
-                if (timeleft <= 0)
+                if (timeleftInHours <= 0)
                 {
                     //Delete Channel
                     channel.delete().queue();

@@ -15,7 +15,7 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long guildid, long channelID, long messageid, String title, String allowedroles, String emotes, String endtime, String creationtime)
     {
-        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, title, endTime, allowedroles, emotes, endtime, creationtime) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, title, allowedroles, emotes, endtime, creationtime) VALUES(" +
                 guildid + ", " + channelID + ", " + messageid + ", '" + title + "', '" + allowedroles + "', '" + emotes + "', '" + endtime + "', '" + creationtime + "')");
     }
 

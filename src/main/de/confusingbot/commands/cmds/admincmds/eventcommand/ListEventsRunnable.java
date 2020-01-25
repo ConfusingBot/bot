@@ -67,9 +67,6 @@ public class ListEventsRunnable implements Runnable
 
                 //Delete Wait Message
                 channel.deleteMessageById(messageid).queue();
-
-
-
             }
         } catch (SQLException e)
         {

@@ -101,9 +101,6 @@ public class Embeds
         {
             EmbedManager.SendEmbed(builder, channel, 30);
         }
-
-
-        //EmbedManager.SendEmbed(builder, channel, 30);
     }
 
     public void SendInfoServerEmbed(TextChannel channel, Member requester, File file, long dates, long textChannels, long voiceChannels, long members, long bots, long emotes, long roles, long categories, String creationTime, Member owner)
