@@ -7,13 +7,15 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class QuestionCommand implements ServerCommand
 {
-    public QuestionCommand(){
+    public QuestionCommand()
+    {
         QuestionManager.embeds.HelpEmbed();
     }
 
@@ -34,6 +36,9 @@ public class QuestionCommand implements ServerCommand
             {
                 case "close":
                     CloseQuestionCommand(args, guild, member, channel);
+                    break;
+                case "info":
+                    InfoQuestionCommand(args, guild, member, channel);
                     break;
                 case "category":
                     if (member.hasPermission(channel, QuestionManager.questionCategoryPermission))
@@ -191,6 +196,36 @@ public class QuestionCommand implements ServerCommand
         }
     }
 
+    private void InfoQuestionCommand(String[] args, Guild guild, Member member, TextChannel channel)
+    {
+        if (args.length == 2)
+        {
+            //SQL
+            Member sentQuestionMember = QuestionManager.sql.GetQuestionAskMember(guild, channel.getIdLong());
+
+            if (sentQuestionMember != null)
+            {
+                String deleteTime = QuestionManager.sql.getQuestionDeleteTime(guild.getIdLong(), channel.getIdLong());
+                String creationTime = QuestionManager.sql.getQuestionCreationTime(guild.getIdLong(), channel.getIdLong());
+                long timeleft = CommandsUtil.getTimeBetweenTwoDates(OffsetDateTime.now().toLocalDateTime().format(QuestionManager.formatter), deleteTime, true);
+                String questionTypeName = channel.getName().equals(QuestionManager.DefaultQuestionName) ? "none" : channel.getName();
+
+                //Embed
+                QuestionManager.embeds.SendQuestionInfo(channel, member, sentQuestionMember, timeleft, LocalDateTime.parse(creationTime, QuestionManager.formatter), questionTypeName);
+            }
+            else
+            {
+                //Error
+                QuestionManager.embeds.YouAreNotInAQuestionChannelError(channel);
+            }
+        }
+        else
+        {
+            //Usage
+            QuestionManager.embeds.QuestionInfoUsage(channel);
+        }
+    }
+
     private void CreateQuestionCommand(Guild guild, Member member, TextChannel channel, Message message, String[] args)
     {
         List<Role> roles = message.getMentionedRoles();
@@ -210,7 +245,7 @@ public class QuestionCommand implements ServerCommand
                 else
                 {
                     //If not the TextChannel will be named Question
-                    textChannel = category.createTextChannel("❓Question").complete();
+                    textChannel = category.createTextChannel(QuestionManager.DefaultQuestionName).complete();
                 }
 
                 String wholeQuestion = buildQuestionString(args, roles, 1);
@@ -231,7 +266,9 @@ public class QuestionCommand implements ServerCommand
 
                 //Send Question Message
                 EmbedBuilder builder = QuestionManager.embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
-                EmbedManager.SendEmbed(builder, textChannel, 0);
+                textChannel.sendMessage(builder.build()).queue(mes -> {
+                    textChannel.pinMessageById(mes.getIdLong());
+                });
 
                 //SQLData
                 long channelID = textChannel.getIdLong();

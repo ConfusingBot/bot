@@ -11,7 +11,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Embeds
 {
@@ -37,7 +39,9 @@ public class Embeds
         EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "question [Title] QUESTION: [Question] [mentioned role]\n```"
                         + "```Create a custom TextChannel (in the QuestionCategory) where only your question exists```"
                         + "```yaml\n" + Main.prefix + "question close```"
-                        + "```Close the question in which you wrote this command```",
+                        + "```Close the question in which you wrote this command```"
+                        + "```yaml\n" + Main.prefix + "question info```"
+                        + "```Show you some information about the asked question```",
                 channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
     }
 
@@ -61,6 +65,10 @@ public class Embeds
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category remove`", channel, EmbedsUtil.showUsageTime);
     }
 
+    public void QuestionInfoUsage(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question info`", channel, EmbedsUtil.showUsageTime);
+    }
 
     //=====================================================================================================================================
     //Error
@@ -87,7 +95,7 @@ public class Embeds
 
     public void YouAreNotInAQuestionChannelError(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("You can only close a question in a QuestionChannel!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("You are in no QuestionChannel!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void YouCanOnlyMentionOneRoleInAQuestionError(TextChannel channel, int mentionableRoles)
@@ -139,9 +147,30 @@ public class Embeds
         return builder;
     }
 
-    public void SendDeleteQuestionInfo(TextChannel channel, Member member, long timeleft){
+    public void SendDeleteQuestionInfo(TextChannel channel, Member member, long timeleft)
+    {
         EmbedManager.SendCustomEmbedGetMessageID("This question will be closed in " + timeleft + " hours!",
                 member.getAsMention() + " If nobody writes anything within " + timeleft + " hours, this question will be deleted\uD83D\uDE10",
                 Color.decode("#e03d14"), channel);
+    }
+
+    public void SendQuestionInfo(TextChannel channel, Member requester, Member questionAsker, long timeleft, LocalDateTime creationTime, String category)
+    {
+        DateTimeFormatter creationDateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String creationDateString = creationDateFormatter.format(creationTime);
+        DateTimeFormatter creationTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String creationTimeString = creationTimeFormatter.format(creationTime);
+
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode("#a1f542"));
+        builder.setTitle("❓Question Info:");
+        builder.addField("Creation Date", creationDateString, false);
+        builder.addField("Creation Time", creationTimeString, false);
+        builder.addField("Time Left", timeleft + "h", false);
+        builder.addField("Question Asker", questionAsker.getAsMention(), false);
+        builder.addField("Category", category, false);
+        builder.setFooter("Requested by " + requester.getEffectiveName());
+
+        EmbedManager.SendEmbed(builder, channel, 10);
     }
 }

@@ -113,5 +113,53 @@ public class SQL
                 + " AND channelid = " + channelid
                 + " AND memberid = " + memberid);
     }
+
+    public String getQuestionDeleteTime(long guildid, long channelid)
+    {
+        String deleteTime = "";
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncommand WHERE "
+                + "guildid = " + guildid
+                + " AND channelid = " + channelid);
+
+        try
+        {
+            if (set.next())
+            {
+                deleteTime = set.getString("deletetime");
+
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return deleteTime;
+    }
+
+    public String getQuestionCreationTime(long guildid, long channelid)
+    {
+        String creationTime = "";
+
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncommand WHERE "
+                + "guildid = " + guildid
+                + " AND channelid = " + channelid);
+
+        try
+        {
+            if (set.next())
+            {
+                creationTime = set.getString("creationtime");
+
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return creationTime;
+    }
 }
 

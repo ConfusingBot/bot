@@ -1,5 +1,6 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
+import main.de.confusingbot.commands.help.CommandsUtil;
 import net.dv8tion.jda.api.Permission;
 
 import java.time.format.DateTimeFormatter;
@@ -11,7 +12,8 @@ public class QuestionManager
     public static SQL sql = new SQL();
 
     public static String questionKey = "QUESTION:";
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static DateTimeFormatter formatter = CommandsUtil.formatter;
+    public static String DefaultQuestionName = "❓question";
     public static int deleteMessageAfterXHours = 24;
     public static int addHoursAfterActivity = 5;
     public static int startAddingHoursAfterActivity = 5;
