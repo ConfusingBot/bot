@@ -115,5 +115,11 @@ public class SQLManager
                 "name TEXT, " +
                 "endtime TEXT, " +
                 "creationtime TEXT)");
+
+        tabelNames.add("inviterole");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS inviterole(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildid INTEGER, " +
+                "invitions INTEGER, " +
+                "roleid INTEGER)");
     }
 }

@@ -15,6 +15,7 @@ import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.InfoCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.hugcommand.HugCommand;
+import main.de.confusingbot.commands.cmds.defaultcmds.inviterolecommand.InviteRoleCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.JokeCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.pingcommand.PingCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.previewcommand.PreviewCommand;
@@ -61,6 +62,7 @@ public class CommandManager
         this.commands.put("joke", new JokeCommand());
         this.commands.put("question", new QuestionCommand());
         this.commands.put("joinrole", new JoinRoleCommand());
+        this.commands.put("invite", new InviteRoleCommand());
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());
@@ -72,7 +74,6 @@ public class CommandManager
         this.commands.put("repeatinfo", new RepeatInfoCommand());
         this.commands.put("message", new MessageCommand());
         this.commands.put("vote", new VoteCommand());
-
         this.commands.put("event", new EventCommand());
 
         //Music

@@ -4,6 +4,7 @@ import main.de.confusingbot.commands.cmds.admincmds.eventcommand.UpdateEvents;
 import main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand.UpdateRepeatInfo;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.UpdateVotes;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.UpdateInfos;
+import main.de.confusingbot.commands.cmds.defaultcmds.inviterolecommand.UpdateInvites;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.UpdateQuestionChannels;
 
 import java.util.Timer;
@@ -17,6 +18,7 @@ public class GeneralTimer
     private UpdateRepeatInfo updateRepeatInfo;
     private UpdateEvents updateEvents;
     private UpdateInfos updateInfos;
+    private UpdateInvites updateInvites;
 
     private Timer timer;
 
@@ -28,6 +30,7 @@ public class GeneralTimer
         this.updateRepeatInfo = new UpdateRepeatInfo();
         this.updateEvents = new UpdateEvents();
         this.updateInfos = new UpdateInfos();
+        this.updateInvites = new UpdateInvites();
     }
 
     //Timer
@@ -44,6 +47,7 @@ public class GeneralTimer
                 updateRepeatInfo.onSecond();
                 updateEvents.onSecond();
                 updateInfos.onSecond();
+                updateInvites.onSecond();
             }
         };
 

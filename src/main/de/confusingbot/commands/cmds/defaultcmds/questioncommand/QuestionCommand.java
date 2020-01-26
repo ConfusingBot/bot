@@ -267,7 +267,7 @@ public class QuestionCommand implements ServerCommand
                 //Send Question Message
                 EmbedBuilder builder = QuestionManager.embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
                 textChannel.sendMessage(builder.build()).queue(mes -> {
-                    textChannel.pinMessageById(mes.getIdLong());
+                    textChannel.pinMessageById(mes.getIdLong()).queue();
                 });
 
                 //SQLData

@@ -30,7 +30,7 @@ public class Embeds
     //=====================================================================================================================================
     public void InfoUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "info [@User/bot]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "info [@User/bot/server]`", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================

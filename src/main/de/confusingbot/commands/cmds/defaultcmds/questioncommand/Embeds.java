@@ -171,6 +171,7 @@ public class Embeds
         builder.addField("Category", category, false);
         builder.setFooter("Requested by " + requester.getEffectiveName());
 
+        //Send Embed
         EmbedManager.SendEmbed(builder, channel, 10);
     }
 }

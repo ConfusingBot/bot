@@ -33,4 +33,13 @@ public class EmbedsUtil
         EmbedManager.SendErrorEmbed("You can only create on **" + name + "**!", channel, showErrorTime);
     }
 
+    public static void HavenNotMentionedError(TextChannel channel, String name){
+        EmbedManager.SendErrorEmbed( "You haven't mentioned a " + name, channel, showErrorTime);
+    }
+
+    public static void NoNumberError(TextChannel channel, String numberString)
+    {
+        EmbedManager.SendErrorEmbed( "This is no Number " + numberString, channel, showErrorTime);
+    }
+
 }
