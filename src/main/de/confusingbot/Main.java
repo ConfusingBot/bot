@@ -31,9 +31,9 @@ public class Main
 
     //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.XhjmyQ.jjGdRKCy8prSzczjp-8UfvPtTgM
-    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
+    private String token = "NjM4NzYwNDYwODEyMDI1ODY2.XhjmyQ.jjGdRKCy8prSzczjp-8UfvPtTgM";//TODO change!
     public static String version = "0.0.07";
-    public static long linesOfCode = 12475;
+    public static long linesOfCode = 12589;
     public static String prefix = "- ";
     public static LocalDateTime botStartTime = LocalDateTime.now();
 

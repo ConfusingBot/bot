@@ -98,9 +98,12 @@ public class UpdateQuestionChannels
 
     private void UpdateChannelTime(Guild guild, TextChannel channel)
     {
-        Message latestMessage = CommandsUtil.getLatestesMessageByID(channel, channel.getLatestMessageIdLong());
+        if(!channel.hasLatestMessage()) return;
 
-        if (!latestMessage.getAuthor().isBot())
+        long lastMessageId = channel.getLatestMessageIdLong();
+        Message latestMessage = CommandsUtil.getLatestesMessageByID(channel, lastMessageId);
+
+        if (latestMessage != null && !latestMessage.getAuthor().isBot())
         {
             LocalDateTime messageCreationTime = latestMessage.getTimeCreated().toLocalDateTime();
             LocalDateTime newDeleteTime = CommandsUtil.AddXTime(messageCreationTime, QuestionManager.addHoursAfterActivity, QuestionManager.hours);

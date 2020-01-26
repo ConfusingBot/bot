@@ -50,7 +50,7 @@ public class SQL
 
     public void UpdateDeleteTimeInSQL(long guildID, long channelID, String newDeleteTime)
     {
-        LiteSQL.onUpdate("UPDATE questioncommand SET deletetime = " + newDeleteTime + " WHERE guildid = " + guildID + " AND channelid = " + channelID);
+        LiteSQL.onUpdate("UPDATE questioncommand SET deletetime = '" + newDeleteTime + "' WHERE guildid = " + guildID + " AND channelid = " + channelID);
     }
 
     public Member GetQuestionAskMember(Guild guild, long channelid)
