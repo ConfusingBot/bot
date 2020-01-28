@@ -8,42 +8,64 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class PreviewCommand implements ServerCommand
-{
+import java.awt.*;
+
+public class PreviewCommand implements ServerCommand {
 
     Embeds embeds = new Embeds();
 
-    public PreviewCommand()
-    {
+    public PreviewCommand() {
         embeds.HelpEmbed();
     }
 
     @Override
-    public void performCommand(Member member, TextChannel channel, Message message)
-    {
+    public void performCommand(Member member, TextChannel channel, Message message) {
 
-        //- preview [text]
+        //- preview #hexColor [text]
 
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length > 1)
-        {
-            String userMessage = "";
-            for (int i = 1; i < args.length; i++)
-            {
-                userMessage += (args[i] + " ");
+        String embedMessage = "";
+        String embedTitle = " ";
+
+        if (args.length > 1) {
+            Color color = Color.decode("#EB974E");
+            int startIndex = 0;
+
+            //Get Color
+            String colorString = args[1];
+            if (colorString.startsWith("#") && CommandsUtil.isColor(colorString)) {
+                startIndex = 2;
+                color = Color.decode(colorString);
             }
 
+            //Build String
+            String wholeString = "";
+            for (int i = startIndex; i < args.length; i++) {
+                wholeString += (args[i] + " ");
+            }
+
+            //Get Title
+            String[] parts = wholeString.split("MESSAGE:");
+            if(parts.length > 1){
+                embedTitle = parts[0];
+                embedMessage = parts[1];
+            }else{
+                embedMessage = parts[0];
+            }
+
+            //Build Embed
             EmbedBuilder builder = new EmbedBuilder();
 
-            builder.setDescription(userMessage);
-            builder.setColor(0xeb974e);
+            builder.setTitle(embedTitle);
+            builder.setDescription(embedMessage);
+            builder.setColor(color);
+            builder.setAuthor(member.getNickname());
 
+            //Send Embed
             channel.sendMessage(builder.build()).queue();
-        }
-        else
-        {
+        } else {
             //Usage
             embeds.PreviewUsage(channel);
         }
