@@ -40,7 +40,8 @@ public class UpdateInvites
                             if (role != null)
                             {
                                 Member member = guild.getMemberById(invite.getInviter().getId());
-                                if(member != null){
+                                if (member != null)
+                                {
                                     try
                                     {
                                         //Add role

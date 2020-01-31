@@ -123,7 +123,7 @@ public class Embeds
 
         builder.setTitle("\uD83D\uDD0EInformation");
         builder.setColor(Color.decode("#60f4b4"));
-        builder.setDescription("**Do you want to get special roles?** \n" + listString + "\n\n **Than create a infinity InviteLink and invite as many people as possible\uD83D\uDCDE**\n (Note that temporary will not count\uD83E\uDD14)");
+        builder.setDescription("**Do you want to get special roles?** \n" + listString + "\n\n **Than create a infinity InviteLink and invite as many people as possible\uD83D\uDCDE**\n (Note that temporary invites won't count\uD83E\uDD14)");
 
         //Send Embed
         EmbedManager.SendEmbed(builder, channel, 10);

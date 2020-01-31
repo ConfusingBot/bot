@@ -23,6 +23,7 @@ import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCo
 import main.de.confusingbot.commands.cmds.defaultcmds.reactcommand.ReactCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.rulescommand.RulesCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.PrivateHelpCommand;
+import main.de.confusingbot.commands.cmds.defaultcmds.youtubecommand.YouTubeCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.joincommand.JoinCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.leavecommand.LeaveCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.pausecommand.PauseCommand;
@@ -63,6 +64,7 @@ public class CommandManager
         this.commands.put("question", new QuestionCommand());
         this.commands.put("joinrole", new JoinRoleCommand());
         this.commands.put("invite", new InviteRoleCommand());
+        this.commands.put("youtube", new YouTubeCommand());
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());
