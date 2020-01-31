@@ -1,5 +1,6 @@
 package main.de.confusingbot.commands.help;
 
+import com.google.api.client.util.DateTime;
 import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
@@ -282,6 +283,26 @@ public class CommandsUtil
             result[i] = arrayList.get(i);
         }
         return result;
+    }
+
+    public static LocalDateTime DateTimeConverter(DateTime dateTime)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String dateTimeString = dateTime.toString();
+
+        String[] dateParts = dateTimeString.split("-");
+        String year = dateParts[0];
+        String month = dateParts[1];
+        String day = dateParts[2].substring(0, 2);
+
+        String[] timeParts = dateTimeString.split(":");
+        String hour = timeParts[0].substring(timeParts.length - 3, timeParts.length - 1);
+        String minutes = timeParts[1];
+        String seconds = timeParts[2].substring(0, 2);
+
+        String newDateString = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
+
+        return LocalDateTime.parse(newDateString, formatter);
     }
 }
 
