@@ -41,37 +41,8 @@ public class QuestionCommand implements ServerCommand
                     InfoQuestionCommand(args, guild, member, channel);
                     break;
                 case "category":
-                    if (member.hasPermission(channel, QuestionManager.questionCategoryPermission))
-                    {
-                        if (args.length == 3 || args.length == 4)
-                        {
-                            switch (args[2])
-                            {
-                                case "create":
-                                    CategoryCreateCommand(args, guild, channel);//for creating a category
-                                    break;
-                                case "remove":
-                                    CategoryRemoveCommand(args, guild, channel);//for creating a category
-                                    break;
-                                default:
-                                    //Usage
-                                    QuestionManager.embeds.QuestionCategoryGeneralUsage(channel);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            //Usage
-                            QuestionManager.embeds.QuestionCategoryGeneralUsage(channel);
-                        }
-                    }
-                    else
-                    {
-                        //Error
-                        QuestionManager.embeds.NoPermissionError(channel, QuestionManager.questionCategoryPermission);
-                    }
+                    CategoryHandler(message, channel, args);
                     break;
-
                 default:
                     if (args.length >= 3)
                     {
@@ -90,6 +61,41 @@ public class QuestionCommand implements ServerCommand
         {
             //Usage
             QuestionManager.embeds.GeneralUsage(channel);
+        }
+    }
+
+    private void CategoryHandler(Message message, TextChannel channel, String[] args)
+    {
+        Member member = message.getMember();
+        Guild guild = channel.getGuild();
+        if (member.hasPermission(channel, QuestionManager.questionCategoryPermission))
+        {
+            if (args.length == 3 || args.length == 4)
+            {
+                switch (args[2])
+                {
+                    case "create":
+                        CategoryCreateCommand(args, guild, channel);//for creating a category
+                        break;
+                    case "remove":
+                        CategoryRemoveCommand(args, guild, channel);//for creating a category
+                        break;
+                    default:
+                        //Usage
+                        QuestionManager.embeds.QuestionCategoryGeneralUsage(channel);
+                        break;
+                }
+            }
+            else
+            {
+                //Usage
+                QuestionManager.embeds.QuestionCategoryGeneralUsage(channel);
+            }
+        }
+        else
+        {
+            //Error
+            QuestionManager.embeds.NoPermissionError(channel, QuestionManager.questionCategoryPermission);
         }
     }
 

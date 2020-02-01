@@ -4,19 +4,20 @@ import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.youtubeapi.YouTubeAPIManager;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class YouTubeCommand implements ServerCommand
 {
 
-    Embeds embeds = new Embeds();
+    Embeds embeds = YouTubeCommandManager.embeds;
+    SQL sql = YouTubeCommandManager.sql;
 
     public YouTubeCommand()
     {
@@ -40,6 +41,9 @@ public class YouTubeCommand implements ServerCommand
                 case "info":
                     InfoCommand(channel, args);
                     break;
+                case "announcement":
+                    AnnouncementHandler(message, channel, args);
+                    break;
                 default:
                     //Usage
                     embeds.GeneralUsage(channel);
@@ -51,12 +55,109 @@ public class YouTubeCommand implements ServerCommand
             //Usage
             embeds.GeneralUsage(channel);
         }
+    }
+
+    private void AnnouncementHandler(Message message, TextChannel channel, String[] args)
+    {
+        //- youtube announcement add [channelID]
+        Member member = message.getMember();
+        if (member.hasPermission(channel, YouTubeCommandManager.youtubeAnnouncementPermission))
+        {
+            if (args.length > 2)
+            {
+                switch (args[2])
+                {
+                    case "add":
+                        YoutubeAnnouncementAddCommand(message, channel, args);
+                        break;
+                    case "remove":
+                        YoutubeAnnouncementRemoveCommand(channel, args);
+                        break;
+                    case "list":
+                        //TODO
+                        break;
+                    default:
+                        embeds.YouTubeAnnouncementsGeneralUsage(channel);
+                        break;
+                }
+            }
+            else
+            {
+                embeds.YouTubeAnnouncementsGeneralUsage(channel);
+            }
+        }
+        else
+        {
+            //Error
+            embeds.NoPermissionError(channel, YouTubeCommandManager.youtubeAnnouncementPermission);
+        }
 
     }
 
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
+    private void YoutubeAnnouncementAddCommand(Message message, TextChannel channel, String[] args)
+    {
+        Guild guild = message.getGuild();
+        if (args.length > 3)
+        {
+            List<Role> roles = message.getMentionedRoles();
+            List<Long> roleids = new ArrayList<>();
+            for (Role role : roles) roleids.add(role.getIdLong());
+            String roleidsString = !roleids.isEmpty() ? CommandsUtil.codeLong(roleids, ", ") : " ";
+            String channelId = args[3];
+            String description = ((args.length > 4) ? CommandsUtil.buildWholeString(args, 4, args.length, roles) : " ");
+            System.out.println(description);
+
+            if (!sql.ExistsInSQL(guild.getIdLong(), channelId))
+            {
+                //SQL
+                sql.addToSQL(guild.getIdLong(), channel.getIdLong(), channelId, description, roleidsString);
+
+                //Message
+                embeds.SuccessfulAddedAnnouncement(channel, channelId);
+            }
+            else
+            {
+                //Error
+                embeds.YouTubeAnnouncementAlreadyExistsError(channel, channelId);
+            }
+        }
+        else
+        {
+            //Usage
+            embeds.YouTubeAnnouncementsAddUsage(channel);
+        }
+    }
+
+    private void YoutubeAnnouncementRemoveCommand(TextChannel channel, String[] args)
+    {
+        Guild guild = channel.getGuild();
+        if (args.length > 3)
+        {
+            String channelId = args[3];
+            if (sql.ExistsInSQL(guild.getIdLong(), channelId))
+            {
+                //SQL
+                sql.removeFormSQL(guild.getIdLong(), channelId);
+
+                //Message
+                embeds.SuccessfulRemovedAnnouncement(channel, channelId);
+            }
+            else
+            {
+                //Error
+                embeds.YouTubeAnnouncementNotExistsError(channel, channelId);
+            }
+        }
+        else
+        {
+            //Usage
+            embeds.YouTubeAnnouncementsRemoveUsage(channel);
+        }
+    }
+
     private void NewCommand(TextChannel channel, String[] args)
     {
         if (args.length == 3)

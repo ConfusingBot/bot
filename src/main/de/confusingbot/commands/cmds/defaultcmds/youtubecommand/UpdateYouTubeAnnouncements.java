@@ -1,0 +1,112 @@
+package main.de.confusingbot.commands.cmds.defaultcmds.youtubecommand;
+
+import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
+import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.manage.sql.LiteSQL;
+import main.de.confusingbot.manage.youtubeapi.YouTubeAPIManager;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class UpdateYouTubeAnnouncements
+{
+    public void onSecond()
+    {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        try
+        {
+            ResultSet set = LiteSQL.onQuery("SELECT * FROM youtubeannouncement");
+            while (set.next())
+            {
+                //SQL
+                String youtubeChannelID = set.getString("youtubechannelid");
+                long guildID = set.getLong("guildid");
+                long channelID = set.getLong("channelid");
+
+                Guild guild = Main.INSTANCE.shardManager.getGuildById(guildID);
+                TextChannel channel = guild.getTextChannelById(channelID);
+
+                JSONObject videosObject = YouTubeAPIManager.getVideosOfChannelByChannelId(youtubeChannelID);
+                if (videosObject == null || !videosObject.isNull("error") || channel == null)
+                {
+                    YouTubeCommandManager.sql.removeFormSQL(guildID, youtubeChannelID);
+                    return;
+                }
+
+                JSONArray itemsObject = videosObject.getJSONArray("items");
+                if (itemsObject.length() > 0)
+                {
+                    JSONObject newVideoObject = null;
+                    for (int i = 0; i < itemsObject.length(); i++)
+                    {
+                        newVideoObject = itemsObject.getJSONObject(i);
+                        if (newVideoObject.getJSONObject("id").get("kind").toString().contains("video"))
+                            break;
+                        else
+                            newVideoObject = null;
+                    }
+
+                    if (newVideoObject != null)
+                    {
+                        JSONObject newVideoSnippetObject = newVideoObject.getJSONObject("snippet");
+
+                        LocalDateTime publishedAt = CommandsUtil.DateTimeConverter(newVideoSnippetObject.getString("publishedAt"));
+                        if (publishedAt.plusMinutes(5).isAfter(currentTime))
+                        {
+                            //SQL
+                            String description = set.getString("description");
+                            String roleidsString = set.getString("roleids");
+                            String roleMentionedString = getRoleMentionedString(roleidsString, guild, youtubeChannelID);
+
+                            String videoId = newVideoObject.getJSONObject("id").getString("videoId");
+                            String url = "https://www.youtube.com/watch?v=" + videoId;
+                            String thumbnailUrl = newVideoSnippetObject.getJSONObject("thumbnails").getJSONObject("high").getString("url");
+                            String title = newVideoSnippetObject.get("title").toString();
+                            String uploaderName = newVideoSnippetObject.getString("channelTitle");
+
+                            //Message
+                            YouTubeCommandManager.embeds.SendYoutubeAnnouncementEmbed(channel, url, thumbnailUrl, title, uploaderName, roleMentionedString, description);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private String getRoleMentionedString(String roleidsString, Guild guild, String youtubeChannelID)
+    {
+        List<Long> roleIDs = !roleidsString.equals(" ") ? CommandsUtil.encodeLong(roleidsString, ", ") : null;
+        if (roleIDs == null || roleIDs.isEmpty()) return " ";
+        String roleMentionedString = "";
+
+        for (long roleid : roleIDs)
+        {
+            Role role = guild.getRoleById(roleid);
+            if (role != null)
+            {
+                roleMentionedString += role.getAsMention() + " ";
+            }
+            else
+            {
+                roleIDs.remove(roleid);
+
+                //SQL
+                YouTubeCommandManager.sql.UpdateRoleIdsInSQL(guild.getIdLong(), youtubeChannelID, CommandsUtil.codeLong(roleIDs, ", "));
+            }
+        }
+
+        return roleMentionedString;
+    }
+}

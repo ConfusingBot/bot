@@ -121,5 +121,13 @@ public class SQLManager
                 "guildid INTEGER, " +
                 "invitions INTEGER, " +
                 "roleid INTEGER)");
+
+        tabelNames.add("youtubeannouncement");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS youtubeannouncement(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildid INTEGER, " +
+                "channelid INTEGER, " +
+                "youtubechannelid TEXT, " +
+                "description TEXT, " +
+                "roleids TEXT)");
     }
 }

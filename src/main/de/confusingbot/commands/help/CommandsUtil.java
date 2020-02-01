@@ -220,7 +220,7 @@ public class CommandsUtil
             {
                 finalString += string + splitChar;
             }
-            finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
+            finalString = finalString.substring(0, finalString.length() - splitChar.length()).trim();
         }
         return finalString;
     }
@@ -245,6 +245,32 @@ public class CommandsUtil
             for (Integer integer : integers)
             {
                 finalString += integer + splitChar;
+            }
+            finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
+        }
+        return finalString;
+    }
+
+    public static List<Long> encodeLong(String string, String splitChar)
+    {
+        if (splitChar == null || splitChar.equals("")) return null;
+
+        List<String> words = Arrays.asList(string.split(splitChar));
+        List<Long> longs = new ArrayList<>();
+
+        for (String word : words) if (isNumeric(word)) longs.add(Long.parseLong(word));
+
+        return longs;
+    }
+
+    public static String codeLong(List<Long> longs, String splitChar)
+    {
+        String finalString = "";
+        if (!longs.isEmpty())
+        {
+            for (Long l : longs)
+            {
+                finalString += l + splitChar;
             }
             finalString = finalString.substring(0, finalString.length() - ", ".length()).trim();
         }
@@ -300,6 +326,33 @@ public class CommandsUtil
         String newDateString = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
 
         return LocalDateTime.parse(newDateString, formatter);
+    }
+
+    public static String buildWholeString(String[] args, int startIndex, int endIndex, List<Role> roles)
+    {
+        String finalString = "";
+        for (int i = startIndex; i < endIndex; i++)
+        {
+            if (!roles.isEmpty())
+            {
+                boolean isRole = false;
+                for (Role role : roles)
+                {
+                    if (args[i].contains(role.getName()))
+                        isRole = true;
+                }
+
+                if (!isRole)
+                    finalString += args[i] + " ";
+            }
+            else
+            {
+                finalString += args[i] + " ";
+            }
+        }
+        finalString = finalString.substring(0, finalString.length() - " ".length()).trim();
+
+        return finalString;
     }
 }
 

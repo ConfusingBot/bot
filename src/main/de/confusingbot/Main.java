@@ -33,7 +33,7 @@ public class Main
     //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.XhjmyQ.jjGdRKCy8prSzczjp-8UfvPtTgM
     private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
     public static String version = "0.0.08";
-    public static long linesOfCode = 13622;
+    public static long linesOfCode = 13592;
     public static String prefix = "- ";
     public static LocalDateTime botStartTime = LocalDateTime.now();
 
