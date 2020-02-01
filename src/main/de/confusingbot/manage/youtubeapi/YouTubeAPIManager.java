@@ -1,97 +1,63 @@
 package main.de.confusingbot.manage.youtubeapi;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.ActivityListResponse;
-import com.google.api.services.youtube.model.ChannelListResponse;
-import com.google.api.services.youtube.model.VideoListResponse;
+import com.fasterxml.jackson.core.io.JsonEOFException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 public class YouTubeAPIManager
 {
     public static final String DEVELOPER_KEY = "AIzaSyA_dVJ9HbehznusECr3Q_Puwqs3T1mHcVc";
 
-    public static final String APPLICATION_NAME = "ConfusingBot-YoutubeAPI";
-    public static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    /**
-     * Build and return an authorized API client service.
-     *
-     * @return an authorized API client service
-     * @throws GeneralSecurityException, IOException
-     */
-    public static YouTube getService() throws GeneralSecurityException, IOException
+    public static JSONObject getVideosOfChannelByChannelId(String channelId)
     {
-        final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        return new YouTube.Builder(httpTransport, JSON_FACTORY, null)
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-    }
-
-    //AktivitätInfo -> UploadedVideos..
-    public static ActivityListResponse getResponseById(String channelId)
-    {
-        ActivityListResponse response = null;
+        //Example https://www.googleapis.com/youtube/v3/search?key=AIzaSyA_dVJ9HbehznusECr3Q_Puwqs3T1mHcVc&channelId=UCNth2NDhGthv91iC6QHn9DA&part=snippet,id&order=date&maxResults=20
+        JSONObject videosObject = null;
         try
         {
-            YouTube youtubeService = getService();
-            // Define and execute the API request
-            YouTube.Activities.List request = youtubeService.activities()
-                    .list("snippet,contentDetails");
-            response = request.setKey(DEVELOPER_KEY)
-                    .setChannelId(channelId)
-                    .execute();
-        } catch (GeneralSecurityException | IOException e)
+            videosObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/search?key=" + DEVELOPER_KEY + "&channelId=" + channelId + "&part=snippet,id&order=date&maxResults=20");
+        } catch (IOException | JSONException e)
         {
-            e.printStackTrace();
+            videosObject.put("error", "A error happens");
         }
 
-        return response;
+        return videosObject;
     }
 
-    //Video Infos
-    public static VideoListResponse getVideoResponseById(String videoId)
+    public static JSONObject getVideoByID(String videoId)
     {
-        VideoListResponse response = null;
+        //Example: https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=a5Mjps7PBsQ&key=AIzaSyA_dVJ9HbehznusECr3Q_Puwqs3T1mHcVc
+        JSONObject videoObject = null;
         try
         {
-            YouTube youtubeService = getService();
-            // Define and execute the API request
-            YouTube.Videos.List request = youtubeService.videos()
-                    .list("snippet,contentDetails,statistics");
-            response = request.setId(videoId).execute();
-        } catch (GeneralSecurityException | IOException e)
+            videoObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=" + videoId + "&key=" + DEVELOPER_KEY);
+        } catch (IOException | JSONException e)
         {
-            e.printStackTrace();
+            videoObject.put("error", "A error happens");
         }
 
-        return response;
+        return videoObject;
     }
 
-    //ChannelInfos
-    public static ChannelListResponse getChannelListResponse(String channelId)
+    public static JSONObject getChannelByIDOrName(String channelId)
     {
-        ChannelListResponse response = null;
+        //Example: https://www.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UCNth2NDhGthv91iC6QHn9DA&key=[YOUR_API_KEY]
+        //Example2: Does not work perfect :/
+        // https://www.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&forUsername=BennoDev&key=[YOUR_API_KEY]
 
+        JSONObject channelObject = new JSONObject();
         try
         {
-            YouTube youtubeService = getService();
-            // Define and execute the API request
-            YouTube.Channels.List request = youtubeService.channels()
-                    .list("snippet,contentDetails,statistics");
-            response = request.setKey(DEVELOPER_KEY)
-                    .setId(channelId)
-                    .execute();
-        } catch (GeneralSecurityException | IOException e)
+            channelObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=" + channelId + "&key=" + DEVELOPER_KEY);
+            channelObject = channelObject.getJSONArray("items").getJSONObject(0);
+
+        } catch (IOException | JSONException e)
         {
-            e.printStackTrace();
+            channelObject.put("error", "A error happens");
         }
 
-        return response;
+        return channelObject;
     }
 }

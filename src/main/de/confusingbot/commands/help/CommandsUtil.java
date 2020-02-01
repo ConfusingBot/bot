@@ -1,6 +1,5 @@
 package main.de.confusingbot.commands.help;
 
-import com.google.api.client.util.DateTime;
 import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
@@ -10,7 +9,6 @@ import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -285,10 +283,9 @@ public class CommandsUtil
         return result;
     }
 
-    public static LocalDateTime DateTimeConverter(DateTime dateTime)
+    public static LocalDateTime DateTimeConverter(String dateTimeString)
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String dateTimeString = dateTime.toString();
 
         String[] dateParts = dateTimeString.split("-");
         String year = dateParts[0];

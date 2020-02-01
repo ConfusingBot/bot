@@ -44,20 +44,5 @@
     <orderEntry type="library" name="Maven: de.rototor.pdfbox:graphics2d:0.25" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pdfbox:pdfbox:2.0.17" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pdfbox:fontbox:2.0.17" level="project" />
-    <orderEntry type="library" name="Maven: com.google.apis:google-api-services-youtube:v3-rev187-1.23.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.api-client:google-api-client:1.23.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client:1.23.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.http-client:google-http-client:1.23.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-jackson2:1.23.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava-jdk5:17.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.api-client:google-api-client-java6:1.30.7" level="project" />
-    <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client-java6:1.30.5" level="project" />
-    <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client-jetty:1.30.5" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:8.2.0.v20160908" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:8.2.0.v20160908" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:8.2.0.v20160908" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:8.2.0.v20160908" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.2.0.v20160908" level="project" />
   </component>
 </module>
