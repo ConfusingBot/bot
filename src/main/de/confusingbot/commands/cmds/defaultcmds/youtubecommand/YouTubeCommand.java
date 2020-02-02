@@ -168,35 +168,20 @@ public class YouTubeCommand implements ServerCommand
                 JSONArray itemsObject = videosObject.getJSONArray("items");
                 if (itemsObject.length() > 0)
                 {
-                    JSONObject newVideoObject = null;
-                    for (int i = 0; i < itemsObject.length(); i++)
-                    {
-                        newVideoObject = itemsObject.getJSONObject(i);
-                        if (newVideoObject.getJSONObject("id").get("kind").toString().contains("video"))
-                            break;
-                        else
-                            newVideoObject = null;
-                    }
-                    if (newVideoObject != null)
-                    {
-                        JSONObject newVideoSnippetObject = newVideoObject.getJSONObject("snippet");
+                    JSONObject newVideoObject = itemsObject.getJSONObject(0);
 
-                        String videoId = newVideoObject.getJSONObject("id").getString("videoId");
-                        String url = "https://www.youtube.com/watch?v=" + videoId;
-                        LocalDateTime publishedAt = CommandsUtil.DateTimeConverter(newVideoSnippetObject.getString("publishedAt"));
-                        String thumbnailUrl = newVideoSnippetObject.getJSONObject("thumbnails").getJSONObject("high").getString("url");
-                        String title = newVideoSnippetObject.get("title").toString();
-                        String uploaderName = newVideoSnippetObject.getString("channelTitle");
-                        String language = videosObject.getString("regionCode");
 
-                        //Message
-                        embeds.SendVideoEmbed(channel, url, thumbnailUrl, title, uploaderName, language, publishedAt);
-                    }
-                    else
-                    {
-                        //Information
-                        embeds.NoVideosOnChannelInformation(channel);
-                    }
+                    JSONObject newVideoSnippetObject = newVideoObject.getJSONObject("snippet");
+
+                    String videoId = newVideoSnippetObject.getJSONObject("resourceId").getString("videoId");
+                    String url = "https://www.youtube.com/watch?v=" + videoId;
+                    LocalDateTime publishedAt = CommandsUtil.DateTimeConverter(newVideoSnippetObject.getString("publishedAt"));
+                    String thumbnailUrl = newVideoSnippetObject.getJSONObject("thumbnails").getJSONObject("high").getString("url");
+                    String title = newVideoSnippetObject.get("title").toString();
+                    String uploaderName = newVideoSnippetObject.getString("channelTitle");
+
+                    //Message
+                    embeds.SendVideoEmbed(channel, url, thumbnailUrl, title, uploaderName, publishedAt);
                 }
                 else
                 {

@@ -50,37 +50,26 @@ public class UpdateYouTubeAnnouncements
                 JSONArray itemsObject = videosObject.getJSONArray("items");
                 if (itemsObject.length() > 0)
                 {
-                    JSONObject newVideoObject = null;
-                    for (int i = 0; i < itemsObject.length(); i++)
+                    JSONObject newVideoObject = itemsObject.getJSONObject(0);
+
+                    JSONObject newVideoSnippetObject = newVideoObject.getJSONObject("snippet");
+
+                    LocalDateTime publishedAt = CommandsUtil.DateTimeConverter(newVideoSnippetObject.getString("publishedAt"));
+                    if (publishedAt.plusMinutes(5).isAfter(currentTime))
                     {
-                        newVideoObject = itemsObject.getJSONObject(i);
-                        if (newVideoObject.getJSONObject("id").get("kind").toString().contains("video"))
-                            break;
-                        else
-                            newVideoObject = null;
-                    }
+                        //SQL
+                        String description = set.getString("description");
+                        String roleidsString = set.getString("roleids");
+                        String roleMentionedString = getRoleMentionedString(roleidsString, guild, youtubeChannelID);
 
-                    if (newVideoObject != null)
-                    {
-                        JSONObject newVideoSnippetObject = newVideoObject.getJSONObject("snippet");
+                        String videoId = newVideoSnippetObject.getJSONObject("resourceId").getString("videoId");
+                        String url = "https://www.youtube.com/watch?v=" + videoId;
+                        String thumbnailUrl = newVideoSnippetObject.getJSONObject("thumbnails").getJSONObject("high").getString("url");
+                        String title = newVideoSnippetObject.get("title").toString();
+                        String uploaderName = newVideoSnippetObject.getString("channelTitle");
 
-                        LocalDateTime publishedAt = CommandsUtil.DateTimeConverter(newVideoSnippetObject.getString("publishedAt"));
-                        if (publishedAt.plusMinutes(5).isAfter(currentTime))
-                        {
-                            //SQL
-                            String description = set.getString("description");
-                            String roleidsString = set.getString("roleids");
-                            String roleMentionedString = getRoleMentionedString(roleidsString, guild, youtubeChannelID);
-
-                            String videoId = newVideoObject.getJSONObject("id").getString("videoId");
-                            String url = "https://www.youtube.com/watch?v=" + videoId;
-                            String thumbnailUrl = newVideoSnippetObject.getJSONObject("thumbnails").getJSONObject("high").getString("url");
-                            String title = newVideoSnippetObject.get("title").toString();
-                            String uploaderName = newVideoSnippetObject.getString("channelTitle");
-
-                            //Message
-                            YouTubeCommandManager.embeds.SendYoutubeAnnouncementEmbed(channel, url, thumbnailUrl, title, uploaderName, roleMentionedString, description);
-                        }
+                        //Message
+                        YouTubeCommandManager.embeds.SendYoutubeAnnouncementEmbed(channel, url, thumbnailUrl, title, uploaderName, roleMentionedString, description);
                     }
                 }
             }

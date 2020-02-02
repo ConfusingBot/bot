@@ -16,7 +16,12 @@ public class YouTubeAPIManager
         JSONObject videosObject = new JSONObject();
         try
         {
-            videosObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/search?key=" + DEVELOPER_KEY + "&channelId=" + channelId + "&part=snippet,id&order=date&maxResults=20");
+            //needs 3 points
+            channelId = channelId.replace("UC", "UU");
+            videosObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + channelId + "&maxResults=5&key=" + DEVELOPER_KEY);
+
+             //needs 100 points
+            //videosObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/search?key=" + DEVELOPER_KEY + "&channelId=" + channelId + "&part=snippet,id&order=date&maxResults=20");
         } catch (IOException | JSONException e)
         {
             videosObject.put("error", "A error happens");

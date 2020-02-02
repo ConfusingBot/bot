@@ -123,7 +123,7 @@ public class Embeds
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendVideoEmbed(TextChannel channel, String url, String thumbnailUrl, String title, String uploaderName, String language, LocalDateTime publishedAt)
+    public void SendVideoEmbed(TextChannel channel, String url, String thumbnailUrl, String title, String uploaderName, LocalDateTime publishedAt)
     {
         EmbedBuilder builder = new EmbedBuilder();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -134,7 +134,6 @@ public class Embeds
         builder.setDescription("[**" + title + "**](" + url + ")");
         builder.addField("UploadDate", dateFormatter.format(publishedAt), true);
         builder.addField("UploadTime", timeFormatter.format(publishedAt), true);
-        builder.addField("Language", language, true);
 
         builder.setColor(Color.RED);
 
