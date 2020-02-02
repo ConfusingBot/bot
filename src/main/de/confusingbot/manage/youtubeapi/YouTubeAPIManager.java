@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class YouTubeAPIManager
 {
+    //https://console.developers.google.com/apis/credentials?project=testyoutube-266816
     public static final String DEVELOPER_KEY = "AIzaSyA_dVJ9HbehznusECr3Q_Puwqs3T1mHcVc";
 
 

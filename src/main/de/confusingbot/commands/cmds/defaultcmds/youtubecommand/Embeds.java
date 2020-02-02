@@ -25,9 +25,9 @@ public class Embeds
         HelpManager.useful.add("```yaml\n" + Main.prefix + "youtube\n```" +
                 " ```Show you some useful stuff from YouTube```\n");
 
-        HelpManager.admin.add("```yaml\n" + Main.prefix + "youtube\n```" +
-                " ```...```" +
-                "```fix\n" + QuestionManager.questionCategoryPermission.name() + "\n```");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "youtube announcement\n```" +
+                " ```Create YouTubeAnnouncements which will inform you if a new video has been uploaded```" +
+                "```fix\n" + YouTubeCommandManager.youtubeAnnouncementPermission.name() + "\n```");
     }
 
     //=====================================================================================================================================

@@ -313,15 +313,16 @@ public class CommandsUtil
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        String[] dateParts = dateTimeString.split("-");
+        String[] parts = dateTimeString.split("T");
+        String[] dateParts = parts[0].split("-");
         String year = dateParts[0];
         String month = dateParts[1];
-        String day = dateParts[2].substring(0, 2);
+        String day = dateParts[2];
 
-        String[] timeParts = dateTimeString.split(":");
-        String hour = timeParts[0].substring(timeParts.length - 3, timeParts.length - 1);
+        String[] timeParts = parts[1].substring(0, parts[1].indexOf(".")).split(":");
+        String hour = timeParts[0];
         String minutes = timeParts[1];
-        String seconds = timeParts[2].substring(0, 2);
+        String seconds = timeParts[2];
 
         String newDateString = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
 

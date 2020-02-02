@@ -1,7 +1,6 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.youtubecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.youtubeapi.YouTubeAPIManager;
@@ -14,13 +13,15 @@ import org.json.JSONObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 public class UpdateYouTubeAnnouncements
 {
     public void onSecond()
     {
-        LocalDateTime currentTime = LocalDateTime.now();
+        //YouTube use the Zone UTC for saving its date!
+        LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("UTC"));
 
         try
         {
