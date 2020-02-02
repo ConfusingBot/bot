@@ -37,7 +37,11 @@ public class UpdateYouTubeAnnouncements
                 TextChannel channel = guild.getTextChannelById(channelID);
 
                 JSONObject videosObject = YouTubeAPIManager.getVideosOfChannelByChannelId(youtubeChannelID);
-                if (videosObject == null || !videosObject.isNull("error") || channel == null)
+                //If error happens by requesting to YouTubeAPI
+                if (videosObject == null || !videosObject.isNull("error")) return;
+
+                //If guild or channel doesn't exist anymore
+                if (channel == null || guild == null)
                 {
                     YouTubeCommandManager.sql.removeFormSQL(guildID, youtubeChannelID);
                     return;

@@ -108,7 +108,6 @@ public class YouTubeCommand implements ServerCommand
             String roleidsString = !roleids.isEmpty() ? CommandsUtil.codeLong(roleids, ", ") : " ";
             String channelId = args[3];
             String description = ((args.length > 4) ? CommandsUtil.buildWholeString(args, 4, args.length, roles) : " ");
-            System.out.println(description);
 
             if (!sql.ExistsInSQL(guild.getIdLong(), channelId))
             {
