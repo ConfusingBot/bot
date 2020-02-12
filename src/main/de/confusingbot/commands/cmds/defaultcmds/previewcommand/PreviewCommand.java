@@ -10,16 +10,19 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
 
-public class PreviewCommand implements ServerCommand {
+public class PreviewCommand implements ServerCommand
+{
 
     Embeds embeds = new Embeds();
 
-    public PreviewCommand() {
+    public PreviewCommand()
+    {
         embeds.HelpEmbed();
     }
 
     @Override
-    public void performCommand(Member member, TextChannel channel, Message message) {
+    public void performCommand(Member member, TextChannel channel, Message message)
+    {
 
         //- preview #hexColor [text]
 
@@ -28,32 +31,42 @@ public class PreviewCommand implements ServerCommand {
 
         String embedMessage = "";
         String embedTitle = " ";
+        boolean showName = true;
 
-        if (args.length > 1) {
+        if (args.length > 2)
+        {
             Color color = Color.decode("#EB974E");
-            int startIndex = 0;
+            int startIndex = 1;
 
             //Get Color
             String colorString = args[1];
-            if (colorString.startsWith("#") && CommandsUtil.isColor(colorString)) {
+            if (colorString.startsWith("#") && CommandsUtil.isColor(colorString))
+            {
                 startIndex = 2;
                 color = Color.decode(colorString);
             }
 
             //Build String
             String wholeString = "";
-            for (int i = startIndex; i < args.length; i++) {
+            for (int i = startIndex; i < args.length; i++)
+            {
                 wholeString += (args[i] + " ");
             }
 
             //Get Title
             String[] parts = wholeString.split("MESSAGE:");
-            if(parts.length > 1){
+            if (parts.length > 1)
+            {
                 embedTitle = parts[0];
                 embedMessage = parts[1];
-            }else{
+            }
+            else
+            {
                 embedMessage = parts[0];
             }
+
+            //ShowName
+            if(args[args.length - 1].equals("false")) showName = false;
 
             //Build Embed
             EmbedBuilder builder = new EmbedBuilder();
@@ -61,11 +74,14 @@ public class PreviewCommand implements ServerCommand {
             builder.setTitle(embedTitle);
             builder.setDescription(embedMessage);
             builder.setColor(color);
-            builder.setAuthor(member.getNickname());
+            if (showName)
+                builder.setAuthor(member.getNickname());
 
             //Send Embed
             channel.sendMessage(builder.build()).queue();
-        } else {
+        }
+        else
+        {
             //Usage
             embeds.PreviewUsage(channel);
         }

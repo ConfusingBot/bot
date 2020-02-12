@@ -10,7 +10,7 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "preview ([#color]) (MESSAGE: [title]) [text]\n``` ```Preview your text in a box```");
+        HelpManager.useful.add("```yaml\n" + Main.prefix + "preview ([#color]) ([title] MESSAGE:) [text]\n``` ```Preview your text in a box```");
     }
 
     //=====================================================================================================================================
@@ -18,7 +18,7 @@ public class Embeds
     //=====================================================================================================================================
     public void PreviewUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed(Main.prefix + "preview ([#color]) (MESSAGE: [title]) [text]", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed(Main.prefix + "preview ([#color]) ([title] MESSAGE:) [text]", channel, EmbedsUtil.showUsageTime);
     }
 
 }

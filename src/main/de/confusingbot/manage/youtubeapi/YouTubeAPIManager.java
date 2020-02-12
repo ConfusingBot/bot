@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class YouTubeAPIManager
 {
+    //https://developers.google.com/youtube/v3/docs/channels/list
     //https://console.developers.google.com/ -> YouTubeDiscordBot
     public static final String DEVELOPER_KEY = "AIzaSyDrK0FCRPEK1uanvgnvEU1NmifwmBVpex0";
 
@@ -17,6 +18,7 @@ public class YouTubeAPIManager
         try
         {
             //needs 3 points
+            //https://stackoverflow.com/questions/55269455/youtube-api-3-get-latest-videos-from-a-channel
             channelId = channelId.replace("UC", "UU");
             videosObject = JsonReader.readJsonFromUrl("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + channelId + "&maxResults=5&key=" + DEVELOPER_KEY);
 
