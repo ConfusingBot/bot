@@ -50,7 +50,7 @@ public class AcceptRulesListener
                     }
 
                     //Remove NotAccepted from Member
-                    Role roleNotAccepted = guild.getRoleById(rolenotacceptedid);
+                    Role roleNotAccepted = rolenotacceptedid != -1 ? guild.getRoleById(rolenotacceptedid) : null;
                     if (roleNotAccepted != null)
                     {
                         try
@@ -65,7 +65,8 @@ public class AcceptRulesListener
                     else
                     {
                         //Error
-                        AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), rolenotacceptedid);
+                        if (rolenotacceptedid != -1)
+                            AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), rolenotacceptedid);
                     }
 
 
@@ -140,7 +141,7 @@ public class AcceptRulesListener
                         }
 
                         //Add roleNotAccepted to Member
-                        Role roleNotAccepted = guild.getRoleById(rolenotacceptedid);
+                        Role roleNotAccepted = rolenotacceptedid != -1 ? guild.getRoleById(rolenotacceptedid) : null;
                         if (roleNotAccepted != null)
                         {
                             try
@@ -155,7 +156,8 @@ public class AcceptRulesListener
                         else
                         {
                             //Error
-                            AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), rolenotacceptedid);
+                            if (rolenotacceptedid != -1)
+                                AcceptRuleManager.embeds.RoleDoesNotExistAnymore(event.getTextChannel(), rolenotacceptedid);
                         }
 
                         //remove roleborders
@@ -202,7 +204,7 @@ public class AcceptRulesListener
             Member member = event.getMember();
             Guild guild = event.getGuild();
 
-            Role notAcceptedRole = guild.getRoleById(rolenotacceptedid);
+            Role notAcceptedRole = rolenotacceptedid != -1 ? guild.getRoleById(rolenotacceptedid) : null;
 
             if (notAcceptedRole != null)
             {

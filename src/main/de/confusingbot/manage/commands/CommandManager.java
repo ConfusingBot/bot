@@ -21,7 +21,6 @@ import main.de.confusingbot.commands.cmds.defaultcmds.pingcommand.PingCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.previewcommand.PreviewCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.reactcommand.ReactCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.rulescommand.RulesCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.PrivateHelpCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.youtubecommand.YouTubeCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.joincommand.JoinCommand;
@@ -42,7 +41,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager
 {
-
     public ConcurrentHashMap<String, ServerCommand> commands;
     public ConcurrentHashMap<String, PrivateCommand> privateCommands;
 
@@ -58,7 +56,6 @@ public class CommandManager
         this.commands.put("reactrole", new ReactRolesCommand());
         this.commands.put("react", new ReactCommand());
         this.commands.put("info", new InfoCommand());
-        this.commands.put("rules", new RulesCommand());
         this.commands.put("ping", new PingCommand());
         this.commands.put("joke", new JokeCommand());
         this.commands.put("question", new QuestionCommand());

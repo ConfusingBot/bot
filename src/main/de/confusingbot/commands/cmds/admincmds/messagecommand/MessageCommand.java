@@ -21,7 +21,7 @@ public class MessageCommand implements ServerCommand
     public void performCommand(Member member, TextChannel channel, Message message)
     {
 
-        //- message add welcome [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: Welcome @newMember to the server look at #rule
+        //- message add welcome (private) [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: Welcome @newMember to the server look at #rule
         //- message remove welcome
 
         String[] args = CommandsUtil.messageToArgs(message);
@@ -39,10 +39,10 @@ public class MessageCommand implements ServerCommand
                             switch (args[2])
                             {
                                 case "welcome":
-                                    MessageAddCommand(channel, args, message, MessageManager.welcomeMessageKey);
+                                    MessageAddCommand(channel, args, message, MessageManager.welcomeMessageKey, args[3].equals("private"));
                                     break;
                                 case "leave":
-                                    MessageAddCommand(channel, args, message, MessageManager.leaveMessageKey);
+                                    MessageAddCommand(channel, args, message, MessageManager.leaveMessageKey, args[3].equals("private"));
                                     break;
                                 default:
                                     //Usage
@@ -62,10 +62,10 @@ public class MessageCommand implements ServerCommand
                             switch (args[2])
                             {
                                 case "welcome":
-                                    MessageRemoveCommand(channel, args, MessageManager.welcomeMessageKey);
+                                    MessageRemoveCommand(channel, args, MessageManager.welcomeMessageKey, args.length > 3 && args[3].equals("private"));
                                     break;
                                 case "leave":
-                                    MessageRemoveCommand(channel, args, MessageManager.leaveMessageKey);
+                                    MessageRemoveCommand(channel, args, MessageManager.leaveMessageKey, args.length > 3 && args[3].equals("private"));
                                     break;
                                 default:
                                     //Usage
@@ -101,27 +101,37 @@ public class MessageCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void MessageAddCommand(TextChannel channel, String[] args, Message message, String messageKey)
+    private void MessageAddCommand(TextChannel channel, String[] args, Message message, String messageKey, boolean isPrivate)
     {
+        if(messageKey.equals(MessageManager.leaveMessageKey) && isPrivate){
+            MessageManager.embeds.CanNotSendPrivateLeaveMessage(channel);
+            return;
+        }
+
+
         Guild guild = channel.getGuild();
         if (args.length > 4)
         {
-            if (!MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), messageKey))
+            if (!MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), messageKey, isPrivate))
             {
 
                 List<TextChannel> mentionedDiscordChannel = message.getMentionedChannels();
 
-                if (mentionedDiscordChannel.size() > 0)
+                if (mentionedDiscordChannel.size() > 0 || (isPrivate && mentionedDiscordChannel.size() == 0))
                 {
                     //Get channel where to send the message
-                    TextChannel messageChannel = mentionedDiscordChannel.get(0);
+                    TextChannel messageChannel = null;
                     List<TextChannel> mentionedChannel = mentionedDiscordChannel.stream().collect(Collectors.toList());
-                    mentionedChannel.remove(0);
+                    if (!isPrivate)
+                    {
+                        messageChannel = mentionedDiscordChannel.get(0);
+                        mentionedChannel.remove(0);
+                    }
 
                     List<Role> mentionedRoles = message.getMentionedRoles();
                     List<User> mentionedUser = message.getMentionedUsers();
 
-                    if (args[3].contains(messageChannel.getName()))
+                    if ((isPrivate && messageChannel == null) || (messageChannel != null && args[3].contains(messageChannel.getName())))
                     {
                         //Get Color
                         String defaultColor = "#ffa500";
@@ -153,11 +163,13 @@ public class MessageCommand implements ServerCommand
 
                             //SQL
                             MessageManager.sql.MessageAddToSQL(guild.getIdLong(),
-                                    messageChannel.getIdLong(),
+                                    !isPrivate ? messageChannel.getIdLong() : -1,
                                     color,
                                     messageKey,
                                     title,
-                                    getMentionableMessage(shownMessage, mentionedChannel, mentionedRoles, mentionedUser));
+                                    getMentionableMessage(shownMessage, mentionedChannel, mentionedRoles, mentionedUser),
+                                    isPrivate
+                            );
 
                             //Message
                             MessageManager.embeds.SuccessfullyAddedMessage(channel, messageKey);
@@ -193,15 +205,15 @@ public class MessageCommand implements ServerCommand
         }
     }
 
-    private void MessageRemoveCommand(TextChannel channel, String[] args, String messageKey)
+    private void MessageRemoveCommand(TextChannel channel, String[] args, String messageKey, boolean isPrivate)
     {
         Guild guild = channel.getGuild();
-        if (args.length == 3)
+        if (args.length >= 3)
         {
-            if (MessageManager.sql.MessageExistsInSQL(channel.getGuild().getIdLong(), messageKey))
+            if (MessageManager.sql.MessageExistsInSQL(channel.getGuild().getIdLong(), messageKey, isPrivate))
             {
                 //SQL
-                MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), messageKey);
+                MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), messageKey, isPrivate);
 
                 //Message
                 MessageManager.embeds.SuccessfullyRemovedMessage(channel, messageKey);
@@ -230,7 +242,7 @@ public class MessageCommand implements ServerCommand
             return true;
         } catch (NumberFormatException e)
         {
-            e.printStackTrace();
+
         }
         return false;
     }

@@ -15,18 +15,18 @@ public class MessageListener
     {
         Guild guild = event.getGuild();
 
-        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey))
+        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false))
         {
-            long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey);
+            long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
             String message = " ";
-            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey);
-            if(message.isEmpty() || message == "") message = " ";
+            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
+            if (message.isEmpty() || message == "") message = " ";
 
-            String title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey);
-            if(title.isEmpty() || title == "") title = " ";
+            String title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
+            if (title.isEmpty() || title == "") title = " ";
 
-            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey));
-            if(color == null) color = Color.yellow;
+            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false));
+            if (color == null) color = Color.yellow;
 
             message = replaceWordWithWordInText(MessageManager.NewMemberKeyWord, event.getMember().getAsMention(), message);
 
@@ -40,20 +40,40 @@ public class MessageListener
                 MessageManager.embeds.CouldNotFindMessageChannelError(guild.getDefaultChannel(), MessageManager.welcomeMessageKey);
             }
         }
+
+        //Private
+        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true))
+        {
+            long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
+            String message = " ";
+            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
+            if (message.isEmpty() || message == "") message = " ";
+
+            String title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
+            if (title.isEmpty() || title == "") title = " ";
+
+            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true));
+            if (color == null) color = Color.yellow;
+
+            message = replaceWordWithWordInText(MessageManager.NewMemberKeyWord, event.getMember().getAsMention(), message);
+
+            //Send Message
+            EmbedManager.SendCustomPrivateEmbed(title, message, color, event.getUser());
+        }
     }
 
     public void onMemberLeaveEvent(GuildMemberLeaveEvent event)
     {
         Guild guild = event.getGuild();
 
-        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.leaveMessageKey))
+        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false))
         {
-            long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey);
+            long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
             String message = "";
-            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey);
+            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
             String title = "";
-            title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey);
-            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey));
+            title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
+            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false));
 
             message = replaceWordWithWordInText(MessageManager.LeaveMemberKeyWord, event.getMember().getAsMention(), message);
 
@@ -73,8 +93,10 @@ public class MessageListener
     {
         String[] words = text.split(" ");
         StringBuilder builder = new StringBuilder();
-        for(String word : words){
-            if(word.equals(keyWord)){
+        for (String word : words)
+        {
+            if (word.equals(keyWord))
+            {
                 word = newWord;
             }
             builder.append(word + " ");

@@ -8,6 +8,7 @@ import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQues
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 public class EmbedManager
 {
@@ -139,6 +140,19 @@ public class EmbedManager
                 }
             });
         }
+    }
+
+    public static void SendCustomPrivateEmbed(String title, String description, Color color, User user)
+    {
+
+        EmbedBuilder custom = new EmbedBuilder();
+        custom.setColor(color);
+        custom.setTitle(title);
+        custom.setDescription(description);
+
+        user.openPrivateChannel().queue((privateChannel) -> {
+            privateChannel.sendMessage(custom.build()).queue();
+        });
     }
 
     public static long SendCustomEmbedGetMessageID(String title, String description, Color color, TextChannel channel)

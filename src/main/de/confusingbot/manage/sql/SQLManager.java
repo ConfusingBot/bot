@@ -86,7 +86,8 @@ public class SQLManager
                 "color TEXT, " +
                 "messagetype TEXT, " +
                 "title TEXT, " +
-                "message TEXT)");
+                "message TEXT, " +
+                "isprivate INTEGER)");
 
         tabelNames.add("votecommand");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS votecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +

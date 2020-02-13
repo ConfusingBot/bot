@@ -73,7 +73,7 @@ public class Embeds
     public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
     {
         EmbedManager.SendErrorEmbed("The bot has no right to assign this " + role.getAsMention() + "\n" +
-                "Please give the bot a role over the role to be assign this role!", channel, EmbedsUtil.showErrorTime);
+                "Please give the bot a role over the role to be assign this role!", channel, 10);
     }
 
     public void YouHaveNotMentionedAValidEmoteError(TextChannel channel)

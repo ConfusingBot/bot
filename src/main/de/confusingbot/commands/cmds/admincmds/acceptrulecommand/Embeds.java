@@ -29,7 +29,7 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules not accepted] [@role rules accepted]\n```"
+                "```yaml\n" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules accepted] ([@role rules not accepted])\n```"
                 +"```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n"
                 + "```yaml\n" + Main.prefix + "acceptrule remove\n```"
                 +  "```Remove the AcceptRule```\n"
@@ -40,7 +40,7 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules not accepted] [@role rules accepted]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules accepted] ([@role rules not accepted])`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)

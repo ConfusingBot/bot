@@ -66,7 +66,11 @@ public class PreviewCommand implements ServerCommand
             }
 
             //ShowName
-            if(args[args.length - 1].equals("false")) showName = false;
+            if (args[args.length - 1].equals("false"))
+            {
+                showName = false;
+                embedMessage = embedMessage.substring(0, embedMessage.length() - 1 - "false".length());
+            }
 
             //Build Embed
             EmbedBuilder builder = new EmbedBuilder();

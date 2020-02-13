@@ -27,9 +27,11 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel]  ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
+                "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
                         "```Create a welcome/leave message which will be sent if member join/leave the server```" +
-                        "```yaml\n" + Main.prefix + "message remove [welcome/leave]\n```" +
+                        "```yaml\n" + Main.prefix + "message [add] [welcome/leave] private ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
+                        "```Create a private welcome/leave message which will be sent if member join/leave the server```" +
+                        "```yaml\n" + Main.prefix + "message remove [welcome/leave] (private)\n```" +
                         "```Remove the welcome/leave message```", channel, EmbedsUtil.showUsageTime);
     }
 
@@ -73,7 +75,12 @@ public class Embeds
 
     public void CouldNotFindMessageChannelError(TextChannel channel, String messagetype)
     {
-        EmbedManager.SendErrorEmbed("The **" + messagetype + "** message channel does not **exists**!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The **" + messagetype + "** message channel does not **exist**!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public void CanNotSendPrivateLeaveMessage(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("I am sry but I can't send private leave messages :/", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================

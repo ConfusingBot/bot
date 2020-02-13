@@ -21,7 +21,7 @@ public class AcceptRuleCommand implements ServerCommand
     public void performCommand(Member member, TextChannel channel, Message message)
     {
         //   args[0]   args[1]     args[2]     args[3]   args[4]     args[5]                    args[6]
-        //- acceptrule add        [#channel] [messageID] [emote] [role rules not accepted] [role rules accepted]
+        //- acceptrule add        [#channel] [messageID] [emote] [role rules accepted]  [role rules not accepted]
 
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
@@ -67,18 +67,18 @@ public class AcceptRuleCommand implements ServerCommand
     {
         if (!AcceptRuleManager.sql.ExistsInSQL(message.getGuild().getIdLong()))
         {
-            if (args.length == 7)
+            if (args.length >= 6)
             {
                 List<TextChannel> channels = message.getMentionedChannels();//args 1
                 List<Role> roles = message.getMentionedRoles();//args 4 and 5
 
-                if (!channels.isEmpty() && !roles.isEmpty() && roles.size() == 2)
+                if (!channels.isEmpty() && !roles.isEmpty() && roles.size() >= 1)
                 {
                     TextChannel textChannel = channels.get(0);//args 2
                     String messageIDString = args[3];//args 3
                     String emoteString = CommandsUtil.getEmote(message, args[4]);//args 4
-                    Role notAcceptedRole = roles.get(0);//args 5
-                    Role acceptedRole = roles.get(1);//args 6
+                    Role acceptedRole = roles.get(0);//args 5
+                    Role notAcceptedRole = roles.size() > 1 ? roles.get(1) : null;//args 6
 
                     if (CommandsUtil.isNumeric(messageIDString))
                     {
@@ -94,7 +94,7 @@ public class AcceptRuleCommand implements ServerCommand
                         CommandsUtil.AddOrRemoveRoleFromAllMembers(textChannel.getGuild(), acceptedRole.getIdLong(), true);
 
                         //SQL
-                        AcceptRuleManager.sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole.getIdLong(), acceptedRole.getIdLong());
+                        AcceptRuleManager.sql.addToSQL(channel.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, notAcceptedRole != null ?notAcceptedRole.getIdLong() : -1, acceptedRole.getIdLong());
 
                         //Message
                         AcceptRuleManager.embeds.SuccessfulAddedAcceptRule(channel);
