@@ -162,7 +162,8 @@ public class MessageCommand implements ServerCommand
                             }
 
                             //SQL
-                            MessageManager.sql.MessageAddToSQL(guild.getIdLong(),
+                            MessageManager.sql.MessageAddToSQL(
+                                    guild.getIdLong(),
                                     !isPrivate ? messageChannel.getIdLong() : -1,
                                     color,
                                     messageKey,

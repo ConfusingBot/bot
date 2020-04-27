@@ -1,8 +1,7 @@
 package main.de.confusingbot.listener.botlistener;
 
+import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
 
@@ -15,7 +14,7 @@ public class Embeds {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#fcdf03"));
         builder.setTitle("\uD83D\uDCA1Usage");
-        builder.setDescription("Use **'- help'** to experience **all commands** of this bot!");
+        builder.setDescription("Use **'" + Main.prefix + "help'** to experience **all commands** of this bot!");
         builder.setFooter("Powerd by ConfusingGames");
 
         return builder;

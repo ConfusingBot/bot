@@ -34,7 +34,7 @@ public class Main
     private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
     public static String version = "0.0.08";
     public static long linesOfCode = 14027;
-    public static String prefix = "- ";
+    public static String prefix = "/";
     public static LocalDateTime botStartTime = LocalDateTime.now();
 
     public static boolean botOffline = false;
