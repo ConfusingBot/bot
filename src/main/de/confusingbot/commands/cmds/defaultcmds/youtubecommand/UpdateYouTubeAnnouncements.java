@@ -53,7 +53,6 @@ public class UpdateYouTubeAnnouncements
                     JSONObject newVideoObject = itemsObject.getJSONObject(0);
 
                     JSONObject newVideoSnippetObject = newVideoObject.getJSONObject("snippet");
-
                     LocalDateTime publishedAt = CommandsUtil.DateTimeConverter(newVideoSnippetObject.getString("publishedAt"));
                     if (publishedAt.plusMinutes(5).isAfter(currentTime))
                     {

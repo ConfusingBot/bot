@@ -330,7 +330,7 @@ public class CommandsUtil
         String month = dateParts[1];
         String day = dateParts[2];
 
-        String[] timeParts = parts[1].substring(0, parts[1].indexOf(".")).split(":");
+        String[] timeParts = parts[1].substring(0, 8).split(":");
         String hour = timeParts[0];
         String minutes = timeParts[1];
         String seconds = timeParts[2];
