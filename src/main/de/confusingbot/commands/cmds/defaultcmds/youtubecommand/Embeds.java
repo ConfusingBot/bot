@@ -107,6 +107,11 @@ public class Embeds
         EmbedManager.SendInfoEmbed("The channel has no videos!", channel, EmbedsUtil.showErrorTime);
     }
 
+    public void NoYoutubeAnnouncements(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("This server has no YouTube Announcements!", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
@@ -154,6 +159,19 @@ public class Embeds
         builder.setColor(Color.RED);
 
         builder.setImage(thumbnailUrl);
+
+        //Message
+        channel.sendMessage(builder.build()).queue();
+    }
+
+    public void SendYoutubeAnnouncementsListEmbed(TextChannel channel, String announcementsString)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+
+        builder.setTitle("\uD83D\uDCC4Announcement List");
+        builder.setDescription(announcementsString);
+
+        builder.setColor(Color.RED);
 
         //Message
         channel.sendMessage(builder.build()).queue();

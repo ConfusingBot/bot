@@ -67,13 +67,25 @@ public class QueueCommand implements ServerCommand
         List<AudioTrack> tracks = queue.getQueueList();
         if (tracks.size() > 0)
         {
-            List<String> queueStrings = createQueueString(tracks);
+            int maxQueueListLength = 10;
+            boolean queueToLarge = tracks.size() >= maxQueueListLength;
+
+            //Get Shorted List of Tracks
+            List<AudioTrack> shortTracks = new ArrayList<>();
+            for (int i = 0; i < tracks.size(); i++)
+            {
+                if (i < maxQueueListLength)
+                    shortTracks.add(tracks.get(i));
+                else
+                    break;
+            }
+            List<String> queueStrings = createQueueString(shortTracks);
+
 
             for (int i = 0; i < queueStrings.size(); i++)
             {
                 //Message
-                embeds.SendMusicQueueEmbed(channel, queueStrings.get(i), i == 0);
-                //System.out.println(queueStrings.get(i) + "\n----------------------------------------------------\n");
+                embeds.SendMusicQueueEmbed(channel, queueStrings.get(i), i == 0, i == (queueStrings.size() - 1), queueToLarge, tracks.size() - maxQueueListLength);
             }
         }
         else

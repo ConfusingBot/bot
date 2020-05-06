@@ -21,7 +21,7 @@ public class Embeds
     public void HelpEmbed()
     {
         HelpManager.useful.add("```yaml\n" + Main.prefix + "question ([Title]) QUESTION: [Question] [roles to mention]\n```" +
-                " ```Create a custom TextChannel (in the QuestionCategory) where only your question exists```\n");
+                " ```Create a custom TextChannel (in the QuestionCategory) where only your question exists```");
 
         HelpManager.admin.add("```yaml\n" + Main.prefix + "question category\n```" +
                 " ```Create a question category to unlock the question feature```" +

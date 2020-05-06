@@ -19,7 +19,7 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "invite```\n"
+        HelpManager.useful.add("```yaml\n" + Main.prefix + "invite```"
                 + "```Get special roles by inviting as many people as possible^^```");
     }
 

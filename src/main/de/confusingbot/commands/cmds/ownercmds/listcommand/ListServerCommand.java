@@ -24,8 +24,9 @@ public class ListServerCommand implements ServerCommand
     {
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
+        boolean isAdmin = member.getUser().getId().toString() == "637931838052237312" || member.getUser().getId().toString() == "333341131053989890";
 
-        if (member.getUser().getName().equals("ConfusingFutureGames"))
+        if (isAdmin)
         {
             if (args.length == 1)
             {

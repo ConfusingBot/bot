@@ -21,7 +21,6 @@ public class UpdateInfos
     public void onSecond()
     {
         updateServerMemberCount();
-
     }
 
     private void updateServerMemberCount()

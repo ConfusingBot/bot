@@ -1,5 +1,6 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.previewcommand;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -32,8 +33,9 @@ public class PreviewCommand implements ServerCommand
         String embedMessage = "";
         String embedTitle = " ";
         boolean showName = true;
+        String hideNamePrefix = "hide";
 
-        if (args.length > 2)
+        if (args.length > 1)
         {
             Color color = Color.decode("#EB974E");
             int startIndex = 1;
@@ -66,10 +68,10 @@ public class PreviewCommand implements ServerCommand
             }
 
             //ShowName
-            if (args[args.length - 1].equals("false"))
+            if (args[args.length - 1].equals(hideNamePrefix))
             {
                 showName = false;
-                embedMessage = embedMessage.substring(0, embedMessage.length() - 1 - "false".length());
+                embedMessage = embedMessage.substring(0, embedMessage.length() - 1 - hideNamePrefix.length());
             }
 
             //Build Embed
@@ -78,8 +80,9 @@ public class PreviewCommand implements ServerCommand
             builder.setTitle(embedTitle);
             builder.setDescription(embedMessage);
             builder.setColor(color);
+
             if (showName)
-                builder.setAuthor(member.getNickname());
+                builder.setAuthor(member.getEffectiveName());
 
             //Send Embed
             channel.sendMessage(builder.build()).queue();

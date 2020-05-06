@@ -71,13 +71,18 @@ public class Embeds
         EmbedManager.SendCustomEmbed("Music Queue\uD83D\uDC7E", "No existing MusicQueue\uD83C\uDFB6", Color.decode("#d400ff"), channel, EmbedsUtil.showInfoTime);
     }
 
-    public void SendMusicQueueEmbed(TextChannel channel, String queueString, boolean first)
+    public void SendMusicQueueEmbed(TextChannel channel, String queueString, boolean first, boolean last, boolean queueToLarge, int trackOver)
     {
         String title = " ";
         if (first)
         {
             title = "Music Queue\uD83D\uDC7E";
         }
+        if (queueToLarge && last)
+        {
+            queueString += "\n ..." + trackOver + " other songs!";
+        }
+
         EmbedManager.SendCustomEmbed(title, queueString, Color.decode("#d400ff"), channel, 15);
     }
 

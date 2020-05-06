@@ -1,6 +1,7 @@
 package main.de.confusingbot.music.queue;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import main.de.confusingbot.Main;
 import main.de.confusingbot.music.manage.MusicController;
 
 import java.util.ArrayList;
@@ -27,8 +28,19 @@ public class Queue
 
             if (track != null)
             {
-                this.controller.getPlayer().playTrack(track);
-                return true;
+                try
+                {
+                    this.controller.getPlayer().playTrack(track);
+                    return true;
+                } catch (Exception e)
+                {
+                    if (e.getMessage().contains("Cannot play the same instance of a track twice"))
+                    {
+                        this.controller.getPlayer().playTrack(track.makeClone());
+                        return true;
+                    }
+                }
+
             }
         }
 

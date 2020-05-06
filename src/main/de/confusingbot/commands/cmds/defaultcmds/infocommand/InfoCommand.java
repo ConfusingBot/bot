@@ -132,32 +132,33 @@ public class InfoCommand implements ServerCommand
         String memberString = InfoCommandManager.sql.GetMembersInServer(guild.getIdLong());
         String dateString = InfoCommandManager.sql.GetDatesInServer(guild.getIdLong());
 
-        if (dateString == null || memberString == null)
-        {
-            InfoCommandManager.embeds.UnknownErrorMessage(channel);
-            return;
-        }
-        List<String> dates = CommandsUtil.encodeString(dateString, ", ");
-        List<Integer> members = CommandsUtil.encodeInteger(memberString, ", ");
 
-        if (members == null || dates == null)
-        {
-            InfoCommandManager.embeds.UnknownErrorMessage(channel);
-            return;
-        }
+        List<String> dates = new ArrayList<>();
+        List<Integer> members = new ArrayList<>();
+        if (dates != null)
+            dates = CommandsUtil.encodeString(dateString, ", ");
 
+        if (members != null)
+            members = CommandsUtil.encodeInteger(memberString, ", ");
+
+        List<String> finalDates = dates;
+        List<Integer> finalMembers = members;
         new Thread(new Runnable()
         {
             public void run()
             {
-                //Generate Graph
-                File chartFile = serverInfo.createChartFile(members, dates);
+                File chartFile = null;
+                if (finalDates.size() > 2 || finalMembers.size() > 2)
+                {
+                    //Generate Graph
+                    chartFile = serverInfo.createChartFile(finalMembers, finalDates);
+                }
+
 
                 //Send file to Discord
                 embeds.SendInfoServerEmbed(channel,
                         requester,
                         chartFile,
-                        dates.size(),
                         guild.getChannels().size(),
                         guild.getVoiceChannels().size(), guild.getMemberCount(),
                         serverInfo.getBots(guild),

@@ -43,7 +43,15 @@ public class Embeds
 
     public void UnknownErrorMessage(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("A unknown error appears\uD83D\uDE10 \nPleas try it later again!", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendErrorEmbed("A unknown error appears\uD83D\uDE10 \nPleas try it later again!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    //=====================================================================================================================================
+    //Error
+    //=====================================================================================================================================
+    public void FirstDayInfo(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("We need some more time for creating this information!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -103,7 +111,7 @@ public class Embeds
         }
     }
 
-    public void SendInfoServerEmbed(TextChannel channel, Member requester, File file, long dates, long textChannels, long voiceChannels, long members, long bots, long emotes, long roles, long categories, String creationTime, Member owner)
+    public void SendInfoServerEmbed(TextChannel channel, Member requester, File file, long textChannels, long voiceChannels, long members, long bots, long emotes, long roles, long categories, String creationTime, Member owner)
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setThumbnail(channel.getGuild().getIconUrl());
@@ -123,9 +131,8 @@ public class Embeds
         builder.addField("**Creation Time:**", creationTime, true);
         builder.addField("**Owner:** ", owner.getAsMention(), true);
 
-        int minDates = 3;
-        if (dates < minDates)
-            builder.addField("**Member Graph will be available in " + (minDates - dates) + " day!**", "", false);
+        if (file == null)
+            builder.addField("**Member Graph will be available soon!**", "", false);
         else
         {
             builder.addField("**Member Graph:**", "", false);
@@ -133,7 +140,7 @@ public class Embeds
         }
 
         //Send embed
-        if (file.exists() && dates >= minDates)
+        if (file != null && file.exists())
         {
             //Send Message with File
             channel.sendFile(file, "memberStats.png").embed(builder.build()).queue(message -> {

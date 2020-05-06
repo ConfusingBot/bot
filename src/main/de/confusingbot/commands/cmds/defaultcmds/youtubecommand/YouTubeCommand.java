@@ -74,7 +74,7 @@ public class YouTubeCommand implements ServerCommand
                         YoutubeAnnouncementRemoveCommand(channel, args);
                         break;
                     case "list":
-                        //TODO
+                        YoutubeAnnouncementListCommand(channel, args);
                         break;
                     default:
                         embeds.YouTubeAnnouncementsGeneralUsage(channel);
@@ -154,6 +154,30 @@ public class YouTubeCommand implements ServerCommand
         {
             //Usage
             embeds.YouTubeAnnouncementsRemoveUsage(channel);
+        }
+    }
+
+    private void YoutubeAnnouncementListCommand(TextChannel channel, String[] args)
+    {
+        Guild guild = channel.getGuild();
+
+        List<String> announcements = sql.getYoutubeAnnouncements(guild.getIdLong());
+        String announcementsString = "";
+
+        if (announcements.size() > 0)
+        {
+            for (int i = 0; i < announcements.size(); i++)
+            {
+                 announcementsString += ("**" + (i + 1) + ":** " + announcements.get(i) + "\n");
+            }
+
+            //Message
+            embeds.SendYoutubeAnnouncementsListEmbed(channel, announcementsString);
+        }
+        else
+        {
+            //Message
+            embeds.NoYoutubeAnnouncements(channel);
         }
     }
 

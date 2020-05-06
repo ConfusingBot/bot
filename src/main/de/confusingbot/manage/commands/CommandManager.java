@@ -33,6 +33,7 @@ import main.de.confusingbot.commands.cmds.musiccmds.skipcommand.SkipCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand.TrackInfoCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.leavecommand.LeaveServerCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.listcommand.ListServerCommand;
+import main.de.confusingbot.commands.cmds.ownercmds.sendcommand.SendCommand;
 import main.de.confusingbot.commands.types.PrivateCommand;
 import main.de.confusingbot.commands.types.ServerCommand;
 import net.dv8tion.jda.api.entities.*;
@@ -88,6 +89,7 @@ public class CommandManager
         //Owner
         this.commands.put("leaveserver", new LeaveServerCommand());
         this.commands.put("listserver", new ListServerCommand());
+        this.commands.put("send", new SendCommand());
 
         //PRIVATE
         this.privateCommands.put("help", new PrivateHelpCommand());
