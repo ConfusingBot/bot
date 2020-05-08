@@ -2,7 +2,6 @@ package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -87,6 +86,15 @@ public class Embeds
     {
         EmbedManager.SendErrorEmbed("You haven't mentioned a Time!", channel, EmbedsUtil.showErrorTime);
     }
+
+    //=====================================================================================================================================
+    //Info
+    //=====================================================================================================================================
+    public void ToLargeGapBetweenRepeatsInformation(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("The max allowed gap between the information's is " + RepeatInfoCommandManager.maxGapInHours + "h !", channel, EmbedsUtil.showErrorTime);
+    }
+
 
     //=====================================================================================================================================
     //Success

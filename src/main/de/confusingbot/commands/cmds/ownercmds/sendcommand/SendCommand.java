@@ -23,7 +23,7 @@ public class SendCommand implements ServerCommand
             if (args.length > 1)
             {
                 //Message
-                channel.sendMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length))).queue();
+                EmbedManager.SendMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length)), channel, 0);
             }
         }
         else

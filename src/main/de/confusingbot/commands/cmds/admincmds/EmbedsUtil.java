@@ -27,7 +27,7 @@ public class EmbedsUtil
 
     public static void NoNumberError(TextChannel channel, String numberString)
     {
-        EmbedManager.SendErrorEmbed( "This is no Number " + numberString, channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "This is no valid Number **" + numberString + "**", channel, showErrorTime);
     }
 
     //Exists
@@ -44,7 +44,7 @@ public class EmbedsUtil
     }
 
     public static void HavenNotMentionedError(TextChannel channel, String name){
-        EmbedManager.SendErrorEmbed( "You haven't mentioned a " + name, channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "You haven't mentioned a **" + name + "**", channel, showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -62,11 +62,5 @@ public class EmbedsUtil
     public static void SuccessfulDeleted(TextChannel channel, String name, String formName){
         EmbedManager.SendSuccessEmbed("You successfully deleted the **" + name + "** from " + formName + "!", channel, showSuccessTime);
     }
-
-    public static void SuccessfulCreated(TextChannel channel, String name)
-    {
-        EmbedManager.SendSuccessEmbed("You successfully created **" + name + "**!", channel, showSuccessTime);
-    }
-
 
 }

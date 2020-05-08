@@ -28,9 +28,9 @@ import main.de.confusingbot.commands.cmds.musiccmds.leavecommand.LeaveCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.pausecommand.PauseCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.playcommand.PlayCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.queuecommand.QueueCommand;
-import main.de.confusingbot.commands.cmds.musiccmds.shufflecommand.ShuffleCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.skipcommand.SkipCommand;
 import main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand.TrackInfoCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.volumecommand.VolumeCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.leavecommand.LeaveServerCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.listcommand.ListServerCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.sendcommand.SendCommand;
@@ -80,11 +80,11 @@ public class CommandManager
         this.commands.put("play", new PlayCommand());
         this.commands.put("leave", new LeaveCommand());
         this.commands.put("trackinfo", new TrackInfoCommand());
-        this.commands.put("shuffle", new ShuffleCommand());
         this.commands.put("join", new JoinCommand());
         this.commands.put("queue", new QueueCommand());
         this.commands.put("skip", new SkipCommand());
         this.commands.put("pause", new PauseCommand());
+        this.commands.put("volume", new VolumeCommand());
 
         //Owner
         this.commands.put("leaveserver", new LeaveServerCommand());

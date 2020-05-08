@@ -23,6 +23,7 @@ import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler;
@@ -38,6 +39,11 @@ public class InfoCommand implements ServerCommand
     ServerInfo serverInfo = InfoCommandManager.serverInfo;
     ClientInfo clientInfo = InfoCommandManager.clientInfo;
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     public InfoCommand()
     {
         embeds.HelpEmbed();
@@ -49,30 +55,36 @@ public class InfoCommand implements ServerCommand
     @Override
     public void performCommand(Member requester, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
+
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length > 1)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            switch (args[1])
+            if (args.length > 1)
             {
-                case "bot":
-                    //Bot info
-                    BotInfoCommand(channel, requester);
-                    break;
-                case "server":
-                    //Bot info
-                    ServerInfoCommand(channel, requester);
-                    break;
-                default:
-                    //Client info
-                    ClientInfoCommand(args, message, channel, requester);
-                    break;
+                switch (args[1])
+                {
+                    case "bot":
+                        //Bot info
+                        BotInfoCommand(channel, requester);
+                        break;
+                    case "server":
+                        //Bot info
+                        ServerInfoCommand(channel, requester);
+                        break;
+                    default:
+                        //Client info
+                        ClientInfoCommand(args, message, channel, requester);
+                        break;
+                }
             }
-        }
-        else
-        {
-            embeds.InfoUsage(channel);
+            else
+            {
+                embeds.InfoUsage(channel);
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 
-import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQuestionRunnable;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -22,45 +21,71 @@ public class ClearCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_MANAGE = Permission.MESSAGE_MANAGE;
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
+
         //- clear [comments number x]
 
         String[] args = CommandsUtil.messageToArgs(message);
-        //EmbedManager.DeleteMessageByID(channel, message.getIdLong());
+        int maxClearNumber = 999;
 
         if (member.hasPermission(channel, ClearCommandManager.permission))
         {
-            if (args.length == 2)
+            if (bot.hasPermission(channel, MESSAGE_MANAGE) && bot.hasPermission(channel, MESSAGE_WRITE))
             {
-                if (CommandsUtil.isNumeric(args[1]))
+                if (args.length == 2)
                 {
-                    long amount = Long.parseLong(args[1]);
-                    if (amount > 0)
+                    if (CommandsUtil.isNumeric(args[1]))
                     {
-                        List<Message> messages = getMessagesToDelete(channel, amount + 1);
+                        long amount = Long.parseLong(args[1]);
+                        if (amount <= 999)
+                        {
+                            if (amount > 0)
+                            {
+                                List<Message> messages = getMessagesToDelete(channel, amount + 1);
 
-                        channel.purgeMessages(messages);
+                                channel.purgeMessages(messages);
 
-                        //Message
-                        embeds.SuccessfulRemovedXMessages(channel, messages);
+                                //Message
+                                embeds.SuccessfulRemovedXMessages(channel, messages);
+                            }
+                            else
+                            {
+                                //Error
+                              embeds.NegativeNumberError(channel);
+                            }
+                        }
+                        else
+                        {
+                            //Information
+                           embeds. MaxNumberInformation(channel, maxClearNumber);
+                        }
                     }
                     else
                     {
-                        channel.sendMessage("Really?").queue();
+                        //Error
+                        embeds.NoValidNumberError(channel, args[1]);
                     }
                 }
                 else
                 {
-                    //Error
-                    embeds.NoValidNumberError(channel, args[1]);
+                    //Usage
+                    embeds.ClearUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                embeds.ClearUsage(channel);
+                //Error
+                EmbedManager.SendNoPermissionEmbed(channel, MESSAGE_MANAGE, "");
             }
         }
         else

@@ -34,25 +34,30 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question [Title] QUESTION: [Question] [mentioned role]`", channel, EmbedsUtil.showUsageTime);
-
         EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "question [Title] QUESTION: [Question] [mentioned role]\n```"
                         + "```Create a custom TextChannel (in the QuestionCategory) where only your question exists```"
                         + "```yaml\n" + Main.prefix + "question close```"
                         + "```Close the question in which you wrote this command```"
                         + "```yaml\n" + Main.prefix + "question info```"
-                        + "```Show you some information about the asked question```",
+                        + "```Show you some information about the asked question```"
+                        + "```yaml\n" + Main.prefix + "question category\n```"
+                        + " ```Create a question category to unlock the question feature```",
+                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+    }
+
+    public void QuestionCategoryGeneralUsage(TextChannel channel)
+    {
+        EmbedManager.SendUsageEmbed(
+                "```yaml\n" + Main.prefix + "question category create [categoryId]\n```"
+                        + "```Create a question category (-> the members can use the question command)```"
+                        + "```yaml\n" + Main.prefix + "question category remove\n```"
+                        + " ```Remove the question category```",
                 channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCloseUsage(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "question close`", channel, EmbedsUtil.showUsageTime);
-    }
-
-    public void QuestionCategoryGeneralUsage(TextChannel channel)
-    {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category [create/remove]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCategoryCreateUsage(TextChannel channel)
@@ -95,7 +100,7 @@ public class Embeds
 
     public void YouAreNotInAQuestionChannelError(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("You are in no QuestionChannel!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("Ups, I think this is **no QuestionChannel**..", channel, EmbedsUtil.showErrorTime);
     }
 
     public void YouCanOnlyMentionOneRoleInAQuestionError(TextChannel channel, int mentionableRoles)
@@ -103,14 +108,14 @@ public class Embeds
         EmbedManager.SendInfoEmbed("Sry you can only mention **" + mentionableRoles + " roles**!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void ThisServerHasNoExistingQuestionCategoryError(TextChannel channel)
-    {
-        EmbedManager.SendInfoEmbed("**This server doesn't support this feature!**\nInform a **Admin** about that!", channel, EmbedsUtil.showErrorTime);
-    }
-
     public void ServerHasNoQuestionCategoryError(TextChannel channel)
     {
         EmbedsUtil.NotExistingError(channel, "QuestionCategory");
+    }
+
+    public void QuestionCategoryDoesNotExistAnyMore(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("It looks like that the question category has been deleted!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -134,17 +139,14 @@ public class Embeds
         EmbedManager.SendInfoEmbed("The question will be deleted in " + deletedInSeconds + "s!", channel, 0);
     }
 
-    public EmbedBuilder CreateQuestionEmbed(Member member, String questionTitle, String question, String roleString)
+    public void MinXWords(TextChannel channel, int words)
     {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(Color.decode("#a1f542"));
-        builder.setDescription("**❓ Question** form " + member.getAsMention() + "\n\n\n");
-        builder.addField(questionTitle + "\n\n", question, false);
-        builder.addField("", roleString, false);
-        builder.setTimestamp(OffsetDateTime.now());
-        builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
+        EmbedManager.SendInfoEmbed("You need **min " + words + " words** for creating a question!", channel, EmbedsUtil.showErrorTime);
+    }
 
-        return builder;
+    public void ThisServerHasNoExistingQuestionCategoryInformation(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("**This server doesn't support this feature!**\nInform a **Admin** about that!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void SendDeleteQuestionInfo(TextChannel channel, Member member, long timeleft)
@@ -173,5 +175,21 @@ public class Embeds
 
         //Send Embed
         EmbedManager.SendEmbed(builder, channel, 10);
+    }
+
+    //=====================================================================================================================================
+    //Other
+    //=====================================================================================================================================
+    public EmbedBuilder CreateQuestionEmbed(Member member, String questionTitle, String question, String roleString)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode("#a1f542"));
+        builder.setDescription("**❓ Question** form " + member.getAsMention() + "\n\n\n");
+        builder.addField(questionTitle + "\n\n", question, false);
+        builder.addField("", roleString, false);
+        builder.setTimestamp(OffsetDateTime.now());
+        builder.setThumbnail(member.getUser().getEffectiveAvatarUrl());
+
+        return builder;
     }
 }

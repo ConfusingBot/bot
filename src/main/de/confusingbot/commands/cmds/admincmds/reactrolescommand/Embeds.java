@@ -86,6 +86,11 @@ public class Embeds
         EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, EmbedsUtil.showErrorTime);
     }
 
+    public void MessageIdDoesNotExistAnymore(TextChannel channel, String messageid)
+    {
+        EmbedManager.SendInfoEmbed("This **messageid " + messageid + "** doesn't exist anymore\nI will delete this ReactRole", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================

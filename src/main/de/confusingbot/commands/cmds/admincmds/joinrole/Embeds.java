@@ -74,7 +74,7 @@ public class Embeds
 
     public void RoleDoesNotExistError(TextChannel channel, long roleid)
     {
-        EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The role with the id **" + roleid + " doesn't exist** on this server!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================

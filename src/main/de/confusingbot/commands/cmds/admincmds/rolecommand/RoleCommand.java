@@ -22,9 +22,17 @@ public class RoleCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MANAGE_ROLES = Permission.MANAGE_ROLES;
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
         // args0  args1 args2  args3
         //- role create <Name> #color
@@ -34,34 +42,37 @@ public class RoleCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, RoleCommandManager.permission))
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            if (args.length >= 2)
+            if (member.hasPermission(channel, RoleCommandManager.permission))
             {
-                switch (args[1])
+                if (args.length >= 2)
                 {
-                    case "create":
-                        CreateRole(args, channel, guild);
-                        break;
-                    case "delete":
-                        DeleteRole(args, channel, message);
-                        break;
-                    default:
-                        //Usage
-                        embeds.GeneralUsage(channel);
-                        break;
+                    switch (args[1])
+                    {
+                        case "create":
+                            CreateRole(args, channel, guild);
+                            break;
+                        case "delete":
+                            DeleteRole(args, channel, message);
+                            break;
+                        default:
+                            //Usage
+                            embeds.GeneralUsage(channel);
+                            break;
+                    }
+                }
+                else
+                {
+                    //Usage
+                    embeds.GeneralUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                embeds.GeneralUsage(channel);
+                //Error
+                embeds.NoPermissionError(channel, RoleCommandManager.permission);
             }
-        }
-        else
-        {
-            //Error
-            embeds.NoPermissionError(channel, RoleCommandManager.permission);
         }
     }
 
@@ -70,72 +81,94 @@ public class RoleCommand implements ServerCommand
     //=====================================================================================================================================
     private void CreateRole(String[] args, TextChannel channel, Guild guild)
     {
-        int length = args.length;
-        if (length > 2)
+        if (bot.hasPermission(channel, MANAGE_ROLES))
         {
-            StringBuilder builder = new StringBuilder();
-            String roleName;
-            Color roleColor = new Color(255, 255, 255);
-
-            if (args[length - 1].startsWith("#") && args.length > 3)//if the last arg is a HexColor
+            int length = args.length;
+            if (length > 2)
             {
-                for (int i = 2; i < length - 1; i++) builder.append(args[i] + " ");
+                StringBuilder builder = new StringBuilder();
+                String roleName;
+                Color roleColor = new Color(255, 255, 255);
 
-                roleName = builder.toString().trim();
-                String hexColor = args[length - 1];
-
-                if (CommandsUtil.isColor(hexColor))
+                if (args[length - 1].startsWith("#") && args.length > 3)//if the last arg is a HexColor
                 {
-                    roleColor = Color.decode(hexColor);
+                    for (int i = 2; i < length - 1; i++) builder.append(args[i] + " ");
+
+                    roleName = builder.toString().trim();
+                    String hexColor = args[length - 1];
+
+                    if (CommandsUtil.isColor(hexColor))
+                    {
+                        roleColor = Color.decode(hexColor);
+                    }
+                    else
+                    {
+                        embeds.NoHexColorError(channel, hexColor);
+                        return;
+                    }
                 }
                 else
                 {
-                    embeds.NoHexColorError(channel, hexColor);
-                    return;
+                    for (int i = 2; i < length; i++) builder.append(args[i] + " ");
+                    roleName = builder.toString().trim();
                 }
+                //Create Role
+                createRole(guild, roleName, roleColor);
+                //Message
+                embeds.SuccessfullyCreatedRole(channel, roleName, roleColor);
             }
             else
             {
-                for (int i = 2; i < length; i++) builder.append(args[i] + " ");
-                roleName = builder.toString().trim();
+                //Usage
+                embeds.CreateUsage(channel);
             }
-            //Create Role
-            createRole(guild, roleName, roleColor);
-            //Message
-            embeds.SuccessfullyCreatedRole(channel, roleName, roleColor);
         }
         else
         {
-            //Usage
-            embeds.CreateUsage(channel);
+            //Error
+            EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
         }
     }
 
     private void DeleteRole(String[] args, TextChannel channel, Message message)
     {
-        if (args.length > 2)
+        if (bot.hasPermission(channel, MANAGE_ROLES))
         {
-            List<Role> roles = message.getMentionedRoles();
-            if (!roles.isEmpty())
+            if (args.length > 2)
             {
-                Role role = roles.get(0);
+                List<Role> roles = message.getMentionedRoles();
+                if (!roles.isEmpty())
+                {
+                    Role role = roles.get(0);
+                    try
+                    {
+                        //Delete Role
+                        role.delete().complete();
 
-                //Delete Role
-                role.delete().queue();
-
-                //Message
-                embeds.SuccessfullyDeletedRole(channel, role.getName());
+                        //Message
+                        embeds.SuccessfullyDeletedRole(channel, role.getName());
+                    } catch (Exception e)
+                    {
+                        //Error
+                        embeds.CouldNotDeleteRole(channel, role.getAsMention());
+                    }
+                }
+                else
+                {
+                    //Error
+                    embeds.HaveNotMentionedRoleError(channel);
+                }
             }
             else
             {
-                //Error
-                embeds.HaveNotMentionedRoleError(channel);
+                //Usage
+                embeds.DeleteUsage(channel);
             }
         }
         else
         {
-            //Usage
-            embeds.DeleteUsage(channel);
+            //Error
+            EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
         }
     }
 

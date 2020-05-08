@@ -29,7 +29,7 @@ public class Embeds
         EmbedManager.SendUsageEmbed(
                 "```yaml\n" + Main.prefix + "roleborder create [roleName]\n```"
                         + "```Create a RoleBorder which can be used as an seperator between roles```"
-                        + "```yaml\nAdd a @role to the RoleBorders\n```"
+                        + "```yaml\n" + Main.prefix + "roleborder add [@role]\n```"
                         + "```Add @role to the RoleBorders```"
                         + "```yaml\n" + Main.prefix + "roleborder remove [@role]\n```"
                         + "```Remove the @role form the roleborders```"

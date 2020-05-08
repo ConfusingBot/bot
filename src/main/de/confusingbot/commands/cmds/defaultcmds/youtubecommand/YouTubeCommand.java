@@ -4,6 +4,7 @@ import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.youtubeapi.YouTubeAPIManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,37 +24,48 @@ public class YouTubeCommand implements ServerCommand
     {
         embeds.HelpEmbed();
     }
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
 
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
+
         //- youtube new [channelID]
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length > 1)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            switch (args[1])
+            if (args.length > 1)
             {
-                case "new":
-                    NewCommand(channel, args);
-                    break;
-                case "info":
-                    InfoCommand(channel, args);
-                    break;
-                case "announcement":
-                    AnnouncementHandler(message, channel, args);
-                    break;
-                default:
-                    //Usage
-                    embeds.GeneralUsage(channel);
-                    break;
+                switch (args[1])
+                {
+                    case "new":
+                        NewCommand(channel, args);
+                        break;
+                    case "info":
+                        InfoCommand(channel, args);
+                        break;
+                    case "announcement":
+                        AnnouncementHandler(message, channel, args);
+                        break;
+                    default:
+                        //Usage
+                        embeds.GeneralUsage(channel);
+                        break;
+                }
             }
-        }
-        else
-        {
-            //Usage
-            embeds.GeneralUsage(channel);
+            else
+            {
+                //Usage
+                embeds.GeneralUsage(channel);
+            }
         }
     }
 

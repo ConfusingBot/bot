@@ -91,18 +91,18 @@ public class CommandsUtil
             {
                 Emote emote = channel.getGuild().getEmoteById(Long.parseLong(emoteString));
                 if (add)
-                    channel.addReactionById(messageid, emote).queue();
+                    channel.addReactionById(messageid, emote).complete();
                 else
-                    channel.removeReactionById(messageid, emote).queue();
+                    channel.removeReactionById(messageid, emote).complete();
             }
             else
             {
                 if (EmojiManager.containsEmoji(emoteString) || VoteCommandManager.voteEmotes.contains(emoteString))
                 {
                     if (add)
-                        channel.addReactionById(messageid, emoteString).queue();
+                        channel.addReactionById(messageid, emoteString).complete();
                     else
-                        channel.removeReactionById(messageid, emoteString).queue();
+                        channel.removeReactionById(messageid, emoteString).complete();
                 }
                 else
                 {
@@ -161,6 +161,26 @@ public class CommandsUtil
                 }
             }
         }
+    }
+
+    public static void AddOrRemoveRoleFromMember(Guild guild, Member member, Role role, boolean add)
+    {
+        if (role == null && member == null && guild == null) return;
+
+            if (!member.getUser().isBot())
+            {
+                try
+                {
+                    if (add)
+                        guild.addRoleToMember(member, role).queue();
+                    else
+                        guild.removeRoleFromMember(member, role).queue();
+                } catch (HierarchyException e)
+                {
+                    ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
+                    return;
+                }
+            }
     }
 
     public static long getTimeLeft(String creationTimeString, int endAfter, boolean hours)

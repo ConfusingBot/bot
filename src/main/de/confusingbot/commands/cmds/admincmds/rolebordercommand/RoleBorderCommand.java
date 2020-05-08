@@ -21,9 +21,17 @@ public class RoleBorderCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MANAGE_ROLES = Permission.MANAGE_ROLES;
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
         // - roleborder add [@role]
         // - roleborder remove [@role]
@@ -32,40 +40,43 @@ public class RoleBorderCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, RoleBorderCommandManager.permission))
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            if (args.length >= 2)
+            if (member.hasPermission(channel, RoleBorderCommandManager.permission))
             {
-                switch (args[1])
+                if (args.length >= 2)
                 {
-                    case "add":
-                        AddCommand(args, message, channel);
-                        break;
-                    case "create":
-                        CreateCommand(args, channel);
-                        break;
-                    case "remove":
-                        RemoveCommand(args, message, channel);
-                        break;
-                    case "list":
-                        ListCommand(channel.getGuild(), channel);
-                        break;
-                    default:
-                        //Usage
-                        embeds.GeneralUsage(channel);
-                        break;
+                    switch (args[1])
+                    {
+                        case "add":
+                            AddCommand(args, message, channel);
+                            break;
+                        case "create":
+                            CreateCommand(args, channel);
+                            break;
+                        case "remove":
+                            RemoveCommand(args, message, channel);
+                            break;
+                        case "list":
+                            ListCommand(channel.getGuild(), channel);
+                            break;
+                        default:
+                            //Usage
+                            embeds.GeneralUsage(channel);
+                            break;
+                    }
+                }
+                else
+                {
+                    //Usage
+                    embeds.GeneralUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                embeds.GeneralUsage(channel);
+                //Error
+                embeds.NoPermissionError(channel, RoleBorderCommandManager.permission);
             }
-        }
-        else
-        {
-            //Error
-            embeds.NoPermissionError(channel, RoleBorderCommandManager.permission);
         }
     }
 
@@ -105,130 +116,154 @@ public class RoleBorderCommand implements ServerCommand
 
     private void AddCommand(String[] args, Message message, TextChannel channel)
     {
-        Guild guild = channel.getGuild();
-        if (args.length >= 3)
+        if (bot.hasPermission(channel, MANAGE_ROLES))
         {
-            List<Role> roles = message.getMentionedRoles();
-            if (!roles.isEmpty())
+            Guild guild = channel.getGuild();
+            if (args.length >= 3)
             {
-                Role role = roles.get(0);
-
-                if (!sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
+                List<Role> roles = message.getMentionedRoles();
+                if (!roles.isEmpty())
                 {
-                    //Add border to every Member
-                    CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, role.getIdLong(), true);
+                    Role role = roles.get(0);
 
-                    //SQL
-                    sql.addToSQL(guild.getIdLong(), role.getIdLong(), role.getName());
+                    if (!sql.ExistsInSQL(guild.getIdLong(), role.getIdLong()))
+                    {
+                        //Add border to every Member
+                        CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, role.getIdLong(), true);
 
-                    //Message
-                    embeds.SuccessfullyAddedRoleBorder(channel, role.getName());
+                        //SQL
+                        sql.addToSQL(guild.getIdLong(), role.getIdLong(), role.getName());
+
+                        //Message
+                        embeds.SuccessfullyAddedRoleBorder(channel, role.getName());
+                    }
+                    else
+                    {
+                        //Error
+                        embeds.RoleBorderAlreadyExistsError(channel);
+                    }
                 }
                 else
                 {
                     //Error
-                    embeds.RoleBorderAlreadyExistsError(channel);
+                    embeds.HaveNotMentionedRoleError(channel);
                 }
             }
             else
             {
-                //Error
-                embeds.HaveNotMentionedRoleError(channel);
+                //Usage
+                embeds.AddUsage(channel);
             }
         }
         else
         {
-            //Usage
-            embeds.AddUsage(channel);
+            //Error
+            EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
         }
     }
 
     private void CreateCommand(String[] args, TextChannel channel)
     {
-        Guild guild = channel.getGuild();
-        if (args.length >= 3)
+        if (bot.hasPermission(channel, MANAGE_ROLES))
         {
-            //get role name
-            StringBuilder builder = new StringBuilder();
-            for (int i = 2; i < args.length; i++) builder.append(args[i] + " ");
-            String name = builder.toString().trim();
-            int maxRoleCharLength = 30;
-
-            if (name.length() <= maxRoleCharLength)
+            Guild guild = channel.getGuild();
+            if (args.length >= 3)
             {
-                String space = createSpace(name, maxRoleCharLength);
+                //get role name
+                StringBuilder builder = new StringBuilder();
+                for (int i = 2; i < args.length; i++) builder.append(args[i] + " ");
+                String name = builder.toString().trim();
+                int maxRoleCharLength = 30;
 
-                String roleName = "\u2063" + space + "" + name + "" + space + "\u2063";
+                if (name.length() <= maxRoleCharLength)
+                {
+                    String space = createSpace(name, maxRoleCharLength);
 
-                //create role
-                RoleAction roleAction = guild.createRole();
-                roleAction.setName(roleName);
-                roleAction.setColor(Color.decode("#2f3136"));
-                roleAction.setMentionable(true);
-                roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
-                long roleid = roleAction.complete().getIdLong();
+                    String roleName = "\u2063" + space + "" + name + "" + space + "\u2063";
 
-                //Add border to every Member
-                CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, roleid, true);
+                    //create role
+                    RoleAction roleAction = guild.createRole();
+                    roleAction.setName(roleName);
+                    roleAction.setColor(Color.decode("#2f3136"));
+                    roleAction.setMentionable(true);
+                    roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
+                    long roleid = roleAction.complete().getIdLong();
 
-                //SQLite
-                sql.addToSQL(guild.getIdLong(), roleid, name);
+                    //Add border to every Member
+                    CommandsUtil.AddOrRemoveRoleFromAllMembers(guild, roleid, true);
 
-                //Message
-                embeds.SuccessfullyCreateRoleBorder(channel, name);
+                    //SQLite
+                    sql.addToSQL(guild.getIdLong(), roleid, name);
+
+                    //Message
+                    embeds.SuccessfullyCreateRoleBorder(channel, name);
+                }
+                else
+                {
+                    embeds.RoleBorderNameIsToLongError(channel, name);
+                }
+
             }
             else
             {
-                embeds.RoleBorderNameIsToLongError(channel, name);
+                //Usage
+                embeds.CreateUsage(channel);
             }
-
         }
         else
         {
-            //Usage
-            embeds.CreateUsage(channel);
+            //Error
+            EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
         }
     }
 
     private void RemoveCommand(String[] args, Message message, TextChannel channel)
     {
-        Guild guild = channel.getGuild();
-        if (args.length >= 3)
+        if (bot.hasPermission(channel, MANAGE_ROLES))
         {
-            List<Role> roles = message.getMentionedRoles();
-            if (!roles.isEmpty())
+            Guild guild = channel.getGuild();
+            if (args.length >= 3)
             {
-                Role role = roles.get(0);
-                long roleid = role.getIdLong();
-
-                if (sql.ExistsInSQL(guild.getIdLong(), roleid))
+                List<Role> roles = message.getMentionedRoles();
+                if (!roles.isEmpty())
                 {
-                    //SQLite
-                    sql.removeFromSQL(guild.getIdLong(), role.getIdLong());
+                    Role role = roles.get(0);
+                    long roleid = role.getIdLong();
 
-                    //delete Role
-                    role.delete().queue();
+                    if (sql.ExistsInSQL(guild.getIdLong(), roleid))
+                    {
+                        //SQLite
+                        sql.removeFromSQL(guild.getIdLong(), role.getIdLong());
 
-                    String roleName = role.getName().trim();
-                    //Message
-                    embeds.SuccessfullyRemovedRoleBorder(channel, roleName);
+                        //delete Role
+                        role.delete().queue();
+
+                        String roleName = role.getName().trim();
+                        //Message
+                        embeds.SuccessfullyRemovedRoleBorder(channel, roleName);
+                    }
+                    else
+                    {
+                        //Error
+                        embeds.RoleDoesNotExistError(channel);
+                    }
                 }
                 else
                 {
                     //Error
-                    embeds.RoleDoesNotExistError(channel);
+                    embeds.HaveNotMentionedRoleError(channel);
                 }
             }
             else
             {
-                //Error
-                embeds.HaveNotMentionedRoleError(channel);
+                //Usage
+                embeds.RemoveUsage(channel);
             }
         }
         else
         {
-            //Usage
-            embeds.RemoveUsage(channel);
+            //Error
+            EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
         }
     }
 

@@ -49,12 +49,12 @@ public class Embeds
     //=====================================================================================================================================
     public void VoiceChannelAlreadyExistsError(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("This VoiceChannel already is a TempChannel!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("This VoiceChannel is already a TempChannel!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void CouldNotFindVoiceChannelByIDError(TextChannel channel, long channelid)
     {
-        EmbedManager.SendErrorEmbed("Couldn't find VoiceChannel by ID: " + channelid, channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("Couldn't find VoiceChannel by ID: **" + channelid + "**", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoPermissionError(TextChannel channel, Permission permission)

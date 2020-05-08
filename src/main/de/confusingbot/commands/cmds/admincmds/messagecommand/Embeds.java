@@ -29,15 +29,16 @@ public class Embeds
         EmbedManager.SendUsageEmbed(
                 "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
                         "```Create a welcome/leave message which will be sent if member join/leave the server```" +
-                        "```yaml\n" + Main.prefix + "message [add] [welcome/leave] private ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
-                        "```Create a private welcome/leave message which will be sent if member join/leave the server```" +
+                        "```yaml\n" + Main.prefix + "message [add] welcome private ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
+                        "```Create a private welcome message which will be sent as an direct message if the member join the server```" +
                         "```yaml\n" + Main.prefix + "message remove [welcome/leave] (private)\n```" +
                         "```Remove the welcome/leave message```", channel, EmbedsUtil.showUsageTime);
     }
 
-    public void MessageAddUsage(TextChannel channel, String messagetype)
+    public void MessageAddUsage(TextChannel channel, String messagetype, boolean isPrivate)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add " + messagetype + " [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
+        String privateString = isPrivate ? " private" : "";
+        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add " + messagetype + "" + privateString + " [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void MessageRemoveUsage(TextChannel channel, String messagetype)
@@ -80,21 +81,23 @@ public class Embeds
 
     public void CanNotSendPrivateLeaveMessage(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("I am sry but I can't send private leave messages :/", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("I am sry but I **can't send private leave** messages :/", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfullyAddedMessage(TextChannel channel, String messagetype)
+    public void SuccessfullyAddedMessage(TextChannel channel, String messagetype, boolean isPrivate)
     {
-        EmbedManager.SendSuccessEmbed("You successfully added a **" + messagetype + " message**",
+        String privateString = isPrivate ? " private" : "";
+        EmbedManager.SendSuccessEmbed("You successfully added a **" + messagetype + "" + privateString + " message**",
                 channel, EmbedsUtil.showSuccessTime);
     }
 
-    public void SuccessfullyRemovedMessage(TextChannel channel, String messagetype)
+    public void SuccessfullyRemovedMessage(TextChannel channel, String messagetype, boolean isPrivate)
     {
-        EmbedManager.SendSuccessEmbed("You successfully removed a **" + messagetype + " message**",
+        String privateString = isPrivate ? " private" : "";
+        EmbedManager.SendSuccessEmbed("You successfully removed a **" + messagetype + "" + privateString + " message**",
                 channel, EmbedsUtil.showSuccessTime);
     }
 }

@@ -19,48 +19,62 @@ public class QuestionCommand implements ServerCommand
         QuestionManager.embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+    Permission MANAGE_CHANNEL = Permission.MANAGE_CHANNEL;
+    Permission MESSAGE_MANAGE = Permission.MESSAGE_MANAGE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
+
         //- question ([Title]) QUESTION: [Question] [Type(Role of the server for Example @Programming)]
         //- question close
         //-question category create ID
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length >= 2)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            //other Commands
-            Guild guild = channel.getGuild();
-            switch (args[1])
+            if (args.length >= 2)
             {
-                case "close":
-                    CloseQuestionCommand(args, guild, member, channel);
-                    break;
-                case "info":
-                    InfoQuestionCommand(args, guild, member, channel);
-                    break;
-                case "category":
-                    CategoryHandler(message, channel, args);
-                    break;
-                default:
-                    if (args.length >= 3)
-                    {
-                        //Create Question
-                        CreateQuestionCommand(channel.getGuild(), member, channel, message, args);
-                    }
-                    else
-                    {
-                        //Usage
-                        QuestionManager.embeds.GeneralUsage(channel);
-                    }
-                    break;
+                //other Commands
+                Guild guild = channel.getGuild();
+                switch (args[1])
+                {
+                    case "close":
+                        CloseQuestionCommand(args, guild, member, channel);
+                        break;
+                    case "info":
+                        InfoQuestionCommand(args, guild, member, channel);
+                        break;
+                    case "category":
+                        CategoryHandler(message, channel, args);
+                        break;
+                    default:
+                        int minWords = 3;
+                        if (args.length >= 1 + minWords)
+                        {
+                            //Create Question
+                            CreateQuestionCommand(channel.getGuild(), member, channel, message, args);
+                        }
+                        else
+                        {
+                            //Usage
+                            QuestionManager.embeds.MinXWords(channel, minWords);
+                        }
+                        break;
+                }
             }
-        }
-        else
-        {
-            //Usage
-            QuestionManager.embeds.GeneralUsage(channel);
+            else
+            {
+                //Usage
+                QuestionManager.embeds.GeneralUsage(channel);
+            }
         }
     }
 
@@ -106,26 +120,29 @@ public class QuestionCommand implements ServerCommand
     {
         if (args.length == 4)
         {
-            try
+            long categoryid = Long.parseLong(args[3]);
+            if (!QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
             {
-                long categoryid = Long.parseLong(args[3]);
-                if (!QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
+                Category category = guild.getCategoryById(categoryid);
+
+                if (category != null)
                 {
                     //SQL
                     QuestionManager.sql.AddQuestionCategorieToSQL(guild.getIdLong(), categoryid);
 
                     //Message
-                    QuestionManager.embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, guild.getCategoryById(categoryid).getName());
+                    QuestionManager.embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, category.getName());
                 }
                 else
                 {
                     //Error
-                    QuestionManager.embeds.OnlyOneAllowedQuestionCategory(channel);
+                    QuestionManager.embeds.ThisIsNoIDError(channel, args[3]);
                 }
-            } catch (NumberFormatException e)
+            }
+            else
             {
                 //Error
-                QuestionManager.embeds.ThisIsNoIDError(channel, args[3]);
+                QuestionManager.embeds.OnlyOneAllowedQuestionCategory(channel);
             }
         }
         else
@@ -147,7 +164,7 @@ public class QuestionCommand implements ServerCommand
                 QuestionManager.sql.RemoveQuestionCategoryFromSQL(guild.getIdLong());
 
                 //Message
-                QuestionManager.embeds.SuccessfullyRemovedCategoryToQuestionCategory(channel, category.getName());
+                QuestionManager.embeds.SuccessfullyRemovedCategoryToQuestionCategory(channel, category != null ? category.getName() : "unknown Category");
             }
             else
             {
@@ -171,22 +188,29 @@ public class QuestionCommand implements ServerCommand
 
             if (sentQuestionMember != null)
             {
-
-                long memberid = sentQuestionMember.getIdLong();
-
-                if (member == sentQuestionMember || member.hasPermission(channel, Permission.ADMINISTRATOR))
+                if (bot.hasPermission(channel, MANAGE_CHANNEL))
                 {
-                    int deletedInSeconds = 5;
-                    //Message
-                    QuestionManager.embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
+                    long memberid = sentQuestionMember.getIdLong();
 
-                    Runnable r = new DeleteQuestionRunnable(guild, channel, memberid, deletedInSeconds, QuestionManager.sql);
-                    new Thread(r).start();
+                    if (member == sentQuestionMember || member.hasPermission(channel, Permission.ADMINISTRATOR))
+                    {
+                        int deletedInSeconds = 5;
+                        //Message
+                        QuestionManager.embeds.QuestionChannelWillBeDeletedInXSeconds(channel, deletedInSeconds);
+
+                        Runnable r = new DeleteQuestionRunnable(guild, channel, memberid, deletedInSeconds, QuestionManager.sql);
+                        new Thread(r).start();
+                    }
+                    else
+                    {
+                        //Error
+                        QuestionManager.embeds.NoPermissionForClosingThisQuestionChannelError(channel);
+                    }
                 }
                 else
                 {
                     //Error
-                    QuestionManager.embeds.NoPermissionForClosingThisQuestionChannelError(channel);
+                    EmbedManager.SendNoPermissionEmbed(channel, MANAGE_CHANNEL, "");
                 }
             }
             else
@@ -234,68 +258,95 @@ public class QuestionCommand implements ServerCommand
 
     private void CreateQuestionCommand(Guild guild, Member member, TextChannel channel, Message message, String[] args)
     {
-        List<Role> roles = message.getMentionedRoles();
 
-        int mentionableRoles = 3;
-        if (roles.size() <= mentionableRoles)
+        if (QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
         {
             Category category = QuestionManager.sql.GetQuestionCategory(guild);
             if (category != null)
             {
-                TextChannel textChannel;
-                if (roles != null && roles.size() > 0)
+                if (bot.hasPermission(MANAGE_CHANNEL))
                 {
-                    //If member mentioned a role, the TextChannel will be named after the first mentioned role!
-                    textChannel = category.createTextChannel("❓" + roles.get(0).getName()).complete();
+                    if (bot.hasPermission(channel, MESSAGE_MANAGE))
+                    {
+                        List<Role> roles = message.getMentionedRoles();
+                        int mentionableRoles = 3;
+                        if (roles != null && roles.size() <= mentionableRoles)
+                        {
+                            TextChannel textChannel;
+                            if (roles.size() > 0)
+                            {
+                                //If member mentioned a role, the TextChannel will be named after the first mentioned role!
+                                textChannel = category.createTextChannel("❓" + roles.get(0).getName()).complete();
+                            }
+                            else
+                            {
+                                //If not the TextChannel will be named Question
+                                textChannel = category.createTextChannel(QuestionManager.DefaultQuestionName).complete();
+                            }
+
+                            String wholeQuestion = buildQuestionString(args, roles, 1);
+                            String questionTitle = "";
+                            String question = "";
+                            String roleString = createRoleString(roles);
+
+                            if (wholeQuestion.contains(QuestionManager.questionKey))
+                            {
+                                String[] questionParts = wholeQuestion.split(QuestionManager.questionKey);
+                                questionTitle = "**" + questionParts[0] + "**";
+                                question = questionParts[1];
+                            }
+                            else
+                            {
+                                question = wholeQuestion;
+                            }
+
+                            //Send Question Message
+                            EmbedBuilder builder = QuestionManager.embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
+                            textChannel.sendMessage(builder.build()).queue(mes -> {
+                                textChannel.pinMessageById(mes.getIdLong()).queue();
+                            });
+
+                            //SQLData
+                            long channelID = textChannel.getIdLong();
+                            long guildID = textChannel.getGuild().getIdLong();
+                            long memberID = member.getIdLong();
+
+                            String creationTime = OffsetDateTime.now().toLocalDateTime().format(QuestionManager.formatter);
+                            String deleteTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), QuestionManager.deleteMessageAfterXHours, QuestionManager.hours).format(QuestionManager.formatter);
+
+                            //SQL
+                            QuestionManager.sql.AddGeneratedQuestionToSQL(guildID, channelID, memberID, creationTime, deleteTime);
+                        }
+                        else
+                        {
+                            QuestionManager.embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
+                        }
+                    }
+                    else
+                    {
+                        //Error
+                        EmbedManager.SendNoPermissionEmbed(channel, MESSAGE_MANAGE, "");
+                    }
                 }
                 else
                 {
-                    //If not the TextChannel will be named Question
-                    textChannel = category.createTextChannel(QuestionManager.DefaultQuestionName).complete();
+                    //Error
+                    EmbedManager.SendNoPermissionEmbed(channel, MANAGE_CHANNEL, "");
                 }
-
-                String wholeQuestion = buildQuestionString(args, roles, 1);
-                String questionTitle = "";
-                String question = "";
-                String roleString = createRoleString(roles);
-
-                if (wholeQuestion.contains(QuestionManager.questionKey))
-                {
-                    String[] questionParts = wholeQuestion.split(QuestionManager.questionKey);
-                    questionTitle = "**" + questionParts[0] + "**";
-                    question = questionParts[1];
-                }
-                else
-                {
-                    question = wholeQuestion;
-                }
-
-                //Send Question Message
-                EmbedBuilder builder = QuestionManager.embeds.CreateQuestionEmbed(member, questionTitle, question, roleString);
-                textChannel.sendMessage(builder.build()).queue(mes -> {
-                    textChannel.pinMessageById(mes.getIdLong()).queue();
-                });
-
-                //SQLData
-                long channelID = textChannel.getIdLong();
-                long guildID = textChannel.getGuild().getIdLong();
-                long memberID = member.getIdLong();
-
-                String creationTime = OffsetDateTime.now().toLocalDateTime().format(QuestionManager.formatter);
-                String deleteTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), QuestionManager.deleteMessageAfterXHours, QuestionManager.hours).format(QuestionManager.formatter);
-
-                //SQL
-                QuestionManager.sql.AddGeneratedQuestionToSQL(guildID, channelID, memberID, creationTime, deleteTime);
             }
             else
             {
                 //Error
-                QuestionManager.embeds.ThisServerHasNoExistingQuestionCategoryError(channel);
+                QuestionManager.embeds.QuestionCategoryDoesNotExistAnyMore(channel);
+
+                //Remove Question Category
+                QuestionManager.sql.RemoveQuestionCategoryFromSQL(guild.getIdLong());
             }
         }
         else
         {
-            QuestionManager.embeds.YouCanOnlyMentionOneRoleInAQuestionError(channel, mentionableRoles);
+            //Information
+            QuestionManager.embeds.ThisServerHasNoExistingQuestionCategoryInformation(channel);
         }
     }
 

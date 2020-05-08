@@ -145,7 +145,7 @@ public class Embeds
         builder.setImage(thumbnailUrl);
 
         //Message
-        channel.sendMessage(builder.build()).queue();
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 
     public void SendYoutubeAnnouncementEmbed(TextChannel channel, String url, String thumbnailUrl, String title, String uploaderName, String roleMentionedString, String description)
@@ -161,7 +161,7 @@ public class Embeds
         builder.setImage(thumbnailUrl);
 
         //Message
-        channel.sendMessage(builder.build()).queue();
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 
     public void SendYoutubeAnnouncementsListEmbed(TextChannel channel, String announcementsString)
@@ -170,11 +170,10 @@ public class Embeds
 
         builder.setTitle("\uD83D\uDCC4Announcement List");
         builder.setDescription(announcementsString);
-
         builder.setColor(Color.RED);
 
         //Message
-        channel.sendMessage(builder.build()).queue();
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 
     public void SendChannelInfoEmbed(TextChannel channel, String channelUrl, String thumbnailUrl, String channelName, String language, LocalDateTime creationDate, long viewCount, long subscriberCount, long videoCount)
@@ -195,6 +194,6 @@ public class Embeds
         builder.setThumbnail(thumbnailUrl);
 
         //Message
-        channel.sendMessage(builder.build()).queue();
+        EmbedManager.SendEmbed(builder, channel, 0);
     }
 }

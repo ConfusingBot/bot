@@ -7,6 +7,7 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -20,62 +21,72 @@ public class LeaveCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length == 1)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            GuildVoiceState state = member.getVoiceState();
-            if (state != null)
+            if (args.length == 1)
             {
-                VoiceChannel voiceChannel = state.getChannel();
-                if (voiceChannel != null)
+                GuildVoiceState state = member.getVoiceState();
+                if (state != null)
                 {
-                    MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
-                    AudioPlayer player = controller.getPlayer();
-                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
-
-                    if (botVoiceChannel != null)
+                    VoiceChannel voiceChannel = state.getChannel();
+                    if (voiceChannel != null)
                     {
-                        if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
+                        MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                        AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                        AudioPlayer player = controller.getPlayer();
+                        VoiceChannel botVoiceChannel = manager.getConnectedChannel();
+
+                        if (botVoiceChannel != null)
                         {
-                            //SQL
-                            controller.updateChannel(channel, member);
+                            if (botVoiceChannel.getIdLong() == voiceChannel.getIdLong())
+                            {
+                                //SQL
+                                controller.updateChannel(channel, member);
 
-                            //StopMusic
-                            player.stopTrack();
-                            manager.closeAudioConnection();
+                                //StopMusic
+                                player.stopTrack();
+                                manager.closeAudioConnection();
 
-                            //Message
-                            embeds.StoppedMusicMessage(channel);
+                                //Message
+                                embeds.StoppedMusicMessage(channel);
+                            }
+                            else
+                            {
+                                //Error
+                                EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                            }
                         }
                         else
                         {
                             //Error
-                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                            EmbedsUtil.BotNotInVoiceChannelError(channel);
                         }
                     }
                     else
                     {
-                        //Error
-                        EmbedsUtil.BotNotInVoiceChannelError(channel);
+                        EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                     }
                 }
-                else
-                {
-                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
-                }
             }
-        }
-        else
-        {
-            //Usage
-            embeds.LeaveUsage(channel);
+            else
+            {
+                //Usage
+                embeds.LeaveUsage(channel);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package main.de.confusingbot.listener.botlistener;
 
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -37,7 +38,7 @@ public class BotListener extends ListenerAdapter
         {
             TextChannel channel = event.getGuild().getDefaultChannel();
             if (channel != null)
-                channel.sendMessage(builder.build()).queue();
+                EmbedManager.SendEmbed(builder, channel, 0);
         } catch (InsufficientPermissionException e)
         {
             //no permission in this channel

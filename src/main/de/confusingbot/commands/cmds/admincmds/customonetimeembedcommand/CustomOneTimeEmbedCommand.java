@@ -16,31 +16,41 @@ public class CustomOneTimeEmbedCommand implements ServerCommand
 
     private Embeds embeds = new Embeds();
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
-        if (member.hasPermission(channel, Permission.ADMINISTRATOR))
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-
-            String[] args = CommandsUtil.messageToArgs(message);
-            EmbedManager.DeleteMessageByID(channel, message.getIdLong());
-
-            if (args.length == 1)
+            if (member.hasPermission(channel, Permission.ADMINISTRATOR))
             {
-                //CustomEmbedCommand
-                limitedVoiceChannelDescription(channel);
+
+                String[] args = CommandsUtil.messageToArgs(message);
+                EmbedManager.DeleteMessageByID(channel, message.getIdLong());
+
+                if (args.length == 1)
+                {
+                    //CustomEmbedCommand
+                    limitedVoiceChannelDescription(channel);
+                }
+                else
+                {
+                    //Usage
+                    embeds.Usage(channel);
+                }
             }
             else
             {
-                //Usage
-                embeds.Usage(channel);
+                //Error
+                embeds.NoPermissionError(channel, Permission.ADMINISTRATOR);
             }
-        }
-        else
-        {
-            //Error
-            embeds.NoPermissionError(channel, Permission.ADMINISTRATOR);
         }
     }
 

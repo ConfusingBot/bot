@@ -17,9 +17,16 @@ public class MessageCommand implements ServerCommand
         MessageManager.embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
         //- message add welcome (private) [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: Welcome @newMember to the server look at #rule
         //- message remove welcome
@@ -27,74 +34,77 @@ public class MessageCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(MessageManager.permission))
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            if (args.length >= 2)
+            if (member.hasPermission(MessageManager.permission))
             {
-                switch (args[1])
+                if (args.length >= 2)
                 {
-                    case "add":
-                        if (args.length >= 3)
-                        {
-                            switch (args[2])
+                    switch (args[1])
+                    {
+                        case "add":
+                            if (args.length >= 3)
                             {
-                                case "welcome":
-                                    MessageAddCommand(channel, args, message, MessageManager.welcomeMessageKey, args[3].equals("private"));
-                                    break;
-                                case "leave":
-                                    MessageAddCommand(channel, args, message, MessageManager.leaveMessageKey, args[3].equals("private"));
-                                    break;
-                                default:
-                                    //Usage
-                                    MessageManager.embeds.GeneralUsage(channel);
-                                    break;
+                                switch (args[2])
+                                {
+                                    case "welcome":
+                                        MessageAddCommand(channel, args, message, MessageManager.welcomeMessageKey, args.length > 3 && args[3].equals("private"));
+                                        break;
+                                    case "leave":
+                                        MessageAddCommand(channel, args, message, MessageManager.leaveMessageKey, args.length > 3 && args[3].equals("private"));
+                                        break;
+                                    default:
+                                        //Usage
+                                        MessageManager.embeds.GeneralUsage(channel);
+                                        break;
+                                }
                             }
-                        }
-                        else
-                        {
+                            else
+                            {
+                                //Usage
+                                MessageManager.embeds.GeneralUsage(channel);
+                            }
+                            break;
+                        case "remove":
+                            if (args.length >= 3)
+                            {
+                                switch (args[2])
+                                {
+                                    case "welcome":
+                                        MessageRemoveCommand(channel, args, MessageManager.welcomeMessageKey, args.length > 3 && args[3].equals("private"));
+                                        break;
+                                    case "leave":
+                                        MessageRemoveCommand(channel, args, MessageManager.leaveMessageKey, args.length > 3 && args[3].equals("private"));
+                                        break;
+                                    default:
+                                        //Usage
+                                        MessageManager.embeds.GeneralUsage(channel);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                //Usage
+                                MessageManager.embeds.GeneralUsage(channel);
+                            }
+                            break;
+                        default:
                             //Usage
                             MessageManager.embeds.GeneralUsage(channel);
-                        }
-                        break;
-                    case "remove":
-                        if (args.length >= 3)
-                        {
-                            switch (args[2])
-                            {
-                                case "welcome":
-                                    MessageRemoveCommand(channel, args, MessageManager.welcomeMessageKey, args.length > 3 && args[3].equals("private"));
-                                    break;
-                                case "leave":
-                                    MessageRemoveCommand(channel, args, MessageManager.leaveMessageKey, args.length > 3 && args[3].equals("private"));
-                                    break;
-                                default:
-                                    //Usage
-                                    MessageManager.embeds.GeneralUsage(channel);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            //Usage
-                            MessageManager.embeds.GeneralUsage(channel);
-                        }
-                        break;
-                    default:
-                        //Usage
-                        MessageManager.embeds.GeneralUsage(channel);
-                        break;
+                            break;
+                    }
+                }
+                else
+                {
+                    //Usage
+                    MessageManager.embeds.GeneralUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                MessageManager.embeds.GeneralUsage(channel);
+                //Error
+                MessageManager.embeds.NoPermissionError(channel, MessageManager.permission);
             }
-        }
-        else
-        {
-            //Error
-            MessageManager.embeds.NoPermissionError(channel, MessageManager.permission);
         }
     }
 
@@ -103,7 +113,8 @@ public class MessageCommand implements ServerCommand
     //=====================================================================================================================================
     private void MessageAddCommand(TextChannel channel, String[] args, Message message, String messageKey, boolean isPrivate)
     {
-        if(messageKey.equals(MessageManager.leaveMessageKey) && isPrivate){
+        if (messageKey.equals(MessageManager.leaveMessageKey) && isPrivate)
+        {
             MessageManager.embeds.CanNotSendPrivateLeaveMessage(channel);
             return;
         }
@@ -173,7 +184,7 @@ public class MessageCommand implements ServerCommand
                             );
 
                             //Message
-                            MessageManager.embeds.SuccessfullyAddedMessage(channel, messageKey);
+                            MessageManager.embeds.SuccessfullyAddedMessage(channel, messageKey, isPrivate);
                         }
                         else
                         {
@@ -202,7 +213,7 @@ public class MessageCommand implements ServerCommand
         else
         {
             //Usage
-            MessageManager.embeds.MessageAddUsage(channel, messageKey);
+            MessageManager.embeds.MessageAddUsage(channel, messageKey, isPrivate);
         }
     }
 
@@ -217,7 +228,7 @@ public class MessageCommand implements ServerCommand
                 MessageManager.sql.MessageRemoveFromSQL(guild.getIdLong(), messageKey, isPrivate);
 
                 //Message
-                MessageManager.embeds.SuccessfullyRemovedMessage(channel, messageKey);
+                MessageManager.embeds.SuccessfullyRemovedMessage(channel, messageKey, isPrivate);
             }
             else
             {

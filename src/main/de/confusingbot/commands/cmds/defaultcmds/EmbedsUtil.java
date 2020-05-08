@@ -22,7 +22,7 @@ public class EmbedsUtil
     //Number
     public static void NoValidIDNumberError(TextChannel channel, String idString)
     {
-        EmbedManager.SendErrorEmbed( "This is no ID " + idString, channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "This is no valid ID " + idString, channel, showErrorTime);
     }
 
     public static void NotExistingError(TextChannel channel, String name){
@@ -39,7 +39,6 @@ public class EmbedsUtil
 
     public static void NoNumberError(TextChannel channel, String numberString)
     {
-        EmbedManager.SendErrorEmbed( "This is no Number " + numberString, channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "This is no Number **'" + numberString + "'**", channel, showErrorTime);
     }
-
 }

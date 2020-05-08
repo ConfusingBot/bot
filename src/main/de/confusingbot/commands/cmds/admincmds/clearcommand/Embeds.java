@@ -41,6 +41,20 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel, permission);
     }
 
+    public void NegativeNumberError(TextChannel channel)
+    {
+        //Message
+        EmbedManager.SendMessage("really?", channel, 0);
+    }
+
+    //=====================================================================================================================================
+    //Information
+    //=====================================================================================================================================
+    public void MaxNumberInformation(TextChannel channel, int number)
+    {
+        EmbedManager.SendInfoEmbed("**Delete this channel** if you want to clear it complete!", channel, EmbedsUtil.showErrorTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================

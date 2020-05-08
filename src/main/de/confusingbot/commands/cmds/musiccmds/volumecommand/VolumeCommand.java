@@ -1,19 +1,17 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.pingcommand;
+package main.de.confusingbot.commands.cmds.musiccmds.volumecommand;
 
+import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 
-import java.util.concurrent.TimeUnit;
-
-public class PingCommand implements ServerCommand
+public class VolumeCommand implements ServerCommand
 {
+
     Embeds embeds = new Embeds();
 
-    public PingCommand()
+    public VolumeCommand()
     {
         embeds.HelpEmbed();
     }
@@ -28,15 +26,16 @@ public class PingCommand implements ServerCommand
     {
         //Get Bot
         bot = channel.getGuild().getSelfMember();
+
+        // - volume
+        String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
         if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            long time = System.currentTimeMillis();
-            channel.sendMessage("Pong\uD83C\uDFD3\n**")
-                    .queue(response /* => Message */ -> {
-                        response.editMessageFormat("Pong\uD83C\uDFD3 %d ms", System.currentTimeMillis() - time).queue();
-                    });
+            //Message
+            EmbedManager.SendInfoEmbed("I think the easiest way to change my volume is to click on my profile and slide the blue slider!", channel, 10);
         }
     }
 }
+

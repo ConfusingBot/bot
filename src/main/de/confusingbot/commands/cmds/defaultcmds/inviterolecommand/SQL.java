@@ -9,6 +9,23 @@ import java.util.List;
 
 public class SQL
 {
+    public boolean ExistInSQL(long guildid, long roldeID)
+    {
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole WHERE " +
+                "guildid = " + guildid
+                + " AND roleid = " + roldeID);
+
+        try
+        {
+            if (set.next()) return true;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public void AddRoleToSQL(long guildid, long roleid, int invitions)
     {
         LiteSQL.onUpdate("INSERT INTO inviterole(guildid, invitions, roleid) VALUES(" +

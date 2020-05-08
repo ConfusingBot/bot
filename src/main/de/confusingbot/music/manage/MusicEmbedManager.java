@@ -33,11 +33,11 @@ public class MusicEmbedManager
             {
                 if (time != 0)
                 {
-                    channel.sendMessage(builder.build()).complete().delete().queueAfter(time, TimeUnit.SECONDS);
+                    EmbedManager.SendEmbed(builder, channel, time);
                 }
                 else
                 {
-                    channel.sendMessage(builder.build()).queue();
+                    EmbedManager.SendEmbed(builder, channel, 0);
                 }
             }
         }

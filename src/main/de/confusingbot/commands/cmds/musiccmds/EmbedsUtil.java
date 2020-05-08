@@ -21,19 +21,24 @@ public class EmbedsUtil
 
     public static void BotNotInVoiceChannelError(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("The bot is in no VoiceChannel!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("Ups, the bot is in no VoiceChannel..\nUse `/play` for playing music", channel, EmbedsUtil.showErrorTime);
     }
 
     public static void BotNotInYourVoiceChannelError(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("The bot is in not in your VoiceChannel!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("Sry.. but you can't control the ConfusingBot in another voice channel!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
     //Information
     //=====================================================================================================================================
     public static void YouAreNotInAVoiceChannelInformation(TextChannel channel){
-        EmbedManager.SendInfoEmbed( "`Ups, you aren't in a VoiceChannel\uD83C\uDF99`", channel, EmbedsUtil.showInfoTime);
+        EmbedManager.SendInfoEmbed( "`Ups, you aren't in a VoiceChannel\uD83C\uDF99`\nFill it with `/play`", channel, EmbedsUtil.showInfoTime);
     }
+
+    public static void NoSpaceForBotInformation(TextChannel channel){
+        EmbedManager.SendInfoEmbed( "In your channel is no space for me \uD83D\uDE25", channel, EmbedsUtil.showInfoTime);
+    }
+
 
 }

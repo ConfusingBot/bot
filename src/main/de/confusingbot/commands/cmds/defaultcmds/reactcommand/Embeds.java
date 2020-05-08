@@ -6,6 +6,9 @@ import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Embeds
 {
 
@@ -41,9 +44,12 @@ public class Embeds
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfullyAddedEmotes(TextChannel channel)
+    public void SuccessfullyAddedEmotes(TextChannel channel, ArrayList<String> validEmotes, ArrayList<String> noValidEmotes)
     {
-        EmbedManager.SendSuccessEmbed("You successfully reacted!", channel, 5);
+        String succeededEmotes =  validEmotes.size() > 0 ? String.join(", ", validEmotes) : "none";
+        String failedEmotes =  noValidEmotes.size() > 0 ? String.join(", ", noValidEmotes) : "none";
+
+        EmbedManager.SendSuccessEmbed("You successfully reacted!\n\n **\uD83D\uDCD7Succeeded Emotes:**\n" + succeededEmotes + "\n\n**\uD83D\uDCD5Failed Emotes:**\n" + failedEmotes, channel, EmbedsUtil.showErrorTime);
     }
 
 

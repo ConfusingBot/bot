@@ -9,6 +9,7 @@ public class RepeatInfoCommandManager
 
     public static String infoKey = "INFO:";
     public static int maxRepeatInfos = 3;
+    public static int maxGapInHours = 999;// h
 
     public static Permission permission = Permission.MESSAGE_MANAGE;
 }

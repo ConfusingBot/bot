@@ -1,7 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.joinrole;
 
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
-import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
@@ -19,45 +18,57 @@ public class JoinRoleCommand implements ServerCommand
         JoinRoleManager.embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MANAGE_ROLES = Permission.MANAGE_ROLES;
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
         //- joinrole add @role
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, JoinRoleManager.permission))
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            if (args.length >= 2)
+            if (member.hasPermission(channel, JoinRoleManager.permission))
             {
-                switch (args[1])
+                if (args.length >= 2)
                 {
-                    case "add":
-                        addCommand(args, channel, message);
-                        break;
-                    case "remove":
-                        removeCommand(args, channel, message);
-                        break;
-                    case "list":
-                        listCommand(args, channel, message);
-                        break;
-                    default:
-                        //Usage
-                        AcceptRuleManager.embeds.GeneralUsage(channel);
-                        break;
+                    switch (args[1])
+                    {
+                        case "add":
+                            addCommand(args, channel, message);
+                            break;
+                        case "remove":
+                            removeCommand(args, channel, message);
+                            break;
+                        case "list":
+                            listCommand(args, channel, message);
+                            break;
+                        default:
+                            //Usage
+                            AcceptRuleManager.embeds.GeneralUsage(channel);
+                            break;
+                    }
+                }
+                else
+                {
+                    //Usage
+                    JoinRoleManager.embeds.GeneralUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                JoinRoleManager.embeds.GeneralUsage(channel);
+                //Error
+                JoinRoleManager.embeds.NoPermissionError(channel, JoinRoleManager.permission);
             }
-        }
-        else
-        {
-            //Error
-            JoinRoleManager.embeds.NoPermissionError(channel, JoinRoleManager.permission);
         }
     }
 
@@ -67,25 +78,34 @@ public class JoinRoleCommand implements ServerCommand
     private void addCommand(String[] args, TextChannel channel, Message message)
     {
         long guildID = channel.getGuild().getIdLong();
+
         if (args.length >= 2)
         {
             List<Role> roles = message.getMentionedRoles();
             if (!roles.isEmpty())
             {
-                Role role = roles.get(0);
-                long roleid = role.getIdLong();
-                if (!JoinRoleManager.sql.ExistsInSQL(guildID, roleid))
+                if (bot.hasPermission(channel, MANAGE_ROLES))
                 {
-                    //SQL
-                    JoinRoleManager.sql.addToSQL(guildID, roleid);
+                    Role role = roles.get(0);
+                    long roleid = role.getIdLong();
+                    if (!JoinRoleManager.sql.ExistsInSQL(guildID, roleid))
+                    {
+                        //SQL
+                        JoinRoleManager.sql.addToSQL(guildID, roleid);
 
-                    //Message
-                    JoinRoleManager.embeds.SuccessfulAddedJoinRole(channel, role);
+                        //Message
+                        JoinRoleManager.embeds.SuccessfulAddedJoinRole(channel, role);
+                    }
+                    else
+                    {
+                        //Error
+                        JoinRoleManager.embeds.AlreadyExistingJoinRoleInformation(channel, role);
+                    }
                 }
                 else
                 {
                     //Error
-                    JoinRoleManager.embeds.AlreadyExistingJoinRoleInformation(channel, role);
+                    EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
                 }
             }
             else
@@ -104,25 +124,34 @@ public class JoinRoleCommand implements ServerCommand
     private void removeCommand(String[] args, TextChannel channel, Message message)
     {
         long guildID = channel.getGuild().getIdLong();
+
         if (args.length >= 2)
         {
             List<Role> roles = message.getMentionedRoles();
             if (!roles.isEmpty())
             {
-                Role role = roles.get(0);
-                long roleid = role.getIdLong();
-                if (JoinRoleManager.sql.ExistsInSQL(guildID, roleid))
+                if (bot.hasPermission(channel, MANAGE_ROLES))
                 {
-                    //SQL
-                    JoinRoleManager.sql.removeFormSQL(guildID, roleid);
+                    Role role = roles.get(0);
+                    long roleid = role.getIdLong();
+                    if (JoinRoleManager.sql.ExistsInSQL(guildID, roleid))
+                    {
+                        //SQL
+                        JoinRoleManager.sql.removeFormSQL(guildID, roleid);
 
-                    //Message
-                    JoinRoleManager.embeds.SuccessfulRemovedJoinRole(channel, role);
+                        //Message
+                        JoinRoleManager.embeds.SuccessfulRemovedJoinRole(channel, role);
+                    }
+                    else
+                    {
+                        //Error
+                        JoinRoleManager.embeds.NoExistingJoinRoleInformation(channel, role);
+                    }
                 }
                 else
                 {
                     //Error
-                    JoinRoleManager.embeds.NoExistingJoinRoleInformation(channel, role);
+                    EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "");
                 }
             }
             else
@@ -143,7 +172,6 @@ public class JoinRoleCommand implements ServerCommand
         Guild guild = channel.getGuild();
         if (args.length == 2)
         {
-
             //SQL
             List<Long> roleids = JoinRoleManager.sql.getRoleIDs(guild.getIdLong());
 

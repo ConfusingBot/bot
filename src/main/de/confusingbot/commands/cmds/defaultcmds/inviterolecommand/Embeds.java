@@ -47,7 +47,7 @@ public class Embeds
                         + "```Shows you how to get a special InviteRole on this server```"
                         + "```yaml\n" + Main.prefix + "invite stats\n```"
                         + "```Shows your invite stats```"
-                        + "```yaml\n" + Main.prefix + "leaderboard\n```"
+                        + "```yaml\n" + Main.prefix + "invite leaderboard\n```"
                         + "```Shows you the top inviter of this server```", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
     }
 
@@ -59,11 +59,6 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel, permission);
     }
 
-    public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
-    {
-        EmbedManager.SendErrorEmbed("The bot has no right to assign this " + role.getAsMention() + "\n" +
-                "Please give the bot a role over the role to be assign this role!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
-    }
 
     public void RoleDoesNotExistError(TextChannel channel, long roleid)
     {
@@ -78,6 +73,16 @@ public class Embeds
     public void NoNumberError(TextChannel channel, String numberString)
     {
         EmbedsUtil.NoNumberError(channel, numberString);
+    }
+
+    public void InviteRoleAlreadyExists(TextChannel channel, String role)
+    {
+        EmbedManager.SendErrorEmbed(role + " is already an InviteRole", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
+    }
+
+    public void RoleIsNoInviteRoleError(TextChannel channel, String role)
+    {
+        EmbedManager.SendErrorEmbed(role + " is no InviteRole!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -148,7 +153,7 @@ public class Embeds
 
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#60f4b4"));
-        builder.setTitle("Invite Stats from " + member.getNickname());
+        builder.setTitle("Invite Stats from " + member.getEffectiveName());
         builder.addField("Uses", Integer.toString(uses), true);
         builder.addField("Creation Date", creationDateString, true);
         builder.addField("InviteLink", inviteLink, true);

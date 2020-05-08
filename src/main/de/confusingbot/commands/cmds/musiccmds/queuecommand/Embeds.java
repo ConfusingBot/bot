@@ -15,7 +15,8 @@ public class Embeds
     {
         HelpManager.music.add("```yaml\n" + Main.prefix + "queue\n``` ```Offers you the MusicQueue```");
         HelpManager.music.add("```yaml\n" + Main.prefix + "queue clear\n``` ```Clear the MusicQueue```");
-        HelpManager.music.add("```yaml\n" + Main.prefix + "queue delete [index]\n``` ```Delete the Track at index```");
+        HelpManager.music.add("```yaml\n" + Main.prefix + "queue delete [index]\n``` ```Delete the Track at [index]```");
+        HelpManager.music.add("```yaml\n" + Main.prefix + "queue shuffle\n``` ```Shuffles the queue```");
     }
 
     //=====================================================================================================================================
@@ -23,12 +24,24 @@ public class Embeds
     //=====================================================================================================================================
     public void GeneralUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "queue delete [position]`\n`" + Main.prefix + "queue clear`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed(
+                "```yaml\n" + Main.prefix + "queue delete [index]\n```"
+                        + "```Delete the Track at [index]```"
+                        + "```yaml\n" + Main.prefix + "queue clear\n```"
+                        + " ```Clears the whole queue```"
+                        + "```yaml\n" + Main.prefix + "queue shuffle\n```"
+                        + " ```Shuffles the queue```",
+                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
     }
 
     public void ListQueueUsage(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed("`" + Main.prefix + "queue`", channel, EmbedsUtil.showUsageTime);
+    }
+
+    public void ShuffleUsage(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("`" + Main.prefix + "shuffle`", channel, EmbedsUtil.showUsageTime);
     }
 
     public void ClearQueueUsage(TextChannel channel)
@@ -52,7 +65,12 @@ public class Embeds
     public void SuccessfullyDeletedTrackAtIndex(TextChannel channel, int index, String title)
     {
         EmbedManager.SendCustomEmbed("Track deleted at " + index,
-                "You deleted *" + title + "* from the queue!", Color.decode("#d400ff"), channel, 5);
+                "You deleted **" + title + "** from the queue!", Color.decode("#d400ff"), channel, 5);
+    }
+
+    public void SuccessfullyShuffledQueue(TextChannel channel)
+    {
+        EmbedManager.SendCustomEmbed("Shuffled", "Shuffled playlist\uD83D\uDD79", Color.decode("#d400ff"), channel, EmbedsUtil.showSuccessTime);
     }
 
     //=====================================================================================================================================
@@ -61,6 +79,14 @@ public class Embeds
     public void CouldNotDeleteTrackAtIndex(TextChannel channel, int index)
     {
         EmbedManager.SendErrorEmbed("Couldn't delete Track at " + index, channel, EmbedsUtil.showErrorTime);
+    }
+
+    //=====================================================================================================================================
+    //Info
+    //=====================================================================================================================================
+    public void NoSongInQueueInformation(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("Sry.. but I can't shuffle a empty playlist\uD83E\uDD14", channel, EmbedsUtil.showSuccessTime);
     }
 
     //=====================================================================================================================================

@@ -2,7 +2,9 @@ package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,12 +15,16 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UpdateQuestionChannels
 {
     List<Integer> notificationTimes = new ArrayList<>();
     SQL sql = new SQL();
+
+    //Needed Permissions
+    Permission MANAGE_CHANNEL = Permission.MANAGE_CHANNEL;
 
     public UpdateQuestionChannels()
     {
@@ -51,6 +57,7 @@ public class UpdateQuestionChannels
                 }
 
                 Member member = guild.getMemberById(memberID);
+                Member bot = guild.getSelfMember();
                 TextChannel channel = guild.getTextChannelById(channelID);
                 if (channel == null)
                 {
@@ -64,30 +71,40 @@ public class UpdateQuestionChannels
 
                 //HANDLE TIME
                 long timeleftInMinutes = CommandsUtil.getTimeBetweenTwoDates(currentTimeString, deleteTime, false);
-                long timeleftInHours = CommandsUtil.getTimeBetweenTwoDates(currentTimeString, deleteTime, true);
 
                 //Update Channel Time after 5 hours
-                if (timeleftInMinutes <= (QuestionManager.startAddingHoursAfterActivity * 60))
-                    UpdateChannelTime(guild, channel);
+                if (timeleftInMinutes <= (QuestionManager.startUpdatingDeleteTime * 60))
+                    UpdateChannelDeleteTime(guild, channel);
 
                 //Send notifications
                 for (Integer notificationTime : notificationTimes)
                 {
-                    if (timeleftInMinutes == (notificationTime * 60))
+                    ArrayList<Integer> validationArray = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+                    boolean trigger = validationArray.contains((int)(timeleftInMinutes % (notificationTime * 60)));
+
+                    if (trigger)
                     {
                         //Message
-                        QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, timeleftInHours);
+                        QuestionManager.embeds.SendDeleteQuestionInfo(channel, member, Math.round(timeleftInMinutes / 60));
                     }
                 }
 
                 //If time Ended
-                if (timeleftInHours <= 0)
+                if (timeleftInMinutes <= 0)
                 {
-                    //Delete Channel
-                    channel.delete().queue();
+                    if (bot.hasPermission(channel, MANAGE_CHANNEL))
+                    {
+                        //Delete Channel
+                        channel.delete().queue();
 
-                    //SQL
-                    sql.removeQuestionFromSQL(guildID, channelID, memberID);
+                        //SQL
+                        sql.removeQuestionFromSQL(guildID, channelID, memberID);
+                    }
+                    else
+                    {
+                        //Error
+                        EmbedManager.SendNoPermissionEmbed(channel, MANAGE_CHANNEL, "QuestionCommand | I can't delete this question channel!");
+                    }
                 }
             }
         } catch (SQLException e)
@@ -96,9 +113,9 @@ public class UpdateQuestionChannels
         }
     }
 
-    private void UpdateChannelTime(Guild guild, TextChannel channel)
+    private void UpdateChannelDeleteTime(Guild guild, TextChannel channel)
     {
-        if(!channel.hasLatestMessage()) return;
+        if (!channel.hasLatestMessage()) return;
 
         long lastMessageId = channel.getLatestMessageIdLong();
         Message latestMessage = CommandsUtil.getLatestesMessageByID(channel, lastMessageId);
@@ -106,7 +123,7 @@ public class UpdateQuestionChannels
         if (latestMessage != null && !latestMessage.getAuthor().isBot())
         {
             LocalDateTime messageCreationTime = latestMessage.getTimeCreated().toLocalDateTime();
-            LocalDateTime newDeleteTime = CommandsUtil.AddXTime(messageCreationTime, QuestionManager.addHoursAfterActivity, QuestionManager.hours);
+            LocalDateTime newDeleteTime = CommandsUtil.AddXTime(messageCreationTime, QuestionManager.extraHoursAfterMessage, QuestionManager.hours);
 
             //SQL
             sql.UpdateDeleteTimeInSQL(guild.getIdLong(), channel.getIdLong(), newDeleteTime.format(QuestionManager.formatter));

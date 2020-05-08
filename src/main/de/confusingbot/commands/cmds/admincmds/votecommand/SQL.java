@@ -56,11 +56,14 @@ public class SQL
             if (set.next())
             {
                 String codedString = set.getString("allowedroles");
-                List<String> idStrings = CommandsUtil.encodeString(codedString, ", ");
-
-                for (String idString : idStrings)
+                if (!codedString.equals(""))
                 {
-                    ids.add(Long.parseLong(idString));
+                    List<String> idStrings = CommandsUtil.encodeString(codedString, ", ");
+                    for (String idString : idStrings)
+                    {
+                        if (!idString.equals(""))
+                            ids.add(Long.parseLong(idString));
+                    }
                 }
             }
         } catch (SQLException e)

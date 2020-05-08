@@ -7,6 +7,7 @@ import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -21,60 +22,79 @@ public class JoinCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
+
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length == 1)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            AudioManager manager = channel.getGuild().getAudioManager();
-            if (!manager.isConnected())
+            if (args.length == 1)
             {
-                GuildVoiceState state = member.getVoiceState();
-
-                if (state != null)
+                AudioManager manager = channel.getGuild().getAudioManager();
+                if (!manager.isConnected())
                 {
-                    VoiceChannel voiceChannel = state.getChannel();
-                    if (voiceChannel != null)
+                    GuildVoiceState state = member.getVoiceState();
+
+                    if (state != null)
                     {
-                        MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                        Music.channelID = voiceChannel.getIdLong();
-
-                        //SQL
-                        controller.updateChannel(channel, member);
-
-                        List<AudioTrack> queue = controller.getQueue().getQueueList();
-                        if (queue.size() > 0)
+                        VoiceChannel voiceChannel = state.getChannel();
+                        if (voiceChannel != null)
                         {
-                            Connect(voiceChannel, manager);
+                            if (voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
+                            {
+                                MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                                Music.channelID = voiceChannel.getIdLong();
 
-                            //PlayTrack
-                            controller.getPlayer().playTrack(queue.get(0));
+                                //SQL
+                                controller.updateChannel(channel, member);
+
+                                List<AudioTrack> queue = controller.getQueue().getQueueList();
+                                if (queue.size() > 0)
+                                {
+                                    Connect(voiceChannel, manager);
+
+                                    //PlayTrack
+                                    controller.getPlayer().playTrack(queue.get(0));
+                                }
+                                else
+                                {
+                                    //Information
+                                    embeds.YourQueueIsEmptyInformation(channel);
+                                }
+                            }
+                            else
+                            {
+                                //Information
+                                EmbedsUtil.NoSpaceForBotInformation(channel);
+                            }
                         }
                         else
                         {
                             //Information
-                            embeds.YourQueueIsEmptyInformation(channel);
+                            EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                         }
                     }
-                    else
-                    {
-                        //Information
-                        EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
-                    }
+                }
+                else
+                {
+                    embeds.IsAlreadyInAVoiceChannel(channel);
                 }
             }
             else
             {
-                embeds.IsAlreadyInAVoiceChannel(channel);
+                //Usage
+                embeds.JoinUsage(channel);
             }
-        }
-        else
-        {
-            //Usage
-            embeds.JoinUsage(channel);
         }
     }
 

@@ -1,7 +1,9 @@
 package main.de.confusingbot.commands.cmds.admincmds.messagecommand;
 
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
@@ -42,9 +44,8 @@ public class MessageListener
         }
 
         //Private
-        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true))
+        if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true) && !event.getUser().isBot())
         {
-            long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
             String message = " ";
             message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
             if (message.isEmpty() || message == "") message = " ";
@@ -57,7 +58,7 @@ public class MessageListener
 
             message = replaceWordWithWordInText(MessageManager.NewMemberKeyWord, event.getMember().getAsMention(), message);
 
-            //Send Message
+            //Send Private Message
             EmbedManager.SendCustomPrivateEmbed(title, message, color, event.getUser());
         }
     }

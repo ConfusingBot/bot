@@ -103,41 +103,41 @@ public class BotInfo
 
             //Set onlineTime
             if (totalYears > 0)
-                onlineTime += totalYears + " y ";
+                onlineTime += totalYears + "y ";
 
             if (totalMonths > 0)
-                onlineTime += totalMonths + " m ";
+                onlineTime += totalMonths + "m ";
 
             if (totalDays > 0)
-                onlineTime += totalDays + " d ";
+                onlineTime += totalDays + "d ";
 
             if (totalHours > 0)
-                onlineTime += totalHours + " h ";
+                onlineTime += totalHours + "h ";
 
             if (totalMinutes > 0)
-                onlineTime += totalMinutes + " m ";
+                onlineTime += totalMinutes + "m ";
 
             if (totalSeconds > 0)
-                onlineTime += totalSeconds + " s";
+                onlineTime += totalSeconds + "s";
 
             //Set currentOnlineTime
             if (years > 0)
-                currentOnlineTime += years + " y ";
+                currentOnlineTime += years + "y ";
 
             if (months > 0)
-                currentOnlineTime += months + " m ";
+                currentOnlineTime += months + "m ";
 
             if (days > 0)
-                currentOnlineTime += days + " d ";
+                currentOnlineTime += days + "d ";
 
             if (hours > 0)
-                currentOnlineTime += hours + " h ";
+                currentOnlineTime += hours + "h ";
 
             if (minutes > 0)
-                currentOnlineTime += minutes + " m ";
+                currentOnlineTime += minutes + "m ";
 
             if (seconds > 0)
-                currentOnlineTime += seconds + " s";
+                currentOnlineTime += seconds + "s";
 
             if (saveToSQL)
             {

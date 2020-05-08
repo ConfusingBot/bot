@@ -1,17 +1,16 @@
 package main.de.confusingbot.commands.cmds.musiccmds.queuecommand;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
+import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
 import main.de.confusingbot.music.queue.Queue;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,36 +24,54 @@ public class QueueCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
+
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
-        Queue queue = controller.getQueue();
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
+        {
+            MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
+            Queue queue = controller.getQueue();
 
-        if (args.length == 1)
-        {
-            //List
-            ListQueueCommand(channel, args, queue);
-        }
-        else if (args.length >= 2)
-        {
-            switch (args[1])
+            if (args.length == 1)
             {
-                case "clear":
-                    //Clear
-                    ClearQueueCommand(channel, args, queue);
-                    break;
-                case "delete":
-                    //Delete
-                    DeleteAtIndexCommand(channel, args, queue);
-                    break;
-                default:
-                    //Usage
-                    embeds.GeneralUsage(channel);
-                    break;
+                //List
+                ListQueueCommand(channel, args, queue);
+            }
+            else if (args.length >= 2)
+            {
+                switch (args[1])
+                {
+                    case "clear":
+                        //Clear
+                        ClearQueueCommand(channel, args, queue, member);
+                        break;
+
+                    case "delete":
+                        //Delete
+                        DeleteAtIndexCommand(channel, args, queue, member);
+                        break;
+
+                    case "shuffle":
+                        //Shuffle
+                        ShuffleQueueCommand(channel, args, member);
+                        break;
+
+                    default:
+                        //Usage
+                        embeds.GeneralUsage(channel);
+                        break;
+                }
             }
         }
     }
@@ -95,15 +112,83 @@ public class QueueCommand implements ServerCommand
         }
     }
 
-    private void ClearQueueCommand(TextChannel channel, String[] args, Queue queue)
+    private void ShuffleQueueCommand(TextChannel channel, String[] args, Member member)
     {
         if (args.length == 2)
         {
-            //Clear Queue
-            queue.getQueueList().clear();
+            GuildVoiceState state = member.getVoiceState();
+            if (state != null)
+            {
+                VoiceChannel voiceChannel = state.getChannel();
+                if (voiceChannel != null)
+                {
+                    MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-            //Message
-            embeds.SuccessfullyClearedMusicQueue(channel);
+                    if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                    {
+                        if (controller.getQueue().hasNext())
+                        {
+                            //Shuffle
+                            controller.getQueue().Shuffle();
+
+                            //Message
+                            embeds.SuccessfullyShuffledQueue(channel);
+                        }
+                        else
+                        {
+                            embeds.NoSongInQueueInformation(channel);
+                        }
+                    }
+                    else
+                    {
+                        EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                    }
+                }
+                else
+                {
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
+                }
+            }
+        }
+        else
+        {
+            embeds.ShuffleUsage(channel);
+        }
+    }
+
+    private void ClearQueueCommand(TextChannel channel, String[] args, Queue queue, Member member)
+    {
+        if (args.length == 2)
+        {
+            GuildVoiceState state = member.getVoiceState();
+            if (state != null)
+            {
+                VoiceChannel voiceChannel = state.getChannel();
+                if (voiceChannel != null)
+                {
+                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
+
+                    if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                    {
+                        //Clear Queue
+                        queue.getQueueList().clear();
+
+                        //Message
+                        embeds.SuccessfullyClearedMusicQueue(channel);
+                    }
+                    else
+                    {
+                        EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                    }
+                }
+                else
+                {
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
+                }
+            }
         }
         else
         {
@@ -112,38 +197,60 @@ public class QueueCommand implements ServerCommand
         }
     }
 
-    private void DeleteAtIndexCommand(TextChannel channel, String[] args, Queue queue)
+    private void DeleteAtIndexCommand(TextChannel channel, String[] args, Queue queue, Member member)
     {
         if (args.length == 3)
         {
-            if (args[2] != null)
+            GuildVoiceState state = member.getVoiceState();
+            if (state != null)
             {
-                if (CommandsUtil.isNumeric(args[2]))
+                VoiceChannel voiceChannel = state.getChannel();
+                if (voiceChannel != null)
                 {
-                    int index = Integer.parseInt(args[2]) - 1;//because the user won't start counting by 0
-                    List<AudioTrack> queueList = queue.getQueueList();
-                    if (index <= queueList.size() && index >= 0)
-                    {
-                        //Message
-                        embeds.SuccessfullyDeletedTrackAtIndex(channel, index, queueList.get(index).getInfo().title);
+                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                        queue.DeleteAtIndex(index);
+                    if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                    {
+                        if (args[2] != null)
+                        {
+                            if (CommandsUtil.isNumeric(args[2]))
+                            {
+                                int index = Integer.parseInt(args[2]) - 1;//because the user won't start counting by 0
+                                List<AudioTrack> queueList = queue.getQueueList();
+                                if (index <= queueList.size() && index >= 0)
+                                {
+                                    //Message
+                                    embeds.SuccessfullyDeletedTrackAtIndex(channel, index + 1, queueList.get(index).getInfo().title);
+
+                                    queue.DeleteAtIndex(index);
+                                }
+                                else
+                                {
+                                    //Error
+                                    embeds.CouldNotDeleteTrackAtIndex(channel, index);
+                                }
+                            }
+                            else
+                            {
+                                main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.NoNumberError(channel, args[2]);
+                            }
+                        }
+                        else
+                        {
+                            //Usage
+                            embeds.DeleteAtIndexUsage(channel);
+                        }
                     }
                     else
                     {
-                        //Error
-                        embeds.CouldNotDeleteTrackAtIndex(channel, index);
+                        EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                     }
                 }
                 else
                 {
-                    EmbedsUtil.NoNumberError(channel, args[2]);
+                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                 }
-            }
-            else
-            {
-                //Usage
-                embeds.DeleteAtIndexUsage(channel);
             }
         }
         else
@@ -151,7 +258,6 @@ public class QueueCommand implements ServerCommand
             //Usage
             embeds.DeleteAtIndexUsage(channel);
         }
-
     }
 
     //=====================================================================================================================================

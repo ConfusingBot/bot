@@ -1,8 +1,8 @@
 package main.de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 
-import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
-import main.de.confusingbot.manage.sql.LiteSQL;
+import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -16,53 +16,62 @@ import java.util.List;
 public class ReactRolesListener
 {
 
+    //Needed Permissions
+    Permission MANAGE_ROLES = Permission.MANAGE_ROLES;
+    Permission MESSAGE_MANAGE = Permission.MESSAGE_MANAGE;
+
     public void onReactionAdd(MessageReactionAddEvent event)
     {
         Guild guild = event.getGuild();
-        if (event.getChannelType() == ChannelType.TEXT)
+        Member bot = guild.getSelfMember();
+        Member member = event.getMember();
+
+        if (event.getChannelType() == ChannelType.TEXT && member != null)
         {
             long guildid = event.getGuild().getIdLong();
             long channelid = event.getChannel().getIdLong();
             long messageid = event.getMessageIdLong();
+
             if (ReactRoleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
             {
+                TextChannel channel = guild.getTextChannelById(channelid);
                 if (!event.getUser().isBot())
                 {
-                    String emote = "";
-
-                    if (event.getReactionEmote().isEmoji())
+                    if (bot.hasPermission(MANAGE_ROLES))
                     {
-                        emote = event.getReactionEmote().getEmoji();
-                    }
-                    else
-                    {
-                        emote = event.getReactionEmote().getId();
-                    }
+                        String emote = "";
 
-                    long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                    Role role = guild.getRoleById(roleid);
+                        if (event.getReactionEmote().isEmoji())
+                        {
+                            emote = event.getReactionEmote().getEmoji();
+                        }
+                        else
+                        {
+                            emote = event.getReactionEmote().getId();
+                        }
 
-                    if (role != null)
-                    {
+                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                        Role role = guild.getRoleById(roleid);
 
-                        try
+                        if (role != null)
                         {
                             //Add Role to member
-                            guild.addRoleToMember(event.getMember(), guild.getRoleById(roleid)).queue();
-                        } catch (HierarchyException e)
+                            CommandsUtil.AddOrRemoveRoleFromMember(guild, member, role, true);
+                        }
+                        else
                         {
                             //Error
-                            ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);
+                            ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+
+                            //SQL
+                            ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
+
                         }
                     }
                     else
                     {
                         //Error
-                        ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
-
-                        //SQL
-                        ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
-
+                        EmbedManager.SendNoPermissionEmbed(channel == null ? guild.getDefaultChannel() : channel, MANAGE_ROLES, "ReactRoleCommand | Can't add role to member!");
                     }
                 }
             }
@@ -72,52 +81,53 @@ public class ReactRolesListener
     public void onReactionRemove(MessageReactionRemoveEvent event)
     {
         Guild guild = event.getGuild();
-        if (event.getChannelType() == ChannelType.TEXT)
-        {
-            Member member = event.getMember();
-            if (member == null) return;
+        Member bot = guild.getSelfMember();
+        Member member = event.getMember();
 
+        if (event.getChannelType() == ChannelType.TEXT && member != null)
+        {
             long guildid = event.getGuild().getIdLong();
             long channelid = event.getChannel().getIdLong();
             long messageid = event.getMessageIdLong();
+
             if (ReactRoleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
             {
+                TextChannel channel = guild.getTextChannelById(channelid);
                 if (!event.getUser().isBot())
                 {
-                    String emote = "";
-
-                    if (event.getReactionEmote().isEmoji())
+                    if (bot.hasPermission(MANAGE_ROLES))
                     {
-                        emote = event.getReactionEmote().getEmoji();
-                    }
-                    else
-                    {
-                        emote = event.getReactionEmote().getId();
-                    }
+                        String emote = "";
 
-                    long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
-                    Role role = guild.getRoleById(roleid);
-
-                    if (role != null)
-                    {
-                        try
+                        if (event.getReactionEmote().isEmoji())
                         {
-                            //Remove Role from member
-                            guild.removeRoleFromMember(member, guild.getRoleById(roleid)).queue();
+                            emote = event.getReactionEmote().getEmoji();
                         }
-                        catch (HierarchyException e)
+                        else
+                        {
+                            emote = event.getReactionEmote().getId();
+                        }
+
+                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                        Role role = guild.getRoleById(roleid);
+
+                        if (role != null)
+                        {
+                            CommandsUtil.AddOrRemoveRoleFromMember(guild, member, role, false);
+                        }
+                        else
                         {
                             //Error
-                            ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(event.getTextChannel(), role);
+                            ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+
+                            //SQL
+                            ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
                         }
                     }
                     else
                     {
                         //Error
-                        ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
-
-                        //SQL
-                        ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
+                        EmbedManager.SendNoPermissionEmbed(channel == null ? guild.getDefaultChannel() : channel, MANAGE_ROLES, "ReactRoleCommand | Can't remove role from member!");
                     }
                 }
             }
@@ -127,6 +137,7 @@ public class ReactRolesListener
     public void onMemberLeaveListener(GuildMemberLeaveEvent event)
     {
         Guild guild = event.getGuild();
+        Member bot = guild.getSelfMember();
         ResultSet set = ReactRoleManager.sql.GetReactRolesResultSet(guild.getIdLong());
 
         try
@@ -141,22 +152,29 @@ public class ReactRolesListener
 
                 if (message != null)
                 {
-                    List<MessageReaction> reactions = message.getReactions();
-
-                    for (MessageReaction reaction : reactions)
+                    if (bot.hasPermission(channel, MESSAGE_MANAGE))
                     {
-                        User user = event.getUser();
-                        if (user != null)
+                        List<MessageReaction> reactions = message.getReactions();
+
+                        for (MessageReaction reaction : reactions)
                         {
-                            try
+                            User user = event.getUser();
+                            if (user != null)
                             {
-                                message.removeReaction(reaction.getReactionEmote().getEmote(), user).queue();
-                            }
-                            catch (IllegalStateException e)
-                            {
-                                message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
+                                try
+                                {
+                                    message.removeReaction(reaction.getReactionEmote().getEmote(), user).queue();
+                                } catch (IllegalStateException e)
+                                {
+                                    message.removeReaction(reaction.getReactionEmote().getEmoji(), user).queue();
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        //Error
+                        EmbedManager.SendNoPermissionEmbed(channel, MESSAGE_MANAGE, "ReactRoleCommand | Can't remove reaction from the member who left the server!");
                     }
                 }
             }

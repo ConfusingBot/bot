@@ -62,6 +62,11 @@ public class Embeds
         EmbedManager.SendErrorEmbed("This is no HexColor: " + hexColor + "!", channel, EmbedsUtil.showUsageTime);
     }
 
+    public void CouldNotDeleteRole(TextChannel channel, String role)
+    {
+        EmbedManager.SendErrorEmbed("Couldn't delete role " + role, channel, EmbedsUtil.showUsageTime);
+    }
+
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================

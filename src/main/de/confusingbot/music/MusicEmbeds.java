@@ -1,19 +1,14 @@
 package main.de.confusingbot.music;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.music.manage.MusicController;
 import main.de.confusingbot.music.manage.MusicEmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 public class MusicEmbeds
 {
@@ -35,10 +30,14 @@ public class MusicEmbeds
 
         String time = ((hours > 0) ? hours + "h " : "") + minutes + "min " + seconds + "s | " + ((maxHours > 0) ? maxHours + "h " : "") + maxMinutes + "min " + maxSeconds + "s";
 
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(musicColor);
+        builder.setTitle("**Paused Song🔈**");
+        builder.setDescription("" + title + "\n" + (isStream ? "\uD83D\uDD34 STREAM" : "⏳ " + time));
+        builder.setFooter("/pause for unpausing!");
+
         //Message
-        long pauseLastMessageID = EmbedManager.SendCustomEmbedGetMessageID("**Paused Song\uD83D\uDD08**",
-                "" + title + "\n" + (isStream ? "\uD83D\uDD34 STREAM" : "⏳ " + time),
-                musicColor, channel);
+        long pauseLastMessageID = EmbedManager.SendEmbedGetMessageID(builder, channel);
 
         musicEmbedManager.setPauseLastMessageID(pauseLastMessageID);
     }
@@ -51,7 +50,6 @@ public class MusicEmbeds
 
     public void TrackInformationEmbed(String author, String title, String url, boolean isStream, long seconds, long minutes, long hours)
     {
-
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(musicColor);
 
@@ -93,12 +91,11 @@ public class MusicEmbeds
             }
             else
             {
+
                 //Message
-                long musicLastPlayMessageID = channel.sendMessage(builder.build()).complete().getIdLong();
+                long musicLastPlayMessageID = EmbedManager.SendEmbedGetMessageID(builder, channel);
                 musicEmbedManager.setMusicLastPlayMessageID(musicLastPlayMessageID);
             }
-
-
         }
     }
 
@@ -106,7 +103,7 @@ public class MusicEmbeds
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(musicColor);
-        builder.setDescription("You added " + added + " tracks\uD83C\uDFB6️ to the queue\uD83D\uDDC2");
+        builder.setDescription("You added **" + added + " tracks\uD83C\uDFB6️** to the queue\uD83D\uDDC2");
 
         musicEmbedManager.sendMusicEmbed(builder, 5);
     }
@@ -115,7 +112,7 @@ public class MusicEmbeds
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#d400ff"));
-        builder.setDescription("You added " + title + "️ to the queue\uD83D\uDDC2");
+        builder.setDescription("You added **" + title + "️** to the queue\uD83D\uDDC2");
 
         musicEmbedManager.sendMusicEmbed(builder, 5);
     }
@@ -124,7 +121,7 @@ public class MusicEmbeds
     {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(musicColor);
-        builder.setDescription("");
+        builder.setDescription("Mhh.. I have no music to play!");
 
         musicEmbedManager.sendMusicEmbed(builder, 5);
     }

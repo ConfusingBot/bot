@@ -4,6 +4,7 @@ import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
 import java.time.OffsetDateTime;
@@ -21,45 +22,54 @@ public class VoteCommand implements ServerCommand
         VoteCommandManager.embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
         //vote create [#channel] [time in hours] [Header] -1- text1 -2- text2 -3- text3 -emote- text4 ([specialRoles])
         //vote remove messageid
 
-        Guild guild = channel.getGuild();
-        String[] args = CommandsUtil.messageToArgs(message);
-        EmbedManager.DeleteMessageByID(channel, message.getIdLong());
-
-        if (member.hasPermission(channel, VoteCommandManager.permission))
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
+            Guild guild = channel.getGuild();
+            String[] args = CommandsUtil.messageToArgs(message);
+            EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-            if (args.length >= 2)
+            if (member.hasPermission(channel, VoteCommandManager.permission))
             {
-                switch (args[1])
+                if (args.length >= 2)
                 {
-                    case "create":
-                        CreateCommand(args, guild, channel, message);
-                        break;
-                    case "remove":
-                        RemoveCommand(args, guild, channel, message);
-                        break;
-                    default:
-                        //Usage
-                        VoteCommandManager.embeds.GeneralUsage(channel);
-                        break;
+                    switch (args[1])
+                    {
+                        case "create":
+                            CreateCommand(args, guild, channel, message);
+                            break;
+                        case "remove":
+                            RemoveCommand(args, guild, channel, message);
+                            break;
+                        default:
+                            //Usage
+                            VoteCommandManager.embeds.GeneralUsage(channel);
+                            break;
+                    }
+                }
+                else
+                {
+                    //Usage
+                    VoteCommandManager.embeds.GeneralUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                VoteCommandManager.embeds.GeneralUsage(channel);
+                //Error
+                VoteCommandManager.embeds.NoPermissionError(channel, VoteCommandManager.permission);
             }
-        }
-        else
-        {
-            //Error
-            VoteCommandManager.embeds.NoPermissionError(channel, VoteCommandManager.permission);
         }
     }
 
@@ -122,9 +132,6 @@ public class VoteCommand implements ServerCommand
                             }
                         }
                         String newString = String.join(" ", wholeStringWordList);
-                        //=============================================================================================
-                        //Get Roles
-                        //=============================================================================================
 
                         //=============================================================================================
                         //Get Title
@@ -132,9 +139,6 @@ public class VoteCommand implements ServerCommand
                         title = newString.substring(0, newString.indexOf(VoteCommandManager.voteEmotePrefix));
                         newString = newString.replace(title, "");
                         if (title.isEmpty()) title = "Vote!";
-                        //=============================================================================================
-                        //Get Title
-                        //=============================================================================================
 
                         //=============================================================================================
                         //Get Emotes and Texts
@@ -144,7 +148,7 @@ public class VoteCommand implements ServerCommand
                         String sentence = "";
                         for (String word : wholeStringWordList)
                         {
-                            if (word.startsWith(VoteCommandManager.voteEmotePrefix) && word.endsWith(VoteCommandManager.voteEmotePrefix))
+                            if (word.startsWith(VoteCommandManager.voteEmotePrefix) && word.endsWith(VoteCommandManager.voteEmotePrefix) && word.length() > 1)
                             {
                                 word = word.replace(VoteCommandManager.voteEmotePrefix, "");
                                 boolean added = false;
@@ -156,7 +160,6 @@ public class VoteCommand implements ServerCommand
                                         emojiStrings.add(emote.getIdLong() + "");
                                         added = true;
                                     }
-
                                 }
 
                                 if (!added)
@@ -187,9 +190,6 @@ public class VoteCommand implements ServerCommand
                             //Message
                             VoteCommandManager.embeds.ToManyVotesInformation(channel, VoteCommandManager.voteEmotes.size());
                         }
-                        //=============================================================================================
-                        //Get Emotes and Texts
-                        //=============================================================================================
 
                         //Check if only one item for voting exists
                         if (emojiStrings.size() < 2)
@@ -250,7 +250,8 @@ public class VoteCommand implements ServerCommand
 
     private void RemoveCommand(String[] args, Guild guild, TextChannel channel, Message message)
     {
-        channel.sendMessage("```You can simply delete the VoteMessage for now```").complete().delete().queueAfter(5, TimeUnit.SECONDS);
+        //Message
+        EmbedManager.SendMessage("```Just remove the VoteMessage..```", channel, 5);
     }
 
     //=====================================================================================================================================

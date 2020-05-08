@@ -8,6 +8,7 @@ import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.*;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -20,64 +21,82 @@ public class PlayCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
 
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (args.length >= 2)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            GuildVoiceState state = member.getVoiceState();
-            if (state != null)
+            if (args.length >= 2)
             {
-                VoiceChannel voiceChannel = state.getChannel();
-                if (voiceChannel != null)
+                GuildVoiceState state = member.getVoiceState();
+                if (state != null)
                 {
-                    Music.channelID = voiceChannel.getIdLong();
-                    MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                    AudioPlayerManager audioPlayerManager = Music.audioPlayerManager;
-                    AudioManager manager = voiceChannel.getGuild().getAudioManager();
-                    VoiceChannel botVoiceChannel = manager.getConnectedChannel();
-
-                    if (botVoiceChannel == null || (botVoiceChannel.getIdLong() == voiceChannel.getIdLong()))
+                    VoiceChannel voiceChannel = state.getChannel();
+                    if (voiceChannel != null)
                     {
-                        //SQL
-                        controller.updateChannel(channel, member);
+                        Music.channelID = voiceChannel.getIdLong();
+                        MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                        AudioPlayerManager audioPlayerManager = Music.audioPlayerManager;
+                        AudioManager manager = voiceChannel.getGuild().getAudioManager();
+                        VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 1; i < args.length; i++) stringBuilder.append(args[i] + " ");
-
-                        String url = stringBuilder.toString().trim();
-                        //If url is no Link search this in ytsearch
-                        if (!url.startsWith("http"))
+                        if (botVoiceChannel == null || (botVoiceChannel.getIdLong() == voiceChannel.getIdLong()))
                         {
-                            url = "ytsearch: " + url;
+                            if (voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
+                            {
+                                //SQL
+                                controller.updateChannel(channel, member);
+
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (int i = 1; i < args.length; i++) stringBuilder.append(args[i] + " ");
+
+                                String url = stringBuilder.toString().trim();
+                                //If url is no Link search this in ytsearch
+                                if (!url.startsWith("http"))
+                                {
+                                    url = "ytsearch: " + url;
+                                }
+
+                                Connect(voiceChannel);
+
+                                //Try to Play Song
+                                audioPlayerManager.loadItem(url, new AudioLoadResult(url, controller, channel));
+                            }
+                            else
+                            {
+                                //Information
+                                EmbedsUtil.NoSpaceForBotInformation(channel);
+                            }
                         }
-
-                        Connect(voiceChannel);
-
-                        //Try to Play Song
-                        audioPlayerManager.loadItem(url, new AudioLoadResult(url, controller, channel));
+                        else
+                        {
+                            //Error
+                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                        }
                     }
                     else
                     {
-                        //Error
-                        EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                        //Information
+                        EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
                     }
                 }
-                else
-                {
-                    //Information
-                    EmbedsUtil.YouAreNotInAVoiceChannelInformation(channel);
-                }
             }
-        }
-        else
-        {
-            //Usage
-            embeds.PlayUsage(channel);
+            else
+            {
+                //Usage
+                embeds.PlayUsage(channel);
+            }
         }
     }
 

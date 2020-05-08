@@ -19,47 +19,59 @@ public class TempVoiceChannelCommand implements ServerCommand
         embeds.HelpEmbed();
     }
 
+    Member bot;
+
+    //Needed Permissions
+    Permission MANAGE_CHANNEL = Permission.MANAGE_CHANNEL;
+    Permission VOICE_MOVE_OTHERS = Permission.VOICE_MOVE_OTHERS;
+    Permission MESSAGE_WRITE = Permission.MESSAGE_WRITE;
+
     @Override
     public void performCommand(Member member, TextChannel channel, Message message)
     {
-        // - tempchannel [add/remove]
-
-        Guild guild = channel.getGuild();
-        String[] args = CommandsUtil.messageToArgs(message);
+        //Get Bot
+        bot = channel.getGuild().getSelfMember();
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        if (member.hasPermission(channel, TempVoiceChannelCommandManager.permission))
-        {
+        // - tempchannel [add/remove]
 
-            if (args.length >= 2)
+        if (bot.hasPermission(channel, MESSAGE_WRITE))
+        {
+            Guild guild = channel.getGuild();
+            String[] args = CommandsUtil.messageToArgs(message);
+
+            if (member.hasPermission(channel, TempVoiceChannelCommandManager.permission))
             {
-                switch (args[1])
+                if (args.length >= 2)
                 {
-                    case "add":
-                        AddCommand(args, member, guild, channel);
-                        break;
-                    case "remove":
-                        RemoveCommand(args, member, guild, channel);
-                        break;
-                    case "list":
-                        ListCommand(guild, channel);
-                        break;
-                    default:
-                        //Usage
-                        embeds.GeneralUsage(channel);
-                        break;
+                    switch (args[1])
+                    {
+                        case "add":
+                            AddCommand(args, member, guild, channel);
+                            break;
+                        case "remove":
+                            RemoveCommand(args, member, guild, channel);
+                            break;
+                        case "list":
+                            ListCommand(guild, channel);
+                            break;
+                        default:
+                            //Usage
+                            embeds.GeneralUsage(channel);
+                            break;
+                    }
+                }
+                else
+                {
+                    //Usage
+                    embeds.GeneralUsage(channel);
                 }
             }
             else
             {
-                //Usage
-                embeds.GeneralUsage(channel);
+                //Error
+                embeds.NoPermissionError(channel, TempVoiceChannelCommandManager.permission);
             }
-        }
-        else
-        {
-            //Error
-            embeds.NoPermissionError(channel, TempVoiceChannelCommandManager.permission);
         }
     }
 
@@ -92,54 +104,68 @@ public class TempVoiceChannelCommand implements ServerCommand
             embeds.SendTempVoiceChannelListEmbed(channel, description);
         }
         else
-
         {
             embeds.HasNoTempChannelInformation(channel);
         }
-
     }
 
     private void AddCommand(String[] args, Member member, Guild guild, TextChannel channel)
     {
-        if (args.length == 3)
+        if (bot.hasPermission(MANAGE_CHANNEL))
         {
-            String channelIdString = args[2];
-            if (CommandsUtil.isNumeric(channelIdString))
+            if (bot.hasPermission(VOICE_MOVE_OTHERS))
             {
-                long channelid = Long.parseLong(channelIdString);
-                VoiceChannel voiceChannel = member.getGuild().getVoiceChannelById(channelid);
-                if (voiceChannel != null)
+                if (args.length == 3)
                 {
-                    if (!sql.ExistInSQL(guild.getIdLong(), channelid))
+                    String channelIdString = args[2];
+                    if (CommandsUtil.isNumeric(channelIdString))
                     {
-                        //SQL
-                        sql.addToSQL(channelid, guild.getIdLong());
+                        long channelid = Long.parseLong(channelIdString);
+                        VoiceChannel voiceChannel = member.getGuild().getVoiceChannelById(channelid);
+                        if (voiceChannel != null)
+                        {
+                            if (!sql.ExistInSQL(guild.getIdLong(), channelid))
+                            {
+                                //SQL
+                                sql.addToSQL(channelid, guild.getIdLong());
 
-                        //Message
-                        embeds.SuccessfullyAddedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                                //Message
+                                embeds.SuccessfullyAddedTempchannel(channel, guild.getVoiceChannelById(channelid).getName());
+                            }
+                            else
+                            {
+                                //Error
+                                embeds.VoiceChannelAlreadyExistsError(channel);
+                            }
+                        }
+                        else
+                        {
+                            //Error
+                            embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
+                        }
                     }
                     else
                     {
                         //Error
-                        embeds.VoiceChannelAlreadyExistsError(channel);
+                        embeds.NoValidVoiceChannelIDNumberError(channel, channelIdString);
                     }
                 }
                 else
                 {
-                    //Error
-                    embeds.CouldNotFindVoiceChannelByIDError(channel, channelid);
+                    //Usage
+                    embeds.AddUsage(channel);
                 }
             }
             else
             {
                 //Error
-                embeds.NoValidVoiceChannelIDNumberError(channel, channelIdString);
+                EmbedManager.SendNoPermissionEmbed(channel, VOICE_MOVE_OTHERS, "");
             }
         }
         else
         {
-            //Usage
-            embeds.AddUsage(channel);
+            //Error
+            EmbedManager.SendNoPermissionEmbed(channel, MANAGE_CHANNEL, "");
         }
     }
 
@@ -186,6 +212,5 @@ public class TempVoiceChannelCommand implements ServerCommand
             embeds.RemoveUsage(channel);
         }
     }
-
 
 }

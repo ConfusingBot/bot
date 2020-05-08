@@ -15,7 +15,7 @@ public class SQL
     public void addToSQL(long guildid, long channelid, int time, String color, String title, String info)
     {
         LiteSQL.onUpdate("INSERT INTO repeatinfo(guildid, channelid, time, color, title, info) VALUES(" +
-                guildid + ", " + channelid + ", " + time + ", '" + color + "', '" + title + "', '" + info +"')");
+                guildid + ", " + channelid + ", " + time + ", '" + color + "', '" + title + "', '" + info + "')");
     }
 
     public void removeFormSQL(long guildid, int id)
@@ -87,11 +87,46 @@ public class SQL
         return repeatInfoString;
     }
 
-    public ResultSet GetRepeatInfoResultSet(long guildid)
+    public String getRepeatInfoTitleById(long guildid, int id)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
-                + "guildid = " + guildid);
+        String title = "error";
 
-        return set;
+        try
+        {
+            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                    + "guildid = " + guildid
+                    + " AND id = " + id);
+
+            while (set.next())
+            {
+                title = set.getString("title");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return title;
     }
+
+    public long getRepeatInfoChannelIdById(long guildid, int id)
+    {
+        long channelId = -1;
+
+        try
+        {
+            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                    + "guildid = " + guildid
+                    + " AND id = " + id);
+
+            while (set.next())
+            {
+                channelId = set.getLong("channelid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return channelId;
+    }
+
 }
