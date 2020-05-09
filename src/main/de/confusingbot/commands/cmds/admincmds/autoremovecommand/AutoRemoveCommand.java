@@ -32,15 +32,26 @@ public class AutoRemoveCommand implements ServerCommand
 
         if (bot.hasPermission(channel, MESSAGE_WRITE))
         {
-            if (args.length == 1)
+            if (member.hasPermission(AutoRemoveManager.permission))
             {
-                AutoRemove autoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong());
-                autoRemove.setCanAutoRemove(!autoRemove.getCanAutoRemove());
-                embeds.AutoRemoveSetStatus(channel, autoRemove.getCanAutoRemove());
+                if (args.length == 1)
+                {
+                    AutoRemove autoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong());
+                    autoRemove.setCanAutoRemove(!autoRemove.getCanAutoRemove());
+
+                    //Message
+                    embeds.AutoRemoveSetStatus(channel, autoRemove.getCanAutoRemove());
+                }
+                else
+                {
+                    //Usage
+                    embeds.AutoRemoveUsage(channel);
+                }
             }
             else
             {
-                embeds.AutoRemoveUsage(channel);
+                //Error
+                embeds.NoPermissionError(channel, AutoRemoveManager.permission);
             }
         }
     }
