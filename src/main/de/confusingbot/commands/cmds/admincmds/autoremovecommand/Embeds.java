@@ -27,8 +27,8 @@ public class Embeds
     //=====================================================================================================================================
     //Info
     //=====================================================================================================================================
-    public void FeatureDoesNotExistYet(TextChannel channel)
+    public void AutoRemoveSetStatus(TextChannel channel, boolean newStatus)
     {
-        EmbedManager.SendInfoEmbed("This feature doesn't exist yet :/", channel, EmbedsUtil.showInfoTime);
+        EmbedManager.SendInfoEmbed("AutoRemove has been set to `" + newStatus + "`", channel, EmbedsUtil.showInfoTime);
     }
 }

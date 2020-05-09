@@ -104,7 +104,7 @@ public class Embeds
         builder.addField("**Owner:** ", owner.getAsMention(), true);
 
         if (file == null)
-            builder.addField("**Member Graph will be available soon!**", "", false);
+            builder.addField("**Member Graph will be available after 3 days!**", "", false);
         else
         {
             builder.addField("**Member Graph:**", "", false);

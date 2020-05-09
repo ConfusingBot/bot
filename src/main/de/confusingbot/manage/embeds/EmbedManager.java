@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.autoremovecommand.AutoRemoveManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQuestionRunnable;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -18,6 +19,7 @@ public class EmbedManager
 
     public static void SendErrorEmbed(String description, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
 
         EmbedBuilder error = new EmbedBuilder();
         error.setColor(0xff3923);
@@ -25,7 +27,7 @@ public class EmbedManager
         error.setDescription(description);
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(error.build()).queue();
             }
@@ -48,6 +50,7 @@ public class EmbedManager
 
     public static void SendSuccessEmbed(String description, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
 
         EmbedBuilder success = new EmbedBuilder();
         success.setColor(0x00FF40);
@@ -55,7 +58,7 @@ public class EmbedManager
         success.setDescription(description);
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(success.build()).queue();
             }
@@ -78,13 +81,15 @@ public class EmbedManager
 
     public static void SendInfoEmbed(String description, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+
         EmbedBuilder info = new EmbedBuilder();
         info.setColor(0xBF00FF);
         info.setTitle("💡 Information");
         info.setDescription(description);
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(info.build()).queue();
             }
@@ -107,13 +112,15 @@ public class EmbedManager
 
     public static void SendUsageEmbed(String description, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+
         EmbedBuilder usage = new EmbedBuilder();
         usage.setColor(0xBF00FF);
         usage.setTitle("💡 Usage");
         usage.setDescription(description);
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(usage.build()).queue();
             }
@@ -136,6 +143,7 @@ public class EmbedManager
 
     public static void SendCustomEmbed(String title, String description, Color color, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
 
         EmbedBuilder custom = new EmbedBuilder();
         custom.setColor(color);
@@ -143,7 +151,7 @@ public class EmbedManager
         custom.setDescription(description);
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(custom.build()).queue();
             }
@@ -193,8 +201,10 @@ public class EmbedManager
 
     public static void SendEmbed(EmbedBuilder builder, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(builder.build()).queue();
             }
@@ -217,8 +227,10 @@ public class EmbedManager
 
     public static void SendMessage(String text, TextChannel channel, int timeInSeconds)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(text).queue();
             }
@@ -263,6 +275,8 @@ public class EmbedManager
 
     public static void SendNoPermissionEmbed(TextChannel channel, Permission permission, String description)
     {
+        boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+
         int timeInSeconds = 10;
         EmbedBuilder noPermission = new EmbedBuilder();
         noPermission.setColor(0xBF00FF);
@@ -271,7 +285,7 @@ public class EmbedManager
         noPermission.setTimestamp(OffsetDateTime.now());
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0)
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(noPermission.build()).queue();
             }

@@ -34,7 +34,9 @@ public class AutoRemoveCommand implements ServerCommand
         {
             if (args.length == 1)
             {
-                embeds.FeatureDoesNotExistYet(channel);
+                AutoRemove autoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong());
+                autoRemove.setCanAutoRemove(!autoRemove.getCanAutoRemove());
+                embeds.AutoRemoveSetStatus(channel, autoRemove.getCanAutoRemove());
             }
             else
             {

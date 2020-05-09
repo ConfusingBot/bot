@@ -16,6 +16,7 @@ import java.util.Random;
 
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.BotInfo;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.ClientInfo;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.infos.ServerInfo;
@@ -140,10 +141,12 @@ public class InfoCommand implements ServerCommand
 
     private void ServerInfoCommand(TextChannel channel, Member requester)
     {
+        //Send wait message
+        long messageid = embeds.SendWaitMessage(channel);
+
         Guild guild = channel.getGuild();
         String memberString = InfoCommandManager.sql.GetMembersInServer(guild.getIdLong());
         String dateString = InfoCommandManager.sql.GetDatesInServer(guild.getIdLong());
-
 
         List<String> dates = new ArrayList<>();
         List<Integer> members = new ArrayList<>();
@@ -179,6 +182,9 @@ public class InfoCommand implements ServerCommand
                         guild.getCategories().size(),
                         InfoCommandManager.formatter.format(guild.getTimeCreated()),
                         guild.getOwner());
+
+                //Delete Wait Message
+                channel.deleteMessageById(messageid).queue();
             }
         }).start();
     }
