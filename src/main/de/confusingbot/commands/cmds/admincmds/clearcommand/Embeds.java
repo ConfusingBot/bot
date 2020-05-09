@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.clearcommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
@@ -25,7 +24,7 @@ public class Embeds
     //=====================================================================================================================================
     public void ClearUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "clear [# messages]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "clear [# of messages]\n``` ```Clear the last # messages```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -44,7 +43,7 @@ public class Embeds
     public void NegativeNumberError(TextChannel channel)
     {
         //Message
-        EmbedManager.SendMessage("really?", channel, 0);
+        EmbedManager.SendMessage("really?", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -52,7 +51,7 @@ public class Embeds
     //=====================================================================================================================================
     public void MaxNumberInformation(TextChannel channel, int number)
     {
-        EmbedManager.SendInfoEmbed("**Delete this channel** if you want to clear it complete!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("**Delete this channel** if you want to clear it complete!", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================

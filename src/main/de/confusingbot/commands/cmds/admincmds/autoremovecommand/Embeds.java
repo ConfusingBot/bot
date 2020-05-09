@@ -1,34 +1,34 @@
-package main.de.confusingbot.commands.cmds.musiccmds.leavecommand;
+package main.de.confusingbot.commands.cmds.admincmds.autoremovecommand;
 
 import main.de.confusingbot.Main;
+import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommandManager;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.awt.*;
-
 public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager. music.add("```yaml\n" + Main.prefix + "leave\n``` ```ConfusingBot will leave your channel```");
+        HelpManager.admin.add("```yaml\n" + Main.prefix + "autoremove\n``` ```Disable/Enable the autoremove feature of the ConfusingBot```" +
+                "```fix\n" + ClearCommandManager.permission.name() + "\n```");
     }
 
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void LeaveUsage(TextChannel channel)
+    public void AutoRemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "leave\n``` ```ConfusingBot will leave your channel```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "autoremove\n``` ```Disable/Enable the autoremove feature of the ConfusingBot```" +
+                "```fix\n" + ClearCommandManager.permission.name() + "\n```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
     //Info
     //=====================================================================================================================================
-    public void StoppedMusicMessage(TextChannel channel)
+    public void FeatureDoesNotExistYet(TextChannel channel)
     {
-        EmbedManager.SendCustomEmbed("Stopped Music\uD83C\uDFB6", "", Color.decode("#d400ff"), channel, 5);
+        EmbedManager.SendInfoEmbed("This feature doesn't exist yet :/", channel, EmbedsUtil.showInfoTime);
     }
-
 }

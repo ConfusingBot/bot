@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.joinrole;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -39,17 +38,20 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "joinrole add [@role]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "joinrole add [@role]\n```"
+                + "```Add a JoinRole to your server```\n", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "joinrole remove [@role]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "joinrole remove [@role]\n```"
+                + "```Remove the @role form the JoinRoles```\n", channel, EmbedsUtil.showUsageTime);
     }
 
     public void ListUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "joinrole list`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "joinrole list```"
+                + "```List all JoinRoles of this server```\n", channel, EmbedsUtil.showUsageTime);
     }
 
 
@@ -77,22 +79,22 @@ public class Embeds
         EmbedManager.SendErrorEmbed("The role with the id **" + roleid + " doesn't exist** on this server!", channel, EmbedsUtil.showErrorTime);
     }
 
-    //=====================================================================================================================================
-    //Information
-    //=====================================================================================================================================
-    public void AlreadyExistingJoinRoleInformation(TextChannel channel, Role role)
+    public void AlreadyExistingJoinRoleError(TextChannel channel, Role role)
     {
         EmbedsUtil.AlreadyExistsError(channel, "JoinRole" + " (" + role.getAsMention() + ")");
     }
 
-    public void NoExistingJoinRoleInformation(TextChannel channel, Role role)
+    public void NoExistingJoinRoleError(TextChannel channel, Role role)
     {
         EmbedsUtil.NotExistingError(channel, "JoinRole" + " (" + role.getAsMention() + ")");
     }
 
+    //=====================================================================================================================================
+    //Information
+    //=====================================================================================================================================
     public void HasNoJoinRoleInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("This guild has **no JoinRoles**! \nYou can add JoinRoles with `" + Main.prefix + "joinrole add`", channel, 5);
+        EmbedManager.SendInfoEmbed("This guild has **no JoinRoles**! \nYou can add JoinRoles with `" + Main.prefix + "joinrole add`", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================
@@ -118,7 +120,7 @@ public class Embeds
         builder.setTitle("\uD83D\uDC51JoinRoles: ");
         builder.setDescription(description);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
 }

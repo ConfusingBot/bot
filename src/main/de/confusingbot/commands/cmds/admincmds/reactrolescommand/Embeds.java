@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -39,12 +38,14 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "reactrole add [channel] [messageID] [emote] [@role]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "reactrole add [channel] [messageID] [emoji] [@role]\n```"
+                + "```Add a emoji to a message on which the user can click to get a @role```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "reactrole remove [channel] [messageID] [emote] [@role]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "reactrole remove [channel] [messageID] [emote] [@role]\n``` "
+                + "```Remove the reactrole(emoji) form the message```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -60,9 +61,9 @@ public class Embeds
         EmbedsUtil.AlreadyExistsError(channel, "ReactRole");
     }
 
-    public void ReactRoleNotExistsError(TextChannel channel)
+    public void ReactRoleNotExistsError(TextChannel channel, String role)
     {
-        EmbedsUtil.NotExistingError(channel, "ReactRole");
+        EmbedsUtil.NotExistingError(channel, "ReactRole " + role);
     }
 
     public void NoMessageIDError(TextChannel channel, String id)
@@ -73,7 +74,7 @@ public class Embeds
     public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
     {
         EmbedManager.SendErrorEmbed("The bot has no right to assign this " + role.getAsMention() + "\n" +
-                "Please give the bot a role over the role to be assign this role!", channel, 10);
+                "Please give the bot a role over the role to be assign this role!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void YouHaveNotMentionedAValidEmoteError(TextChannel channel)
@@ -109,7 +110,7 @@ public class Embeds
     //=====================================================================================================================================
     public void HasNoReactRoleInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("This guild has **no ReactRoles**! \nYou can add ReactRoles with`" + Main.prefix + "reactrole add`", channel, 5);
+        EmbedManager.SendInfoEmbed("This guild has **no ReactRoles**! \nYou can add ReactRoles with`" + Main.prefix + "reactrole add`", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================
@@ -122,7 +123,7 @@ public class Embeds
         builder.setTitle("\uD83D\uDC51ReactRoles: ");
         builder.setDescription(description);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
     public long SendWaitMessage(TextChannel channel)

@@ -7,7 +7,6 @@ import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JoinRoleCommand implements ServerCommand
@@ -99,7 +98,7 @@ public class JoinRoleCommand implements ServerCommand
                     else
                     {
                         //Error
-                        JoinRoleManager.embeds.AlreadyExistingJoinRoleInformation(channel, role);
+                        JoinRoleManager.embeds.AlreadyExistingJoinRoleError(channel, role);
                     }
                 }
                 else
@@ -145,7 +144,7 @@ public class JoinRoleCommand implements ServerCommand
                     else
                     {
                         //Error
-                        JoinRoleManager.embeds.NoExistingJoinRoleInformation(channel, role);
+                        JoinRoleManager.embeds.NoExistingJoinRoleError(channel, role);
                     }
                 }
                 else

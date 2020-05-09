@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.votecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -28,18 +27,20 @@ public class Embeds
         EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -\uD83D\uDE00- [text2] [...] ([@allowedRole @allowedRole2 ..])\n```"
                         + "```Create a Vote Message with up to 9 vote points!```"
                         + "```yaml\n" + Main.prefix + "vote remove [messageID]\n```"
-                        + "```Remove the Vote form the tempchannels```",
+                        + "```Remove the Vote```",
                 channel, EmbedsUtil.showUsageTime);
     }
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -2- [text2] [...] ([@allowedRole @allowedRole2 ..])`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote create [#channel] [time in hours] [Header] -1- [text1] -\uD83D\uDE00- [text2] [...] ([@allowedRole @allowedRole2 ..])\n```"
+                + "```Create a Vote Message with up to 9 vote points!```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "vote remove [messageID]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "vote remove [messageID]\n```"
+                + "```Remove the Vote```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -47,7 +48,7 @@ public class Embeds
     //=====================================================================================================================================
     public void ToManyVotesInformation(TextChannel channel, int maxVotes)
     {
-         EmbedManager.SendInfoEmbed("We are sorry but you can only add `" + maxVotes + "` vote possibilities!", channel, EmbedsUtil.showErrorTime);
+         EmbedManager.SendInfoEmbed("We are sorry but you can only add `" + maxVotes + "` vote possibilities!", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================

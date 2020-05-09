@@ -1,15 +1,11 @@
 package main.de.confusingbot.commands.cmds.admincmds.messagecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.awt.*;
 
 public class Embeds
 {
@@ -27,9 +23,9 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "message [add] [welcome/leave] [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
+                "```yaml\n" + Main.prefix + "message add [welcome/leave] [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
                         "```Create a welcome/leave message which will be sent if member join/leave the server```" +
-                        "```yaml\n" + Main.prefix + "message [add] welcome private ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
+                        "```yaml\n" + Main.prefix + "message add welcome private ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
                         "```Create a private welcome message which will be sent as an direct message if the member join the server```" +
                         "```yaml\n" + Main.prefix + "message remove [welcome/leave] (private)\n```" +
                         "```Remove the welcome/leave message```", channel, EmbedsUtil.showUsageTime);
@@ -38,12 +34,14 @@ public class Embeds
     public void MessageAddUsage(TextChannel channel, String messagetype, boolean isPrivate)
     {
         String privateString = isPrivate ? " private" : "";
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message add " + messagetype + "" + privateString + " [#messageChannel] ([#hexColor]) ([Title]) MESSAGE: [Message (@newMember | #channel)]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "message add [" + messagetype + "]" + privateString +" [#channel] ([#hexcolor]) ([titleExample]) MESSAGE: [Welcome (@newMember/@leaveMember) to the server look at (#rule)]\n``` " +
+                "```Create a " + messagetype + " message which will be sent if member " + (messagetype.equals("welcome") ? "join" : "leave") + " the server```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void MessageRemoveUsage(TextChannel channel, String messagetype)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "message " + messagetype + " remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "message remove [" + messagetype + "] (private)\n```" +
+                "```Remove the " + messagetype + " message```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -54,29 +52,29 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel, permission);
     }
 
-    public void NoMessageDefinedError(TextChannel channel, String messagetype)
+    public void NoMessageDefinedError(TextChannel channel, String messageType)
     {
-        EmbedManager.SendErrorEmbed("You have no **" + messagetype + "** message defined!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("You have no **" + messageType + "** message defined!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void NoMessageChannelMentionedError(TextChannel channel, String messagetype)
+    public void NoMessageChannelMentionedError(TextChannel channel, String messageType)
     {
-        EmbedManager.SendErrorEmbed("You have not mentioned **" + messagetype + "** message channel!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("You have not mentioned **" + messageType + "** message channel!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void MessageAlreadyExistsError(TextChannel channel, String messagetype)
+    public void MessageAlreadyExistsError(TextChannel channel, String messageType)
     {
-        EmbedsUtil.AlreadyExistsError(channel, messagetype + " message");
+        EmbedsUtil.AlreadyExistsError(channel, messageType + " message");
     }
 
-    public void MessageDoesNotExistsError(TextChannel channel, String messagetype)
+    public void MessageDoesNotExistsError(TextChannel channel, String messageType)
     {
-        EmbedsUtil.NotExistingError(channel, messagetype + " message");
+        EmbedsUtil.NotExistingError(channel, messageType + " message");
     }
 
-    public void CouldNotFindMessageChannelError(TextChannel channel, String messagetype)
+    public void CouldNotFindMessageChannelError(TextChannel channel, String messageType)
     {
-        EmbedManager.SendErrorEmbed("The **" + messagetype + "** message channel does not **exist**!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The **" + messageType + "** message channel does not **exist**!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void CanNotSendPrivateLeaveMessage(TextChannel channel)
@@ -87,17 +85,17 @@ public class Embeds
     //=====================================================================================================================================
     //Success
     //=====================================================================================================================================
-    public void SuccessfullyAddedMessage(TextChannel channel, String messagetype, boolean isPrivate)
+    public void SuccessfullyAddedMessage(TextChannel channel, String messageType, boolean isPrivate)
     {
         String privateString = isPrivate ? " private" : "";
-        EmbedManager.SendSuccessEmbed("You successfully added a **" + messagetype + "" + privateString + " message**",
+        EmbedManager.SendSuccessEmbed("You successfully added a **" + messageType + "" + privateString + " message**",
                 channel, EmbedsUtil.showSuccessTime);
     }
 
-    public void SuccessfullyRemovedMessage(TextChannel channel, String messagetype, boolean isPrivate)
+    public void SuccessfullyRemovedMessage(TextChannel channel, String messageType, boolean isPrivate)
     {
         String privateString = isPrivate ? " private" : "";
-        EmbedManager.SendSuccessEmbed("You successfully removed a **" + messagetype + "" + privateString + " message**",
+        EmbedManager.SendSuccessEmbed("You successfully removed a **" + messageType + "" + privateString + " message**",
                 channel, EmbedsUtil.showSuccessTime);
     }
 }

@@ -2,7 +2,7 @@ package main.de.confusingbot.commands.cmds.musiccmds.skipcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -12,7 +12,7 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.music.add("```yaml\n" + Main.prefix + "skip\n``` ```skip the current playing Song```");
+        HelpManager.music.add("```yaml\n" + Main.prefix + "skip\n``` ```Skip the current playing Song```");
     }
 
     //=====================================================================================================================================
@@ -20,7 +20,7 @@ public class Embeds
     //=====================================================================================================================================
     public void SkipUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "skip`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "skip\n``` ```Skip the current playing Song```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================

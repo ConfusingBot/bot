@@ -1,9 +1,8 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
-import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -42,7 +41,7 @@ public class Embeds
                         + "```Show you some information about the asked question```"
                         + "```yaml\n" + Main.prefix + "question category\n```"
                         + " ```Create a question category to unlock the question feature```",
-                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+                channel, main.de.confusingbot.commands.help.EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCategoryGeneralUsage(TextChannel channel)
@@ -52,27 +51,31 @@ public class Embeds
                         + "```Create a question category (-> the members can use the question command)```"
                         + "```yaml\n" + Main.prefix + "question category remove\n```"
                         + " ```Remove the question category```",
-                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+                channel, main.de.confusingbot.commands.help.EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCloseUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question close`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "question close```"
+                + "```Close the question in which you wrote this command```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCategoryCreateUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category create [CategoryID]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "question category create [categoryId]\n```"
+                + "```Create a question category (-> the members can use the question command)```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void QuestionCategoryRemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question category remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "question category remove\n```"
+                + " ```Remove the question category```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void QuestionInfoUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "question info`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "question info```"
+                + "```Show you some information about the asked question```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -141,12 +144,12 @@ public class Embeds
 
     public void MinXWords(TextChannel channel, int words)
     {
-        EmbedManager.SendInfoEmbed("You need **min " + words + " words** for creating a question!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("You need **min " + words + " words** for creating a question!", channel, EmbedsUtil.showInfoTime);
     }
 
     public void ThisServerHasNoExistingQuestionCategoryInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("**This server doesn't support this feature!**\nInform a **Admin** about that!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("**This server doesn't support this feature!**\nInform a **Admin** about that!", channel, EmbedsUtil.showInfoTime);
     }
 
     public void SendDeleteQuestionInfo(TextChannel channel, Member member, long timeleft)
@@ -174,7 +177,7 @@ public class Embeds
         builder.setFooter("Requested by " + requester.getEffectiveName());
 
         //Send Embed
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, 30);
     }
 
     //=====================================================================================================================================

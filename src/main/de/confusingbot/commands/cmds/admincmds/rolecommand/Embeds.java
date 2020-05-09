@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.rolecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.Permission;
@@ -27,7 +26,7 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed(
-                "```yaml\n" + Main.prefix + "role create [name] ([#HexColor])\n```"
+                "```yaml\n" + Main.prefix + "role create [name] ([#color])\n```"
                         + "```Create a new role```"
                         + "```yaml\n" + Main.prefix + "role delete [@role]\n```"
                         + "```Delete the @role```"
@@ -36,12 +35,14 @@ public class Embeds
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "role create [roleName] ([#color])`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "role create [name] ([#color])\n```"
+                + "```Create a new role```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void DeleteUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "role create [roleName] [#color]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "role delete [@role]\n```"
+                + "```Delete the @role```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -59,12 +60,12 @@ public class Embeds
 
     public void NoHexColorError(TextChannel channel, String hexColor)
     {
-        EmbedManager.SendErrorEmbed("This is no HexColor: " + hexColor + "!", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendErrorEmbed("This is no HexColor: " + hexColor + "!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void CouldNotDeleteRole(TextChannel channel, String role)
     {
-        EmbedManager.SendErrorEmbed("Couldn't delete role " + role, channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendErrorEmbed("Couldn't delete role " + role, channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================

@@ -1,7 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -36,17 +36,20 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title]) " + RepeatInfoCommandManager.infoKey + " [info]\n`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title]) " + RepeatInfoCommandManager.infoKey + " [info]\n```"
+                + "```Add a RepeatInfo to this server which shows every [timestep]```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo remove [index See repeatinfo list]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "repeatinfo remove [index See repeatinfo list]\n``` "
+                + "```Remove the RepeatInfo a the index```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void ListUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "repeatinfo list`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "repeatinfo list\n``` "
+                + "```List all of the RepeatInfos of this server and offers you the index!```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -59,7 +62,7 @@ public class Embeds
 
     public void OnlyXAllowedInfoCommandsError(TextChannel channel, int maxInfos)
     {
-        EmbedManager.SendUsageEmbed("A server can max has " + maxInfos + " RepeatInfos", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("A server can max has " + maxInfos + " RepeatInfos", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoMentionedTextChannelError(TextChannel channel)
@@ -92,7 +95,7 @@ public class Embeds
     //=====================================================================================================================================
     public void ToLargeGapBetweenRepeatsInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("The max allowed gap between the information's is " + RepeatInfoCommandManager.maxGapInHours + "h !", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendInfoEmbed("The max allowed gap between the information's is " + RepeatInfoCommandManager.maxGapInHours + "h !", channel, EmbedsUtil.showInfoTime);
     }
 
 
@@ -119,7 +122,7 @@ public class Embeds
         builder.setTitle("RepeatInfos: ");
         builder.setDescription(text);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
     public void SendInfoEmbed(TextChannel channel, String color, String title, String info)

@@ -1,6 +1,7 @@
 package main.de.confusingbot.manage.commands;
 
-import main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
+import main.de.confusingbot.commands.cmds.admincmds.autoremovecommand.AutoRemoveCommand;
+import main.de.confusingbot.commands.cmds.ownercmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
 import main.de.confusingbot.commands.cmds.admincmds.eventcommand.EventCommand;
@@ -66,6 +67,7 @@ public class CommandManager
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());
+        this.commands.put("autoremove", new AutoRemoveCommand());
         this.commands.put("tempchannel", new TempVoiceChannelCommand());
         this.commands.put("role", new RoleCommand());
         this.commands.put("clear", new ClearCommand());

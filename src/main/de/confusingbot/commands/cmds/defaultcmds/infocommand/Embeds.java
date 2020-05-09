@@ -1,20 +1,15 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.sharding.ShardManager;
 
 import java.awt.*;
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 import java.time.OffsetDateTime;
 
 public class Embeds
@@ -30,7 +25,7 @@ public class Embeds
     //=====================================================================================================================================
     public void InfoUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "info [@User/bot/server]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "info [@User/bot/server]\n``` ```Give you some informations about the @User/bot/server```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -38,21 +33,9 @@ public class Embeds
     //=====================================================================================================================================
     public void CouldNotFindMentionedMember(TextChannel channel, String member)
     {
-        EmbedManager.SendErrorEmbed("Could not find member " + member, channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendErrorEmbed("Could not find member " + member, channel, EmbedsUtil.showErrorTime);
     }
 
-    public void UnknownErrorMessage(TextChannel channel)
-    {
-        EmbedManager.SendErrorEmbed("A unknown error appears\uD83D\uDE10 \nPleas try it later again!", channel, EmbedsUtil.showErrorTime);
-    }
-
-    //=====================================================================================================================================
-    //Error
-    //=====================================================================================================================================
-    public void FirstDayInfo(TextChannel channel)
-    {
-        EmbedManager.SendInfoEmbed("We need some more time for creating this information!", channel, EmbedsUtil.showErrorTime);
-    }
 
     //=====================================================================================================================================
     //Other
@@ -97,18 +80,7 @@ public class Embeds
         builder.addField("**Creator:** ", creator, false);
         builder.addField("**Help:** ", "https://discord.gg/xc82F8M", true);
 
-        //TODO load image also in a jar file.. doesn't work yet
-        InputStream file = this.getClass().getResourceAsStream("/images/ConfusingGangBanner.png");
-
-        if (file != null)
-        {
-            builder.setImage("attachment://ConfusingGangBanner.png");
-            channel.sendFile(file, "ConfusingGangBanner.png").embed(builder.build()).queue();
-        }
-        else
-        {
-            EmbedManager.SendEmbed(builder, channel, 30);
-        }
+        EmbedManager.SendEmbed(builder, channel, 30);
     }
 
     public void SendInfoServerEmbed(TextChannel channel, Member requester, File file, long textChannels, long voiceChannels, long members, long bots, long emotes, long roles, long categories, String creationTime, Member owner)
@@ -146,7 +118,8 @@ public class Embeds
             channel.sendFile(file, "memberStats.png").embed(builder.build()).queue(message -> {
 
                 //Delete File
-                if(!file.delete()){
+                if (!file.delete())
+                {
                     System.out.println("Failed to delete " + file.getName());
                 }
             });
@@ -154,8 +127,12 @@ public class Embeds
         else
         {
             //Send Message without File
-           EmbedManager.SendEmbed(builder, channel, 10);
+            EmbedManager.SendEmbed(builder, channel, 10);
         }
+    }
 
+    public long SendWaitMessage(TextChannel channel)
+    {
+        return EmbedManager.SendCustomEmbedGetMessageID("Please Wait", "This needs upto 10s!", Color.pink, channel);
     }
 }

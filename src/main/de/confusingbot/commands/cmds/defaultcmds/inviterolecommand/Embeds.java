@@ -1,8 +1,8 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.inviterolecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -26,16 +26,6 @@ public class Embeds
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void InviteAddUsage(TextChannel channel)
-    {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "invite add [@role] [inviteCount]`", channel, EmbedsUtil.showUsageTime);
-    }
-
-    public void InviteRemoveUsage(TextChannel channel)
-    {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "invite remove [@role]`", channel, EmbedsUtil.showUsageTime);
-    }
-
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
@@ -48,7 +38,19 @@ public class Embeds
                         + "```yaml\n" + Main.prefix + "invite stats\n```"
                         + "```Shows your invite stats```"
                         + "```yaml\n" + Main.prefix + "invite leaderboard\n```"
-                        + "```Shows you the top inviter of this server```", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+                        + "```Shows you the top inviter of this server```", channel, main.de.confusingbot.commands.help.EmbedsUtil.showUsageTime);
+    }
+
+    public void InviteAddUsage(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "invite add [@role] [inviteCount]\n```"
+                + "```Add @role to the InviteRole```", channel, EmbedsUtil.showUsageTime);
+    }
+
+    public void InviteRemoveUsage(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "invite remove [@role]\n```"
+                + "```Remove @role from the InviteRoles```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -62,7 +64,7 @@ public class Embeds
 
     public void RoleDoesNotExistError(TextChannel channel, long roleid)
     {
-        EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The role with the id " + roleid + " doesn't exist on this server!", channel, main.de.confusingbot.commands.help.EmbedsUtil.showErrorTime);
     }
 
     public void NoMentionedRoleError(TextChannel channel)
@@ -77,12 +79,12 @@ public class Embeds
 
     public void InviteRoleAlreadyExists(TextChannel channel, String role)
     {
-        EmbedManager.SendErrorEmbed(role + " is already an InviteRole", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed(role + " is already an InviteRole", channel, main.de.confusingbot.commands.help.EmbedsUtil.showErrorTime);
     }
 
     public void RoleIsNoInviteRoleError(TextChannel channel, String role)
     {
-        EmbedManager.SendErrorEmbed(role + " is no InviteRole!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed(role + " is no InviteRole!", channel, main.de.confusingbot.commands.help.EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -109,14 +111,14 @@ public class Embeds
         builder.setTitle("LeaderBoard");
         builder.setDescription(description);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, 30);
     }
 
     public void SendInfo(TextChannel channel, String list)
     {
         EmbedBuilder builder = new EmbedBuilder();
 
-        String listString = "";
+        String listString;
         if (list != null && !list.equals(""))
         {
             listString = list;
@@ -131,7 +133,7 @@ public class Embeds
         builder.setDescription("**Do you want to get special roles?** \n" + listString + "\n\n **Than create a infinity InviteLink and invite as many people as possible\uD83D\uDCDE**\n (Note that temporary invites won't count\uD83E\uDD14)");
 
         //Send Embed
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, 30);
     }
 
     public void SendListEmbed(TextChannel channel, String list)
@@ -143,7 +145,7 @@ public class Embeds
         builder.setDescription(list);
 
         //Send Embed
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
     public void SendUserInviteStats(TextChannel channel, int uses, LocalDateTime creationDate, Member member, String inviteLink, Invite.Channel inviteChannel)
@@ -160,7 +162,7 @@ public class Embeds
         builder.addField("TextChannel", inviteChannel.getName(), true);
 
         //Send Embed
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, 30);
     }
 
 }

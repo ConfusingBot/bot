@@ -2,10 +2,8 @@ package main.de.confusingbot.commands.help;
 
 import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 

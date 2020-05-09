@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.eventcommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -39,17 +38,20 @@ public class Embeds
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "event create [#channel] [messageid] [color] [time] [takePartEmote] [eventName] ROLE:[eventRoleName]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event create [#channel] [messageid] [color] [time] [takePartEmote] [eventName] ROLE:[eventRoleName]\n```"
+                + "```You can create awesome Event's!```\n", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "event remove [@eventRole]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event remove [@eventRole]\n```"
+                + "```Remove Event which is connected with this role!```\n", channel, EmbedsUtil.showUsageTime);
     }
 
     public void AnnouncementUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]\n```"
+                + "```Create a Announcement for all EventMembers!```\n", channel, EmbedsUtil.showUsageTime);
     }
 
 
@@ -136,7 +138,7 @@ public class Embeds
     //=====================================================================================================================================
     public void HasNoEventsInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("This guild has **no Events**! \nYou can create Events with`" + Main.prefix + "event create`", channel, 5);
+        EmbedManager.SendInfoEmbed("This guild has **no Events**! \nYou can create Events with`" + Main.prefix + "event create`", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================
@@ -149,7 +151,7 @@ public class Embeds
         builder.setTitle("\uD83D\uDC51Events: ");
         builder.setDescription(description);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
     public long SendWaitMessage(TextChannel channel)

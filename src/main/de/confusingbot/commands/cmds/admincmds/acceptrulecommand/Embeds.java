@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,27 +29,30 @@ public class Embeds
     {
         EmbedManager.SendUsageEmbed(
                 "```yaml\n" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules accepted] ([@role rules not accepted])\n```"
-                +"```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n"
-                + "```yaml\n" + Main.prefix + "acceptrule remove\n```"
-                +  "```Remove the AcceptRule```\n"
+                        + "```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n"
+                        + "```yaml\n" + Main.prefix + "acceptrule remove\n```"
+                        + "```Remove the AcceptRule```\n"
                         + "```yaml\n" + Main.prefix + "acceptrule show\n```"
-                        +  "```Shows the AcceptedRule of this server```\n"
+                        + "```Shows the AcceptedRule of this server```\n"
                 , channel, EmbedsUtil.showUsageTime);
     }
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules accepted] ([@role rules not accepted])`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "acceptrule add [#channel] [messageID] [emote] [@role rules accepted] ([@role rules not accepted])\n```"
+                + "```Add a emotji to your rules on which the user can click and automaticlly unlock special channels```\n", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule remove`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "acceptrule remove\n```"
+                + "```Remove the AcceptRule```\n", channel, EmbedsUtil.showUsageTime);
     }
 
     public void ShowUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "acceptrule show`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "acceptrule show\n```"
+                + "```Shows the AcceptedRule of this server```\n", channel, EmbedsUtil.showUsageTime);
     }
 
 
@@ -77,17 +79,13 @@ public class Embeds
         EmbedsUtil.NoPermissionError(channel, permission);
     }
 
-    public void BotHasNoPermissionToAssignRole(TextChannel channel, Role role)
+    public void RoleDoesNotExistAnymore(TextChannel channel, long roleid)
     {
-        EmbedManager.SendErrorEmbed("The bot has no right to assign " + role.getAsMention() + "\n" +
-                "Please give the bot a role over the role which as do be assigned!", channel,10);
-    }
-
-    public void RoleDoesNotExistAnymore(TextChannel channel, long roleid){
         EmbedManager.SendErrorEmbed("The Role with the id **" + roleid + "** from the AcceptRules doesn't exist anymore!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void RoleBorderDoesNotExistAnymore(TextChannel channel, long roleid){
+    public void RoleBorderDoesNotExistAnymore(TextChannel channel, long roleid)
+    {
         EmbedManager.SendErrorEmbed("The Role with the id **" + roleid + "** from the RoleBorders doesn't exist anymore!", channel, EmbedsUtil.showErrorTime);
     }
 
@@ -107,14 +105,16 @@ public class Embeds
     //=====================================================================================================================================
     //Information
     //=====================================================================================================================================
-    public void ServerHasNoAcceptedRuleInformation(TextChannel channel){
-        EmbedManager.SendUsageEmbed("This server has no **AcceptedRule** you can add one with `add`", channel, EmbedsUtil.showUsageTime);
+    public void ServerHasNoAcceptedRuleInformation(TextChannel channel)
+    {
+        EmbedManager.SendUsageEmbed("This server has no **AcceptedRule** you can add one with `add`", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void ShowAcceptRule(TextChannel channel, String textChannelString, String notAcceptedRoleString, String acceptedRoleString, String emote){
+    public void ShowAcceptRule(TextChannel channel, String textChannelString, String notAcceptedRoleString, String acceptedRoleString, String emote)
+    {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.decode("#15d1cb"));
         builder.setTitle("✅AcceptedRule: ");
@@ -123,7 +123,7 @@ public class Embeds
         builder.addField("AcceptedRole", acceptedRoleString, false);
         builder.addField("Emote", emote, false);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
 }

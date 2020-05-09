@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.admincmds.customonetimeembedcommand;
+package main.de.confusingbot.commands.cmds.ownercmds.customonetimeembedcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;

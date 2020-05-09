@@ -1,13 +1,10 @@
 package main.de.confusingbot.music.manage;
 
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.MusicEmbeds;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.util.concurrent.TimeUnit;
 
 public class MusicEmbedManager
 {

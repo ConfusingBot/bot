@@ -1,8 +1,8 @@
 package main.de.confusingbot.commands.cmds.musiccmds.playcommand;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.*;

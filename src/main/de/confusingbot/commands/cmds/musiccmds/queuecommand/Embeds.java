@@ -2,7 +2,7 @@ package main.de.confusingbot.commands.cmds.musiccmds.queuecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -31,7 +31,7 @@ public class Embeds
                         + " ```Clears the whole queue```"
                         + "```yaml\n" + Main.prefix + "queue shuffle\n```"
                         + " ```Shuffles the queue```",
-                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+                channel, main.de.confusingbot.commands.help.EmbedsUtil.showUsageTime);
     }
 
     public void ListQueueUsage(TextChannel channel)
@@ -41,17 +41,20 @@ public class Embeds
 
     public void ShuffleUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "shuffle`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "queue shuffle\n```"
+                + " ```Shuffles the queue```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void ClearQueueUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "queue clear`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "queue clear\n```"
+                + " ```Clears the whole queue```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void DeleteAtIndexUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "queue delete [position]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "queue delete [index]\n```"
+                + "```Delete the Track at [index]```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -65,7 +68,7 @@ public class Embeds
     public void SuccessfullyDeletedTrackAtIndex(TextChannel channel, int index, String title)
     {
         EmbedManager.SendCustomEmbed("Track deleted at " + index,
-                "You deleted **" + title + "** from the queue!", Color.decode("#d400ff"), channel, 5);
+                "You deleted **" + title + "** from the queue!", Color.decode("#d400ff"), channel, EmbedsUtil.showSuccessTime);
     }
 
     public void SuccessfullyShuffledQueue(TextChannel channel)
@@ -86,7 +89,7 @@ public class Embeds
     //=====================================================================================================================================
     public void NoSongInQueueInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("Sry.. but I can't shuffle a empty playlist\uD83E\uDD14", channel, EmbedsUtil.showSuccessTime);
+        EmbedManager.SendInfoEmbed("Sry.. but I can't shuffle a empty playlist\uD83E\uDD14", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================
@@ -109,7 +112,7 @@ public class Embeds
             queueString += "\n ..." + trackOver + " other songs!";
         }
 
-        EmbedManager.SendCustomEmbed(title, queueString, Color.decode("#d400ff"), channel, 15);
+        EmbedManager.SendCustomEmbed(title, queueString, Color.decode("#d400ff"), channel, 30);
     }
 
 }

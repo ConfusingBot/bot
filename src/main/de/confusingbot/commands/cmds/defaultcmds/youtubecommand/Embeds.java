@@ -1,20 +1,14 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.youtubecommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.defaultcmds.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
-import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -41,7 +35,7 @@ public class Embeds
                         + "```Shows you some information about this channel!```"
                         + "```yaml\n" + Main.prefix + "youtube announcement```"
                         + "```Shows you all YouTubeAnnouncement Commands!```",
-                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+                channel, main.de.confusingbot.commands.help.EmbedsUtil.showUsageTime);
     }
 
     public void YouTubeAnnouncementsGeneralUsage(TextChannel channel)
@@ -49,31 +43,35 @@ public class Embeds
         EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "youtube announcement add [YouTube channel id] ([Description]) ([@roles])\n```"
                         + "```Adds a YouTube announcement!```"
                         + "```yaml\n" + Main.prefix + "youtube announcement remove [YouTube channel id]```"
-                        + "```Removes the YouTube announcement! ```"
+                        + "```Removes the YouTube announcement!```"
                         + "```yaml\n" + Main.prefix + "youtube announcement list```"
                         + "```List all YouTube announcements of this server```",
-                channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showUsageTime);
+                channel, main.de.confusingbot.commands.help.EmbedsUtil.showUsageTime);
 
     }
 
     public void YouTubeNewUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "youtube new [YouTube channel id]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "youtube new [YouTube channel id]\n```"
+                + "```Shows you the newest video of this channel```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void YouTubeInfoUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "youtube info [YouTube channel id]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "youtube info [YouTube channel id]```"
+                + "```Shows you some information about this channel!```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void YouTubeAnnouncementsAddUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "youtube announcement add [YouTube channel id] ([Description]) ([@roles])`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "youtube announcement add [YouTube channel id] ([Description]) ([@roles])\n```"
+                + "```Adds a YouTube announcement!```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void YouTubeAnnouncementsRemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "youtube announcement remove [YouTube channel id]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "youtube announcement remove [YouTube channel id]```"
+                + "```Removes the YouTube announcement!```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -91,12 +89,12 @@ public class Embeds
 
     public void YouTubeAnnouncementNotExistsError(TextChannel channel, String channelId)
     {
-        EmbedManager.SendErrorEmbed("The YouTube announcement with the id " + channelId + " does not exist!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The YouTube announcement with the id " + channelId + " does not exist!", channel, main.de.confusingbot.commands.help.EmbedsUtil.showErrorTime);
     }
 
     public void YouTubeAnnouncementAlreadyExistsError(TextChannel channel, String channelId)
     {
-        EmbedManager.SendErrorEmbed("The YouTube announcement with the id " + channelId + " does already exist!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("The YouTube announcement with the id " + channelId + " does already exist!", channel, main.de.confusingbot.commands.help.EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================
@@ -117,12 +115,12 @@ public class Embeds
     //=====================================================================================================================================
     public void SuccessfulRemovedAnnouncement(TextChannel channel, String channelId)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully removed " + channelId + " from the YouTubeAnnouncements!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully removed " + channelId + " from the YouTubeAnnouncements!", channel, main.de.confusingbot.commands.help.EmbedsUtil.showSuccessTime);
     }
 
     public void SuccessfulAddedAnnouncement(TextChannel channel, String channelId)
     {
-        EmbedManager.SendSuccessEmbed("You sucessfully added " + channelId + " to the YouTubeAnnouncements!", channel, main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You sucessfully added " + channelId + " to the YouTubeAnnouncements!", channel, main.de.confusingbot.commands.help.EmbedsUtil.showSuccessTime);
     }
 
     //=====================================================================================================================================

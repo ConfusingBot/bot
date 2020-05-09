@@ -1,8 +1,6 @@
 package main.de.confusingbot.commands.cmds.ownercmds.leavecommand;
 
-import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.ownercmds.EmbedsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 

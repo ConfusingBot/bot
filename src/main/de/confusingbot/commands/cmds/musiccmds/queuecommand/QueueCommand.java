@@ -1,8 +1,8 @@
 package main.de.confusingbot.commands.cmds.musiccmds.queuecommand;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
 import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.music.manage.Music;
@@ -233,7 +233,7 @@ public class QueueCommand implements ServerCommand
                             }
                             else
                             {
-                                main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil.NoNumberError(channel, args[2]);
+                                main.de.confusingbot.commands.help.EmbedsUtil.NoNumberError(channel, args[2]);
                             }
                         }
                         else

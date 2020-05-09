@@ -1,8 +1,7 @@
 package main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
 import main.de.confusingbot.Main;
-import main.de.confusingbot.commands.cmds.admincmds.EmbedsUtil;
-import main.de.confusingbot.commands.cmds.admincmds.messagecommand.MessageManager;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -36,12 +35,14 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel add [channelId]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "tempchannel add [VoiceChannelID]\n```"
+                + "```Creates a special VoiceChannel, which automatically creates a new VoiceChannel by joining it```", channel, EmbedsUtil.showUsageTime);
     }
 
     public void RemoveUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("`" + Main.prefix + "tempchannel remove [channelId]`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "tempchannel remove [VoiceChannelID]\n```"
+                + "```Remove the VoiceChannel form the tempchannels```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -90,7 +91,7 @@ public class Embeds
     //=====================================================================================================================================
     public void HasNoTempChannelInformation(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("This guild has **no Tempchannels**! \nYou can add TempChannels with`" + Main.prefix + "tempchannel add [id]`", channel, 5);
+        EmbedManager.SendInfoEmbed("This guild has **no Tempchannels**! \nYou can add TempChannels with`" + Main.prefix + "tempchannel add [id]`", channel, EmbedsUtil.showInfoTime);
     }
 
     //=====================================================================================================================================
@@ -102,7 +103,7 @@ public class Embeds
         builder.setTitle("⏳TempChannels: ");
         builder.setDescription(description);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, EmbedsUtil.showInfoTime);
     }
 
 }

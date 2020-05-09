@@ -26,7 +26,6 @@ public class MusicController
 
     public MusicController(Guild guild)
     {
-
         this.guild = guild;
         this.player = Music.audioPlayerManager.createPlayer();
         this.queue = new Queue(this);

@@ -31,6 +31,7 @@ public class EmbedManager
             }
             else
             {
+                error.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
                 channel.sendMessage(error.build()).queue(message -> {
                     try
                     {
@@ -60,6 +61,7 @@ public class EmbedManager
             }
             else
             {
+                success.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
                 channel.sendMessage(success.build()).queue(message -> {
                     try
                     {
@@ -88,6 +90,7 @@ public class EmbedManager
             }
             else
             {
+                info.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
                 channel.sendMessage(info.build()).queue(message -> {
                     try
                     {
@@ -116,6 +119,7 @@ public class EmbedManager
             }
             else
             {
+                usage.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
                 channel.sendMessage(usage.build()).queue(message -> {
                     try
                     {
@@ -145,6 +149,7 @@ public class EmbedManager
             }
             else
             {
+                custom.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
                 channel.sendMessage(custom.build()).queue(message -> {
                     try
                     {
@@ -195,6 +200,7 @@ public class EmbedManager
             }
             else
             {
+                builder.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
                 channel.sendMessage(builder.build()).queue(message -> {
                     try
                     {
@@ -258,20 +264,21 @@ public class EmbedManager
     public static void SendNoPermissionEmbed(TextChannel channel, Permission permission, String description)
     {
         int timeInSeconds = 10;
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(0xBF00FF);
-        embedBuilder.setTitle("⚠️ No Permission");
-        embedBuilder.setDescription("`Sry I can't execute this command ⚡️`\n ```yaml\n" + permission.name() + "```\n" + description);
-        embedBuilder.setTimestamp(OffsetDateTime.now());
+        EmbedBuilder noPermission = new EmbedBuilder();
+        noPermission.setColor(0xBF00FF);
+        noPermission.setTitle("⚠️ No Permission");
+        noPermission.setDescription("`Sry I can't execute this command ⚡️`\n ```yaml\n" + permission.name() + "```\n" + description);
+        noPermission.setTimestamp(OffsetDateTime.now());
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
             if (timeInSeconds <= 0)
             {
-                channel.sendMessage(embedBuilder.build()).queue();
+                channel.sendMessage(noPermission.build()).queue();
             }
             else
             {
-                channel.sendMessage(embedBuilder.build()).queue(message -> {
+                noPermission.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                channel.sendMessage(noPermission.build()).queue(message -> {
                     try
                     {
                         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))

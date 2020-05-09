@@ -2,7 +2,7 @@ package main.de.confusingbot.commands.cmds.musiccmds.trackinfocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
-import main.de.confusingbot.commands.cmds.musiccmds.EmbedsUtil;
+import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -13,7 +13,7 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.music.add("```yaml\n" + Main.prefix + "trackinfo\n``` ```Gives you some informations about the current playing track```");
+        HelpManager.music.add("```yaml\n" + Main.prefix + "trackinfo\n``` ```Gives you some information about the current playing track```");
     }
 
     //=====================================================================================================================================
@@ -21,14 +21,20 @@ public class Embeds
     //=====================================================================================================================================
     public void TrackInfoUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("`" + Main.prefix + "trackinfo`", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "trackinfo\n``` ```Give you some information about the current playing track```", channel, EmbedsUtil.showUsageTime);
     }
 
+    //=====================================================================================================================================
+    //Info
+    //=====================================================================================================================================
     public void NoSongIsPlaying(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed("Nothing is playing\uD83D\uDD07", channel, EmbedsUtil.showInfoTime);
     }
 
+    //=====================================================================================================================================
+    //Other
+    //=====================================================================================================================================
     public void TrackInfoEmbed(TextChannel channel, String author, String title, String url, long hours, long minutes, long seconds, long maxHours, long maxMinutes, long maxSeconds, boolean isStream)
     {
         //Build Embed
@@ -41,7 +47,7 @@ public class Embeds
 
         builder.setDescription(isStream ? "\uD83D\uDD34 STREAM" : "⏳ " + time);
 
-        EmbedManager.SendEmbed(builder, channel, 10);
+        EmbedManager.SendEmbed(builder, channel, 30);
     }
 
 }

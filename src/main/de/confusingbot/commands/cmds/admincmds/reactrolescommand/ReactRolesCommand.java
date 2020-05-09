@@ -202,7 +202,7 @@ public class ReactRolesCommand implements ServerCommand
                         else
                         {
                             //Error
-                            ReactRoleManager.embeds.ReactRoleNotExistsError(channel);
+                            ReactRoleManager.embeds.ReactRoleNotExistsError(channel, role.getAsMention());
                         }
                     }
                     else
