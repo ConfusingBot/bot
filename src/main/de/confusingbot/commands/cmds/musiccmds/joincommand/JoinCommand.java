@@ -50,7 +50,7 @@ public class JoinCommand implements ServerCommand
                         VoiceChannel voiceChannel = state.getChannel();
                         if (voiceChannel != null)
                         {
-                            if (voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
+                            if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
                             {
                                 MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
                                 Music.channelID = voiceChannel.getIdLong();
