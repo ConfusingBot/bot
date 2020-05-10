@@ -45,8 +45,8 @@ public class PlayCommand implements ServerCommand
                     VoiceChannel voiceChannel = state.getChannel();
                     if (voiceChannel != null)
                     {
-                        Music.channelID = voiceChannel.getIdLong();
                         MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                        controller.channelID = voiceChannel.getIdLong();
                         AudioPlayerManager audioPlayerManager = Music.audioPlayerManager;
                         AudioManager manager = voiceChannel.getGuild().getAudioManager();
                         VoiceChannel botVoiceChannel = manager.getConnectedChannel();

@@ -86,5 +86,4 @@ public class EmbedsUtil
     public static void NoSpaceForBotInformation(TextChannel channel){
         EmbedManager.SendInfoEmbed( "In your channel is no space for me \uD83D\uDE25", channel, showInfoTime);
     }
-
 }

@@ -22,6 +22,7 @@ public class MusicController
     private MusicEmbedManager embedManager;
 
     private boolean isPaused = false;
+    public long channelID;
 
 
     public MusicController(Guild guild)

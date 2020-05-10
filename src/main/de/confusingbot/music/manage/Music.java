@@ -9,7 +9,6 @@ public class Music
 
     public static AudioPlayerManager audioPlayerManager;
     public static PlayerManager playerManager;
-    public static long channelID;
 
     public Music()
     {

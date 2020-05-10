@@ -53,7 +53,7 @@ public class JoinCommand implements ServerCommand
                             if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
                             {
                                 MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
-                                Music.channelID = voiceChannel.getIdLong();
+                                controller.channelID = voiceChannel.getIdLong();
 
                                 //SQL
                                 controller.updateChannel(channel, member);
