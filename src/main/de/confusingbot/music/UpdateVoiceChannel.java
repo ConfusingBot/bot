@@ -1,6 +1,5 @@
 package main.de.confusingbot.music;
 
-import main.de.confusingbot.Main;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.music.manage.MusicController;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -11,7 +10,7 @@ public class UpdateVoiceChannel
 
     public static void onPlayerLeave(VoiceChannel channel)
     {
-        if (channel.getMembers().size() <= 1 && channel.getIdLong() == Music.channelID)
+        if (channel.getMembers().size() == 1 && channel.getIdLong() == Music.channelID)
         {
             MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
 
@@ -23,6 +22,9 @@ public class UpdateVoiceChannel
 
             AudioManager manager = channel.getGuild().getAudioManager();
             manager.closeAudioConnection();
+
+            //Message
+            controller.getMusicEmbedManager().getMusicEmbed().NoUserAnymoreEmbed();
         }
     }
 }

@@ -126,6 +126,15 @@ public class MusicEmbeds
         musicEmbedManager.sendMusicEmbed(builder, 5);
     }
 
+    public void NoUserAnymoreEmbed()
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(musicColor);
+        builder.setDescription("It looks like nobody want to listen to me..");
+
+        musicEmbedManager.sendMusicEmbed(builder, 5);
+    }
+
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================

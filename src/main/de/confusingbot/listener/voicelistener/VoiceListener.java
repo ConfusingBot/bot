@@ -36,6 +36,8 @@ public class VoiceListener extends ListenerAdapter
         tempVoiceChannelListener.onLeave(event.getChannelLeft());
         tempVoiceChannelListener.onJoin(event.getChannelJoined(), event.getEntity());
 
+        //Player left MusicBot channel
+        UpdateVoiceChannel.onPlayerLeave(event.getChannelLeft());
     }
 
 

@@ -80,7 +80,7 @@ public class EmbedsUtil
     //Information
     //=====================================================================================================================================
     public static void YouAreNotInAVoiceChannelInformation(TextChannel channel){
-        EmbedManager.SendInfoEmbed( "`Ups, you aren't in a VoiceChannel\uD83C\uDF99`\nFill it with `/play`", channel, EmbedsUtil.showInfoTime);
+        EmbedManager.SendInfoEmbed( "`Ups, you aren't in a VoiceChannel\uD83C\uDF99`", channel, EmbedsUtil.showInfoTime);
     }
 
     public static void NoSpaceForBotInformation(TextChannel channel){
