@@ -37,24 +37,23 @@ public class MusicController
         this.player.setVolume(10);
     }
 
-    public long getLastUsedUserId()
+    public long getLastUsedMemberId()
     {
-        long lastUsedUserId = -1;
+        long lastUsedMemberId = -1;
 
         try
         {
             ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
             if (set.next())
             {
-                lastUsedUserId = set.getLong("channelid");
+                lastUsedMemberId = set.getLong("memberid");
             }
-
 
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
-        return lastUsedUserId;
+        return lastUsedMemberId;
     }
 
     public long getLastUsedChannelId()

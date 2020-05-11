@@ -66,7 +66,7 @@ public class Embeds
         EmbedsUtil.NotExistingError(channel, "ReactRole " + role);
     }
 
-    public void NoMessageIDError(TextChannel channel, String id)
+    public void NoValidIdError(TextChannel channel, String id)
     {
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
@@ -77,9 +77,9 @@ public class Embeds
                 "Please give the bot a role over the role to be assign this role!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void YouHaveNotMentionedAValidEmoteError(TextChannel channel)
+    public void NoValidEmoteError(TextChannel channel, String emote)
     {
-        EmbedManager.SendErrorEmbed("You haven't mentioned valid a Emote!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("`" + emote + "` is no valid emote!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void RoleDoesNotExistError(TextChannel channel, long roleid)

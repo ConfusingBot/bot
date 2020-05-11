@@ -25,11 +25,11 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "event create [#channel] [messageid] [color] [time] [takePartEmote] [eventName] ROLE:[eventRoleName]\n```"
+                "```yaml\n" + Main.prefix + "event create [#channel] [messageid] ([color]) [time] [takePartEmote] [eventName] (ROLE:[eventRoleName])\n```"
                         + "```You can create awesome Event's!```\n"
                         + "```yaml\n" + Main.prefix + "event remove [@eventRole]\n```"
                         + "```Remove Event which is connected with this role!```\n"
-                        + "```yaml\n" + Main.prefix + "event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]\n```"
+                        + "```yaml\n" + Main.prefix + "event announcement [#channel] [@eventRole] ([Title] MESSAGE:) [Message]\n```"
                         + "```Create a Announcement for all EventMembers!```\n"
                         + "```yaml\n" + Main.prefix + "event list\n```"
                         + "```List all active Events of this guild!```\n"
@@ -38,7 +38,7 @@ public class Embeds
 
     public void CreateUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event create [#channel] [messageid] [color] [time] [takePartEmote] [eventName] ROLE:[eventRoleName]\n```"
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event create [#channel] [messageid] ([color]) [time] [takePartEmote] [eventName] (ROLE:[eventRoleName])\n```"
                 + "```You can create awesome Event's!```\n", channel, EmbedsUtil.showUsageTime);
     }
 
@@ -50,7 +50,7 @@ public class Embeds
 
     public void AnnouncementUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event announcement [#channel] [@eventRole] [Title] MESSAGE: [Message]\n```"
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "event announcement [#channel] [@eventRole] ([Title] MESSAGE:) [Message]\n```"
                 + "```Create a Announcement for all EventMembers!```\n", channel, EmbedsUtil.showUsageTime);
     }
 
@@ -58,7 +58,8 @@ public class Embeds
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void ThisIsNoIDError(TextChannel channel, String id)
+
+    public void NoValidIdError(TextChannel channel, String id)
     {
         EmbedsUtil.NoValidIDNumberError(channel, id);
     }
@@ -70,7 +71,7 @@ public class Embeds
 
     public void NoValidEmoteError(TextChannel channel, String emote)
     {
-        EmbedManager.SendErrorEmbed(emote + " is no valid emote!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("`" + emote + "` is no valid emote!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoMentionedNamesError(TextChannel channel)
@@ -78,19 +79,14 @@ public class Embeds
         EmbedManager.SendErrorEmbed("You haven't mentioned the EventName or the RoleName!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void NoSelectedColorError(TextChannel channel)
+    public void noMentionedTimeError(TextChannel channel)
     {
-        EmbedManager.SendErrorEmbed("You haven't selected a color!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("You haven't mentioned a valid time!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoMentionedTextChannelError(TextChannel channel)
     {
         EmbedManager.SendErrorEmbed("You haven't mentioned a TextChannel!", channel, EmbedsUtil.showErrorTime);
-    }
-
-    public void NoMentionedMessageIDError(TextChannel channel)
-    {
-        EmbedManager.SendErrorEmbed("You haven't mentioned a MessageId!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoExistingEventRoleError(TextChannel channel, String roleMentioned)
@@ -103,11 +99,15 @@ public class Embeds
         EmbedsUtil.HavenNotMentionedError(channel, "role");
     }
 
-    public void NoMentionedEventRoleError(TextChannel channel)
+    public void NoMentionedEventRoleError(TextChannel channel, String role)
     {
-        EmbedsUtil.HavenNotMentionedError(channel, "EventRole");
+        EmbedManager.SendErrorEmbed(role + " is no EventRole!", channel, EmbedsUtil.showErrorTime);
     }
 
+    public void YouHaveNotMentionedAValidEmoteError(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("You haven't mentioned valid a Emote!", channel, EmbedsUtil.showErrorTime);
+    }
 
 
     //=====================================================================================================================================

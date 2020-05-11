@@ -28,13 +28,12 @@ public class ReactRolesListener
 
         if (event.getChannelType() == ChannelType.TEXT && member != null)
         {
-            long guildid = event.getGuild().getIdLong();
             long channelid = event.getChannel().getIdLong();
             long messageid = event.getMessageIdLong();
+            TextChannel channel = event.getTextChannel();
 
-            if (ReactRoleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+            if (ReactRoleManager.sql.containsMessageID(guild.getIdLong(), messageid))
             {
-                TextChannel channel = guild.getTextChannelById(channelid);
                 if (!event.getUser().isBot())
                 {
                     if (bot.hasPermission(MANAGE_ROLES))
@@ -50,7 +49,7 @@ public class ReactRolesListener
                             emote = event.getReactionEmote().getId();
                         }
 
-                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guild.getIdLong(), channelid, messageid, emote);
                         Role role = guild.getRoleById(roleid);
 
                         if (role != null)
@@ -61,17 +60,17 @@ public class ReactRolesListener
                         else
                         {
                             //Error
-                            ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+                            ReactRoleManager.embeds.RoleDoesNotExistError(channel, roleid);
 
                             //SQL
-                            ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
+                            ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelid, messageid, emote, roleid);
 
                         }
                     }
                     else
                     {
                         //Error
-                        EmbedManager.SendNoPermissionEmbed(channel == null ? guild.getDefaultChannel() : channel, MANAGE_ROLES, "ReactRoleCommand | Can't add role to member!");
+                        EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "ReactRoleCommand | Can't add role to member!");
                     }
                 }
             }
@@ -86,13 +85,12 @@ public class ReactRolesListener
 
         if (event.getChannelType() == ChannelType.TEXT && member != null)
         {
-            long guildid = event.getGuild().getIdLong();
             long channelid = event.getChannel().getIdLong();
             long messageid = event.getMessageIdLong();
+            TextChannel channel = event.getTextChannel();
 
-            if (ReactRoleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+            if (ReactRoleManager.sql.containsMessageID(guild.getIdLong(), messageid))
             {
-                TextChannel channel = guild.getTextChannelById(channelid);
                 if (!event.getUser().isBot())
                 {
                     if (bot.hasPermission(MANAGE_ROLES))
@@ -108,7 +106,7 @@ public class ReactRolesListener
                             emote = event.getReactionEmote().getId();
                         }
 
-                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guildid, channelid, messageid, emote);
+                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guild.getIdLong(), channelid, messageid, emote);
                         Role role = guild.getRoleById(roleid);
 
                         if (role != null)
@@ -118,16 +116,16 @@ public class ReactRolesListener
                         else
                         {
                             //Error
-                            ReactRoleManager.embeds.RoleDoesNotExistError(event.getTextChannel(), roleid);
+                            ReactRoleManager.embeds.RoleDoesNotExistError(channel, roleid);
 
                             //SQL
-                            ReactRoleManager.sql.removeFromSQL(guildid, channelid, messageid, emote, roleid);
+                            ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelid, messageid, emote, roleid);
                         }
                     }
                     else
                     {
                         //Error
-                        EmbedManager.SendNoPermissionEmbed(channel == null ? guild.getDefaultChannel() : channel, MANAGE_ROLES, "ReactRoleCommand | Can't remove role from member!");
+                        EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "ReactRoleCommand | Can't remove role from member!");
                     }
                 }
             }

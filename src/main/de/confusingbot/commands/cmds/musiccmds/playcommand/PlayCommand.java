@@ -46,6 +46,7 @@ public class PlayCommand implements ServerCommand
                     if (voiceChannel != null)
                     {
                         MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                        long lastMemberId = controller.getLastUsedMemberId();
                         controller.channelID = voiceChannel.getIdLong();
                         AudioPlayerManager audioPlayerManager = Music.audioPlayerManager;
                         AudioManager manager = voiceChannel.getGuild().getAudioManager();
@@ -55,6 +56,9 @@ public class PlayCommand implements ServerCommand
                         {
                             if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
                             {
+                                //Clear old queue if new Member want to use the Bot
+                                if(member.getIdLong() != lastMemberId) controller.getQueue().getQueueList().clear();
+
                                 //SQL
                                 controller.updateChannel(channel, member);
 

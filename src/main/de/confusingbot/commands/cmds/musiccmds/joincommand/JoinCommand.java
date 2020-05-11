@@ -53,18 +53,30 @@ public class JoinCommand implements ServerCommand
                             if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
                             {
                                 MusicController controller = Music.playerManager.getController(voiceChannel.getGuild().getIdLong());
+                                long lastMemberId = controller.getLastUsedMemberId();
                                 controller.channelID = voiceChannel.getIdLong();
 
                                 //SQL
                                 controller.updateChannel(channel, member);
 
+                                //get Queue
                                 List<AudioTrack> queue = controller.getQueue().getQueueList();
-                                if (queue.size() > 0)
-                                {
-                                    Connect(voiceChannel, manager);
 
-                                    //PlayTrack
-                                    controller.getPlayer().playTrack(queue.get(0));
+                                //Check if Member is equals the last member who used the bot if so play the left queue other wise clear the queue
+                                if (member.getIdLong() == lastMemberId)
+                                {
+                                    if (queue.size() > 0)
+                                    {
+                                        Connect(voiceChannel, manager);
+
+                                        //PlayTrack
+                                        controller.getPlayer().playTrack(queue.get(0));
+                                    }
+                                    else
+                                    {
+                                        //Information
+                                        embeds.YourQueueIsEmptyInformation(channel);
+                                    }
                                 }
                                 else
                                 {

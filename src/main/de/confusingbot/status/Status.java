@@ -2,6 +2,7 @@ package main.de.confusingbot.status;
 
 import java.util.Random;
 
+import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -9,7 +10,7 @@ public class Status
 {
     private ShardManager shardMan;
 
-    String[] status = new String[]{"/help | %servers servers"};
+    String[] status = new String[]{Main.prefix + "help | %servers servers"};
 
     public Status(ShardManager shardMan)
     {

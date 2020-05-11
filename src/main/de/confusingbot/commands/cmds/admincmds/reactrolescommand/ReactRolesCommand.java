@@ -108,42 +108,48 @@ public class ReactRolesCommand implements ServerCommand
                     {
                         long messageID = Long.parseLong(messageIDString);
 
-                        if (!emoteString.isEmpty() && emoteString != null)
+                        if (CommandsUtil.messageIdExists(channel, messageID))
                         {
-                            if (!ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                            if (!emoteString.isEmpty() && emoteString != null)
                             {
-                                boolean success = CommandsUtil.reactEmote(emoteString, textChannel, messageID, true);
-
-                                if (success)
+                                if (!ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
                                 {
-                                    //SQL
-                                    ReactRoleManager.sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
+                                    if (CommandsUtil.reactEmote(emoteString, textChannel, messageID, true))
+                                    {
+                                        //SQL
+                                        ReactRoleManager.sql.addToSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
 
-                                    //Message
-                                    ReactRoleManager.embeds.SuccessfullyAddedReactRole(channel, role);
+                                        //Message
+                                        ReactRoleManager.embeds.SuccessfullyAddedReactRole(channel, role);
+                                    }
+                                    else
+                                    {
+                                        //Error
+                                        ReactRoleManager.embeds.NoValidEmoteError(channel, emoteString);
+                                    }
                                 }
                                 else
                                 {
                                     //Error
-                                    ReactRoleManager.embeds.NoMessageIDError(channel, messageIDString);
+                                    ReactRoleManager.embeds.ReactRoleAlreadyExistsError(channel);
                                 }
                             }
                             else
                             {
                                 //Error
-                                ReactRoleManager.embeds.ReactRoleAlreadyExistsError(channel);
+                                ReactRoleManager.embeds.NoValidEmoteError(channel, emoteString);
                             }
                         }
                         else
                         {
                             //Error
-                            ReactRoleManager.embeds.YouHaveNotMentionedAValidEmoteError(channel);
+                            ReactRoleManager.embeds.NoValidIdError(channel, messageIDString);
                         }
                     }
                     else
                     {
                         //Error
-                        ReactRoleManager.embeds.NoMessageIDError(channel, messageIDString);
+                        ReactRoleManager.embeds.NoValidIdError(channel, messageIDString);
                     }
                 }
                 else
@@ -185,35 +191,44 @@ public class ReactRolesCommand implements ServerCommand
 
                     if (!emoteString.isEmpty() && emoteString != null)
                     {
-                        if (ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                        if (CommandsUtil.messageIdExists(textChannel, messageID))
                         {
-                            //React
-                            boolean success = CommandsUtil.reactEmote(emoteString, textChannel, messageID, false);
+                            if (ReactRoleManager.sql.ExistsInSQL(message.getGuild().getIdLong(), messageID, emoteString, role.getIdLong()))
+                            {
+                                //React
+                                boolean success = CommandsUtil.reactEmote(emoteString, textChannel, messageID, false);
 
-                            if (!success)
-                                ReactRoleManager.embeds.MessageIdDoesNotExistAnymore(channel, messageIDString);
+                                if (!success)
+                                    ReactRoleManager.embeds.MessageIdDoesNotExistAnymore(channel, messageIDString);
 
-                            //SQL
-                            ReactRoleManager.sql.removeFromSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
+                                //SQL
+                                ReactRoleManager.sql.removeFromSQL(message.getGuild().getIdLong(), textChannel.getIdLong(), messageID, emoteString, role.getIdLong());
 
-                            //Message
-                            ReactRoleManager.embeds.SuccessfullyRemovedReactRole(channel, role);
+                                //Message
+                                ReactRoleManager.embeds.SuccessfullyRemovedReactRole(channel, role);
+                            }
+                            else
+                            {
+                                //Error
+                                ReactRoleManager.embeds.ReactRoleNotExistsError(channel, role.getAsMention());
+                            }
                         }
                         else
                         {
                             //Error
-                            ReactRoleManager.embeds.ReactRoleNotExistsError(channel, role.getAsMention());
+                            ReactRoleManager.embeds.NoValidIdError(channel, messageIDString);
                         }
                     }
                     else
                     {
-                        ReactRoleManager.embeds.YouHaveNotMentionedAValidEmoteError(channel);
+                        //Error
+                        ReactRoleManager.embeds.NoValidEmoteError(channel, emoteString);
                     }
                 }
                 else
                 {
                     //Error
-                    ReactRoleManager.embeds.NoMessageIDError(channel, messageIDString);
+                    ReactRoleManager.embeds.NoValidIdError(channel, messageIDString);
                 }
             }
             else

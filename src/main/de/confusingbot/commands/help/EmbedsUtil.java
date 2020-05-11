@@ -21,7 +21,7 @@ public class EmbedsUtil
 
     public static void NoValidIDNumberError(TextChannel channel, String idString)
     {
-        EmbedManager.SendErrorEmbed( "This is no ID " + idString, channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "This is no valid ID `" + idString + "`", channel, showErrorTime);
     }
 
     public static void NoNumberError(TextChannel channel, String numberString)

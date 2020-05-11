@@ -46,6 +46,7 @@ public class CommandsUtil
 
     public static boolean isColor(String hexColor)
     {
+        if (isNumeric(hexColor)) return false;
         try
         {
             Color color = Color.decode(hexColor);
@@ -114,6 +115,19 @@ public class CommandsUtil
         }
     }
 
+    public static boolean messageIdExists(TextChannel channel, long messageid)
+    {
+        try
+        {
+            channel.addReactionById(messageid, "\uD83D\uDC7E").queue();
+            channel.removeReactionById(messageid, "\uD83D\uDC7E").queue();
+            return true;
+        } catch (Exception e)
+        {
+            return false;
+        }
+    }
+
     public static List<Long> getLatestMessageIds(MessageChannel channel)
     {
         List<Long> messageIds = new ArrayList<>();
@@ -165,20 +179,20 @@ public class CommandsUtil
     {
         if (role == null && member == null && guild == null) return;
 
-            if (!member.getUser().isBot())
+        if (!member.getUser().isBot())
+        {
+            try
             {
-                try
-                {
-                    if (add)
-                        guild.addRoleToMember(member, role).queue();
-                    else
-                        guild.removeRoleFromMember(member, role).queue();
-                } catch (HierarchyException e)
-                {
-                    ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
-                    return;
-                }
+                if (add)
+                    guild.addRoleToMember(member, role).queue();
+                else
+                    guild.removeRoleFromMember(member, role).queue();
+            } catch (HierarchyException e)
+            {
+                ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
+                return;
             }
+        }
     }
 
     public static long getTimeLeft(String creationTimeString, int endAfter, boolean hours)

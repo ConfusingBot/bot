@@ -19,6 +19,11 @@ public class EventCommand implements ServerCommand
     Embeds embeds = EventCommandManager.embeds;
     SQL sql = EventCommandManager.sql;
 
+    public EventCommand()
+    {
+        embeds.HelpEmbed();
+    }
+
     Member bot;
 
     //Needed Permissions
@@ -106,7 +111,8 @@ public class EventCommand implements ServerCommand
             {
                 if (!roles.isEmpty() && ("@" + roles.get(0).getName()).equals(args[3]))
                 {
-                    if (sql.eventRoleExist(guild.getIdLong(), roles.get(0).getIdLong()))
+                    Role role = roles.get(0);
+                    if (sql.eventRoleExist(guild.getIdLong(), role.getIdLong()))
                     {
                         //Get Message and Title
                         String wholeMessage = getWholeMessage(args, 4);
@@ -125,15 +131,15 @@ public class EventCommand implements ServerCommand
                         }
 
                         //Add eventRole as mentioned
-                        shownMessage += ("\n\n" + roles.get(0).getAsMention());
+                        shownMessage += ("\n\n" + role.getAsMention());
 
                         //Message
-                        embeds.SendAnnouncement(title, shownMessage, roles.get(0).getColor(), channels.get(0));
+                        embeds.SendAnnouncement(title, shownMessage, role.getColor(), channels.get(0));
                     }
                     else
                     {
                         //Error
-                        embeds.NoMentionedEventRoleError(channel);
+                        embeds.NoMentionedEventRoleError(channel, role.getAsMention());
                     }
                 }
                 else
@@ -159,7 +165,7 @@ public class EventCommand implements ServerCommand
     {
         if (bot.hasPermission(channel, MANAGE_ROLES))
         {
-            if (args.length >= 9)
+            if (args.length >= 7)
             {
                 Guild guild = message.getGuild();
                 String channelName = args[2];
@@ -171,7 +177,7 @@ public class EventCommand implements ServerCommand
                 String emoteString = CommandsUtil.getEmote(message, args[6]);
                 String eventName = "empty";
                 String roleName = "empty";
-
+                boolean hasColor = true;
                 List<TextChannel> mentionedChannels = message.getMentionedChannels();
 
                 if (!mentionedChannels.isEmpty() && channelName.contains(mentionedChannels.get(0).getName()))
@@ -181,52 +187,81 @@ public class EventCommand implements ServerCommand
                     if (CommandsUtil.isNumeric(messageIdString))
                     {
                         messageID = Long.parseLong(messageIdString);
-                        if (CommandsUtil.isColor(colorString))
+                        if (!CommandsUtil.isColor(colorString))
+                        {
+                            hasColor = false;
+                            emoteString = timeString;
+                            timeString = colorString;
+                            colorString = "#fffff";
+                        }
+
+                        if (!emoteString.isEmpty() && emoteString != null)
                         {
                             if (CommandsUtil.isNumeric(timeString))
                             {
                                 time = Integer.parseInt(timeString);
 
                                 String nameString = "";
-                                for (int i = 7; i < args.length; i++)
+                                for (int i = hasColor ? 7 : 6; i < args.length; i++)
                                 {
                                     nameString += args[i] + " ";
                                 }
 
                                 String[] nameParts = nameString.split("ROLE:");
 
-                                if (nameParts.length == 2)
+                                if (nameParts.length == 2 || nameParts.length == 1)
                                 {
-                                    eventName = nameParts[0];
-                                    roleName = nameParts[1];
-
-                                    if (CommandsUtil.reactEmote(emoteString, textChannel, messageID, true))
+                                    if (nameParts.length == 2)
                                     {
-                                        //Create Role
-                                        RoleAction roleAction = guild.createRole();
-                                        roleAction.setName(roleName);
-                                        roleAction.setColor(Color.decode(colorString));
-                                        roleAction.setMentionable(true);
-                                        roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
-                                        long finalMessageID = messageID;
-                                        int finalTime = time;
-                                        String finalEventName = eventName;
-                                        roleAction.queue(role -> {
+                                        eventName = nameParts[0];
+                                        roleName = nameParts[1];
+                                    }
+                                    else
+                                    {
+                                        eventName = nameParts[0];
+                                        roleName = nameParts[0];
+                                    }
 
-                                            //Get CurrentTime
-                                            String creationTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
-                                            String endTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), finalTime, true).format(CommandsUtil.formatter);
-                                            //SQL
-                                            sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), finalMessageID, role.getIdLong(), colorString, emoteString, finalEventName, endTime, creationTime);
+                                    boolean messageIdExists = CommandsUtil.messageIdExists(textChannel, messageID);
+                                    if (messageIdExists)
+                                    {
 
-                                            //Message
-                                            embeds.SuccessfullyAddedEvent(channel, Color.decode(colorString), finalEventName);
-                                        });
+
+                                        if (CommandsUtil.reactEmote(emoteString, textChannel, messageID, true))
+                                        {
+                                            //Create Role
+                                            RoleAction roleAction = guild.createRole();
+                                            roleAction.setName(roleName);
+                                            roleAction.setColor(Color.decode(colorString));
+                                            roleAction.setMentionable(true);
+                                            roleAction.setPermissions(Permission.MESSAGE_READ, Permission.MESSAGE_HISTORY, Permission.VOICE_CONNECT);
+                                            long finalMessageID = messageID;
+                                            int finalTime = time;
+                                            String finalEventName = eventName;
+                                            String finalColorString = colorString;
+                                            String finalEmoteString = emoteString;
+                                            roleAction.queue(role -> {
+
+                                                //Get CurrentTime
+                                                String creationTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
+                                                String endTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), finalTime, true).format(CommandsUtil.formatter);
+                                                //SQL
+                                                sql.addToSQL(guild.getIdLong(), textChannel.getIdLong(), finalMessageID, role.getIdLong(), finalColorString, finalEmoteString, finalEventName, endTime, creationTime);
+
+                                                //Message
+                                                embeds.SuccessfullyAddedEvent(channel, Color.decode(finalColorString), finalEventName);
+                                            });
+                                        }
+                                        else
+                                        {
+                                            //Error
+                                            embeds.NoValidEmoteError(channel, emoteString);
+                                        }
                                     }
                                     else
                                     {
                                         //Error
-                                        embeds.NoValidEmoteError(channel, emoteString);
+                                        embeds.NoValidIdError(channel, messageIdString);
                                     }
                                 }
                                 else
@@ -235,17 +270,21 @@ public class EventCommand implements ServerCommand
                                     embeds.NoMentionedNamesError(channel);
                                 }
                             }
+                            else
+                            {
+                                embeds.noMentionedTimeError(channel);
+                            }
                         }
                         else
                         {
                             //Error
-                            embeds.NoSelectedColorError(channel);
+                            embeds.NoValidEmoteError(channel, emoteString);
                         }
                     }
                     else
                     {
                         //Error
-                        embeds.NoMentionedMessageIDError(channel);
+                        embeds.NoValidIdError(channel, messageIdString);
                     }
                 }
                 else
@@ -285,6 +324,15 @@ public class EventCommand implements ServerCommand
                         String colorString = sql.getEventColor(guild.getIdLong(), role.getIdLong());
                         Color color = Color.decode(colorString);
                         String eventName = sql.getEventName(guild.getIdLong(), role.getIdLong());
+                        long eventMessageId = sql.getEventMessageId(guild.getIdLong(), role.getIdLong());
+                        long channelId = sql.getEventChannelId(guild.getIdLong(), role.getIdLong());
+                        TextChannel textChannel = guild.getTextChannelById(channelId);
+
+                        if (textChannel != null)
+                        {
+                            //Add Cross Emote
+                            CommandsUtil.reactEmote("❌", textChannel, eventMessageId, true);
+                        }
 
                         //SQL
                         sql.removeFormSQL(guild.getIdLong(), role.getIdLong());
@@ -331,7 +379,8 @@ public class EventCommand implements ServerCommand
         return wholeMessage.trim();
     }
 
-    private String getMentionableMessage(String message, List<TextChannel> mentionedChannel, List<Role> mentionedRoles, List<User> mentionedUsers)
+    private String getMentionableMessage(String
+                                                 message, List<TextChannel> mentionedChannel, List<Role> mentionedRoles, List<User> mentionedUsers)
     {
         String mentionableMessage = "";
         StringBuilder builder = new StringBuilder();

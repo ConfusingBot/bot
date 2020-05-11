@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.admincmds.eventcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.sql.ResultSet;
@@ -36,7 +37,6 @@ public class ListEventsRunnable implements Runnable
         try
         {
             ResultSet set = EventCommandManager.sql.GetResultSet(guild.getIdLong());
-
             while (set.next())
             {
                 eventRoleIDs.add(set.getLong("roleid"));
@@ -46,33 +46,35 @@ public class ListEventsRunnable implements Runnable
                 eventNames.add(set.getString("name"));
                 creationTimes.add(set.getString("creationtime"));
                 endTimes.add(set.getString("endtime"));
-
-                if (!eventNames.isEmpty() || eventNames.size() > 0)
-                {
-                    StringBuilder builder = new StringBuilder();
-                    for (int i = 0; i < eventNames.size(); i++)
-                    {
-                        long time = CommandsUtil.getTimeBetweenTwoDates(creationTimes.get(i), endTimes.get(i), true);
-                        builder.append("**" + eventNames.get(i) + "** ⏰ " + time + "\n");
-                    }
-
-                    //Message
-                    EventCommandManager.embeds.SendListEmbed(channel, builder.toString());
-                }
-                else
-                {
-                    //Information
-                    EventCommandManager.embeds.HasNoEventsInformation(channel);
-                }
-
-                //Delete Wait Message
-                channel.deleteMessageById(messageid).queue();
             }
+
+
+            StringBuilder builder = new StringBuilder();
+            if (!eventNames.isEmpty() || eventNames.size() > 0)
+            {
+                for (int i = 0; i < eventNames.size(); i++)
+                {
+                    Role role = guild.getRoleById(eventRoleIDs.get(i));
+
+                    long time = CommandsUtil.getTimeBetweenTwoDates(creationTimes.get(i), endTimes.get(i), true);
+                    String eventLine = ("**" + eventNames.get(i) + "**  ⏰ " + time + " " + (role != null ? role.getAsMention() : "") + "\n");
+                    builder.append(eventLine);
+                }
+
+                //Message
+                EventCommandManager.embeds.SendListEmbed(channel, builder.toString());
+            }
+            else
+            {
+                //Information
+                EventCommandManager.embeds.HasNoEventsInformation(channel);
+            }
+
+            //Delete Wait Message
+            channel.deleteMessageById(messageid).queue();
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
-
-
     }
 }

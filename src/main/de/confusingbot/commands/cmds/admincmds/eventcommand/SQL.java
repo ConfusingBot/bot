@@ -58,11 +58,12 @@ public class SQL
         return false;
     }
 
-    public long getRoleID(long guildid, long messageID)
+    public long getRoleID(long guildid, long messageID, String emote)
     {
         long roleID = -1;
         ResultSet set = LiteSQL.onQuery("SELECT * FROM event WHERE "
                 + "guildid = " + guildid
+                + " AND emote = '" + emote + "'"
                 + " AND messageid = " + messageID);
         try
         {
@@ -96,6 +97,46 @@ public class SQL
         }
 
         return name;
+    }
+
+    public long getEventMessageId(long guildid, long roleID)
+    {
+        long messageId = -1;
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM event WHERE "
+                + "guildid = " + guildid
+                + " AND roleid = " + roleID);
+        try
+        {
+            if (set.next())
+            {
+                messageId = set.getLong("messageid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return messageId;
+    }
+
+    public long getEventChannelId(long guildid, long roleID)
+    {
+        long channelId = -1;
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM event WHERE "
+                + "guildid = " + guildid
+                + " AND roleid = " + roleID);
+        try
+        {
+            if (set.next())
+            {
+                channelId = set.getLong("channelid");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return channelId;
     }
 
     public boolean eventRoleExist(long guildid, long roleID)

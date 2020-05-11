@@ -31,9 +31,9 @@ public class UpdateEvents
                 String creationTime = set.getString("creationtime");
                 String currentTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
 
-                long timeleft = CommandsUtil.getTimeBetweenTwoDates(currentTime, endTime, true);
+                long timeleftInMinutes = CommandsUtil.getTimeBetweenTwoDates(currentTime, endTime, false);
 
-                if (timeleft <= 0)
+                if (timeleftInMinutes <= 0)
                 {
                     //SQL
                     EventCommandManager.sql.removeFromSQL(guildid, id);

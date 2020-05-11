@@ -25,7 +25,7 @@ public class Embeds
     public void GeneralUsage(TextChannel channel)
     {
         EmbedManager.SendUsageEmbed(
-                "```yaml\n" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title]) " + RepeatInfoCommandManager.infoKey + " [info]\n```"
+                "```yaml\n" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title] " + RepeatInfoCommandManager.infoKey + ") [info]\n```"
                         + "```Add a RepeatInfo to this server which shows every [timestep]```"
                         + "```yaml\n" + Main.prefix + "repeatinfo remove [index See repeatinfo list]\n``` "
                         + "```Remove the RepeatInfo a the index```"
@@ -36,7 +36,7 @@ public class Embeds
 
     public void AddUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title]) " + RepeatInfoCommandManager.infoKey + " [info]\n```"
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "repeatinfo add [#channel] [timestep] ([color]) ([title] " + RepeatInfoCommandManager.infoKey + ") [info]\n```"
                 + "```Add a RepeatInfo to this server which shows every [timestep]```", channel, EmbedsUtil.showUsageTime);
     }
 
