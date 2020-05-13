@@ -70,7 +70,7 @@ public class JoinCommand implements ServerCommand
                                         Connect(voiceChannel, manager);
 
                                         //PlayTrack
-                                        controller.getPlayer().playTrack(queue.get(0));
+                                        controller.getPlayer().playTrack(queue.get(0).makeClone());
                                     }
                                     else
                                     {

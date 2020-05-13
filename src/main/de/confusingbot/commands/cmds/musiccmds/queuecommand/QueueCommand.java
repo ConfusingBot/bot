@@ -46,7 +46,7 @@ public class QueueCommand implements ServerCommand
             if (args.length == 1)
             {
                 //List
-                ListQueueCommand(channel, args, queue);
+                ListQueueCommand(channel, queue, member);
             }
             else if (args.length >= 2)
             {
@@ -79,10 +79,17 @@ public class QueueCommand implements ServerCommand
     //=====================================================================================================================================
     //Commands
     //=====================================================================================================================================
-    private void ListQueueCommand(TextChannel channel, String[] args, Queue queue)
+    private void ListQueueCommand(TextChannel channel, Queue queue, Member member)
     {
+        Member bot = channel.getGuild().getSelfMember();
+        MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
+        long lastMemberId = controller.getLastUsedMemberId();
         List<AudioTrack> tracks = queue.getQueueList();
-        if (tracks.size() > 0)
+        boolean queueIsEmpty = tracks.size() <= 0;
+        boolean otherMemberCanShowQueue = !queueIsEmpty && member.getVoiceState().inVoiceChannel() && bot.getVoiceState().inVoiceChannel() && member.getVoiceState().getChannel().getIdLong() == bot.getVoiceState().getChannel().getIdLong();
+        boolean lastMemberShowQueue = !queueIsEmpty && member.getIdLong() == lastMemberId;
+
+        if (otherMemberCanShowQueue || lastMemberShowQueue)
         {
             int maxQueueListLength = 10;
             boolean queueToLarge = tracks.size() >= maxQueueListLength;

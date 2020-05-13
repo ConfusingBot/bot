@@ -1,6 +1,10 @@
 package main.de.confusingbot.manage.commands;
 
 import main.de.confusingbot.commands.cmds.admincmds.autoremovecommand.AutoRemoveCommand;
+import main.de.confusingbot.commands.cmds.defaultcmds.WeatherCommand.WeatherCommand;
+import main.de.confusingbot.commands.cmds.defaultcmds.advicecommand.AdviceCommand;
+import main.de.confusingbot.commands.cmds.defaultcmds.catcommand.CatCommand;
+import main.de.confusingbot.commands.cmds.defaultcmds.memecommand.MemeCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
@@ -59,11 +63,17 @@ public class CommandManager
         this.commands.put("react", new ReactCommand());
         this.commands.put("info", new InfoCommand());
         this.commands.put("ping", new PingCommand());
-        this.commands.put("joke", new JokeCommand());
         this.commands.put("question", new QuestionCommand());
         this.commands.put("joinrole", new JoinRoleCommand());
         this.commands.put("invite", new InviteRoleCommand());
         this.commands.put("youtube", new YouTubeCommand());
+        this.commands.put("weather", new WeatherCommand());
+
+        //Fun
+        this.commands.put("joke", new JokeCommand());
+        this.commands.put("meme", new MemeCommand());
+        this.commands.put("advice", new AdviceCommand());
+        this.commands.put("cat", new CatCommand());
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());

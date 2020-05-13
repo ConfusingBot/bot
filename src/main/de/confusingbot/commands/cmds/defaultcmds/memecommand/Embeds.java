@@ -1,11 +1,9 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.jokecommand;
+package main.de.confusingbot.commands.cmds.defaultcmds.memecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
 import main.de.confusingbot.commands.help.EmbedsUtil;
 import main.de.confusingbot.manage.embeds.EmbedManager;
-import main.de.confusingbot.manage.person.Person;
-import main.de.confusingbot.manage.person.PersonManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -15,15 +13,15 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.fun.add("```yaml\n" + Main.prefix + "joke ([momma, programming, chucknorris])\n``` ```Shows you a Joke```");
+        HelpManager.fun.add("```yaml\n" + Main.prefix + "meme\n``` ```Shows you a Meme```");
     }
 
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void JokeUsage(TextChannel channel)
+    public void MemeUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "joke ([momma, programming, chucknorris])\n``` ```Shows you a Joke```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "meme\n``` ```Shows you a Meme```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -37,17 +35,13 @@ public class Embeds
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendJoke(TextChannel channel, String setup, String punchline, String color, Person person)
+    public void SendMeme(TextChannel channel, String title, String imageUrl, String url, String color)
     {
         EmbedBuilder builder = new EmbedBuilder();
-
-        builder.setAuthor(person.name, null, person.imageUrl);
+        builder.setAuthor("Reddit", null, "https://ralfw.de/wp-content/uploads/2019/05/redditlogo-300x300.png");
         builder.setColor(Color.decode(color));
-
-        if (setup != null)
-            builder.addField(setup, punchline, false);
-        else
-            builder.setDescription(punchline);
+        builder.setImage(imageUrl);
+        builder.setTitle(title, url);
 
         EmbedManager.SendEmbed(builder, channel, 30);
     }

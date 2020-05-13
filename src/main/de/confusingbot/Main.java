@@ -8,6 +8,7 @@ import main.de.confusingbot.listener.reactionlistener.ReactionListener;
 import main.de.confusingbot.listener.voicelistener.VoiceListener;
 import main.de.confusingbot.manage.commands.CommandManager;
 import main.de.confusingbot.commands.cmds.consolecmds.ConsoleCommandManager;
+import main.de.confusingbot.manage.person.PersonManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
@@ -61,6 +62,7 @@ public class Main
         builder.setToken(token);
 
         Music music = new Music();
+        PersonManager.instantiatePersons();
 
         cmdManager = new CommandManager();
 
