@@ -2,6 +2,7 @@ package main.de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.listener.botlistener.BotListenerManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
 
@@ -36,27 +37,35 @@ public class UpdateInfos
 
                 Guild guild = Main.INSTANCE.shardManager.getGuildById(guildId);
 
-                List<String> dates = new ArrayList<>();
-                if (dateString != null && !dateString.equals(""))
-                    dates = CommandsUtil.encodeString(dateString, ", ");
-
-                List<Integer> members = new ArrayList<>();
-                if (memberString != null && !memberString.equals(""))
-                    members = CommandsUtil.encodeInteger(memberString, ", ");
-
-                LocalDateTime currentDate = OffsetDateTime.now().toLocalDateTime();
-                String currentDateString = InfoCommandManager.formatter.format(currentDate);
-
-                if (dates.isEmpty() || !dates.get(dates.size() - 1).equals(currentDateString))
+                if (guild != null)
                 {
-                    dates.add(currentDateString);
-                    members.add(guild.getMemberCount());
-                    String newDateString = CommandsUtil.codeString(dates, ", ");
-                    String newMembersString = CommandsUtil.codeInteger(members, ", ");
+                    List<String> dates = new ArrayList<>();
+                    if (dateString != null && !dateString.equals(""))
+                        dates = CommandsUtil.encodeString(dateString, ", ");
 
-                    //Update SQL
-                    InfoCommandManager.sql.UpdateMembersInServers(guildId, newMembersString);
-                    InfoCommandManager.sql.UpdateDatesInServers(guildId, newDateString);
+                    List<Integer> members = new ArrayList<>();
+                    if (memberString != null && !memberString.equals(""))
+                        members = CommandsUtil.encodeInteger(memberString, ", ");
+
+                    LocalDateTime currentDate = OffsetDateTime.now().toLocalDateTime();
+                    String currentDateString = InfoCommandManager.formatter.format(currentDate);
+
+                    if (dates.isEmpty() || !dates.get(dates.size() - 1).equals(currentDateString))
+                    {
+                        dates.add(currentDateString);
+                        members.add(guild.getMemberCount());
+                        String newDateString = CommandsUtil.codeString(dates, ", ");
+                        String newMembersString = CommandsUtil.codeInteger(members, ", ");
+
+                        //Update SQL
+                        InfoCommandManager.sql.UpdateMembersInServers(guildId, newMembersString);
+                        InfoCommandManager.sql.UpdateDatesInServers(guildId, newDateString);
+                    }
+                }
+                else
+                {
+                    //Remove Guild form SQL
+                    BotListenerManager.sql.RemoveGuildFromSQL(guildId);
                 }
             }
         } catch (SQLException e)

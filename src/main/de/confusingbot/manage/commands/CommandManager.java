@@ -2,9 +2,10 @@ package main.de.confusingbot.manage.commands;
 
 import main.de.confusingbot.commands.cmds.admincmds.autoremovecommand.AutoRemoveCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.WeatherCommand.WeatherCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.advicecommand.AdviceCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.catcommand.CatCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.memecommand.MemeCommand;
+import main.de.confusingbot.commands.cmds.funcmds.advicecommand.AdviceCommand;
+import main.de.confusingbot.commands.cmds.funcmds.catcommand.CatCommand;
+import main.de.confusingbot.commands.cmds.funcmds.memecommand.MemeCommand;
+import main.de.confusingbot.commands.cmds.funcmds.yodaCommand.YodaCommand;
 import main.de.confusingbot.commands.cmds.ownercmds.customonetimeembedcommand.CustomOneTimeEmbedCommand;
 import main.de.confusingbot.commands.cmds.admincmds.acceptrulecommand.AcceptRuleCommand;
 import main.de.confusingbot.commands.cmds.admincmds.clearcommand.ClearCommand;
@@ -19,9 +20,9 @@ import main.de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand.Temp
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.infocommand.InfoCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.hugcommand.HugCommand;
+import main.de.confusingbot.commands.cmds.funcmds.hugcommand.HugCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.inviterolecommand.InviteRoleCommand;
-import main.de.confusingbot.commands.cmds.defaultcmds.jokecommand.JokeCommand;
+import main.de.confusingbot.commands.cmds.funcmds.jokecommand.JokeCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.pingcommand.PingCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.previewcommand.PreviewCommand;
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionCommand;
@@ -74,6 +75,7 @@ public class CommandManager
         this.commands.put("meme", new MemeCommand());
         this.commands.put("advice", new AdviceCommand());
         this.commands.put("cat", new CatCommand());
+        this.commands.put("yoda", new YodaCommand());
 
         //Special Rights
         this.commands.put("onetimeembed", new CustomOneTimeEmbedCommand());

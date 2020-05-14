@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.hugcommand;
+package main.de.confusingbot.commands.cmds.funcmds.hugcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;

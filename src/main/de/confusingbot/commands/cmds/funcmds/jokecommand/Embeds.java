@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.catcommand;
+package main.de.confusingbot.commands.cmds.funcmds.jokecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
@@ -14,34 +14,47 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.fun.add("```yaml\n" + Main.prefix + "cat\n``` ```Shows you a Cat```");
+        HelpManager.fun.add("```yaml\n" + Main.prefix + "joke ([momma, programming, chucknorris])\n``` ```Shows you a Joke```");
     }
 
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void CatUsage(TextChannel channel)
+    public void JokeUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "cat\n``` ```Shows you a Cat```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "joke ([momma, programming, chucknorris])\n``` ```Shows you a Joke```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void SendSomethingWentWrong(TextChannel channel)
+    public void SendSomethingWentWrong(TextChannel channel, int errorCode)
     {
-        EmbedManager.SendErrorEmbed("Something went wrong :/", channel, EmbedsUtil.showErrorTime);
+        EmbedsUtil.SendSomethingWentWrong(channel, errorCode);
+    }
+
+    //=====================================================================================================================================
+    //Information
+    //=====================================================================================================================================
+    public long SendWaitMessage(TextChannel channel)
+    {
+        return EmbedsUtil.SendWaitMessage(channel, "Searching good Joke..");
     }
 
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendCat(TextChannel channel, String imageUrl, Person person, String color)
+    public void SendJoke(TextChannel channel, String setup, String punchline, String color, Person person)
     {
         EmbedBuilder builder = new EmbedBuilder();
+
         builder.setAuthor(person.name, null, person.imageUrl);
         builder.setColor(Color.decode(color));
-        builder.setImage(imageUrl);
+
+        if (setup != null)
+            builder.addField(setup, punchline, false);
+        else
+            builder.setDescription(punchline);
 
         EmbedManager.SendEmbed(builder, channel, 30);
     }

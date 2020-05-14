@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.hugcommand;
+package main.de.confusingbot.commands.cmds.funcmds.hugcommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
 import main.de.confusingbot.commands.types.ServerCommand;

@@ -1,6 +1,5 @@
 package main.de.confusingbot.manage.person;
 
-import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +17,7 @@ public class PersonManager
         persons.put("magret", new Person("Magret O'Kelly", "https://cdn.discordapp.com/attachments/710203506375786559/710203528697610290/unknown.png"));
         persons.put("günter", new Person("Günter Smith", "https://muehlacker-tagblatt.de/wp-content/uploads/2018/10/910_0960_82208_-568x778.jpg"));
         persons.put("grandma", new Person("Grandma", "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQJgucNqkzAgtvzVtOgRu8BgeDZwsv7A_svmlDg7WnphyVkYsMj&usqp=CAU"));
+        persons.put("yoda", new Person("Yoda", "https://vignette.wikia.nocookie.net/starwars/images/d/d6/Yoda_SWSB.png/revision/latest/top-crop/width/360/height/360?cb=20150206140125"));
     }
 
 

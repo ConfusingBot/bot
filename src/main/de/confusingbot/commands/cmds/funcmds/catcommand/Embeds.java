@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.WeatherCommand;
+package main.de.confusingbot.commands.cmds.funcmds.catcommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
@@ -14,15 +14,15 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "weather [cityName/cityId]\n``` ```Will give you some weather information!```");
+        HelpManager.fun.add("```yaml\n" + Main.prefix + "cat\n``` ```Shows you a Cat```");
     }
 
     //=====================================================================================================================================
     //Usage
     //=====================================================================================================================================
-    public void WeatherUsage(TextChannel channel)
+    public void CatUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "weather [cityName/cityId]\n``` ```Will give you some weather information!```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "cat\n``` ```Shows you a Cat```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -36,32 +36,22 @@ public class Embeds
     //=====================================================================================================================================
     //Information
     //=====================================================================================================================================
-    public void LocationDoesNotExistInformation(TextChannel channel, String location)
-    {
-        EmbedManager.SendInfoEmbed("Couldn't find `" + location + "`!", channel, EmbedsUtil.showInfoTime);
-    }
-
     public long SendWaitMessage(TextChannel channel)
     {
-        return EmbedsUtil.SendWaitMessage(channel, "Checking weather stations..");
+        return EmbedsUtil.SendWaitMessage(channel, "Searching cute Cat..");
     }
 
     //=====================================================================================================================================
     //Other
     //=====================================================================================================================================
-    public void SendWeather(TextChannel channel, String city, String description, double tempInDegree, double feelsLikeTempInDegree, double windSpeed, int humidity, String imageUrl, String color)
+    public void SendCat(TextChannel channel, String imageUrl, Person person, String color)
     {
         EmbedBuilder builder = new EmbedBuilder();
-
+        builder.setAuthor(person.name, null, person.imageUrl);
         builder.setColor(Color.decode(color));
-        builder.addField("Description", description, false);
-        builder.addField("Degree", tempInDegree + "°C", true);
-        builder.addField("Feels Like", feelsLikeTempInDegree + "°C", true);
-        builder.addField("Wind Speed", windSpeed + "km/h", true);
-        builder.addField("Humidity", humidity + "%", true);
-        builder.setTitle("\uD83C\uDFD9 " + city);
-        builder.setThumbnail(imageUrl);
+        builder.setImage(imageUrl);
 
         EmbedManager.SendEmbed(builder, channel, 30);
     }
+
 }

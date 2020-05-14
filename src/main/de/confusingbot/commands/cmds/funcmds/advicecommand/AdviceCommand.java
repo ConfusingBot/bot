@@ -1,6 +1,7 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.advicecommand;
+package main.de.confusingbot.commands.cmds.funcmds.advicecommand;
 
 import main.de.confusingbot.commands.help.CommandsUtil;
+import main.de.confusingbot.manage.json.JsonReader;
 import main.de.confusingbot.commands.types.ServerCommand;
 import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.person.Person;
@@ -11,8 +12,6 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
@@ -45,6 +44,9 @@ public class AdviceCommand implements ServerCommand
         {
             if (args.length == 1)
             {
+                //Send WaitMessage
+                long waitMessageId = embeds.SendWaitMessage(channel);
+
                 //Random Color
                 Random random = new Random();
                 int nextInt = random.nextInt(0xffffff + 1);
@@ -60,9 +62,7 @@ public class AdviceCommand implements ServerCommand
                     if (responseCode == HttpURLConnection.HTTP_OK)
                     {
                         //Get JSON-Object
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(adviceUrl.openConnection().getInputStream()));
-                        String jsonString = bufferedReader.readLine();
-                        JSONObject jsonObject = new JSONObject(jsonString);
+                        JSONObject jsonObject = JsonReader.readJsonFromUrl(adviceUrl);
 
                         //Get Advice
                         String advice = jsonObject.getJSONObject("slip").getString("advice");
@@ -76,13 +76,16 @@ public class AdviceCommand implements ServerCommand
                     else
                     {
                         //Error
-                        embeds.SendSomethingWentWrong(channel);
+                        embeds.SendSomethingWentWrong(channel, responseCode);
                     }
                 } catch (Exception e)
                 {
                     //Error
-                    embeds.SendSomethingWentWrong(channel);
+                    embeds.SendSomethingWentWrong(channel, 0);
                 }
+
+                //Delete WaitMessage
+                EmbedManager.DeleteMessageByID(channel, waitMessageId);
             }
             else
             {

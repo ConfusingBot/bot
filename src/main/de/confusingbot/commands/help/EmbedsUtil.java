@@ -1,8 +1,11 @@
 package main.de.confusingbot.commands.help;
 
 import main.de.confusingbot.manage.embeds.EmbedManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.awt.*;
 
 public class EmbedsUtil
 {
@@ -58,6 +61,21 @@ public class EmbedsUtil
     public static void BotNotInYourVoiceChannelError(TextChannel channel)
     {
         EmbedManager.SendInfoEmbed("Sry.. but you can't control the ConfusingBot in another voice channel!", channel, showErrorTime);
+    }
+
+    public static void SendSomethingWentWrong(TextChannel channel, int errorCode)
+    {
+        EmbedManager.SendErrorEmbed("Something went wrong `" + errorCode + "`", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public static long SendWaitMessage(TextChannel channel, String description)
+    {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(Color.decode("#518289"));
+        builder.setTitle("⏳");
+        builder.setDescription(description);
+
+        return EmbedManager.SendEmbedGetMessageID(builder, channel);
     }
 
     //=====================================================================================================================================

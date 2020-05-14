@@ -14,8 +14,8 @@ import java.awt.*;
 public class BotListener extends ListenerAdapter
 {
 
-    Embeds embeds = new Embeds();
-    SQL sql = new SQL();
+    Embeds embeds = BotListenerManager.embeds;
+    SQL sql = BotListenerManager.sql;
 
     @Override
     public void onGuildJoin(GuildJoinEvent event)

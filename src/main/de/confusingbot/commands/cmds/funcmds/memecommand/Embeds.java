@@ -1,4 +1,4 @@
-package main.de.confusingbot.commands.cmds.defaultcmds.memecommand;
+package main.de.confusingbot.commands.cmds.funcmds.memecommand;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.defaultcmds.helpcommand.HelpManager;
@@ -21,15 +21,23 @@ public class Embeds
     //=====================================================================================================================================
     public void MemeUsage(TextChannel channel)
     {
-        EmbedManager.SendInfoEmbed("```yaml\n" + Main.prefix + "meme\n``` ```Shows you a Meme```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "meme\n``` ```Shows you a Meme```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================
-    public void SendSomethingWentWrong(TextChannel channel)
+    public void SendSomethingWentWrong(TextChannel channel, int errorCode)
     {
-        EmbedManager.SendErrorEmbed("Something went wrong :/", channel, EmbedsUtil.showErrorTime);
+        EmbedsUtil.SendSomethingWentWrong(channel, errorCode);
+    }
+
+    //=====================================================================================================================================
+    //Information
+    //=====================================================================================================================================
+    public long SendWaitMessage(TextChannel channel)
+    {
+        return EmbedsUtil.SendWaitMessage(channel, "Searching good Meme..");
     }
 
     //=====================================================================================================================================
