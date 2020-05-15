@@ -15,7 +15,7 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.fun.add("```yaml\n" + Main.prefix + "yoda\n``` ```Translates text into the Yoda Language```");
+        HelpManager.fun.add("```yaml\n" + Main.prefix + "yoda [text]\n``` ```Translates text into Yoda Language```");
     }
 
     //=====================================================================================================================================
@@ -23,7 +23,7 @@ public class Embeds
     //=====================================================================================================================================
     public void YodaUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "yoda [text]\n``` ```Translates text into the Yoda Language```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "yoda [text]\n``` ```Translates text into Yoda Language```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
@@ -59,5 +59,4 @@ public class Embeds
 
         EmbedManager.SendEmbed(builder, channel, 30);
     }
-
 }

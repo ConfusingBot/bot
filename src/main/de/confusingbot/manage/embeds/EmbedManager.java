@@ -7,10 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.autoremovecommand.AutoRemoveManager;
-import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.DeleteQuestionRunnable;
-import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.QuestionManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
@@ -20,14 +19,16 @@ public class EmbedManager
     public static void SendErrorEmbed(String description, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
         EmbedBuilder error = new EmbedBuilder();
         error.setColor(0xff3923);
         error.setTitle("🔴 Error");
         error.setDescription(description);
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(error.build()).queue();
             }
@@ -37,8 +38,7 @@ public class EmbedManager
                 channel.sendMessage(error.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -46,19 +46,22 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static void SendSuccessEmbed(String description, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
         EmbedBuilder success = new EmbedBuilder();
         success.setColor(0x00FF40);
         success.setTitle("✔️ Success");
         success.setDescription(description);
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(success.build()).queue();
             }
@@ -68,8 +71,7 @@ public class EmbedManager
                 channel.sendMessage(success.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -77,19 +79,22 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static void SendInfoEmbed(String description, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
         EmbedBuilder info = new EmbedBuilder();
         info.setColor(0xBF00FF);
         info.setTitle("💡 Information");
         info.setDescription(description);
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(info.build()).queue();
             }
@@ -99,8 +104,7 @@ public class EmbedManager
                 channel.sendMessage(info.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -108,19 +112,22 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static void SendUsageEmbed(String description, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
         EmbedBuilder usage = new EmbedBuilder();
         usage.setColor(0xBF00FF);
         usage.setTitle("💡 Usage");
         usage.setDescription(description);
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(usage.build()).queue();
             }
@@ -130,8 +137,7 @@ public class EmbedManager
                 channel.sendMessage(usage.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -139,19 +145,22 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static void SendCustomEmbed(String title, String description, Color color, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
         EmbedBuilder custom = new EmbedBuilder();
         custom.setColor(color);
         custom.setTitle(title);
         custom.setDescription(description);
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(custom.build()).queue();
             }
@@ -161,8 +170,7 @@ public class EmbedManager
                 channel.sendMessage(custom.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -170,6 +178,7 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static void SendCustomPrivateEmbed(String title, String description, Color color, User user)
@@ -187,13 +196,14 @@ public class EmbedManager
     public static long SendCustomEmbedGetMessageID(String title, String description, Color color, TextChannel channel)
     {
         long messageID = -1;
+        Member bot = channel.getGuild().getSelfMember();
 
         EmbedBuilder custom = new EmbedBuilder();
         custom.setColor(color);
         custom.setTitle(title);
         custom.setDescription(description);
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
             messageID = channel.sendMessage(custom.build()).complete().getIdLong();
 
         return messageID;
@@ -202,9 +212,11 @@ public class EmbedManager
     public static void SendEmbed(EmbedBuilder builder, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(builder.build()).queue();
             }
@@ -214,8 +226,7 @@ public class EmbedManager
                 channel.sendMessage(builder.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -223,14 +234,17 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static void SendMessage(String text, TextChannel channel, int timeInSeconds)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(text).queue();
             }
@@ -239,8 +253,7 @@ public class EmbedManager
                 channel.sendMessage(text).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -248,6 +261,7 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 
     public static long SendEmbedGetMessageID(EmbedBuilder builder, TextChannel channel)
@@ -262,9 +276,10 @@ public class EmbedManager
 
     public static void DeleteMessageByID(TextChannel channel, long messageID)
     {
+        Member bot = channel.getGuild().getSelfMember();
         try
         {
-            if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL) && channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_MANAGE))
+            if (bot.hasPermission(channel, Permission.MANAGE_CHANNEL) && bot.hasPermission(channel, Permission.MESSAGE_MANAGE))
                 channel.deleteMessageById(messageID).submit().get();
         } catch (Exception e)
         {
@@ -276,6 +291,7 @@ public class EmbedManager
     public static void SendNoPermissionEmbed(TextChannel channel, Permission permission, String description)
     {
         boolean canAutoRemove = AutoRemoveManager.getAutoRemove(channel.getGuild().getIdLong()).getCanAutoRemove();
+        Member bot = channel.getGuild().getSelfMember();
 
         int timeInSeconds = 10;
         EmbedBuilder noPermission = new EmbedBuilder();
@@ -284,8 +300,9 @@ public class EmbedManager
         noPermission.setDescription("`Sry I can't execute this command ⚡️`\n ```yaml\n" + permission.name() + "```\n" + description);
         noPermission.setTimestamp(OffsetDateTime.now());
 
-        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            if (timeInSeconds <= 0 || !canAutoRemove)
+        if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
+        {
+            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
             {
                 channel.sendMessage(noPermission.build()).queue();
             }
@@ -295,8 +312,7 @@ public class EmbedManager
                 channel.sendMessage(noPermission.build()).queue(message -> {
                     try
                     {
-                        if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL))
-                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
                         System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
@@ -304,6 +320,7 @@ public class EmbedManager
                     }
                 });
             }
+        }
     }
 }
 

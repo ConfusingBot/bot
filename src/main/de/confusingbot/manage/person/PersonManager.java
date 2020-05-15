@@ -18,6 +18,9 @@ public class PersonManager
         persons.put("günter", new Person("Günter Smith", "https://muehlacker-tagblatt.de/wp-content/uploads/2018/10/910_0960_82208_-568x778.jpg"));
         persons.put("grandma", new Person("Grandma", "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQJgucNqkzAgtvzVtOgRu8BgeDZwsv7A_svmlDg7WnphyVkYsMj&usqp=CAU"));
         persons.put("yoda", new Person("Yoda", "https://vignette.wikia.nocookie.net/starwars/images/d/d6/Yoda_SWSB.png/revision/latest/top-crop/width/360/height/360?cb=20150206140125"));
+        persons.put("smith", new Person("Captain Smith", "https://www.biography.com/.image/t_share/MTE1ODA0OTcxNDY1ODY4ODEz/edward-j.jpg"));
+        persons.put("hyper", new Person("Hide the Pain Harold", "https://i.imgur.com/9GbwJ6ll.jpg"));
+        persons.put("kim", new Person("Kim Jong Un", "https://img.welt.de/img/newsticker/dpa_nt/infoline_nt/brennpunkte_nt/mobile207391831/1912504207-ci102l-w1024/urn-newsml-dpa-com-20090101-200421-99-771155-large-4-3-jpg.jpg"));
     }
 
 

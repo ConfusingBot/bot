@@ -14,7 +14,7 @@ public class Embeds
 {
     public void HelpEmbed()
     {
-        HelpManager.useful.add("```yaml\n" + Main.prefix + "weather [cityName/cityId]\n``` ```Will give you some weather information!```");
+        HelpManager.useful.add("```yaml\n" + Main.prefix + "weather [cityName/cityId]\n``` ```Shows you some weather information!```");
     }
 
     //=====================================================================================================================================
@@ -22,7 +22,7 @@ public class Embeds
     //=====================================================================================================================================
     public void WeatherUsage(TextChannel channel)
     {
-        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "weather [cityName/cityId]\n``` ```Will give you some weather information!```", channel, EmbedsUtil.showUsageTime);
+        EmbedManager.SendUsageEmbed("```yaml\n" + Main.prefix + "weather [cityName/cityId]\n``` ```Shows you some weather information!```", channel, EmbedsUtil.showUsageTime);
     }
 
     //=====================================================================================================================================
