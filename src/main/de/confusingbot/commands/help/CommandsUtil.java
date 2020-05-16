@@ -119,8 +119,8 @@ public class CommandsUtil
     {
         try
         {
-            channel.addReactionById(messageid, "\uD83D\uDC7E").queue();
-            channel.removeReactionById(messageid, "\uD83D\uDC7E").queue();
+            channel.addReactionById(messageid, "\uD83D\uDC7E").submit().get();
+            channel.removeReactionById(messageid, "\uD83D\uDC7E").submit().get();
             return true;
         } catch (Exception e)
         {

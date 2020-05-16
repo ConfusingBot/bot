@@ -30,7 +30,7 @@ public class AcceptRulesListener
         {
             long messageid = event.getMessageIdLong();
 
-            if (AcceptRuleManager.sql.containsMessageID(event.getGuild().getIdLong(), messageid))
+            if (AcceptRuleManager.sql.containsMessageID(guild.getIdLong(), messageid))
             {
                 if (!event.getUser().isBot())
                 {

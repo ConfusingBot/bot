@@ -28,7 +28,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(error.build()).queue();
             }
@@ -61,7 +61,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(success.build()).queue();
             }
@@ -94,7 +94,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(info.build()).queue();
             }
@@ -127,7 +127,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(usage.build()).queue();
             }
@@ -160,7 +160,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(custom.build()).queue();
             }
@@ -216,7 +216,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(builder.build()).queue();
             }
@@ -244,7 +244,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(text).queue();
             }
@@ -276,15 +276,16 @@ public class EmbedManager
 
     public static void DeleteMessageByID(TextChannel channel, long messageID)
     {
-        Member bot = channel.getGuild().getSelfMember();
+        //Member bot = channel.getGuild().getSelfMember();
         try
         {
-            if (bot.hasPermission(channel, Permission.MANAGE_CHANNEL) && bot.hasPermission(channel, Permission.MESSAGE_MANAGE))
+            //if (bot.hasPermission(channel, Permission.MESSAGE_MANAGE))
                 channel.deleteMessageById(messageID).submit().get();
         } catch (Exception e)
         {
-            System.err.println("Couldn't delete Message by ID " + messageID + " on Guild " + channel.getGuild().getIdLong());
-            System.err.println(e);
+            //Will run in the catch case if he has to delete a message of another member
+            //System.err.println("Couldn't delete Message by ID " + messageID + " on Guild " + channel.getGuild().getIdLong());
+            //System.err.println(e);
         }
     }
 
@@ -302,7 +303,7 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove || !bot.hasPermission(channel, Permission.MANAGE_CHANNEL))
+            if (timeInSeconds <= 0 || !canAutoRemove)
             {
                 channel.sendMessage(noPermission.build()).queue();
             }
