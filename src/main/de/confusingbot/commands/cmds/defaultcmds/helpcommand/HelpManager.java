@@ -63,7 +63,7 @@ public class HelpManager
 
         if (isEnd)
         {
-            builder.setDescription(description + "\nYou need more help?\nhttps://discord.gg/xc82F8M");
+            builder.setDescription(description + "\nYou need more help?\nhttps://discord.gg/9Edsb3z");
             builder.setFooter("Powered by ConfusingGames");
             builder.setTimestamp(OffsetDateTime.now());
         }

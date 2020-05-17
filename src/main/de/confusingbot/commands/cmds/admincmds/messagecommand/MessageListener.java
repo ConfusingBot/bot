@@ -20,42 +20,59 @@ public class MessageListener
         if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false))
         {
             long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
+
+            //Get Message
             String message = " ";
             message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
-            if (message.isEmpty() || message == "") message = " ";
+            if (message.isEmpty() || message.equals("")) message = " ";
 
+            //Get Title
             String title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
-            if (title.isEmpty() || title == "") title = " ";
+            if (title.isEmpty() || title.equals("")) title = " ";
 
-            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false));
-            if (color == null) color = Color.yellow;
+            //Get Color
+            Color color = Color.yellow;
+            String colorCode = MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, false);
+            if (!colorCode.isEmpty() || title.equals(""))
+            {
+                color = Color.decode(colorCode);
+                if (color == null)
+                    color = Color.yellow;
+            }
 
+            //Replace word placeholder
             message = replaceWordWithWordInText(MessageManager.NewMemberKeyWord, event.getMember().getAsMention(), message);
 
+            //Message
             TextChannel messageChannel = guild.getTextChannelById(channelid);
             if (messageChannel != null)
-            {
                 EmbedManager.SendCustomEmbed(title, message, color, messageChannel, 0);
-            }
             else
-            {
                 MessageManager.embeds.CouldNotFindMessageChannelError(guild.getDefaultChannel(), MessageManager.welcomeMessageKey);
-            }
         }
 
         //Private
         if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true) && !event.getUser().isBot())
         {
-            String message = " ";
-            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
+            //Message
+            String message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
             if (message.isEmpty() || message == "") message = " ";
 
+            //Title
             String title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
             if (title.isEmpty() || title == "") title = " ";
 
-            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true));
-            if (color == null) color = Color.yellow;
+            //Color
+            Color color = Color.yellow;
+            String colorCode = MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.welcomeMessageKey, true);
+            if (!colorCode.isEmpty() || title.equals(""))
+            {
+                color = Color.decode(colorCode);
+                if (color == null)
+                    color = Color.yellow;
+            }
 
+            //Replace word placeholder
             message = replaceWordWithWordInText(MessageManager.NewMemberKeyWord, event.getMember().getAsMention(), message);
 
             //Send Private Message
@@ -70,23 +87,34 @@ public class MessageListener
         if (MessageManager.sql.MessageExistsInSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false))
         {
             long channelid = MessageManager.sql.GetChannelIDFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
-            String message = "";
-            message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
-            String title = "";
-            title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
-            Color color = Color.decode(MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false));
 
+            //Message
+            String message = MessageManager.sql.GetMessageFormSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
+            if (message.isEmpty() || message == "") message = " ";
+
+            //Title
+            String title = MessageManager.sql.GetTitleFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
+            if (title.isEmpty() || title == "") title = " ";
+
+            //Color
+            Color color = Color.yellow;
+            String colorCode = MessageManager.sql.GetColorFromSQL(guild.getIdLong(), MessageManager.leaveMessageKey, false);
+            if (!colorCode.isEmpty() || title.equals(""))
+            {
+                color = Color.decode(colorCode);
+                if (color == null)
+                    color = Color.yellow;
+            }
+
+            //Replace word placeholder
             message = replaceWordWithWordInText(MessageManager.LeaveMemberKeyWord, event.getMember().getAsMention(), message);
 
+            //Message
             TextChannel messageChannel = guild.getTextChannelById(channelid);
             if (messageChannel != null)
-            {
                 EmbedManager.SendCustomEmbed(title, message, color, messageChannel, 0);
-            }
             else
-            {
                 MessageManager.embeds.CouldNotFindMessageChannelError(guild.getDefaultChannel(), MessageManager.leaveMessageKey);
-            }
         }
     }
 
