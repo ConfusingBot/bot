@@ -59,6 +59,7 @@ public class PlayCommand implements ServerCommand
                             {
                                 List<Member> voiceChannelMembers = voiceChannel.getMembers();
                                 boolean lastMemberInChannel = false;
+                                //Get isLastMemberInChannel
                                 for (Member voiceChannelMember : voiceChannelMembers)
                                 {
                                     if (voiceChannelMember.getIdLong() == lastMemberId)
@@ -66,10 +67,12 @@ public class PlayCommand implements ServerCommand
                                 }
 
                                 //Clear old queue if new Member want to use the Bot
-                                if (member.getIdLong() != lastMemberId && !lastMemberInChannel) controller.getQueue().getQueueList().clear();
-
-                                //SQL
-                                controller.updateChannel(channel, member);
+                                if (member.getIdLong() != lastMemberId && !lastMemberInChannel)
+                                {
+                                    //SQL
+                                    controller.updateChannel(channel, member);
+                                    controller.getQueue().getQueueList().clear();
+                                }
 
                                 StringBuilder stringBuilder = new StringBuilder();
                                 for (int i = 1; i < args.length; i++) stringBuilder.append(args[i] + " ");

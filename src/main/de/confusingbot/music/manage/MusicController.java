@@ -85,6 +85,7 @@ public class MusicController
             if (set.next())
             {
                 LiteSQL.onUpdate("UPDATE musicchannel SET channelid = " + channel.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());//https://www.sqlitetutorial.net/sqlite-update/
+                LiteSQL.onUpdate("UPDATE musicchannel SET memberid = " + member.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());
             }
             else
             {
