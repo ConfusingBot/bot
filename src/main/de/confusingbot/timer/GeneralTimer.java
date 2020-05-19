@@ -50,13 +50,23 @@ public class GeneralTimer
                 updateVotes.onSecond();
                 updateRepeatInfo.onSecond();
                 updateEvents.onSecond();
-                updateInfos.onSecond();
                 updateInvites.onSecond();
                 updateYouTubeAnnouncements.onSecond();
             }
         };
-
         timer.schedule(timeTask, 0l,  1000 * 60 * 5);// every 5min
+
+
+        //Create Long Timer Loop
+        TimerTask longTimeTask = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                updateInfos.onSecond();
+            }
+        };
+        timer.schedule(longTimeTask, 0l,  1000 * 60 * 60);// every 60min
     }
 
     public void stopTimer()

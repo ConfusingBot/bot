@@ -51,6 +51,11 @@ public class Embeds
          EmbedManager.SendInfoEmbed("We are sorry but you can only add `" + maxVotes + "` vote possibilities!", channel, EmbedsUtil.showInfoTime);
     }
 
+    public void TimeHasToBeLargerInformation(TextChannel channel)
+    {
+        EmbedManager.SendInfoEmbed("Sry.. but the time has to be larger than `0`", channel, EmbedsUtil.showInfoTime);
+    }
+
     //=====================================================================================================================================
     //Error
     //=====================================================================================================================================

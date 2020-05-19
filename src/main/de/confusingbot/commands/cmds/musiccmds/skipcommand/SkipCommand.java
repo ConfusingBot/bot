@@ -48,32 +48,41 @@ public class SkipCommand implements ServerCommand
                         AudioManager manager = voiceChannel.getGuild().getAudioManager();
                         VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                        if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                        if (botVoiceChannel != null)
                         {
-                            MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
-
-                            Queue queue = controller.getQueue();
-                            AudioTrack lastPlayingTrack = controller.getPlayer().getPlayingTrack();
-
-                            //Unpause song if song is paused
-                            if (controller.getPlayer().isPaused())
+                            if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
                             {
-                                controller.getPlayer().setPaused(false);
-                            }
+                                MusicController controller = Music.playerManager.getController(channel.getGuild().getIdLong());
 
-                            if (queue.hasNext())
-                            {
-                                //Message
-                                embeds.SuccessfullySkippedTrack(channel, lastPlayingTrack.getInfo().title);
+                                Queue queue = controller.getQueue();
+                                AudioTrack lastPlayingTrack = controller.getPlayer().getPlayingTrack();
+
+                                //Unpause song if song is paused
+                                if (controller.getPlayer().isPaused())
+                                {
+                                    controller.getPlayer().setPaused(false);
+                                }
+
+                                if (queue.hasNext())
+                                {
+                                    //Message
+                                    embeds.SuccessfullySkippedTrack(channel, lastPlayingTrack.getInfo().title);
+                                }
+                                else
+                                {
+                                    //Information
+                                    embeds.NoOtherSongInQueueInformation(channel);
+                                }
                             }
                             else
                             {
                                 //Information
-                                embeds.NoOtherSongInQueueInformation(channel);
+                                EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                             }
                         }
                         else
                         {
+                            //Information
                             EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                         }
                     }

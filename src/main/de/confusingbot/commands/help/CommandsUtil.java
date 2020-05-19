@@ -4,8 +4,8 @@ import com.vdurmont.emoji.EmojiManager;
 import main.de.confusingbot.Main;
 import main.de.confusingbot.commands.cmds.admincmds.reactrolescommand.ReactRoleManager;
 import main.de.confusingbot.commands.cmds.admincmds.votecommand.VoteCommandManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.exceptions.HierarchyException;
 
 import java.awt.*;
 import java.time.Duration;
@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class CommandsUtil
 {
@@ -156,22 +157,29 @@ public class CommandsUtil
         Role role = guild.getRoleById(roleid);
         if (role == null) return;
 
-        for (Member member : members)
+        if (guild.getSelfMember().hasPermission(Permission.MANAGE_ROLES))
         {
-            if (!member.getUser().isBot())
+            for (Member member : members)
             {
-                try
+                if (!member.getUser().isBot())
                 {
+                    //Error handler
+                    Consumer<? super Throwable> callback = (response) -> {
+                        ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
+                        return;
+                    };
+
                     if (add)
-                        guild.addRoleToMember(member, role).queue();
+                        guild.addRoleToMember(member, role).queue(null, callback);
                     else
-                        guild.removeRoleFromMember(member, role).queue();
-                } catch (HierarchyException e)
-                {
-                    ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
-                    return;
+                        guild.removeRoleFromMember(member, role).queue(null, callback);
                 }
             }
+        }
+        else
+        {
+            //Error
+            ReactRoleManager.embeds.NoPermissionError(guild.getDefaultChannel(), Permission.MANAGE_ROLES);
         }
     }
 
@@ -181,17 +189,25 @@ public class CommandsUtil
 
         if (!member.getUser().isBot())
         {
-            try
+            if (guild.getSelfMember().hasPermission(Permission.MANAGE_ROLES))
             {
+                //Error handler
+                Consumer<? super Throwable> callback = (response) -> {
+                    ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
+                    return;
+                };
+
                 if (add)
-                    guild.addRoleToMember(member, role).queue();
+                    guild.addRoleToMember(member, role).queue(null, callback);
                 else
-                    guild.removeRoleFromMember(member, role).queue();
-            } catch (HierarchyException e)
-            {
-                ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
-                return;
+                    guild.removeRoleFromMember(member, role).queue(null, callback);
             }
+            else
+            {
+                //Error
+                ReactRoleManager.embeds.NoPermissionError(guild.getDefaultChannel(), Permission.MANAGE_ROLES);
+            }
+
         }
     }
 

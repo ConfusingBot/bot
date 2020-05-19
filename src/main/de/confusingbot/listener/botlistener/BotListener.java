@@ -5,10 +5,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 
 public class BotListener extends ListenerAdapter
@@ -29,20 +29,15 @@ public class BotListener extends ListenerAdapter
         EmbedBuilder builder = embeds.BotJoinEmbed();
 
         //Send private Message
+        Consumer<? super Throwable> callback = (response) -> System.out.println("Failed to send private Message");
         event.getGuild().getOwner().getUser().openPrivateChannel().queue((privateChannel) -> {
-            privateChannel.sendMessage(builder.build()).queue();
+            privateChannel.sendMessage(builder.build()).queue(null, callback);
         });
 
-        //Send in the default Channel if bot has permission
-        try
-        {
-            TextChannel channel = event.getGuild().getDefaultChannel();
-            if (channel != null)
-                EmbedManager.SendEmbed(builder, channel, 0);
-        } catch (InsufficientPermissionException e)
-        {
-            //no permission in this channel
-        }
+        //Send in the default Channel
+        TextChannel channel = event.getGuild().getDefaultChannel();
+        if (channel != null)
+            EmbedManager.SendEmbed(builder, channel, 0);
     }
 
     @Override

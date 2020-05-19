@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class HelpCommand implements ServerCommand
 {
@@ -23,15 +24,19 @@ public class HelpCommand implements ServerCommand
         String[] args = CommandsUtil.messageToArgs(message);
         EmbedManager.DeleteMessageByID(channel, message.getIdLong());
 
-        sendEmbed(HelpManager.getHelpBuilder(args), member);
+        sendEmbed(HelpManager.getHelpBuilder(args), member, channel);
     }
 
-    private void sendEmbed(ArrayList<EmbedBuilder> builders, Member member)
+    private void sendEmbed(ArrayList<EmbedBuilder> builders, Member member, TextChannel channel)
     {
+
+        Consumer<? super Throwable> callback = (response) -> {
+            System.out.println("Failed to send private Message!");
+            EmbedManager.SendInfoEmbed("Sry.. I can't send the HelpEmbed to you because I am not allowed to dm you :/", channel, 10);
+        };
         member.getUser().openPrivateChannel().queue((privateChannel) -> {
             for (EmbedBuilder builder : builders)
-                privateChannel.sendMessage(builder.build()).queue();
+                privateChannel.sendMessage(builder.build()).queue(null, callback);
         });
     }
-
 }

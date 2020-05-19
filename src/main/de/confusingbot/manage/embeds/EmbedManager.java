@@ -41,8 +41,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -74,8 +74,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -107,8 +107,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -140,8 +140,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -173,8 +173,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -229,8 +229,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -256,8 +256,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
@@ -316,8 +316,8 @@ public class EmbedManager
                         message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
                     } catch (InterruptedException | ExecutionException e)
                     {
-                        System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        System.err.println(e);
+                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                        //System.err.println(e);
                     }
                 });
             }
