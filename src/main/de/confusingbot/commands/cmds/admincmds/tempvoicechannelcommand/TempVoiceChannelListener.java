@@ -24,7 +24,6 @@ public class TempVoiceChannelListener
         Member bot = guild.getSelfMember();
         List<Long> channelJoinIds = sql.getTempChannelsFromSQL(guild.getIdLong());
 
-
         if (channelJoinIds != null && channelJoinIds.contains(joinedChannel.getIdLong()))
         {
             if (bot.hasPermission(MANAGE_CHANNEL))
@@ -32,15 +31,22 @@ public class TempVoiceChannelListener
                 if (bot.hasPermission(VOICE_MOVE_OTHERS))
                 {
                     Category category = joinedChannel.getParent();
+                    if (category != null)
+                    {
+                        //create VoiceChannel
+                        VoiceChannel voiceChannel = category.createVoiceChannel("⏳" + member.getEffectiveName() + "'s Channel").complete();
+                        voiceChannel.getManager().setUserLimit(joinedChannel.getUserLimit()).queue();
 
-                    //create VoiceChannel
-                    VoiceChannel voiceChannel = category.createVoiceChannel("⏳" + member.getEffectiveName() + "'s Channel").complete();
-                    voiceChannel.getManager().setUserLimit(joinedChannel.getUserLimit()).queue();
+                        //Move member von placeholder Channel to his VoiceChannel
+                        guild.moveVoiceMember(member, voiceChannel).queue();
 
-                    //Move member von placeholder Channel to his VoiceChannel
-                    guild.moveVoiceMember(member, voiceChannel).queue();
-
-                    tempchannels.add(voiceChannel.getIdLong());
+                        tempchannels.add(voiceChannel.getIdLong());
+                    }
+                    else
+                    {
+                        //Error
+                        EmbedManager.SendErrorEmbed("Make sure the TempVoiceChannel is in a category!", guild.getDefaultChannel(), 10);
+                    }
                 }
                 else
                 {

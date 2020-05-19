@@ -163,16 +163,22 @@ public class CommandsUtil
             {
                 if (!member.getUser().isBot())
                 {
-                    //Error handler
+                    //Error handler for queue errors
                     Consumer<? super Throwable> callback = (response) -> {
                         ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
                         return;
                     };
 
-                    if (add)
-                        guild.addRoleToMember(member, role).queue(null, callback);
-                    else
-                        guild.removeRoleFromMember(member, role).queue(null, callback);
+                    try
+                    {
+                        if (add)
+                            guild.addRoleToMember(member, role).queue(null, callback);
+                        else
+                            guild.removeRoleFromMember(member, role).queue(null, callback);
+                    } catch (Exception e)
+                    {
+                        ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
+                    }
                 }
             }
         }
@@ -191,16 +197,22 @@ public class CommandsUtil
         {
             if (guild.getSelfMember().hasPermission(Permission.MANAGE_ROLES))
             {
-                //Error handler
+                //Error handler for queue errors
                 Consumer<? super Throwable> callback = (response) -> {
                     ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
                     return;
                 };
 
-                if (add)
-                    guild.addRoleToMember(member, role).queue(null, callback);
-                else
-                    guild.removeRoleFromMember(member, role).queue(null, callback);
+                try
+                {
+                    if (add)
+                        guild.addRoleToMember(member, role).queue(null, callback);
+                    else
+                        guild.removeRoleFromMember(member, role).queue(null, callback);
+                } catch (Exception e)
+                {
+                    ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
+                }
             }
             else
             {

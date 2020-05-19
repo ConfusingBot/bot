@@ -28,23 +28,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(error.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(error.build()).queue();
+                }
+                else
+                {
+                    error.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(error.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                error.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(error.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }
@@ -61,23 +68,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(success.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(success.build()).queue();
+                }
+                else
+                {
+                    success.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(success.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                success.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(success.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }
@@ -94,23 +108,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(info.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(info.build()).queue();
+                }
+                else
+                {
+                    info.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(info.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                info.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(info.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }
@@ -127,23 +148,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(usage.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(usage.build()).queue();
+                }
+                else
+                {
+                    usage.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(usage.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                usage.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(usage.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }
@@ -160,23 +188,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(custom.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(custom.build()).queue();
+                }
+                else
+                {
+                    custom.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(custom.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                custom.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(custom.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }
@@ -204,7 +239,17 @@ public class EmbedManager
         custom.setDescription(description);
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
-            messageID = channel.sendMessage(custom.build()).complete().getIdLong();
+        {
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
+            {
+                //Send Embed
+                messageID = channel.sendMessage(custom.build()).complete().getIdLong();
+            }
+            else
+            {
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
+            }
+        }
 
         return messageID;
     }
@@ -216,23 +261,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(builder.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(builder.build()).queue();
+                }
+                else
+                {
+                    builder.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(builder.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                builder.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(builder.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }
@@ -267,10 +319,19 @@ public class EmbedManager
     public static long SendEmbedGetMessageID(EmbedBuilder builder, TextChannel channel)
     {
         long messageID = -1;
+        Member bot = channel.getGuild().getSelfMember();
 
         if (channel.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_WRITE))
-            messageID = channel.sendMessage(builder.build()).complete().getIdLong();
-
+        {
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
+            {
+                messageID = channel.sendMessage(builder.build()).complete().getIdLong();
+            }
+            else
+            {
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
+            }
+        }
         return messageID;
     }
 
@@ -280,7 +341,7 @@ public class EmbedManager
         try
         {
             //if (bot.hasPermission(channel, Permission.MESSAGE_MANAGE))
-                channel.deleteMessageById(messageID).submit().get();
+            channel.deleteMessageById(messageID).submit().get();
         } catch (Exception e)
         {
             //Will run in the catch case if he has to delete a message of another member
@@ -303,23 +364,30 @@ public class EmbedManager
 
         if (bot.hasPermission(channel, Permission.MESSAGE_WRITE))
         {
-            if (timeInSeconds <= 0 || !canAutoRemove)
+            if (bot.hasPermission(channel, Permission.MESSAGE_EMBED_LINKS))
             {
-                channel.sendMessage(noPermission.build()).queue();
+                if (timeInSeconds <= 0 || !canAutoRemove)
+                {
+                    channel.sendMessage(noPermission.build()).queue();
+                }
+                else
+                {
+                    noPermission.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
+                    channel.sendMessage(noPermission.build()).queue(message -> {
+                        try
+                        {
+                            message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
+                        } catch (InterruptedException | ExecutionException e)
+                        {
+                            //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
+                            //System.err.println(e);
+                        }
+                    });
+                }
             }
             else
             {
-                noPermission.setFooter("This message will be deleted in " + timeInSeconds + "s (" + Main.prefix + "autoremove)");
-                channel.sendMessage(noPermission.build()).queue(message -> {
-                    try
-                    {
-                        message.delete().submitAfter(timeInSeconds, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e)
-                    {
-                        //System.err.println("Couldn't delete Message by ID " + message.getIdLong() + " on Guild " + channel.getGuild().getIdLong());
-                        //System.err.println(e);
-                    }
-                });
+                SendMessage("Without the Permission `MESSAGE_EMBED_LINKS` the Confusing Bot won't work!", channel, 0);
             }
         }
     }

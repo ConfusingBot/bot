@@ -54,7 +54,7 @@ public class PlayCommand implements ServerCommand
 
                         if (botVoiceChannel == null || (botVoiceChannel.getIdLong() == voiceChannel.getIdLong()))
                         {
-                            if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size())
+                            if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size() || botVoiceChannel != null)
                             {
                                 //Clear old queue if new Member want to use the Bot
                                 if(member.getIdLong() != lastMemberId) controller.getQueue().getQueueList().clear();
