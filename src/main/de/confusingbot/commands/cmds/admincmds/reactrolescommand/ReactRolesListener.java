@@ -23,54 +23,59 @@ public class ReactRolesListener
     public void onReactionAdd(MessageReactionAddEvent event)
     {
         Guild guild = event.getGuild();
-        Member bot = guild.getSelfMember();
-        Member member = event.getMember();
 
-        if (event.getChannelType() == ChannelType.TEXT && member != null)
+        if (guild != null)
         {
-            long channelid = event.getChannel().getIdLong();
-            long messageid = event.getMessageIdLong();
-            TextChannel channel = event.getTextChannel();
-
-            if (ReactRoleManager.sql.containsMessageID(guild.getIdLong(), messageid))
+            Member member = event.getMember();
+            Member bot = guild.getSelfMember();
+            if (member != null)
             {
-                if (!event.getUser().isBot())
+                if (event.getChannelType() == ChannelType.TEXT && member != null)
                 {
-                    if (bot.hasPermission(MANAGE_ROLES))
+                    long channelid = event.getChannel().getIdLong();
+                    long messageid = event.getMessageIdLong();
+                    TextChannel channel = event.getTextChannel();
+
+                    if (ReactRoleManager.sql.containsMessageID(guild.getIdLong(), messageid))
                     {
-                        String emote = "";
-
-                        if (event.getReactionEmote().isEmoji())
+                        if (!event.getUser().isBot())
                         {
-                            emote = event.getReactionEmote().getEmoji();
-                        }
-                        else
-                        {
-                            emote = event.getReactionEmote().getId();
-                        }
+                            if (bot.hasPermission(MANAGE_ROLES))
+                            {
+                                String emote = "";
 
-                        long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guild.getIdLong(), channelid, messageid, emote);
-                        Role role = guild.getRoleById(roleid);
+                                if (event.getReactionEmote().isEmoji())
+                                {
+                                    emote = event.getReactionEmote().getEmoji();
+                                }
+                                else
+                                {
+                                    emote = event.getReactionEmote().getId();
+                                }
 
-                        if (role != null)
-                        {
-                            //Add Role to member
-                            CommandsUtil.AddOrRemoveRoleFromMember(guild, member, role, true);
+                                long roleid = ReactRoleManager.sql.GetRoleIdFromSQL(guild.getIdLong(), channelid, messageid, emote);
+                                Role role = guild.getRoleById(roleid);
+
+                                if (role != null)
+                                {
+                                    //Add Role to member
+                                    CommandsUtil.AddOrRemoveRoleFromMember(guild, member, role, true);
+                                }
+                                else
+                                {
+                                    //Error
+                                    ReactRoleManager.embeds.RoleDoesNotExistError(channel, roleid);
+
+                                    //SQL
+                                    ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelid, messageid, emote, roleid);
+                                }
+                            }
+                            else
+                            {
+                                //Error
+                                EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "ReactRoleCommand | Can't add role to member!");
+                            }
                         }
-                        else
-                        {
-                            //Error
-                            ReactRoleManager.embeds.RoleDoesNotExistError(channel, roleid);
-
-                            //SQL
-                            ReactRoleManager.sql.removeFromSQL(guild.getIdLong(), channelid, messageid, emote, roleid);
-
-                        }
-                    }
-                    else
-                    {
-                        //Error
-                        EmbedManager.SendNoPermissionEmbed(channel, MANAGE_ROLES, "ReactRoleCommand | Can't add role to member!");
                     }
                 }
             }

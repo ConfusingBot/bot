@@ -47,16 +47,14 @@ public class UpdateVotes
                     VoteCommandManager.sql.removeFromSQL(guildid, id);
 
                     Guild guild = Main.INSTANCE.shardManager.getGuildById(guildid);
-                    Member bot = guild.getSelfMember();
                     if (guild != null)
                     {
+                        Member bot = guild.getSelfMember();
                         TextChannel channel = guild.getTextChannelById(channelid);
                         if (channel != null)
                         {
-
                             if (bot.hasPermission(channel, MESSAGE_ADD_REACTION))
                             {
-
                                 Message message = CommandsUtil.getLatestesMessageByID(channel, messageid);
                                 if (message != null)
                                 {

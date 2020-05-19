@@ -69,9 +69,9 @@ public class Embeds
         EmbedManager.SendErrorEmbed("It is useless to create a Vote with only one vote point!", channel, EmbedsUtil.showErrorTime);
     }
 
-    public void NoMentionedTimeInHours(TextChannel channel)
+    public void NoValidTimeError(TextChannel channel, String time)
     {
-        EmbedManager.SendErrorEmbed("You haven't mentioned a exist Time!", channel, EmbedsUtil.showErrorTime);
+        EmbedManager.SendErrorEmbed("`" + time + "` is no valid time!", channel, EmbedsUtil.showErrorTime);
     }
 
     public void NoPermissionError(TextChannel channel, Permission permission)
@@ -82,6 +82,11 @@ public class Embeds
     public void NoEmoteError(TextChannel channel, String emote)
     {
         EmbedManager.SendErrorEmbed("**" + emote + "** is no valid Emote!", channel, EmbedsUtil.showErrorTime);
+    }
+
+    public void NoVotesMentionedError(TextChannel channel)
+    {
+        EmbedManager.SendErrorEmbed("You haven't mentioned vote items!", channel, EmbedsUtil.showErrorTime);
     }
 
     //=====================================================================================================================================

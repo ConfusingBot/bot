@@ -134,98 +134,106 @@ public class VoteCommand implements ServerCommand
                             }
                             String newString = String.join(" ", wholeStringWordList);
 
-                            //=============================================================================================
-                            //Get Title
-                            //=============================================================================================
-                            title = newString.substring(0, newString.indexOf(VoteCommandManager.voteEmotePrefix));
-                            newString = newString.replace(title, "");
-                            if (title.isEmpty()) title = "Vote!";
-
-                            //=============================================================================================
-                            //Get Emotes and Texts
-                            //=============================================================================================
-                            wholeStringWordList = new ArrayList<>(Arrays.asList(newString.split(" ")));
-
-                            String sentence = "";
-                            for (String word : wholeStringWordList)
+                            if (newString.contains("-"))
                             {
-                                if (word.startsWith(VoteCommandManager.voteEmotePrefix) && word.endsWith(VoteCommandManager.voteEmotePrefix) && word.length() > 1)
-                                {
-                                    word = word.replace(VoteCommandManager.voteEmotePrefix, "");
-                                    boolean added = false;
+                                //=============================================================================================
+                                //Get Title
+                                //=============================================================================================
+                                title = newString.substring(0, newString.indexOf(VoteCommandManager.voteEmotePrefix));
+                                newString = newString.replace(title, "");
+                                if (title.isEmpty()) title = "Vote!";
 
-                                    for (Emote emote : mentionedEmotes)
+                                //=============================================================================================
+                                //Get Emotes and Texts
+                                //=============================================================================================
+                                wholeStringWordList = new ArrayList<>(Arrays.asList(newString.split(" ")));
+
+                                String sentence = "";
+                                for (String word : wholeStringWordList)
+                                {
+                                    if (word.startsWith(VoteCommandManager.voteEmotePrefix) && word.endsWith(VoteCommandManager.voteEmotePrefix) && word.length() > 1)
                                     {
-                                        if (word.equals(":" + emote.getName() + ":"))
+                                        word = word.replace(VoteCommandManager.voteEmotePrefix, "");
+                                        boolean added = false;
+
+                                        for (Emote emote : mentionedEmotes)
                                         {
-                                            emojiStrings.add(emote.getIdLong() + "");
-                                            added = true;
+                                            if (word.equals(":" + emote.getName() + ":"))
+                                            {
+                                                emojiStrings.add(emote.getIdLong() + "");
+                                                added = true;
+                                            }
+                                        }
+
+                                        if (!added)
+                                            emojiStrings.add(word);
+
+                                        word = "";
+
+                                        if (sentence != "")
+                                        {
+                                            sentence.trim();
+                                            text.add(sentence);
+                                            sentence = "";
                                         }
                                     }
-
-                                    if (!added)
-                                        emojiStrings.add(word);
-
-                                    word = "";
-
-                                    if (sentence != "")
-                                    {
-                                        sentence.trim();
-                                        text.add(sentence);
-                                        sentence = "";
-                                    }
+                                    sentence += word + " ";
                                 }
-                                sentence += word + " ";
-                            }
-                            text.add(sentence);
+                                text.add(sentence);
 
-                            //Trim the Votes to a specific size
-                            if (emojiStrings.size() > VoteCommandManager.voteEmotes.size())
-                            {
-                                for (int i = (VoteCommandManager.voteEmotes.size() - 1); i < emojiStrings.size(); i++)
+                                //Trim the Votes to a specific size
+                                if (emojiStrings.size() > VoteCommandManager.voteEmotes.size())
                                 {
-                                    emojiStrings.remove(i);
-                                    text.remove(i);
+                                    for (int i = (VoteCommandManager.voteEmotes.size() - 1); i < emojiStrings.size(); i++)
+                                    {
+                                        emojiStrings.remove(i);
+                                        text.remove(i);
+                                    }
+
+                                    //Message
+                                    VoteCommandManager.embeds.ToManyVotesInformation(channel, VoteCommandManager.voteEmotes.size());
                                 }
+
+                                //Check if only one item for voting exists
+                                if (emojiStrings.size() < 2)
+                                {
+                                    VoteCommandManager.embeds.OnlyOneVoteTopic(channel);
+                                    return;
+                                }
+
+                                //Build vote Text
+                                String voteText = buildVoteText(text, emojiStrings, guild, allowedRoleIDs);
 
                                 //Message
-                                VoteCommandManager.embeds.ToManyVotesInformation(channel, VoteCommandManager.voteEmotes.size());
-                            }
+                                long messageid = VoteCommandManager.embeds.SendVoteEmbed(textChannel, title, voteText, timeInHours);
 
-                            //Check if only one item for voting exists
-                            if (emojiStrings.size() < 2)
+                                //Add emotes to message
+                                if (!addEmotesToMessage(emojiStrings, messageid, textChannel)) return;
+
+                                //Get CurrentTime
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
+
+                                //Get RemoveTime
+                                String removeTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), timeInHours, true).format(CommandsUtil.formatter);
+
+                                //SQL
+                                VoteCommandManager.sql.addToSQL(
+                                        guild.getIdLong(),
+                                        textChannel.getIdLong(),
+                                        messageid,
+                                        title,
+                                        CommandsUtil.codeString(allowedRoleIDs, ", "),
+                                        CommandsUtil.codeString(emojiStrings, ", "),
+                                        removeTime,
+                                        creationTime
+                                );
+                            }
+                            else
                             {
-                                VoteCommandManager.embeds.OnlyOneVoteTopic(channel);
-                                return;
+                                //Error
+                                VoteCommandManager.embeds.NoVotesMentionedError(channel);
                             }
-
-                            //Build vote Text
-                            String voteText = buildVoteText(text, emojiStrings, guild, allowedRoleIDs);
-
-                            //Message
-                            long messageid = VoteCommandManager.embeds.SendVoteEmbed(textChannel, title, voteText, timeInHours);
-
-                            //Add emotes to message
-                            if (!addEmotesToMessage(emojiStrings, messageid, textChannel)) return;
-
-                            //Get CurrentTime
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                            String creationTime = OffsetDateTime.now().toLocalDateTime().format(formatter);
-
-                            //Get RemoveTime
-                            String removeTime = CommandsUtil.AddXTime(OffsetDateTime.now().toLocalDateTime(), timeInHours, true).format(CommandsUtil.formatter);
-
-                            //SQL
-                            VoteCommandManager.sql.addToSQL(
-                                    guild.getIdLong(),
-                                    textChannel.getIdLong(),
-                                    messageid,
-                                    title,
-                                    CommandsUtil.codeString(allowedRoleIDs, ", "),
-                                    CommandsUtil.codeString(emojiStrings, ", "),
-                                    removeTime,
-                                    creationTime
-                            );
                         }
                         else
                         {
@@ -236,7 +244,7 @@ public class VoteCommand implements ServerCommand
                     else
                     {
                         //Error
-                        VoteCommandManager.embeds.NoMentionedTimeInHours(channel);
+                        VoteCommandManager.embeds.NoValidTimeError(channel, args[3]);
                     }
                 }
                 else

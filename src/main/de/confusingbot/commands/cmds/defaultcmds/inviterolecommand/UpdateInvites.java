@@ -34,52 +34,55 @@ public class UpdateInvites
                 long guildID = set.getLong("guildid");
 
                 Guild guild = Main.INSTANCE.shardManager.getGuildById(guildID);
-                Member bot = guild.getSelfMember();
-
-                if (bot.hasPermission(MANAGE_SERVER))
+                if (guild != null)
                 {
-                    if (bot.hasPermission(MANAGE_ROLES))
+                    Member bot = guild.getSelfMember();
+
+                    if (bot.hasPermission(MANAGE_SERVER))
                     {
-                        guild.retrieveInvites().queue(invites -> {
+                        if (bot.hasPermission(MANAGE_ROLES))
+                        {
+                            guild.retrieveInvites().queue(invites -> {
 
-                            for (Invite invite : invites)
-                            {
-                                if (invite.getMaxAge() != 0) continue;//Check if invite is a perma invite!
-
-                                if (invite.getUses() >= inviteCount)
+                                for (Invite invite : invites)
                                 {
-                                    Role role = guild.getRoleById(roleID);
-                                    if (role != null)
+                                    if (invite.getMaxAge() != 0) continue;//Check if invite is a perma invite!
+
+                                    if (invite.getUses() >= inviteCount)
                                     {
-                                        Member member = guild.getMemberById(invite.getInviter().getId());
-                                        if (member != null)
+                                        Role role = guild.getRoleById(roleID);
+                                        if (role != null)
                                         {
-                                            //Add role
-                                            CommandsUtil.AddOrRemoveRoleFromMember(guild, member, role, true);
+                                            Member member = guild.getMemberById(invite.getInviter().getId());
+                                            if (member != null)
+                                            {
+                                                //Add role
+                                                CommandsUtil.AddOrRemoveRoleFromMember(guild, member, role, true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //Error
+                                            InviteRoleManager.embeds.RoleDoesNotExistError(guild.getDefaultChannel(), roleID);
+
+                                            //SQL
+                                            InviteRoleManager.sql.RemoveRoleFromSQL(guildID, roleID);
                                         }
                                     }
-                                    else
-                                    {
-                                        //Error
-                                        InviteRoleManager.embeds.RoleDoesNotExistError(guild.getDefaultChannel(), roleID);
-
-                                        //SQL
-                                        InviteRoleManager.sql.RemoveRoleFromSQL(guildID, roleID);
-                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                        else
+                        {
+                            //Error
+                            EmbedManager.SendNoPermissionEmbed(guild.getDefaultChannel(), MANAGE_ROLES, "InviteCommand | Can't add role to member!");
+                        }
                     }
                     else
                     {
                         //Error
-                        EmbedManager.SendNoPermissionEmbed(guild.getDefaultChannel(), MANAGE_ROLES, "InviteCommand | Can't add role to member!");
+                        EmbedManager.SendNoPermissionEmbed(guild.getDefaultChannel(), MANAGE_SERVER, "InviteCommand | Can't read server invites!");
                     }
-                }
-                else
-                {
-                    //Error
-                    EmbedManager.SendNoPermissionEmbed(guild.getDefaultChannel(), MANAGE_SERVER, "InviteCommand | Can't read server invites!");
                 }
             }
         } catch (SQLException e)

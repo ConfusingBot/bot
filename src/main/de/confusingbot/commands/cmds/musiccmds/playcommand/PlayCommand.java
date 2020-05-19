@@ -11,6 +11,7 @@ import main.de.confusingbot.music.manage.MusicController;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
+import java.util.List;
 
 public class PlayCommand implements ServerCommand
 {
@@ -56,8 +57,16 @@ public class PlayCommand implements ServerCommand
                         {
                             if (voiceChannel.getUserLimit() == 0 || voiceChannel.getUserLimit() > voiceChannel.getMembers().size() || botVoiceChannel != null)
                             {
+                                List<Member> voiceChannelMembers = voiceChannel.getMembers();
+                                boolean lastMemberInChannel = false;
+                                for (Member voiceChannelMember : voiceChannelMembers)
+                                {
+                                    if (voiceChannelMember.getIdLong() == lastMemberId)
+                                        lastMemberInChannel = true;
+                                }
+
                                 //Clear old queue if new Member want to use the Bot
-                                if(member.getIdLong() != lastMemberId) controller.getQueue().getQueueList().clear();
+                                if (member.getIdLong() != lastMemberId && !lastMemberInChannel) controller.getQueue().getQueueList().clear();
 
                                 //SQL
                                 controller.updateChannel(channel, member);
