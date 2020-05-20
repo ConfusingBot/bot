@@ -80,7 +80,7 @@ public class UpdateQuestionChannels
                 for (Integer notificationTime : notificationTimes)
                 {
                     ArrayList<Integer> validationArray = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
-                    boolean trigger = validationArray.contains((int)(timeleftInMinutes % (notificationTime * 60)));
+                    boolean trigger = validationArray.contains((int)(timeleftInMinutes % (notificationTime * 60))) && (Math.round(timeleftInMinutes / (notificationTime * 60)) == 1);
 
                     if (trigger)
                     {
