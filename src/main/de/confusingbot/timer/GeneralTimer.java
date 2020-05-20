@@ -63,10 +63,11 @@ public class GeneralTimer
             @Override
             public void run()
             {
+                System.out.println("Update MemberGraph from all servers");
                 updateInfos.onSecond();
             }
         };
-        timer.schedule(longTimeTask, 0l,  1000 * 60 * 60);// every 60min
+        timer.schedule(longTimeTask, 0l,  1000 * 60 * 60 * 6);// every 6h
     }
 
     public void stopTimer()

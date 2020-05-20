@@ -120,29 +120,37 @@ public class QuestionCommand implements ServerCommand
     {
         if (args.length == 4)
         {
-            long categoryid = Long.parseLong(args[3]);
-            if (!QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
+            if (CommandsUtil.isNumeric(args[3]))
             {
-                Category category = guild.getCategoryById(categoryid);
-
-                if (category != null)
+                long categoryid = Long.parseLong(args[3]);
+                if (!QuestionManager.sql.ServerHasQuestionCategory(guild.getIdLong()))
                 {
-                    //SQL
-                    QuestionManager.sql.AddQuestionCategorieToSQL(guild.getIdLong(), categoryid);
+                    Category category = guild.getCategoryById(categoryid);
 
-                    //Message
-                    QuestionManager.embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, category.getName());
+                    if (category != null)
+                    {
+                        //SQL
+                        QuestionManager.sql.AddQuestionCategorieToSQL(guild.getIdLong(), categoryid);
+
+                        //Message
+                        QuestionManager.embeds.SuccessfullyAddedCategoryToQuestionCategory(channel, category.getName());
+                    }
+                    else
+                    {
+                        //Error
+                        QuestionManager.embeds.ThisIsNoIDError(channel, args[3]);
+                    }
                 }
                 else
                 {
                     //Error
-                    QuestionManager.embeds.ThisIsNoIDError(channel, args[3]);
+                    QuestionManager.embeds.OnlyOneAllowedQuestionCategory(channel);
                 }
             }
             else
             {
                 //Error
-                QuestionManager.embeds.OnlyOneAllowedQuestionCategory(channel);
+                QuestionManager.embeds.ThisIsNoIDError(channel, args[3]);
             }
         }
         else

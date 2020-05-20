@@ -68,7 +68,6 @@ public class MusicController
                 channelid = set.getLong("channelid");
             }
 
-
         } catch (SQLException e)
         {
             e.printStackTrace();

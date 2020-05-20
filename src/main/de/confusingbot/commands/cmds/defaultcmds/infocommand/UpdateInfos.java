@@ -47,10 +47,11 @@ public class UpdateInfos
                     if (memberString != null && !memberString.equals(""))
                         members = CommandsUtil.encodeInteger(memberString, ", ");
 
+                    //Get Current Date
                     LocalDateTime currentDate = OffsetDateTime.now().toLocalDateTime();
                     String currentDateString = InfoCommandManager.formatter.format(currentDate);
 
-                    if (dates.isEmpty() || !dates.get(dates.size() - 1).equals(currentDateString))
+                    if (dates.isEmpty() || dates.size() <= 0 || !dates.get(dates.size() - 1).equals(currentDateString))
                     {
                         dates.add(currentDateString);
                         members.add(guild.getMemberCount());
@@ -61,11 +62,6 @@ public class UpdateInfos
                         InfoCommandManager.sql.UpdateMembersInServers(guildId, newMembersString);
                         InfoCommandManager.sql.UpdateDatesInServers(guildId, newDateString);
                     }
-                }
-                else
-                {
-                    //Remove Guild form SQL
-                    BotListenerManager.sql.RemoveGuildFromSQL(guildId);
                 }
             }
         } catch (SQLException e)

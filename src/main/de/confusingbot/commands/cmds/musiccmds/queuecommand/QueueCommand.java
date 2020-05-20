@@ -91,6 +91,8 @@ public class QueueCommand implements ServerCommand
 
         if (otherMemberCanShowQueue || lastMemberShowQueue)
         {
+            Member lastMember = channel.getGuild().getMemberById(lastMemberId);
+            String lastMemberName = lastMember != null ? lastMember.getEffectiveName() : lastMemberId + "";
             int maxQueueListLength = 10;
             boolean queueToLarge = tracks.size() >= maxQueueListLength;
 
@@ -109,7 +111,7 @@ public class QueueCommand implements ServerCommand
             for (int i = 0; i < queueStrings.size(); i++)
             {
                 //Message
-                embeds.SendMusicQueueEmbed(channel, queueStrings.get(i), i == 0, i == (queueStrings.size() - 1), queueToLarge, tracks.size() - maxQueueListLength);
+                embeds.SendMusicQueueEmbed(channel, queueStrings.get(i), i == 0, i == (queueStrings.size() - 1), queueToLarge, tracks.size() - maxQueueListLength, lastMemberName);
             }
         }
         else

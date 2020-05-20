@@ -184,7 +184,7 @@ public class VoteCommand implements ServerCommand
                                 //Trim the Votes to a specific size
                                 if (emojiStrings.size() > VoteCommandManager.voteEmotes.size())
                                 {
-                                    for (int i = (VoteCommandManager.voteEmotes.size() - 1); i < emojiStrings.size(); i++)
+                                    for (int i = (VoteCommandManager.voteEmotes.size() - 2); i < emojiStrings.size(); i++)
                                     {
                                         emojiStrings.remove(i);
                                         text.remove(i);

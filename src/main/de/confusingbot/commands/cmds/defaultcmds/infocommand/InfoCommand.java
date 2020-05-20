@@ -150,10 +150,10 @@ public class InfoCommand implements ServerCommand
 
         List<String> dates = new ArrayList<>();
         List<Integer> members = new ArrayList<>();
-        if (dates != null)
+        if (dateString != null && !dateString.equals(""))
             dates = CommandsUtil.encodeString(dateString, ", ");
 
-        if (members != null)
+        if (memberString != null && !memberString.equals(""))
             members = CommandsUtil.encodeInteger(memberString, ", ");
 
         List<String> finalDates = dates;
@@ -163,12 +163,11 @@ public class InfoCommand implements ServerCommand
             public void run()
             {
                 File chartFile = null;
-                if (finalDates.size() > 2 || finalMembers.size() > 2)
+                if (finalDates.size() > 2 && finalMembers.size() > 2)
                 {
                     //Generate Graph
                     chartFile = serverInfo.createChartFile(finalMembers, finalDates);
                 }
-
 
                 //Send file to Discord
                 embeds.SendInfoServerEmbed(channel,
@@ -184,7 +183,8 @@ public class InfoCommand implements ServerCommand
                         guild.getOwner());
 
                 //Delete Wait Message
-                channel.deleteMessageById(messageid).queue();
+                if (messageid != -1)
+                    channel.deleteMessageById(messageid).queue();
             }
         }).start();
     }
