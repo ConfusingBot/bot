@@ -135,19 +135,26 @@ public class QueueCommand implements ServerCommand
                     AudioManager manager = voiceChannel.getGuild().getAudioManager();
                     VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                    if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                    if (botVoiceChannel != null)
                     {
-                        if (controller.getQueue().hasNext())
+                        if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
                         {
-                            //Shuffle
-                            controller.getQueue().Shuffle();
+                            if (controller.getQueue().hasNext())
+                            {
+                                //Shuffle
+                                controller.getQueue().Shuffle();
 
-                            //Message
-                            embeds.SuccessfullyShuffledQueue(channel);
+                                //Message
+                                embeds.SuccessfullyShuffledQueue(channel);
+                            }
+                            else
+                            {
+                                embeds.NoSongInQueueInformation(channel);
+                            }
                         }
                         else
                         {
-                            embeds.NoSongInQueueInformation(channel);
+                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                         }
                     }
                     else
@@ -180,13 +187,20 @@ public class QueueCommand implements ServerCommand
                     AudioManager manager = voiceChannel.getGuild().getAudioManager();
                     VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                    if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                    if (botVoiceChannel != null)
                     {
-                        //Clear Queue
-                        queue.getQueueList().clear();
+                        if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                        {
+                            //Clear Queue
+                            queue.getQueueList().clear();
 
-                        //Message
-                        embeds.SuccessfullyClearedMusicQueue(channel);
+                            //Message
+                            embeds.SuccessfullyClearedMusicQueue(channel);
+                        }
+                        else
+                        {
+                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
+                        }
                     }
                     else
                     {
@@ -219,36 +233,43 @@ public class QueueCommand implements ServerCommand
                     AudioManager manager = voiceChannel.getGuild().getAudioManager();
                     VoiceChannel botVoiceChannel = manager.getConnectedChannel();
 
-                    if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
+                    if (botVoiceChannel != null)
                     {
-                        if (args[2] != null)
+                        if (voiceChannel.getIdLong() == botVoiceChannel.getIdLong())
                         {
-                            if (CommandsUtil.isNumeric(args[2]))
+                            if (args[2] != null)
                             {
-                                int index = Integer.parseInt(args[2]) - 1;//because the user won't start counting by 0
-                                List<AudioTrack> queueList = queue.getQueueList();
-                                if (index <= queueList.size() && index >= 0)
+                                if (CommandsUtil.isNumeric(args[2]))
                                 {
-                                    //Message
-                                    embeds.SuccessfullyDeletedTrackAtIndex(channel, index + 1, queueList.get(index).getInfo().title);
+                                    int index = Integer.parseInt(args[2]) - 1;//because the user won't start counting by 0
+                                    List<AudioTrack> queueList = queue.getQueueList();
+                                    if (index <= queueList.size() && index >= 0)
+                                    {
+                                        //Message
+                                        embeds.SuccessfullyDeletedTrackAtIndex(channel, index + 1, queueList.get(index).getInfo().title);
 
-                                    queue.DeleteAtIndex(index);
+                                        queue.DeleteAtIndex(index);
+                                    }
+                                    else
+                                    {
+                                        //Error
+                                        embeds.CouldNotDeleteTrackAtIndex(channel, index);
+                                    }
                                 }
                                 else
                                 {
-                                    //Error
-                                    embeds.CouldNotDeleteTrackAtIndex(channel, index);
+                                    main.de.confusingbot.commands.help.EmbedsUtil.NoNumberError(channel, args[2]);
                                 }
                             }
                             else
                             {
-                                main.de.confusingbot.commands.help.EmbedsUtil.NoNumberError(channel, args[2]);
+                                //Usage
+                                embeds.DeleteAtIndexUsage(channel);
                             }
                         }
                         else
                         {
-                            //Usage
-                            embeds.DeleteAtIndexUsage(channel);
+                            EmbedsUtil.BotNotInYourVoiceChannelError(channel);
                         }
                     }
                     else

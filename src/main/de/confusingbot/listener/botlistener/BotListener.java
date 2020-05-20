@@ -46,8 +46,7 @@ public class BotListener extends ListenerAdapter
         System.out.println("Bot left server " + event.getGuild().getName());
 
         //SQL
-        sql.RemoveGuildFromSQL(event.getGuild().getIdLong());
+        if (event.getGuild() != null)
+            sql.RemoveGuildFromSQL(event.getGuild().getIdLong());
     }
-
-
 }

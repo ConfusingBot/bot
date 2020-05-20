@@ -109,12 +109,19 @@ public class Main
             e.printStackTrace();
         }
 
-        generalTimer = new GeneralTimer();
-        generalTimer.startTimer();
-
         statusTimer = new StatusTimer(shardManager);
         statusTimer.startTimer();
 
+        try
+        {
+            TimeUnit.SECONDS.sleep(60);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+        generalTimer = new GeneralTimer();
+        generalTimer.startTimer();
     }
 
 //Getter

@@ -41,7 +41,7 @@ public class EmbedsUtil
     }
 
     public static void OnlyOneAllowedToExistError(TextChannel channel, String name){
-        EmbedManager.SendErrorEmbed("You can only create on **" + name + "**!", channel, showErrorTime);
+        EmbedManager.SendErrorEmbed("You can only create one **" + name + "**!", channel, showErrorTime);
     }
 
     public static void HavenNotMentionedError(TextChannel channel, String name){

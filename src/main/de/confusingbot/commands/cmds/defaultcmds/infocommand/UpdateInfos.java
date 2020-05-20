@@ -26,6 +26,7 @@ public class UpdateInfos
 
     private void updateServerMemberCount()
     {
+        System.out.println("Update MemberGraph from all servers");
         ResultSet set = LiteSQL.onQuery("SELECT * FROM servers");
         try
         {
@@ -68,6 +69,7 @@ public class UpdateInfos
         {
             e.printStackTrace();
         }
+        System.out.println("End Update MemberGraph from all servers");
     }
 }
 

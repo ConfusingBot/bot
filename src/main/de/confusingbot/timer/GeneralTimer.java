@@ -23,11 +23,13 @@ public class GeneralTimer
     private UpdateYouTubeAnnouncements updateYouTubeAnnouncements;
 
 
-    private Timer timer;
+    private Timer shortTimer;
+    private Timer longTimer;
 
     public GeneralTimer()
     {
-        timer = new Timer();
+        shortTimer = new Timer();
+        longTimer = new Timer();
         this.updateQuestionChannels = new UpdateQuestionChannels();
         this.updateVotes = new UpdateVotes();
         this.updateRepeatInfo = new UpdateRepeatInfo();
@@ -54,7 +56,7 @@ public class GeneralTimer
                 updateYouTubeAnnouncements.onSecond();
             }
         };
-        timer.schedule(timeTask, 0l,  1000 * 60 * 5);// every 5min
+        shortTimer.schedule(timeTask, 0l,  1000 * 60 * 5);// every 5min
 
 
         //Create Long Timer Loop
@@ -63,16 +65,17 @@ public class GeneralTimer
             @Override
             public void run()
             {
-                System.out.println("Update MemberGraph from all servers");
                 updateInfos.onSecond();
             }
         };
-        timer.schedule(longTimeTask, 0l,  1000 * 60 * 60 * 6);// every 6h
+        longTimer.schedule(longTimeTask, 0l,  1000 * 60 * 60 * 6);// every 6h
     }
 
     public void stopTimer()
     {
-        timer.cancel();
-        timer.purge();
+        shortTimer.cancel();
+        shortTimer.purge();
+        longTimer.cancel();
+        longTimer.purge();
     }
 }
