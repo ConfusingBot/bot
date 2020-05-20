@@ -78,6 +78,6 @@ public class Embeds
 
     public void SuccessfullyDeletedRole(TextChannel channel, String roleName)
     {
-        EmbedsUtil.SuccessfulDeleted(channel, "@" + roleName, "this server");
+        EmbedsUtil.SuccessfulRemoved(channel, "@" + roleName, "this server");
     }
 }

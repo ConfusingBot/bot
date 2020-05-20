@@ -14,7 +14,7 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long guildid, long channelid, int time, String color, String title, String info)
     {
-        LiteSQL.onUpdate("INSERT INTO repeatinfo(guildid, channelid, time, color, title, info) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO repeatinfo(guildid, channelid, time, color, title, info) VALUES (" +
                 guildid + ", " + channelid + ", " + time + ", '" + color + "', '" + title + "', '" + info + "')");
     }
 

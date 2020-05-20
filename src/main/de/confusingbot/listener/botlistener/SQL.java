@@ -16,7 +16,7 @@ public class SQL
         //' will execute a near "s": syntax error
         name = name.replace("'", "");
 
-        LiteSQL.onUpdate("INSERT INTO servers(guildid, name) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO servers(guildid, name) VALUES (" +
                 guildid + ", '" + name + "')");
     }
 

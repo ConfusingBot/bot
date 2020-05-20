@@ -14,7 +14,7 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long channelid, long roleid, String roleName)
     {
-        LiteSQL.onUpdate("INSERT INTO roleborders(guildid, roleid, name) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO roleborders(guildid, roleid, name) VALUES (" +
                 channelid + ", " + roleid + ", '" + roleName + "')");
     }
 

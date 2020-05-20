@@ -31,7 +31,7 @@ public class SQL
 
     public void addToSQL(long guildid, long channelid, String youtubechannelid, String description, String roleids)
     {
-        LiteSQL.onUpdate("INSERT INTO youtubeannouncement(guildid, channelid, youtubechannelid, description, roleids) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO youtubeannouncement(guildid, channelid, youtubechannelid, description, roleids) VALUES (" +
                 guildid + ", " + channelid + ", '" + youtubechannelid + "', '" + description + "', '" + roleids + "')");
     }
 

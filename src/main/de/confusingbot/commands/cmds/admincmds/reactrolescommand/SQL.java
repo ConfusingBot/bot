@@ -13,7 +13,7 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long guildid, long channelid, long messageid, String emoteString, long roleid)
     {
-        LiteSQL.onUpdate("INSERT INTO reactroles(guildid, channelid, messageid, emote, roleid) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO reactroles(guildid, channelid, messageid, emote, roleid) VALUES (" +
                 guildid + ", " + channelid + ", " + messageid + ", '" + emoteString + "', " + roleid + ")");
     }
 

@@ -33,7 +33,7 @@ public class SQL
 
     public void addToSQL(long guildid, long roleid)
     {
-        LiteSQL.onUpdate("INSERT INTO joinrole(guildid, roleid) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO joinrole(guildid, roleid) VALUES (" +
                 guildid + ", " + roleid + ")");
     }
 

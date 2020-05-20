@@ -10,7 +10,7 @@ public class SQL
 
     public void addToSQL(long guildid, long channelid, long messageid, long roleid, String hexColor, String emoteString, String eventName, String endTime, String creationTime)
     {
-        LiteSQL.onUpdate("INSERT INTO event(guildid, channelid, messageid, roleid, color, emote, name, endtime, creationtime) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO event(guildid, channelid, messageid, roleid, color, emote, name, endtime, creationtime) VALUES (" +
                 guildid + ", " + channelid + ", " + messageid + ", " + roleid
                 + ", '" + hexColor + "', '" + emoteString + "', '" + eventName + "', '" + endTime + "', '" + creationTime + "')");
     }

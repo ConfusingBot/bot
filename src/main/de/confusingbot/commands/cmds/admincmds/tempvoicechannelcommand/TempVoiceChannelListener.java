@@ -33,14 +33,17 @@ public class TempVoiceChannelListener
                     Category category = joinedChannel.getParent();
                     if (category != null)
                     {
-                        //create VoiceChannel
-                        VoiceChannel voiceChannel = category.createVoiceChannel("⏳" + member.getEffectiveName() + "'s Channel").complete();
-                        voiceChannel.getManager().setUserLimit(joinedChannel.getUserLimit()).queue();
+                        if (member.getVoiceState().inVoiceChannel())
+                        {
+                            //create VoiceChannel
+                            VoiceChannel voiceChannel = category.createVoiceChannel("⏳" + member.getEffectiveName() + "'s Channel").complete();
+                            voiceChannel.getManager().setUserLimit(joinedChannel.getUserLimit()).queue();
 
-                        //Move member von placeholder Channel to his VoiceChannel
-                        guild.moveVoiceMember(member, voiceChannel).queue();
+                            //Move member von placeholder Channel to his VoiceChannel
+                            guild.moveVoiceMember(member, voiceChannel).queue();
 
-                        tempchannels.add(voiceChannel.getIdLong());
+                            tempchannels.add(voiceChannel.getIdLong());
+                        }
                     }
                     else
                     {
@@ -64,26 +67,27 @@ public class TempVoiceChannelListener
 
     public void onLeave(VoiceChannel channel)
     {
-        Guild guild = channel.getGuild();
-        Member bot = guild.getSelfMember();
-
-
-        if (channel.getMembers().size() <= 0)
+        if (channel != null)
         {
-            if (tempchannels.contains(channel.getIdLong()))
+            Guild guild = channel.getGuild();
+            Member bot = guild.getSelfMember();
+
+            if (channel.getMembers().size() <= 0)
             {
-                if (bot.hasPermission(MANAGE_CHANNEL))
+                if (tempchannels.contains(channel.getIdLong()))
                 {
-                    tempchannels.remove(channel.getIdLong());
-                    channel.delete().queue();
-                }
-                else
-                {
-                    //Error
-                    EmbedManager.SendNoPermissionEmbed(guild.getDefaultChannel(), MANAGE_CHANNEL, "TempVoiceChannelCommand | Can't delete TempVoiceChannel!");
+                    if (bot.hasPermission(MANAGE_CHANNEL))
+                    {
+                        tempchannels.remove(channel.getIdLong());
+                        channel.delete().queue();
+                    }
+                    else
+                    {
+                        //Error
+                        EmbedManager.SendNoPermissionEmbed(guild.getDefaultChannel(), MANAGE_CHANNEL, "TempVoiceChannelCommand | Can't delete TempVoiceChannel!");
+                    }
                 }
             }
-
         }
     }
 }

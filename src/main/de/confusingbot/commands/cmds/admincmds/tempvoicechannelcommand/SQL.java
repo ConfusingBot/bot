@@ -30,7 +30,7 @@ public class SQL
 
     public void addToSQL(long channelID, long guildid)
     {
-        LiteSQL.onUpdate("INSERT INTO tempchannels(guildid, channelid) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO tempchannels(guildid, channelid) VALUES (" +
                 guildid + ", " + channelID + ")");
     }
 

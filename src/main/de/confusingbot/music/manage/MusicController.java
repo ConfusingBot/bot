@@ -88,7 +88,7 @@ public class MusicController
             }
             else
             {
-                LiteSQL.onUpdate("INSERT INTO musicchannel(guildid, channelid, memberid) VALUES(" + channel.getGuild().getIdLong() + ", " + channel.getIdLong() + ", " + member.getIdLong() + ")");
+                LiteSQL.onUpdate("INSERT INTO musicchannel(guildid, channelid, memberid) VALUES (" + channel.getGuild().getIdLong() + ", " + channel.getIdLong() + ", " + member.getIdLong() + ")");
             }
         } catch (SQLException e)
         {

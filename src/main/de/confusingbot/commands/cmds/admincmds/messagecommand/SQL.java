@@ -16,7 +16,7 @@ public class SQL
     public void MessageAddToSQL(long guildid, long channelid, String hexColor, String messagetype, String title, String message, boolean isPrivate)
     {
         LiteSQL.onUpdate("INSERT INTO messagecommand(guildid, channelid, color, messagetype, title, message, isprivate) " +
-                "VALUES(" + guildid + ", " + channelid + ", '" + hexColor + "', '" + messagetype + "', '" + title + "', '" + message + "', " + (isPrivate ? 1 : 0) + ")");
+                "VALUES (" + guildid + ", " + channelid + ", '" + hexColor + "', '" + messagetype + "', '" + title + "', '" + message + "', " + (isPrivate ? 1 : 0) + ")");
     }
 
     public void MessageRemoveFromSQL(long guildid, String messagetype, boolean isPrivate)

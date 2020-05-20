@@ -28,7 +28,7 @@ public class SQL
 
     public void AddRoleToSQL(long guildid, long roleid, int invitions)
     {
-        LiteSQL.onUpdate("INSERT INTO inviterole(guildid, invitions, roleid) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO inviterole(guildid, invitions, roleid) VALUES (" +
                 guildid + ", " + invitions + ", " + roleid + ")");
     }
 

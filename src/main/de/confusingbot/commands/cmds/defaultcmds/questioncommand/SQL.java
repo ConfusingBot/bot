@@ -18,7 +18,7 @@ public class SQL
     //=====================================================================================================================================
     public void AddQuestionCategorieToSQL(long guildid, long categoryid)
     {
-        LiteSQL.onUpdate("INSERT INTO questioncategories(guildid, categoryid) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO questioncategories(guildid, categoryid) VALUES (" +
                 guildid + ", " + categoryid + ")");
     }
 
@@ -44,7 +44,7 @@ public class SQL
     public void AddGeneratedQuestionToSQL(long guildID, long channelID, long memberID, String creationTime, String deleteTime)
     {
 
-        LiteSQL.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime, deletetime) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime, deletetime) VALUES (" +
                 guildID + ", " + channelID + ", " + memberID + ", '" + creationTime + "', '" + deleteTime + "')");
     }
 

@@ -61,7 +61,7 @@ public class SQL
         {
             if (!set.next())
             {
-                LiteSQL.onUpdate("INSERT INTO bot(onlinetime, users) VALUES('" +
+                LiteSQL.onUpdate("INSERT INTO bot(onlinetime, users) VALUES ('" +
                         InfoCommandManager.defaultOnlineTime + "', " + 0 + ")");
             }
         } catch (SQLException e)

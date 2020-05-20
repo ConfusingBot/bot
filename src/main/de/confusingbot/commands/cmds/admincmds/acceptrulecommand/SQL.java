@@ -32,7 +32,7 @@ public class SQL
 
     public void addToSQL(long guildid, long channelid, long messageid, String emoteString, long notAcceptedRoleID, long acceptedRoleID)
     {
-        LiteSQL.onUpdate("INSERT INTO acceptrules(guildid, channelid, messageid, emote, rolenotacceptedid, roleacceptedid) VALUES(" +
+        LiteSQL.onUpdate("INSERT INTO acceptrules(guildid, channelid, messageid, emote, rolenotacceptedid, roleacceptedid) VALUES (" +
                 guildid + ", " + channelid + ", " + messageid + ", '" + emoteString + "', "
                 + notAcceptedRoleID + ", " + acceptedRoleID + ")");
     }

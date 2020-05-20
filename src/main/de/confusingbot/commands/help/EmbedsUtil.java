@@ -29,23 +29,23 @@ public class EmbedsUtil
 
     public static void NoNumberError(TextChannel channel, String numberString)
     {
-        EmbedManager.SendErrorEmbed( "This is no valid Number **" + numberString + "**", channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "This is no valid Number `" + numberString + "`", channel, showErrorTime);
     }
 
     public static void AlreadyExistsError(TextChannel channel, String name){
-        EmbedManager.SendErrorEmbed( "This **" + name + "** already exists!", channel, 3);
+        EmbedManager.SendErrorEmbed( "This `" + name + "` already exists!", channel, 3);
     }
 
     public static void NotExistingError(TextChannel channel, String name){
-        EmbedManager.SendErrorEmbed("**" + name + "** doesn't exists", channel, showErrorTime);
+        EmbedManager.SendErrorEmbed("`" + name + "` doesn't exists", channel, showErrorTime);
     }
 
     public static void OnlyOneAllowedToExistError(TextChannel channel, String name){
-        EmbedManager.SendErrorEmbed("You can only create one **" + name + "**!", channel, showErrorTime);
+        EmbedManager.SendErrorEmbed("You can only create one `" + name + "`!", channel, showErrorTime);
     }
 
     public static void HavenNotMentionedError(TextChannel channel, String name){
-        EmbedManager.SendErrorEmbed( "You haven't mentioned a **" + name + "**", channel, showErrorTime);
+        EmbedManager.SendErrorEmbed( "You haven't mentioned a `" + name + "`", channel, showErrorTime);
     }
 
     public static void NoPermissionError(TextChannel channel)
@@ -83,15 +83,11 @@ public class EmbedsUtil
     //=====================================================================================================================================
     public static void SuccessfulAdded(TextChannel channel, String name, String toName)
     {
-        EmbedManager.SendSuccessEmbed("You successfully added **" + name + "** to " + toName + "!", channel, showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You successfully added `" + name + "` to " + toName + "!", channel, showSuccessTime);
     }
 
     public static void SuccessfulRemoved(TextChannel channel, String name, String formName){
-        EmbedManager.SendSuccessEmbed("You successfully removed the **" + name + "** from " + formName + "!", channel, showSuccessTime);
-    }
-
-    public static void SuccessfulDeleted(TextChannel channel, String name, String formName){
-        EmbedManager.SendSuccessEmbed("You successfully deleted the **" + name + "** from " + formName + "!", channel, showSuccessTime);
+        EmbedManager.SendSuccessEmbed("You successfully removed the `" + name + "` from " + formName + "!", channel, showSuccessTime);
     }
 
     //=====================================================================================================================================
