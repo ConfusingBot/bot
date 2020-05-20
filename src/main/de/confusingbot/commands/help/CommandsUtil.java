@@ -166,7 +166,6 @@ public class CommandsUtil
                     //Error handler for queue errors
                     Consumer<? super Throwable> callback = (response) -> {
                         ReactRoleManager.embeds.BotHasNoPermissionToAssignRole(guild.getDefaultChannel(), role);
-                        return;
                     };
 
                     try

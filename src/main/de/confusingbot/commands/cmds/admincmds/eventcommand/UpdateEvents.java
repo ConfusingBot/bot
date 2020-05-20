@@ -17,45 +17,48 @@ public class UpdateEvents
         try
         {
             ResultSet set = LiteSQL.onQuery("SELECT * FROM event");
-            while (set.next())
+            if(set != null)
             {
-                long id = set.getLong("id");
-                long guildid = set.getLong("guildid");
-                long channelid = set.getLong("channelid");
-                long messageid = set.getLong("messageid");
-                long roleid = set.getLong("roleid");
-                String hexColor = set.getString("color");
-                String eventName = set.getString("name");
-
-                String endTime = set.getString("endTime");
-                String creationTime = set.getString("creationtime");
-                String currentTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
-
-                long timeleftInMinutes = CommandsUtil.getTimeBetweenTwoDates(currentTime, endTime, false);
-
-                if (timeleftInMinutes <= 0)
+                while (set.next())
                 {
-                    //SQL
-                    EventCommandManager.sql.removeFromSQL(guildid, id);
+                    long id = set.getLong("id");
+                    long guildid = set.getLong("guildid");
+                    long channelid = set.getLong("channelid");
+                    long messageid = set.getLong("messageid");
+                    long roleid = set.getLong("roleid");
+                    String hexColor = set.getString("color");
+                    String eventName = set.getString("name");
 
-                    Guild guild = Main.INSTANCE.shardManager.getGuildById(guildid);
-                    if (guild != null)
+                    String endTime = set.getString("endTime");
+                    String creationTime = set.getString("creationtime");
+                    String currentTime = OffsetDateTime.now().toLocalDateTime().format(CommandsUtil.formatter);
+
+                    long timeleftInMinutes = CommandsUtil.getTimeBetweenTwoDates(currentTime, endTime, false);
+
+                    if (timeleftInMinutes <= 0)
                     {
-                        //Remove EventRole
-                        Role eventRole = guild.getRoleById(roleid);
-                        if (eventRole != null) eventRole.delete().queue();
+                        //SQL
+                        EventCommandManager.sql.removeFromSQL(guildid, id);
 
-                        TextChannel channel = guild.getTextChannelById(channelid);
-                        if (channel != null)
+                        Guild guild = Main.INSTANCE.shardManager.getGuildById(guildid);
+                        if (guild != null)
                         {
-                            Message message = CommandsUtil.getLatestesMessageByID(channel, messageid);
-                            if (message != null)
-                            {
-                                //Show that the vote has ended
-                                CommandsUtil.reactEmote("❌", channel, messageid, true);
+                            //Remove EventRole
+                            Role eventRole = guild.getRoleById(roleid);
+                            if (eventRole != null) eventRole.delete().queue();
 
-                                //Message
-                                EventCommandManager.embeds.SendEventEndEmbed(channel, eventName, hexColor);
+                            TextChannel channel = guild.getTextChannelById(channelid);
+                            if (channel != null)
+                            {
+                                Message message = CommandsUtil.getLatestesMessageByID(channel, messageid);
+                                if (message != null)
+                                {
+                                    //Show that the vote has ended
+                                    CommandsUtil.reactEmote("❌", channel, messageid, true);
+
+                                    //Message
+                                    EventCommandManager.embeds.SendEventEndEmbed(channel, eventName, hexColor);
+                                }
                             }
                         }
                     }

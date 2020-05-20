@@ -114,7 +114,7 @@ public class Main
 
         try
         {
-            TimeUnit.SECONDS.sleep(60);
+            TimeUnit.SECONDS.sleep(30);
         } catch (InterruptedException e)
         {
             e.printStackTrace();

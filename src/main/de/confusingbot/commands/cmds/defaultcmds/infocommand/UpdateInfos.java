@@ -28,46 +28,49 @@ public class UpdateInfos
     {
         System.out.println("Update MemberGraph from all servers");
         ResultSet set = LiteSQL.onQuery("SELECT * FROM servers");
-        try
+        if(set != null)
         {
-            while (set.next())
+            try
             {
-                String dateString = set.getString("dates");
-                String memberString = set.getString("members");
-                long guildId = set.getLong("guildid");
-
-                Guild guild = Main.INSTANCE.shardManager.getGuildById(guildId);
-
-                if (guild != null)
+                while (set.next())
                 {
-                    List<String> dates = new ArrayList<>();
-                    if (dateString != null && !dateString.equals(""))
-                        dates = CommandsUtil.encodeString(dateString, ", ");
+                    String dateString = set.getString("dates");
+                    String memberString = set.getString("members");
+                    long guildId = set.getLong("guildid");
 
-                    List<Integer> members = new ArrayList<>();
-                    if (memberString != null && !memberString.equals(""))
-                        members = CommandsUtil.encodeInteger(memberString, ", ");
+                    Guild guild = Main.INSTANCE.shardManager.getGuildById(guildId);
 
-                    //Get Current Date
-                    LocalDateTime currentDate = OffsetDateTime.now().toLocalDateTime();
-                    String currentDateString = InfoCommandManager.formatter.format(currentDate);
-
-                    if (dates.isEmpty() || dates.size() <= 0 || !dates.get(dates.size() - 1).equals(currentDateString))
+                    if (guild != null)
                     {
-                        dates.add(currentDateString);
-                        members.add(guild.getMemberCount());
-                        String newDateString = CommandsUtil.codeString(dates, ", ");
-                        String newMembersString = CommandsUtil.codeInteger(members, ", ");
+                        List<String> dates = new ArrayList<>();
+                        if (dateString != null && !dateString.equals(""))
+                            dates = CommandsUtil.encodeString(dateString, ", ");
 
-                        //Update SQL
-                        InfoCommandManager.sql.UpdateMembersInServers(guildId, newMembersString);
-                        InfoCommandManager.sql.UpdateDatesInServers(guildId, newDateString);
+                        List<Integer> members = new ArrayList<>();
+                        if (memberString != null && !memberString.equals(""))
+                            members = CommandsUtil.encodeInteger(memberString, ", ");
+
+                        //Get Current Date
+                        LocalDateTime currentDate = OffsetDateTime.now().toLocalDateTime();
+                        String currentDateString = InfoCommandManager.formatter.format(currentDate);
+
+                        if (dates.isEmpty() || dates.size() <= 0 || !dates.get(dates.size() - 1).equals(currentDateString))
+                        {
+                            dates.add(currentDateString);
+                            members.add(guild.getMemberCount());
+                            String newDateString = CommandsUtil.codeString(dates, ", ");
+                            String newMembersString = CommandsUtil.codeInteger(members, ", ");
+
+                            //Update SQL
+                            InfoCommandManager.sql.UpdateMembersInServers(guildId, newMembersString);
+                            InfoCommandManager.sql.UpdateDatesInServers(guildId, newDateString);
+                        }
                     }
                 }
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
             }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
         }
         System.out.println("End Update MemberGraph from all servers");
     }
