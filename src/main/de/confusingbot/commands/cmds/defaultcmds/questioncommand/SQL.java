@@ -1,15 +1,12 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
-import main.de.confusingbot.manage.embeds.EmbedManager;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 
 public class SQL
 {
@@ -29,7 +26,7 @@ public class SQL
 
         try
         {
-            while (set.next())
+            if (set != null && set.next())
             {
                 return true;
             }
@@ -62,14 +59,10 @@ public class SQL
         Member sentQuestionMemeber = null;
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 long memberid = set.getLong("memberid");
                 sentQuestionMemeber = guild.getMemberById(memberid);
-            }
-            else
-            {
-                sentQuestionMemeber = null;
             }
         } catch (SQLException e)
         {
@@ -87,7 +80,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 long questionCategoryID = set.getLong("categoryid");
                 category = guild.getCategoryById(questionCategoryID);
@@ -124,7 +117,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 deleteTime = set.getString("deletetime");
 
@@ -148,7 +141,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 creationTime = set.getString("creationtime");
 

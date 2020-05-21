@@ -5,6 +5,7 @@ import java.util.Random;
 import main.de.confusingbot.Main;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import org.discordbots.api.client.DiscordBotListAPI;
 
 public class Status
 {
@@ -29,6 +30,9 @@ public class Status
                     .replaceAll("%servers", "" + jda.getGuilds().size());
 
             jda.getPresence().setActivity(Activity.streaming((text), "https://www.twitch.tv/bennodev19"));
+
+            //top.gg
+            Main.topGGApi.setStats(jda.getGuilds().size());
         });
     }
 }

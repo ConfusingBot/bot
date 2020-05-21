@@ -89,9 +89,12 @@ public class SQL
                 + "guildid = " + guildid);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                if (messageID == set.getLong("messageid")) return true;
+                while (set.next())
+                {
+                    if (messageID == set.getLong("messageid")) return true;
+                }
             }
         } catch (SQLException e)
         {

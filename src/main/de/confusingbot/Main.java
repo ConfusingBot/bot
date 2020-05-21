@@ -1,6 +1,5 @@
 package main.de.confusingbot;
 
-
 import main.de.confusingbot.listener.botlistener.BotListener;
 import main.de.confusingbot.listener.commandlistener.CommandListener;
 import main.de.confusingbot.listener.joinlistener.JoinListener;
@@ -16,9 +15,9 @@ import main.de.confusingbot.timer.GeneralTimer;
 import main.de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import org.discordbots.api.client.DiscordBotListAPI;
 
 import javax.security.auth.login.LoginException;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -37,8 +36,10 @@ public class Main
     public static long linesOfCode = 16587;
     public static String prefix = "c/";
     public static LocalDateTime botStartTime = LocalDateTime.now();
-
     public static boolean botOffline = false;
+
+    //Top.gg
+    public static DiscordBotListAPI topGGApi;
 
     public static void main(String[] args)
     {
@@ -72,6 +73,13 @@ public class Main
         shardManager = builder.build();
         System.out.println("Bot online!");
 
+        //Top.gg
+        topGGApi = new DiscordBotListAPI.Builder()
+                .token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODc2MDQ2MDgxMjAyNTg2NiIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkwMDQwNzM2fQ.IrjjBLeIqUsdzf3_PKsq38FINHJ_Qpidxhw-mRJUZyQ")
+                .botId("638760460812025866")
+                .build();
+
+        //Music
         music.instantiateMusic();
 
         //Start the Timers
@@ -124,8 +132,7 @@ public class Main
         generalTimer.startTimer();
     }
 
-//Getter
-
+    //Getter
     public CommandManager getCmdManager()
     {
         return cmdManager;

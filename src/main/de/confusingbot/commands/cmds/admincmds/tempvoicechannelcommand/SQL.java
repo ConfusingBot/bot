@@ -20,7 +20,7 @@ public class SQL
 
         try
         {
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -48,10 +48,13 @@ public class SQL
         ResultSet set = LiteSQL.onQuery("SELECT * FROM tempchannels WHERE guildid = " + guildid);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                long channelId = set.getLong("channelid");
-                channels.add(channelId);
+                while (set.next())
+                {
+                    long channelId = set.getLong("channelid");
+                    channels.add(channelId);
+                }
             }
         } catch (SQLException e)
         {

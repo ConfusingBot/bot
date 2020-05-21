@@ -29,14 +29,17 @@ public class SQL
     {
         List<Integer> list = new ArrayList<>();
 
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                + "guildid = " + guildid);
+
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
-                    + "guildid = " + guildid);
-
-            while (set.next())
+            if(set != null)
             {
-                list.add(set.getInt("id"));
+                while (set.next())
+                {
+                    list.add(set.getInt("id"));
+                }
             }
         } catch (SQLException e)
         {
@@ -49,15 +52,18 @@ public class SQL
     {
         int time = -1;
 
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                + "guildid = " + guildid
+                + " AND id = " + id);
+
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
-                    + "guildid = " + guildid
-                    + " AND id = " + id);
-
-            while (set.next())
+            if(set != null)
             {
-                time = set.getInt("time");
+                while (set.next())
+                {
+                    time = set.getInt("time");
+                }
             }
         } catch (SQLException e)
         {
@@ -70,15 +76,18 @@ public class SQL
     {
         String repeatInfoString = "error";
 
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                + "guildid = " + guildid
+                + " AND id = " + id);
+
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
-                    + "guildid = " + guildid
-                    + " AND id = " + id);
-
-            while (set.next())
+            if(set != null)
             {
-                repeatInfoString = set.getString("info");
+                while (set.next())
+                {
+                    repeatInfoString = set.getString("info");
+                }
             }
         } catch (SQLException e)
         {
@@ -91,15 +100,18 @@ public class SQL
     {
         String title = "error";
 
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                + "guildid = " + guildid
+                + " AND id = " + id);
+
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
-                    + "guildid = " + guildid
-                    + " AND id = " + id);
-
-            while (set.next())
+            if(set != null)
             {
-                title = set.getString("title");
+                while (set.next())
+                {
+                    title = set.getString("title");
+                }
             }
         } catch (SQLException e)
         {
@@ -112,15 +124,18 @@ public class SQL
     {
         long channelId = -1;
 
+        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+                + "guildid = " + guildid
+                + " AND id = " + id);
+
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
-                    + "guildid = " + guildid
-                    + " AND id = " + id);
-
-            while (set.next())
+            if(set != null)
             {
-                channelId = set.getLong("channelid");
+                while (set.next())
+                {
+                    channelId = set.getLong("channelid");
+                }
             }
         } catch (SQLException e)
         {

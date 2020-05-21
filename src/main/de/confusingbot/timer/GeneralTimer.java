@@ -56,9 +56,9 @@ public class GeneralTimer
                 updateYouTubeAnnouncements.onSecond();
             }
         };
-        shortTimer.schedule(timeTask, 0l,  1000 * 60 * 5);// every 5min
+        shortTimer.schedule(timeTask, 0l, 1000 * 60 * 5);// every 5min
 
-
+/*
         //Create Long Timer Loop
         TimerTask longTimeTask = new TimerTask()
         {
@@ -69,6 +69,7 @@ public class GeneralTimer
             }
         };
         longTimer.schedule(longTimeTask, 0l,  1000 * 60 * 60 * 6);// every 6h
+        */
     }
 
     public void stopTimer()

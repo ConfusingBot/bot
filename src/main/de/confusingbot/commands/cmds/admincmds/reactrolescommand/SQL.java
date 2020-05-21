@@ -1,7 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
-import net.dv8tion.jda.api.entities.Guild;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +36,7 @@ public class SQL
                     + " AND emote = '" + emoteString + "'"
                     + " AND roleid = " + roleid);
 
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
 
         } catch (SQLException e)
         {
@@ -58,7 +57,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 roleid = set.getLong("roleid");
             }
@@ -76,9 +75,12 @@ public class SQL
                 + "guildid = " + guildid);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                if (messageID == set.getLong("messageid")) return true;
+                while (set.next())
+                {
+                    if (messageID == set.getLong("messageid")) return true;
+                }
             }
         } catch (SQLException e)
         {
@@ -89,10 +91,9 @@ public class SQL
     }
 
     public ResultSet GetReactRolesResultSet(long guildid){
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
-                + "guildid = " + guildid);
 
-        return set;
+        return LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+                + "guildid = " + guildid);
     }
 
 

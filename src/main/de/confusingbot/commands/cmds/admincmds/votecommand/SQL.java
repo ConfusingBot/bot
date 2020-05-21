@@ -32,9 +32,12 @@ public class SQL
                 + "guildid = " + guildid);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                if (messageID == set.getLong("messageid")) return true;
+                while (set.next())
+                {
+                    if (messageID == set.getLong("messageid")) return true;
+                }
             }
         } catch (SQLException e)
         {
@@ -53,7 +56,7 @@ public class SQL
                 + " AND messageid = " + messageID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 String codedString = set.getString("allowedroles");
                 if (!codedString.equals(""))

@@ -1,9 +1,6 @@
 package main.de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,9 +20,12 @@ public class SQL
 
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                roleBorderIDs.add(set.getLong("roleid"));
+                while (set.next())
+                {
+                    roleBorderIDs.add(set.getLong("roleid"));
+                }
             }
         } catch (SQLException e)
         {
@@ -43,7 +43,7 @@ public class SQL
         ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 LiteSQL.onUpdate("UPDATE bot SET onlinetime = '" + onlineTime + "'");
             }
@@ -59,7 +59,7 @@ public class SQL
         ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
         try
         {
-            if (!set.next())
+            if (set != null && !set.next())
             {
                 LiteSQL.onUpdate("INSERT INTO bot(onlinetime, users) VALUES ('" +
                         InfoCommandManager.defaultOnlineTime + "', " + 0 + ")");
@@ -77,7 +77,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 onlineTime = set.getString("onlinetime");
             }
@@ -108,7 +108,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 membersString = set.getString("members");
             }
@@ -126,7 +126,7 @@ public class SQL
 
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 datesString = set.getString("dates");
             }

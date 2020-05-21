@@ -20,7 +20,7 @@ public class SQL
                     + "guildid = " + guildid
                     + " AND youtubechannelid = '" + youtubechannelid + "'");
 
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
 
         } catch (SQLException e)
         {
@@ -56,9 +56,12 @@ public class SQL
 
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                youtubechannelid.add(set.getString("youtubechannelid"));
+                while (set.next())
+                {
+                    youtubechannelid.add(set.getString("youtubechannelid"));
+                }
             }
         } catch (SQLException e)
         {

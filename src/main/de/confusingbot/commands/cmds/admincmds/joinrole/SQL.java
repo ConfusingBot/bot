@@ -1,9 +1,6 @@
 package main.de.confusingbot.commands.cmds.admincmds.joinrole;
 
 import main.de.confusingbot.manage.sql.LiteSQL;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ public class SQL
                     + "guildid = " + guildid
                     + " AND roleid = " + roleid);
 
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
 
         } catch (SQLException e)
         {
@@ -53,9 +50,12 @@ public class SQL
 
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                roleids.add(set.getLong("roleid"));
+                while (set.next())
+                {
+                    roleids.add(set.getLong("roleid"));
+                }
             }
         } catch (SQLException e)
         {

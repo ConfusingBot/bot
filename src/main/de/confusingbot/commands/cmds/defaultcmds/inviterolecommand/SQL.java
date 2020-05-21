@@ -17,7 +17,7 @@ public class SQL
 
         try
         {
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -46,10 +46,13 @@ public class SQL
         ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole WHERE guildid = " + guildid);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                long roleid = set.getLong("roleid");
-                roles.add(roleid);
+                while (set.next())
+                {
+                    long roleid = set.getLong("roleid");
+                    roles.add(roleid);
+                }
             }
         } catch (SQLException e)
         {
@@ -66,10 +69,13 @@ public class SQL
         ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole WHERE guildid = " + guildid);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                int invitions = set.getInt("invitions");
-                invitionCounts.add(invitions);
+                while (set.next())
+                {
+                    int invitions = set.getInt("invitions");
+                    invitionCounts.add(invitions);
+                }
             }
         } catch (SQLException e)
         {

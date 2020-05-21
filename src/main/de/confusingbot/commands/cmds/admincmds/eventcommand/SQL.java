@@ -30,7 +30,7 @@ public class SQL
                     + "guildid = " + guildid
                     + " AND roleid = " + roleid);
 
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
 
         } catch (SQLException e)
         {
@@ -46,9 +46,12 @@ public class SQL
                 + " AND messageid = " + messageID);
         try
         {
-            while (set.next())
+            if(set != null)
             {
-                if (messageID == set.getLong("messageid")) return true;
+                while (set.next())
+                {
+                    if (messageID == set.getLong("messageid")) return true;
+                }
             }
         } catch (SQLException e)
         {
@@ -67,7 +70,7 @@ public class SQL
                 + " AND messageid = " + messageID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 roleID = set.getLong("roleid");
             }
@@ -87,7 +90,7 @@ public class SQL
                 + " AND roleid = " + roleID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 name = set.getString("name");
             }
@@ -107,7 +110,7 @@ public class SQL
                 + " AND roleid = " + roleID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 messageId = set.getLong("messageid");
             }
@@ -127,7 +130,7 @@ public class SQL
                 + " AND roleid = " + roleID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 channelId = set.getLong("channelid");
             }
@@ -146,7 +149,7 @@ public class SQL
                 + " AND roleid = " + roleID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                return true;
             }
@@ -166,7 +169,7 @@ public class SQL
                 + " AND roleid = " + messageID);
         try
         {
-            if (set.next())
+            if (set != null && set.next())
             {
                 color = set.getString("color");
             }
@@ -180,10 +183,9 @@ public class SQL
 
     public ResultSet GetResultSet(long guildid)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM event WHERE "
-                + "guildid = " + guildid);
 
-        return set;
+        return LiteSQL.onQuery("SELECT * FROM event WHERE "
+                + "guildid = " + guildid);
     }
 
     public void removeFromSQL(long guildid, long id)

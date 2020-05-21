@@ -3,9 +3,6 @@ package main.de.confusingbot.listener.botlistener;
 import main.de.confusingbot.manage.sql.LiteSQL;
 import main.de.confusingbot.manage.sql.SQLManager;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class SQL
 {
     //=====================================================================================================================================

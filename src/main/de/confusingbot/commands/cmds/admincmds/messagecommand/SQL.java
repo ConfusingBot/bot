@@ -4,8 +4,6 @@ import main.de.confusingbot.manage.sql.LiteSQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SQL
 {
@@ -36,7 +34,7 @@ public class SQL
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
 
-            if (set.next()) return true;
+            if (set != null && set.next()) return true;
 
         } catch (SQLException e)
         {
@@ -56,7 +54,7 @@ public class SQL
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
 
-            if (set.next())
+            if (set != null && set.next())
             {
                 message = set.getString("message");
             }
@@ -80,7 +78,7 @@ public class SQL
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
 
-            if (set.next())
+            if (set != null && set.next())
             {
                 title = set.getString("title");
             }
@@ -104,7 +102,7 @@ public class SQL
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
 
-            if (set.next())
+            if (set != null && set.next())
             {
                 id = set.getLong("channelid");
             }
@@ -128,7 +126,7 @@ public class SQL
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
 
-            if (set.next())
+            if (set != null && set.next())
             {
                 hexColor = set.getString("color");
             }
