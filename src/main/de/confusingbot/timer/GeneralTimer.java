@@ -8,8 +8,7 @@ import main.de.confusingbot.commands.cmds.defaultcmds.inviterolecommand.UpdateIn
 import main.de.confusingbot.commands.cmds.defaultcmds.questioncommand.UpdateQuestionChannels;
 import main.de.confusingbot.commands.cmds.defaultcmds.youtubecommand.UpdateYouTubeAnnouncements;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.*;
 
 public class GeneralTimer
 {
@@ -23,13 +22,14 @@ public class GeneralTimer
     private UpdateYouTubeAnnouncements updateYouTubeAnnouncements;
 
 
-    private Timer shortTimer;
-    private Timer longTimer;
+    private ScheduledExecutorService shortScheduler;
+    private ScheduledExecutorService longScheduler;
 
     public GeneralTimer()
     {
-        shortTimer = new Timer();
-        longTimer = new Timer();
+        shortScheduler = Executors.newScheduledThreadPool(1);
+        longScheduler = Executors.newScheduledThreadPool(1);
+
         this.updateQuestionChannels = new UpdateQuestionChannels();
         this.updateVotes = new UpdateVotes();
         this.updateRepeatInfo = new UpdateRepeatInfo();
@@ -42,41 +42,37 @@ public class GeneralTimer
     //Timer
     public void startTimer()
     {
-        //Create Timer Loop
-        TimerTask timeTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateQuestionChannels.onSecond();
-                updateVotes.onSecond();
-                updateRepeatInfo.onSecond();
-                updateEvents.onSecond();
-                updateInvites.onSecond();
-                updateYouTubeAnnouncements.onSecond();
-            }
-        };
-        shortTimer.schedule(timeTask, 0l, 1000 * 60 * 5);// every 5min
+        shortScheduler.scheduleAtFixedRate(new Runnable()
+                                      {
+                                          public void run()
+                                          {
+                                              updateQuestionChannels.onSecond();
+                                              updateVotes.onSecond();
+                                              updateRepeatInfo.onSecond();
+                                              updateEvents.onSecond();
+                                              updateInvites.onSecond();
+                                              updateYouTubeAnnouncements.onSecond();
+                                          }
+                                      },
+                0,
+                1000 * 60 * 5,// every 5min
+                TimeUnit.SECONDS);
 
-/*
-        //Create Long Timer Loop
-        TimerTask longTimeTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateInfos.onSecond();
-            }
-        };
-        longTimer.schedule(longTimeTask, 0l,  1000 * 60 * 60 * 6);// every 6h
-        */
+        longScheduler.scheduleAtFixedRate(new Runnable()
+                                           {
+                                               public void run()
+                                               {
+                                                   updateInfos.onSecond();
+                                               }
+                                           },
+                0,
+                1000 * 60 * 60 * 6,// every 6h
+                TimeUnit.SECONDS);
     }
 
     public void stopTimer()
     {
-        shortTimer.cancel();
-        shortTimer.purge();
-        longTimer.cancel();
-        longTimer.purge();
+        shortScheduler.shutdown();
+        longScheduler.shutdown();
     }
 }
