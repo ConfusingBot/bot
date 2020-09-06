@@ -23,12 +23,12 @@ public class GeneralTimer
 
 
     private ScheduledExecutorService shortScheduler;
-    private ScheduledExecutorService longScheduler;
+    //private ScheduledExecutorService longScheduler;
 
     public GeneralTimer()
     {
         shortScheduler = Executors.newScheduledThreadPool(1);
-        longScheduler = Executors.newScheduledThreadPool(1);
+        //longScheduler = Executors.newScheduledThreadPool(1);
 
         this.updateQuestionChannels = new UpdateQuestionChannels();
         this.updateVotes = new UpdateVotes();
@@ -43,36 +43,38 @@ public class GeneralTimer
     public void startTimer()
     {
         shortScheduler.scheduleAtFixedRate(new Runnable()
-                                      {
-                                          public void run()
-                                          {
-                                              updateQuestionChannels.onSecond();
-                                              updateVotes.onSecond();
-                                              updateRepeatInfo.onSecond();
-                                              updateEvents.onSecond();
-                                              updateInvites.onSecond();
-                                              updateYouTubeAnnouncements.onSecond();
-                                          }
-                                      },
-                0,
-                1000 * 60 * 5,// every 5min
-                TimeUnit.SECONDS);
-
-        longScheduler.scheduleAtFixedRate(new Runnable()
                                            {
                                                public void run()
                                                {
-                                                   updateInfos.onSecond();
+                                                   updateQuestionChannels.onSecond();
+                                                   updateVotes.onSecond();
+                                                   updateRepeatInfo.onSecond();
+                                                   updateEvents.onSecond();
+                                                   updateInvites.onSecond();
+                                                   updateYouTubeAnnouncements.onSecond();
                                                }
                                            },
                 0,
-                1000 * 60 * 60 * 6,// every 6h
+                60 * 5,// every 5min
                 TimeUnit.SECONDS);
+
+        /*
+        longScheduler.scheduleAtFixedRate(new Runnable()
+                                          {
+                                              public void run()
+                                              {
+                                                  updateInfos.onSecond();
+                                              }
+                                          },
+                0,
+                60 * 60 * 12,// every 12h
+                TimeUnit.SECONDS);
+                */
     }
 
     public void stopTimer()
     {
         shortScheduler.shutdown();
-        longScheduler.shutdown();
+        //longScheduler.shutdown();
     }
 }

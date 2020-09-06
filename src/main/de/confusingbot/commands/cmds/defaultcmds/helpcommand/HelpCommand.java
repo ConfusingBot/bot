@@ -29,7 +29,7 @@ public class HelpCommand implements ServerCommand
 
     private void sendEmbed(ArrayList<EmbedBuilder> builders, Member member, TextChannel channel)
     {
-
+         //Callback for private HelpMessage
         Consumer<? super Throwable> callback = (response) -> {
             System.out.println("Failed to send private Message!");
             EmbedManager.SendInfoEmbed("Sry.. I can't send the HelpEmbed to you because I am not allowed to dm you :/", channel, 10);

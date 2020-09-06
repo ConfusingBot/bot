@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TempVoiceChannelListener
 {
@@ -39,8 +40,13 @@ public class TempVoiceChannelListener
                             VoiceChannel voiceChannel = category.createVoiceChannel("⏳" + member.getEffectiveName() + "'s Channel").complete();
                             voiceChannel.getManager().setUserLimit(joinedChannel.getUserLimit()).queue();
 
+                            //Callback for moveVoiceMember Queue
+                            Consumer<? super Throwable> callback = (response) -> {
+                                System.out.println("Failed to move Member!");
+                            };
+
                             //Move member von placeholder Channel to his VoiceChannel
-                            guild.moveVoiceMember(member, voiceChannel).queue();
+                            guild.moveVoiceMember(member, voiceChannel).queue(null, callback);
 
                             tempchannels.add(voiceChannel.getIdLong());
                         }

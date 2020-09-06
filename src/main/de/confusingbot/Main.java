@@ -18,7 +18,10 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import org.discordbots.api.client.DiscordBotListAPI;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class Main
@@ -29,9 +32,8 @@ public class Main
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-    //ConfusingTestBot Token: NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ
-    //ConfusingBot Token: NjM4NzYwNDYwODEyMDI1ODY2.XhjmyQ.jjGdRKCy8prSzczjp-8UfvPtTgM
-    private String token = "NjQ3MTQ3NDkyOTQwNTc4ODI2.Xe0BKw.le3xRsP2stezvJbhXnr8gIKtaSQ";
+    public static String token;
+    public static String topGGToken;
     public static String version = "0.0.09";
     public static long linesOfCode = 16587;
     public static String prefix = "c/";
@@ -46,14 +48,16 @@ public class Main
         try
         {
             new Main();
-        } catch (LoginException e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
 
-    public Main() throws LoginException
+    public Main() throws LoginException, IOException
     {
+        instantiateConfig();
+
         INSTANCE = this;
 
         LiteSQL.connect();
@@ -75,7 +79,7 @@ public class Main
 
         //Top.gg
         topGGApi = new DiscordBotListAPI.Builder()
-                .token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODc2MDQ2MDgxMjAyNTg2NiIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkwMDQwNzM2fQ.IrjjBLeIqUsdzf3_PKsq38FINHJ_Qpidxhw-mRJUZyQ")
+                .token(topGGToken)
                 .botId("638760460812025866")
                 .build();
 
@@ -96,6 +100,20 @@ public class Main
         builder.addEventListeners(new ReactionListener());
         builder.addEventListeners(new JoinListener());
         builder.addEventListeners(new BotListener());
+    }
+
+    private void instantiateConfig() throws IOException
+    {
+        // TODO doesn't work yet
+        // Get props
+        Properties props = new Properties();
+        //System.out.println(this.getClass().getResource("discord.config.properties"));
+        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("discord.config.properties");
+        props.load(inputStream);
+
+        // Set Tokens
+        token = props.getProperty("testToken");
+        topGGToken = props.getProperty("TopGGToken");
     }
 
     private void ConsoleCommands()
