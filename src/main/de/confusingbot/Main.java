@@ -14,6 +14,7 @@ import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.timer.GeneralTimer;
 import main.de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.discordbots.api.client.DiscordBotListAPI;
 
@@ -44,7 +45,7 @@ public class Main
     {
         try
         {
-            new Main();
+            INSTANCE = new Main();
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -53,12 +54,10 @@ public class Main
 
     public Main() throws LoginException
     {
-        INSTANCE = this;
-
         LiteSQL.connect();
         SQLManager.onCreate();
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault(token);
+        DefaultShardManagerBuilder defaultShardManagerBuilder = DefaultShardManagerBuilder.createDefault(token);
 
         Music music = new Music();
         PersonManager.instantiatePersons();
@@ -66,9 +65,9 @@ public class Main
         cmdManager = new CommandManager();
 
         //Listener
-        Listener(jdaBuilder);
+        Listener(defaultShardManagerBuilder);
 
-        shardManager = jdaBuilder.build().getShardManager();
+        shardManager = defaultShardManagerBuilder.build();
         System.out.println("Bot online!");
 
         //Top.gg
@@ -81,13 +80,13 @@ public class Main
         music.instantiateMusic();
 
         //Start the Timers
-        StartTimer();
+        // StartTimer();
 
         //Commands which you can type in the console
         ConsoleCommands();
     }
 
-    private void Listener(JDABuilder builder)
+    private void Listener(DefaultShardManagerBuilder builder)
     {
         builder.addEventListeners(new CommandListener());
         builder.addEventListeners(new VoiceListener());
