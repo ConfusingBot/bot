@@ -13,15 +13,12 @@ import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.timer.GeneralTimer;
 import main.de.confusingbot.timer.StatusTimer;
-import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.discordbots.api.client.DiscordBotListAPI;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class Main
@@ -32,8 +29,8 @@ public class Main
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-    public static String token;
-    public static String topGGToken;
+    public static String token = System.getenv("TOKEN");
+    public static String topGGToken = System.getenv("TOP_GG_TOKEN");
     public static String version = "0.0.09";
     public static long linesOfCode = 16587;
     public static String prefix = "c/";
@@ -54,17 +51,14 @@ public class Main
         }
     }
 
-    public Main() throws LoginException, IOException
+    public Main() throws LoginException
     {
-        instantiateConfig();
-
         INSTANCE = this;
 
         LiteSQL.connect();
         SQLManager.onCreate();
 
-        DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder();
-        builder.setToken(token);
+        JDABuilder jdaBuilder = JDABuilder.createDefault(token);
 
         Music music = new Music();
         PersonManager.instantiatePersons();
@@ -72,9 +66,9 @@ public class Main
         cmdManager = new CommandManager();
 
         //Listener
-        Listener(builder);
+        Listener(jdaBuilder);
 
-        shardManager = builder.build();
+        shardManager = jdaBuilder.build().getShardManager();
         System.out.println("Bot online!");
 
         //Top.gg
@@ -93,27 +87,13 @@ public class Main
         ConsoleCommands();
     }
 
-    private void Listener(DefaultShardManagerBuilder builder)
+    private void Listener(JDABuilder builder)
     {
         builder.addEventListeners(new CommandListener());
         builder.addEventListeners(new VoiceListener());
         builder.addEventListeners(new ReactionListener());
         builder.addEventListeners(new JoinListener());
         builder.addEventListeners(new BotListener());
-    }
-
-    private void instantiateConfig() throws IOException
-    {
-        // TODO doesn't work yet
-        // Get props
-        Properties props = new Properties();
-        //System.out.println(this.getClass().getResource("discord.config.properties"));
-        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("discord.config.properties");
-        props.load(inputStream);
-
-        // Set Tokens
-        token = props.getProperty("testToken");
-        topGGToken = props.getProperty("TopGGToken");
     }
 
     private void ConsoleCommands()
