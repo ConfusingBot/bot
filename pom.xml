@@ -30,7 +30,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.mypackage.MyClass</mainClass>
+                            <mainClass>de.confusingbot.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
