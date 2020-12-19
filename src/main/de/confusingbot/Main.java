@@ -13,7 +13,6 @@ import main.de.confusingbot.manage.sql.SQLManager;
 import main.de.confusingbot.music.manage.Music;
 import main.de.confusingbot.timer.GeneralTimer;
 import main.de.confusingbot.timer.StatusTimer;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.discordbots.api.client.DiscordBotListAPI;
