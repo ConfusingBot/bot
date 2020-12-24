@@ -1,5 +1,5 @@
 # ConfusingBot
-🤖 This Bot might be Confusing but this bot has many useful features.. which upgrade your server and simplify the daily life on it! 
+🤖 This Bot might be Confusing but this bot has many useful features.. which upgrade your server and simplify the daily life on it! |
 _Note: This Bot isn't supported anymore and the code is pretty dirty since I learned with it the main concepts of Java!_
 
 ### Setup
