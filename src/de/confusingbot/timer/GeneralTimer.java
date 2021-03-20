@@ -7,6 +7,8 @@ import de.confusingbot.commands.cmds.defaultcmds.infocommand.UpdateInfos;
 import de.confusingbot.commands.cmds.defaultcmds.inviterolecommand.UpdateInvites;
 import de.confusingbot.commands.cmds.defaultcmds.questioncommand.UpdateQuestionChannels;
 import de.confusingbot.commands.cmds.defaultcmds.youtubecommand.UpdateYouTubeAnnouncements;
+import de.confusingbot.status.Status;
+import net.dv8tion.jda.api.sharding.ShardManager;
 
 import java.util.concurrent.*;
 
@@ -19,14 +21,15 @@ public class GeneralTimer {
     private UpdateInfos updateInfos;
     private UpdateInvites updateInvites;
     private UpdateYouTubeAnnouncements updateYouTubeAnnouncements;
+    private Status status;
 
 
     private ScheduledExecutorService shortScheduler;
     private ScheduledExecutorService longScheduler;
 
-    public GeneralTimer() {
+    public GeneralTimer(ShardManager shardManager) {
         shortScheduler = Executors.newScheduledThreadPool(1);
-        //longScheduler = Executors.newScheduledThreadPool(1);
+        longScheduler = Executors.newScheduledThreadPool(1);
 
         this.updateQuestionChannels = new UpdateQuestionChannels();
         this.updateVotes = new UpdateVotes();
@@ -35,25 +38,27 @@ public class GeneralTimer {
         this.updateInfos = new UpdateInfos();
         this.updateInvites = new UpdateInvites();
         this.updateYouTubeAnnouncements = new UpdateYouTubeAnnouncements();
+        this.status = new Status(shardManager);
     }
 
-    //Timer
+    // Timer
     public void startTimer() {
         shortScheduler.scheduleAtFixedRate(() -> {
-            updateQuestionChannels.onSecond();
-            updateVotes.onSecond();
-            updateRepeatInfo.onSecond();
-            updateEvents.onSecond();
-            updateInvites.onSecond();
-            updateYouTubeAnnouncements.onSecond();
-        },
+                    updateQuestionChannels.onSecond();
+                    updateVotes.onSecond();
+                    updateRepeatInfo.onSecond();
+                    updateEvents.onSecond();
+                    updateInvites.onSecond();
+                    updateYouTubeAnnouncements.onSecond();
+                    status.onSecond();
+                },
                 0,
-                60 * 5,// every 5min
+                60 * 5, // every 5min
                 TimeUnit.SECONDS);
 
         longScheduler.scheduleAtFixedRate(() -> updateInfos.onSecond(),
                 0,
-                60 * 60 * 12,// every 12h
+                60 * 60 * 12, // every 12h
                 TimeUnit.SECONDS);
     }
 

@@ -11,7 +11,6 @@ import de.confusingbot.manage.person.PersonManager;
 import de.confusingbot.manage.sql.SQLManager;
 import de.confusingbot.music.manage.Music;
 import de.confusingbot.timer.GeneralTimer;
-import de.confusingbot.timer.StatusTimer;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.discordbots.api.client.DiscordBotListAPI;
@@ -78,7 +77,7 @@ public class Main
         music.instantiateMusic();
 
         //Start the Timers
-        // StartTimer();
+        StartTimer();
 
         //Commands which you can type in the console
         ConsoleCommands();
@@ -99,11 +98,10 @@ public class Main
     }
 
     public GeneralTimer generalTimer;
-    public StatusTimer statusTimer;
 
     private void StartTimer()
     {
-        //Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
+        // Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
         try
         {
             TimeUnit.SECONDS.sleep(5);
@@ -112,18 +110,7 @@ public class Main
             e.printStackTrace();
         }
 
-        statusTimer = new StatusTimer(shardManager);
-        statusTimer.startTimer();
-
-        try
-        {
-            TimeUnit.SECONDS.sleep(30);
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        generalTimer = new GeneralTimer();
+        generalTimer = new GeneralTimer(shardManager);
         generalTimer.startTimer();
     }
 

@@ -11,25 +11,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleCommandManager
-{
+public class ConsoleCommandManager {
 
-    public static void Bot(ShardManager shardManager)
-    {
+    public static void Bot(ShardManager shardManager) {
         new Thread(() -> {
             String line = "";
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            try
-            {
-                while ((line = reader.readLine()) != null && !Main.botOffline)
-                {
-                    switch (line)
-                    {
+            try {
+                while ((line = reader.readLine()) != null && !Main.botOffline) {
+                    switch (line) {
                         case "exit":
 
                             Main.botOffline = true;
-                            if (shardManager != null)
-                            {
+                            if (shardManager != null) {
                                 //save online time of bot
                                 InfoCommandManager.botInfo.updateBotOnlineTime(Main.botStartTime, true);
 
@@ -51,8 +45,7 @@ public class ConsoleCommandManager
 
                             System.out.println("--Servers------------------------------------------------");
                             Main.INSTANCE.shardManager.getShards().forEach(jda -> {
-                                for (Guild guild : jda.getGuilds())
-                                {
+                                for (Guild guild : jda.getGuilds()) {
                                     System.out.println(guild.getName() + " -> " + guild.getIdLong());
                                 }
                             });
@@ -65,19 +58,14 @@ public class ConsoleCommandManager
                             break;
                     }
                 }
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }).start();
     }
 
-    private static void stopTimer()
-    {
+    private static void stopTimer() {
         Main.INSTANCE.generalTimer.stopTimer();
-        Main.INSTANCE.statusTimer.stopTimer();
     }
-
-
 }
