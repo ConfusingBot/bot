@@ -1,1 +1,1 @@
-Worker: java -jar target/ConfusingBot-0.0.5.jar
+Worker: java src/de/confusingbot/Main.java
