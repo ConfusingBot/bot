@@ -52,7 +52,7 @@ public class Main
 
     public Main() throws LoginException
     {
-        SQLManager.connect(true);
+        SQLManager.connect();
         SQLManager.onCreate();
 
         DefaultShardManagerBuilder defaultShardManagerBuilder = DefaultShardManagerBuilder.createDefault(token);

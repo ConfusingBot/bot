@@ -1,7 +1,5 @@
 package de.confusingbot.manage.sql;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,46 +9,21 @@ public class SQLManager {
     private static Connection connection;
     private static Statement statement;
 
-    public static void connect(Boolean psql) {
+    public static void connect() {
         connection = null;
+        String jdbcURL = System.getenv("DATABASE_SERVER");
+        String username = System.getenv("DATABASE_USERNAME");
+        String password = System.getenv("DATABASE_PASSWORD");
 
-        // Connect to psql
-        if (psql){
-            String jdbcURL = System.getenv("DATABASE_SERVER");
-            String username = System.getenv("DATABASE_USERNAME");
-            String password = System.getenv("DATABASE_PASSWORD");
-
-            try {
-                Class.forName("org.postgresql.Driver");
-                connection = DriverManager.getConnection(jdbcURL, username, password);
-
-                System.out.println("Verbindung zur Datenbank hergestellt");
-
-                statement = connection.createStatement();
-
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            return;
-        }
-
-
-        // Connect to local LiteSQL DB
         try {
-            File file = new File("datenbank.db");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            String url = "jdbc:sqlite:" + file.getPath();
-            connection = DriverManager.getConnection(url);
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(jdbcURL, username, password);
 
             System.out.println("Verbindung zur Datenbank hergestellt");
 
             statement = connection.createStatement();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -86,8 +59,7 @@ public class SQLManager {
 
     public static List<String> tabelNames = new ArrayList<>();
 
-    public static void onCreate()
-    {
+    public static void onCreate() {
         SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS bot(id SERIAL, " +
                 "onlinetime TEXT, " +
                 "users TEXT)");
