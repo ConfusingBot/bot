@@ -21,13 +21,14 @@ public class SQLManager {
             String password = System.getenv("DATABASE_PASSWORD");
 
             try {
+                Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(jdbcURL, username, password);
 
                 System.out.println("Verbindung zur Datenbank hergestellt");
 
                 statement = connection.createStatement();
 
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
