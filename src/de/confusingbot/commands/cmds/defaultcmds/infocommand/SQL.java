@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class SQL
     {
         List<Long> roleBorderIDs = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM roleborders WHERE "
                 + "guildid = " + guildID);
 
         try
@@ -40,12 +40,12 @@ public class SQL
     //===========================================================================================================================
     public void updateOnlineTime(String onlineTime)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
+        ResultSet set = SQLManager.onQuery("SELECT * FROM bot");
         try
         {
             if (set != null && set.next())
             {
-                LiteSQL.onUpdate("UPDATE bot SET onlinetime = '" + onlineTime + "'");
+                SQLManager.onUpdate("UPDATE bot SET onlinetime = '" + onlineTime + "'");
             }
         } catch (SQLException e)
         {
@@ -56,12 +56,12 @@ public class SQL
 
     public void addBotToSQL()
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
+        ResultSet set = SQLManager.onQuery("SELECT * FROM bot");
         try
         {
             if (set != null && !set.next())
             {
-                LiteSQL.onUpdate("INSERT INTO bot(onlinetime, users) VALUES ('" +
+                SQLManager.onUpdate("INSERT INTO bot(onlinetime, users) VALUES ('" +
                         InfoCommandManager.defaultOnlineTime + "', " + 0 + ")");
             }
         } catch (SQLException e)
@@ -73,7 +73,7 @@ public class SQL
     public String getOnlineTime()
     {
         String onlineTime = "";
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM bot");
+        ResultSet set = SQLManager.onQuery("SELECT * FROM bot");
 
         try
         {
@@ -93,18 +93,18 @@ public class SQL
     //===========================================================================================================================
     public void UpdateMembersInServers(long guildid, String memberString)
     {
-        LiteSQL.onUpdate("UPDATE servers SET members = '" + memberString + "' WHERE guildid = " + guildid);
+        SQLManager.onUpdate("UPDATE servers SET members = '" + memberString + "' WHERE guildid = " + guildid);
     }
 
     public void UpdateDatesInServers(long guildid, String dateString)
     {
-        LiteSQL.onUpdate("UPDATE servers SET dates = '" + dateString + "' WHERE guildid = " + guildid);
+        SQLManager.onUpdate("UPDATE servers SET dates = '" + dateString + "' WHERE guildid = " + guildid);
     }
 
     public String GetMembersInServer(long guildid)
     {
         String membersString = "";
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM servers WHERE guildid = " + guildid);
+        ResultSet set = SQLManager.onQuery("SELECT * FROM servers WHERE guildid = " + guildid);
 
         try
         {
@@ -122,7 +122,7 @@ public class SQL
     public String GetDatesInServer(long guildid)
     {
         String datesString = "";
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM servers WHERE guildid = " + guildid);
+        ResultSet set = SQLManager.onQuery("SELECT * FROM servers WHERE guildid = " + guildid);
 
         try
         {

@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.defaultcmds.inviterolecommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ public class SQL
 {
     public boolean ExistInSQL(long guildid, long roldeID)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole WHERE " +
+        ResultSet set = SQLManager.onQuery("SELECT * FROM inviterole WHERE " +
                 "guildid = " + guildid
                 + " AND roleid = " + roldeID);
 
@@ -28,13 +28,13 @@ public class SQL
 
     public void AddRoleToSQL(long guildid, long roleid, int invitions)
     {
-        LiteSQL.onUpdate("INSERT INTO inviterole(guildid, invitions, roleid) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO inviterole(guildid, invitions, roleid) VALUES (" +
                 guildid + ", " + invitions + ", " + roleid + ")");
     }
 
     public void RemoveRoleFromSQL(long guildid, long roleid)
     {
-        LiteSQL.onUpdate("DELETE FROM inviterole WHERE "
+        SQLManager.onUpdate("DELETE FROM inviterole WHERE "
                 + "guildid = " + guildid
                 + " AND roleid = " + roleid);
     }
@@ -43,7 +43,7 @@ public class SQL
     {
         List<Long> roles = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole WHERE guildid = " + guildid);
+        ResultSet set = SQLManager.onQuery("SELECT * FROM inviterole WHERE guildid = " + guildid);
         try
         {
             if(set != null)
@@ -66,7 +66,7 @@ public class SQL
     {
         List<Integer> invitionCounts = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole WHERE guildid = " + guildid);
+        ResultSet set = SQLManager.onQuery("SELECT * FROM inviterole WHERE guildid = " + guildid);
         try
         {
             if(set != null)

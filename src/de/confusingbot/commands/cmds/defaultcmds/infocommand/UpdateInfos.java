@@ -2,7 +2,7 @@ package de.confusingbot.commands.cmds.defaultcmds.infocommand;
 
 import de.confusingbot.Main;
 import de.confusingbot.commands.help.CommandsUtil;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.sql.ResultSet;
@@ -22,7 +22,7 @@ public class UpdateInfos
     private void updateServerMemberCount()
     {
         System.out.println("Update MemberGraph from all servers");
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM servers");
+        ResultSet set = SQLManager.onQuery("SELECT * FROM servers");
         if(set != null)
         {
             try

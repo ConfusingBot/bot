@@ -3,7 +3,7 @@ package de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 import de.confusingbot.Main;
 import de.confusingbot.commands.help.CommandsUtil;
 import de.confusingbot.manage.embeds.EmbedManager;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -38,7 +38,7 @@ public class UpdateQuestionChannels
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncommand");
+            ResultSet set = SQLManager.onQuery("SELECT * FROM questioncommand");
             if(set != null)
             {
                 while (set.next())

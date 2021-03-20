@@ -1,7 +1,7 @@
 package de.confusingbot.music.manage;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import de.confusingbot.music.AudioPlayerSendHandler;
 import de.confusingbot.music.queue.Queue;
 import de.confusingbot.music.TrackScheduler;
@@ -42,7 +42,7 @@ public class MusicController
 
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
+            ResultSet set = SQLManager.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
             if (set.next())
             {
                 lastUsedMemberId = set.getLong("memberid");
@@ -58,7 +58,7 @@ public class MusicController
     public long getLastUsedChannelId()
     {
         long channelid = -1;
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
+        ResultSet set = SQLManager.onQuery("SELECT * FROM musicchannel WHERE guildid = " + guild.getIdLong());
 
         try
         {
@@ -76,18 +76,18 @@ public class MusicController
 
     public void updateChannel(TextChannel channel, Member member)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM musicchannel WHERE guildid = " + channel.getGuild().getIdLong());
+        ResultSet set = SQLManager.onQuery("SELECT * FROM musicchannel WHERE guildid = " + channel.getGuild().getIdLong());
 
         try
         {
             if (set.next())
             {
-                LiteSQL.onUpdate("UPDATE musicchannel SET channelid = " + channel.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());//https://www.sqlitetutorial.net/sqlite-update/
-                LiteSQL.onUpdate("UPDATE musicchannel SET memberid = " + member.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());
+                SQLManager.onUpdate("UPDATE musicchannel SET channelid = " + channel.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());//https://www.sqlitetutorial.net/sqlite-update/
+                SQLManager.onUpdate("UPDATE musicchannel SET memberid = " + member.getIdLong() + " WHERE guildid = " + channel.getGuild().getIdLong());
             }
             else
             {
-                LiteSQL.onUpdate("INSERT INTO musicchannel(guildid, channelid, memberid) VALUES (" + channel.getGuild().getIdLong() + ", " + channel.getIdLong() + ", " + member.getIdLong() + ")");
+                SQLManager.onUpdate("INSERT INTO musicchannel(guildid, channelid, memberid) VALUES (" + channel.getGuild().getIdLong() + ", " + channel.getIdLong() + ", " + member.getIdLong() + ")");
             }
         } catch (SQLException e)
         {

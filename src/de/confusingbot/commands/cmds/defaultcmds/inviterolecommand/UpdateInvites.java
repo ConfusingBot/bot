@@ -3,7 +3,7 @@ package de.confusingbot.commands.cmds.defaultcmds.inviterolecommand;
 import de.confusingbot.commands.help.CommandsUtil;
 import de.confusingbot.Main;
 import de.confusingbot.manage.embeds.EmbedManager;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
@@ -24,7 +24,7 @@ public class UpdateInvites
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM inviterole");
+            ResultSet set = SQLManager.onQuery("SELECT * FROM inviterole");
             if(set != null)
             {
                 while (set.next())

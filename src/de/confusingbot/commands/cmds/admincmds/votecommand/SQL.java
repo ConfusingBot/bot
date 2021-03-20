@@ -1,7 +1,7 @@
 package de.confusingbot.commands.cmds.admincmds.votecommand;
 
 import de.confusingbot.commands.help.CommandsUtil;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,20 +15,20 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long guildid, long channelID, long messageid, String title, String allowedroles, String emotes, String endtime, String creationtime)
     {
-        LiteSQL.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, title, allowedroles, emotes, endtime, creationtime) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO votecommand(guildid, channelid, messageid, title, allowedroles, emotes, endtime, creationtime) VALUES (" +
                 guildid + ", " + channelID + ", " + messageid + ", '" + title + "', '" + allowedroles + "', '" + emotes + "', '" + endtime + "', '" + creationtime + "')");
     }
 
     public void removeFromSQL(long guildid, long id)
     {
-        LiteSQL.onUpdate("DELETE FROM votecommand WHERE "
+        SQLManager.onUpdate("DELETE FROM votecommand WHERE "
                 + "id = " + id
                 + " AND guildid = " + guildid);
     }
 
     public boolean containsMessageID(long guildid, long messageID)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM votecommand WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM votecommand WHERE "
                 + "guildid = " + guildid);
         try
         {
@@ -51,7 +51,7 @@ public class SQL
     {
         List<Long> ids = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM votecommand WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM votecommand WHERE "
                 + "guildid = " + guildid
                 + " AND messageid = " + messageID);
         try

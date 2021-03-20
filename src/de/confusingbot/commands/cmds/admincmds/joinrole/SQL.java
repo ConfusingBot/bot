@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.joinrole;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class SQL
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM joinrole WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM joinrole WHERE "
                     + "guildid = " + guildid
                     + " AND roleid = " + roleid);
 
@@ -30,13 +30,13 @@ public class SQL
 
     public void addToSQL(long guildid, long roleid)
     {
-        LiteSQL.onUpdate("INSERT INTO joinrole(guildid, roleid) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO joinrole(guildid, roleid) VALUES (" +
                 guildid + ", " + roleid + ")");
     }
 
     public void removeFormSQL(long guildid, long roleid)
     {
-        LiteSQL.onUpdate("DELETE FROM joinrole WHERE "
+        SQLManager.onUpdate("DELETE FROM joinrole WHERE "
                 + "guildid = " + guildid
                 + " AND roleid = " + roleid);
     }
@@ -45,7 +45,7 @@ public class SQL
     {
         List<Long> roleids = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM joinrole WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM joinrole WHERE "
                 + "guildid = " + guildid);
 
         try

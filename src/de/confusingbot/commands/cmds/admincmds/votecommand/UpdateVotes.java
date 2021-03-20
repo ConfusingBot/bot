@@ -3,7 +3,7 @@ package de.confusingbot.commands.cmds.admincmds.votecommand;
 import de.confusingbot.Main;
 import de.confusingbot.commands.help.CommandsUtil;
 import de.confusingbot.manage.embeds.EmbedManager;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
@@ -24,7 +24,7 @@ public class UpdateVotes
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM votecommand");
+            ResultSet set = SQLManager.onQuery("SELECT * FROM votecommand");
             if(set != null)
             {
                 while (set.next())

@@ -2,7 +2,7 @@ package de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
 import de.confusingbot.Main;
 import de.confusingbot.commands.help.CommandsUtil;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -27,7 +27,7 @@ public class UpdateRepeatInfo
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo");
+            ResultSet set = SQLManager.onQuery("SELECT * FROM repeatinfo");
             if(set != null)
             {
                 while (set.next())

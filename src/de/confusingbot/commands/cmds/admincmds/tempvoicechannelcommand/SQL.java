@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.tempvoicechannelcommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ public class SQL
     //=====================================================================================================================================
     public boolean ExistInSQL(long guildid, long channelID)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM tempchannels WHERE " +
+        ResultSet set = SQLManager.onQuery("SELECT * FROM tempchannels WHERE " +
                 "guildid = " + guildid
                 + " AND channelid = " + channelID);
 
@@ -30,13 +30,13 @@ public class SQL
 
     public void addToSQL(long channelID, long guildid)
     {
-        LiteSQL.onUpdate("INSERT INTO tempchannels(guildid, channelid) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO tempchannels(guildid, channelid) VALUES (" +
                 guildid + ", " + channelID + ")");
     }
 
     public void removeFromSQL(long channelID, long guildid)
     {
-        LiteSQL.onUpdate("DELETE FROM tempchannels WHERE "
+        SQLManager.onUpdate("DELETE FROM tempchannels WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelID);
     }
@@ -45,7 +45,7 @@ public class SQL
     {
         List<Long> channels = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM tempchannels WHERE guildid = " + guildid);
+        ResultSet set = SQLManager.onQuery("SELECT * FROM tempchannels WHERE guildid = " + guildid);
         try
         {
             if(set != null)

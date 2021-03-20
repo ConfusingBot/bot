@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.rolebordercommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,20 +14,20 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long channelid, long roleid, String roleName)
     {
-        LiteSQL.onUpdate("INSERT INTO roleborders(guildid, roleid, name) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO roleborders(guildid, roleid, name) VALUES (" +
                 channelid + ", " + roleid + ", '" + roleName + "')");
     }
 
     public void removeFromSQL(long guildid, long roleid)
     {
-        LiteSQL.onUpdate("DELETE FROM roleborders WHERE "
+        SQLManager.onUpdate("DELETE FROM roleborders WHERE "
                 + "guildid = " + guildid
                 + " AND roleid = " + roleid);
     }
 
     public boolean ExistsInSQL(long guildid, long roleid)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM roleborders WHERE "
                 + "guildid = " + guildid
                 + " AND roleid = " + roleid);
 
@@ -47,7 +47,7 @@ public class SQL
     {
         List<Long> roles = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE guildid = " + guildid);
+        ResultSet set = SQLManager.onQuery("SELECT * FROM roleborders WHERE guildid = " + guildid);
         try
         {
             if(set != null)

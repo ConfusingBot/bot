@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.reactrolescommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,13 +12,13 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long guildid, long channelid, long messageid, String emoteString, long roleid)
     {
-        LiteSQL.onUpdate("INSERT INTO reactroles(guildid, channelid, messageid, emote, roleid) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO reactroles(guildid, channelid, messageid, emote, roleid) VALUES (" +
                 guildid + ", " + channelid + ", " + messageid + ", '" + emoteString + "', " + roleid + ")");
     }
 
     public void removeFromSQL(long guildid, long channelid, long messageid, String emoteString, long roleid)
     {
-        LiteSQL.onUpdate("DELETE FROM reactroles WHERE "
+        SQLManager.onUpdate("DELETE FROM reactroles WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelid
                 + " AND messageid = " + messageid
@@ -30,7 +30,7 @@ public class SQL
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM reactroles WHERE "
                     + "guildid = " + guildid
                     + " AND messageid = " + messageid
                     + " AND emote = '" + emoteString + "'"
@@ -49,7 +49,7 @@ public class SQL
     {
         long roleid = -1;
 
-        ResultSet set = LiteSQL.onQuery("SELECT roleid FROM reactroles WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT roleid FROM reactroles WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelid
                 + " AND messageid = " + messageid
@@ -71,7 +71,7 @@ public class SQL
 
     public boolean containsMessageID(long guildid, long messageID)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM reactroles WHERE "
                 + "guildid = " + guildid);
         try
         {
@@ -92,7 +92,7 @@ public class SQL
 
     public ResultSet GetReactRolesResultSet(long guildid){
 
-        return LiteSQL.onQuery("SELECT * FROM reactroles WHERE "
+        return SQLManager.onQuery("SELECT * FROM reactroles WHERE "
                 + "guildid = " + guildid);
     }
 

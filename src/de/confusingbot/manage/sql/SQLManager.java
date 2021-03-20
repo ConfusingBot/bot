@@ -1,99 +1,178 @@
 package de.confusingbot.manage.sql;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLManager
-{
+public class SQLManager {
+
+    private static Connection connection;
+    private static Statement statement;
+
+    private static Boolean isPostgres = true;
+
+    public static void connect(Boolean psql) {
+        isPostgres = psql;
+        connection = null;
+
+        // Connect to psql
+        if (psql){
+            String jdbcURL = System.getenv("PSQL_SERVER");
+            String username = "postgres";
+            String password = System.getenv("PSQL_PASSWORD");
+
+            try {
+                connection = DriverManager.getConnection(jdbcURL, username, password);
+
+                System.out.println("Verbindung zur Datenbank hergestellt");
+
+                statement = connection.createStatement();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return;
+        }
+
+
+        // Connect to local LiteSQL DB
+        try {
+            File file = new File("datenbank.db");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            String url = "jdbc:sqlite:" + file.getPath();
+            connection = DriverManager.getConnection(url);
+
+            System.out.println("Verbindung zur Datenbank hergestellt");
+
+            statement = connection.createStatement();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void disconnect() {
+        try {
+            if (connection != null) {
+                connection.close();
+                System.out.println("Verbindung zur Datenbank getrennt");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void onUpdate(String sql) {
+        try {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ResultSet onQuery(String sql) {
+        try {
+            return statement.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public static List<String> tabelNames = new ArrayList<>();
 
     public static void onCreate()
     {
-
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS bot(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS bot(id SERIAL, " +
                 "onlinetime TEXT, " +
                 "users TEXT)");
 
         tabelNames.add("servers");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS servers(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS servers(id SERIAL, " +
+                "guildid BIGINT, " +
                 "name TEXT, " +
                 "dates TEXT, " +
                 "members TEXT)");
 
         tabelNames.add("reactroles");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS reactroles(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "messageid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS reactroles(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "messageid BIGINT, " +
                 "emote VARCHAR, " +
-                "roleid INTEGER)");
+                "roleid BIGINT)");
 
         tabelNames.add("musicchannel");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS musicchannel(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "memberid INTEGER)");
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS musicchannel(id SERIAL,  " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "memberid BIGINT)");
 
         tabelNames.add("questioncommand");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS questioncommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "memberid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS questioncommand(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "memberid BIGINT, " +
                 "creationtime TEXT, " +
                 "deletetime TEXT)");
 
         tabelNames.add("questioncategories");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS questioncategories(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "categoryid INTEGER)");
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS questioncategories(id SERIAL, " +
+                "guildid BIGINT, " +
+                "categoryid BIGINT)");
 
         tabelNames.add("tempchannels");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS tempchannels(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER)");
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS tempchannels(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT)");
 
         tabelNames.add("acceptrules");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS acceptrules(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "messageid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS acceptrules(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "messageid BIGINT, " +
                 "emote VARCHAR, " +
-                "roleacceptedid INTEGER, " +
-                "rolenotacceptedid INTEGER)");
+                "roleacceptedid BIGINT, " +
+                "rolenotacceptedid BIGINT)");
 
         tabelNames.add("roleborders");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS roleborders(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "roleid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS roleborders(id SERIAL, " +
+                "guildid BIGINT, " +
+                "roleid BIGINT, " +
                 "name TEXT)");
 
 
         tabelNames.add("repeatinfo");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS repeatinfo(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "time INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS repeatinfo(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "time BIGINT, " +
                 "color TEXT, " +
                 "title TEXT, " +
                 "info TEXT)");
 
         tabelNames.add("messagecommand");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS messagecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS messagecommand(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
                 "color TEXT, " +
                 "messagetype TEXT, " +
                 "title TEXT, " +
                 "message TEXT, " +
-                "isprivate INTEGER)");
+                "isprivate BIGINT)");
 
         tabelNames.add("votecommand");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS votecommand(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "messageid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS votecommand(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "messageid BIGINT, " +
                 "title TEXT, " +
                 "allowedroles TEXT, " +
                 "emotes TEXT, " +
@@ -101,16 +180,16 @@ public class SQLManager
                 "creationtime TEXT)");
 
         tabelNames.add("joinrole");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS joinrole(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "roleid INTEGER)");
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS joinrole(id SERIAL, " +
+                "guildid BIGINT, " +
+                "roleid BIGINT)");
 
         tabelNames.add("event");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS event(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
-                "messageid INTEGER, " +
-                "roleid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS event(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
+                "messageid BIGINT, " +
+                "roleid BIGINT, " +
                 "color TEXT, " +
                 "emote TEXT, " +
                 "name TEXT, " +
@@ -118,15 +197,15 @@ public class SQLManager
                 "creationtime TEXT)");
 
         tabelNames.add("inviterole");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS inviterole(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "invitions INTEGER, " +
-                "roleid INTEGER)");
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS inviterole(id SERIAL, " +
+                "guildid BIGINT, " +
+                "invitions BIGINT, " +
+                "roleid BIGINT)");
 
         tabelNames.add("youtubeannouncement");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS youtubeannouncement(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "guildid INTEGER, " +
-                "channelid INTEGER, " +
+        SQLManager.onUpdate("CREATE TABLE IF NOT EXISTS youtubeannouncement(id SERIAL, " +
+                "guildid BIGINT, " +
+                "channelid BIGINT, " +
                 "youtubechannelid TEXT, " +
                 "description TEXT, " +
                 "roleids TEXT)");

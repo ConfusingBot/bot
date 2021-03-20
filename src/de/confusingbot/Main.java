@@ -8,7 +8,6 @@ import de.confusingbot.listener.voicelistener.VoiceListener;
 import de.confusingbot.manage.commands.CommandManager;
 import de.confusingbot.commands.cmds.consolecmds.ConsoleCommandManager;
 import de.confusingbot.manage.person.PersonManager;
-import de.confusingbot.manage.sql.LiteSQL;
 import de.confusingbot.manage.sql.SQLManager;
 import de.confusingbot.music.manage.Music;
 import de.confusingbot.timer.GeneralTimer;
@@ -53,7 +52,7 @@ public class Main
 
     public Main() throws LoginException
     {
-        LiteSQL.connect();
+        SQLManager.connect(true);
         SQLManager.onCreate();
 
         DefaultShardManagerBuilder defaultShardManagerBuilder = DefaultShardManagerBuilder.createDefault(token);

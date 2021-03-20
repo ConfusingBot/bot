@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.repeatinfocommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +14,13 @@ public class SQL
     //=====================================================================================================================================
     public void addToSQL(long guildid, long channelid, int time, String color, String title, String info)
     {
-        LiteSQL.onUpdate("INSERT INTO repeatinfo(guildid, channelid, time, color, title, info) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO repeatinfo(guildid, channelid, time, color, title, info) VALUES (" +
                 guildid + ", " + channelid + ", " + time + ", '" + color + "', '" + title + "', '" + info + "')");
     }
 
     public void removeFormSQL(long guildid, int id)
     {
-        LiteSQL.onUpdate("DELETE FROM repeatinfo WHERE "
+        SQLManager.onUpdate("DELETE FROM repeatinfo WHERE "
                 + "guildid = " + guildid
                 + " AND id = " + id);
     }
@@ -29,7 +29,7 @@ public class SQL
     {
         List<Integer> list = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM repeatinfo WHERE "
                 + "guildid = " + guildid);
 
         try
@@ -52,7 +52,7 @@ public class SQL
     {
         int time = -1;
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM repeatinfo WHERE "
                 + "guildid = " + guildid
                 + " AND id = " + id);
 
@@ -76,7 +76,7 @@ public class SQL
     {
         String repeatInfoString = "error";
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM repeatinfo WHERE "
                 + "guildid = " + guildid
                 + " AND id = " + id);
 
@@ -100,7 +100,7 @@ public class SQL
     {
         String title = "error";
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM repeatinfo WHERE "
                 + "guildid = " + guildid
                 + " AND id = " + id);
 
@@ -124,7 +124,7 @@ public class SQL
     {
         long channelId = -1;
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM repeatinfo WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM repeatinfo WHERE "
                 + "guildid = " + guildid
                 + " AND id = " + id);
 

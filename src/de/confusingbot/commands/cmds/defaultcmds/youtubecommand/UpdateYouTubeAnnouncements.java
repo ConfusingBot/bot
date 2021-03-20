@@ -2,7 +2,7 @@ package de.confusingbot.commands.cmds.defaultcmds.youtubecommand;
 
 import de.confusingbot.Main;
 import de.confusingbot.commands.help.CommandsUtil;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import de.confusingbot.manage.youtubeapi.YouTubeAPIManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
@@ -25,7 +25,7 @@ public class UpdateYouTubeAnnouncements
 
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM youtubeannouncement");
+            ResultSet set = SQLManager.onQuery("SELECT * FROM youtubeannouncement");
             if(set != null)
             {
                 while (set.next())

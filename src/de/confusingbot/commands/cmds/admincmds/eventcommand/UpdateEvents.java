@@ -2,7 +2,7 @@ package de.confusingbot.commands.cmds.admincmds.eventcommand;
 
 import de.confusingbot.Main;
 import de.confusingbot.commands.help.CommandsUtil;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.entities.*;
 
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ public class UpdateEvents
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM event");
+            ResultSet set = SQLManager.onQuery("SELECT * FROM event");
             if(set != null)
             {
                 while (set.next())

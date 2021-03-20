@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.defaultcmds.questioncommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -15,13 +15,13 @@ public class SQL
     //=====================================================================================================================================
     public void AddQuestionCategorieToSQL(long guildid, long categoryid)
     {
-        LiteSQL.onUpdate("INSERT INTO questioncategories(guildid, categoryid) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO questioncategories(guildid, categoryid) VALUES (" +
                 guildid + ", " + categoryid + ")");
     }
 
     public boolean ServerHasQuestionCategory(long guildid)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncategories WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM questioncategories WHERE "
                 + "guildid = " + guildid);
 
         try
@@ -41,18 +41,18 @@ public class SQL
     public void AddGeneratedQuestionToSQL(long guildID, long channelID, long memberID, String creationTime, String deleteTime)
     {
 
-        LiteSQL.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime, deletetime) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO questioncommand(guildid, channelid, memberid, creationtime, deletetime) VALUES (" +
                 guildID + ", " + channelID + ", " + memberID + ", '" + creationTime + "', '" + deleteTime + "')");
     }
 
     public void UpdateDeleteTimeInSQL(long guildID, long channelID, String newDeleteTime)
     {
-        LiteSQL.onUpdate("UPDATE questioncommand SET deletetime = '" + newDeleteTime + "' WHERE guildid = " + guildID + " AND channelid = " + channelID);
+        SQLManager.onUpdate("UPDATE questioncommand SET deletetime = '" + newDeleteTime + "' WHERE guildid = " + guildID + " AND channelid = " + channelID);
     }
 
     public Member GetQuestionAskMember(Guild guild, long channelid)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncommand WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM questioncommand WHERE "
                 + "guildid = " + guild.getIdLong()
                 + " AND channelid = " + channelid);
 
@@ -75,7 +75,7 @@ public class SQL
     public Category GetQuestionCategory(Guild guild)
     {
         Category category = null;
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncategories WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM questioncategories WHERE "
                 + "guildid = " + guild.getIdLong());
 
         try
@@ -95,13 +95,13 @@ public class SQL
 
     public void RemoveQuestionCategoryFromSQL(long guildid)
     {
-        LiteSQL.onUpdate("DELETE FROM questioncategories WHERE "
+        SQLManager.onUpdate("DELETE FROM questioncategories WHERE "
                 + "guildid = " + guildid);
     }
 
     public void removeQuestionFromSQL(long guildid, long channelid, long memberid)
     {
-        LiteSQL.onUpdate("DELETE FROM questioncommand WHERE "
+        SQLManager.onUpdate("DELETE FROM questioncommand WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelid
                 + " AND memberid = " + memberid);
@@ -111,7 +111,7 @@ public class SQL
     {
         String deleteTime = "";
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncommand WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM questioncommand WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelid);
 
@@ -135,7 +135,7 @@ public class SQL
     {
         String creationTime = "";
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM questioncommand WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM questioncommand WHERE "
                 + "guildid = " + guildid
                 + " AND channelid = " + channelid);
 

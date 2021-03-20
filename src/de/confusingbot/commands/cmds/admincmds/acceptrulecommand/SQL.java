@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.acceptrulecommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.sql.ResultSet;
@@ -17,7 +17,7 @@ public class SQL
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                     + "guildid = " + guildid);
 
             if (set.next()) return true;
@@ -31,14 +31,14 @@ public class SQL
 
     public void addToSQL(long guildid, long channelid, long messageid, String emoteString, long notAcceptedRoleID, long acceptedRoleID)
     {
-        LiteSQL.onUpdate("INSERT INTO acceptrules(guildid, channelid, messageid, emote, rolenotacceptedid, roleacceptedid) VALUES (" +
+        SQLManager.onUpdate("INSERT INTO acceptrules(guildid, channelid, messageid, emote, rolenotacceptedid, roleacceptedid) VALUES (" +
                 guildid + ", " + channelid + ", " + messageid + ", '" + emoteString + "', "
                 + notAcceptedRoleID + ", " + acceptedRoleID + ")");
     }
 
     public void removeFormSQL(long guildid)
     {
-        LiteSQL.onUpdate("DELETE FROM acceptrules WHERE "
+        SQLManager.onUpdate("DELETE FROM acceptrules WHERE "
                 + "guildid = " + guildid);
     }
 
@@ -46,7 +46,7 @@ public class SQL
     {
         long rolenotacceptedid = -1;
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                 + "guildid = " + guildid);
 
         try
@@ -66,7 +66,7 @@ public class SQL
     {
         long rolenotacceptedid = -1;
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                 + "guildid = " + guildid
         );
         try
@@ -84,7 +84,7 @@ public class SQL
 
     public boolean containsMessageID(long guildid, long messageID)
     {
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                 + "guildid = " + guildid);
         try
         {
@@ -106,7 +106,7 @@ public class SQL
     public long getMessageID(long guildid)
     {
         long messageID = -1;
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                 + "guildid = " + guildid);
         try
         {
@@ -125,7 +125,7 @@ public class SQL
     public long getChannelID(long guildid)
     {
         long channelID = -1;
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                 + "guildid = " + guildid);
         try
         {
@@ -144,7 +144,7 @@ public class SQL
     public String getEmote(long guildid)
     {
         String emote = "Error";
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM acceptrules WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM acceptrules WHERE "
                 + "guildid = " + guildid);
         try
         {
@@ -164,7 +164,7 @@ public class SQL
     {
         List<Long> roleBordersIds = new ArrayList<>();
 
-        ResultSet set = LiteSQL.onQuery("SELECT * FROM roleborders WHERE "
+        ResultSet set = SQLManager.onQuery("SELECT * FROM roleborders WHERE "
                 + "guildid = " + guild.getIdLong());
 
         try

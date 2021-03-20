@@ -1,6 +1,6 @@
 package de.confusingbot.commands.cmds.admincmds.messagecommand;
 
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,13 +13,13 @@ public class SQL
 
     public void MessageAddToSQL(long guildid, long channelid, String hexColor, String messagetype, String title, String message, boolean isPrivate)
     {
-        LiteSQL.onUpdate("INSERT INTO messagecommand(guildid, channelid, color, messagetype, title, message, isprivate) " +
+        SQLManager.onUpdate("INSERT INTO messagecommand(guildid, channelid, color, messagetype, title, message, isprivate) " +
                 "VALUES (" + guildid + ", " + channelid + ", '" + hexColor + "', '" + messagetype + "', '" + title + "', '" + message + "', " + (isPrivate ? 1 : 0) + ")");
     }
 
     public void MessageRemoveFromSQL(long guildid, String messagetype, boolean isPrivate)
     {
-        LiteSQL.onUpdate("DELETE FROM messagecommand WHERE "
+        SQLManager.onUpdate("DELETE FROM messagecommand WHERE "
                 + "guildid = " + guildid
                 + " AND messagetype = '" + messagetype + "'"
                 + " AND isprivate = " +  (isPrivate ? 1 : 0));
@@ -29,7 +29,7 @@ public class SQL
     {
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM messagecommand WHERE "
                     + "guildid = " + guildid
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
@@ -49,7 +49,7 @@ public class SQL
 
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM messagecommand WHERE "
                     + "guildid = " + guildid
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
@@ -73,7 +73,7 @@ public class SQL
 
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM messagecommand WHERE "
                     + "guildid = " + guildid
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
@@ -97,7 +97,7 @@ public class SQL
 
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM messagecommand WHERE "
                     + "guildid = " + guildid
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));
@@ -121,7 +121,7 @@ public class SQL
 
         try
         {
-            ResultSet set = LiteSQL.onQuery("SELECT * FROM messagecommand WHERE "
+            ResultSet set = SQLManager.onQuery("SELECT * FROM messagecommand WHERE "
                     + "guildid = " + guildid
                     + " AND messagetype = '" + messagetype + "'"
                     + " AND isprivate = " +  (isPrivate ? 1 : 0));

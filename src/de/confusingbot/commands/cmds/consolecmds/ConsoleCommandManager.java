@@ -2,7 +2,7 @@ package de.confusingbot.commands.cmds.consolecmds;
 
 import de.confusingbot.Main;
 import de.confusingbot.commands.cmds.defaultcmds.infocommand.InfoCommandManager;
-import de.confusingbot.manage.sql.LiteSQL;
+import de.confusingbot.manage.sql.SQLManager;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -35,7 +35,7 @@ public class ConsoleCommandManager
 
                                 shardManager.setStatus(OnlineStatus.OFFLINE);
                                 shardManager.shutdown();
-                                LiteSQL.disconnect();
+                                SQLManager.disconnect();
                                 System.out.println("Bot offline!");
 
                                 //Stop Timer

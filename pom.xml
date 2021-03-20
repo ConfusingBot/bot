@@ -76,6 +76,13 @@
             <version>3.34.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql/42.2.19 -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.19</version>
+        </dependency>
+
         <!--   https://bintray.com/sedmelluq/com.sedmelluq/lavaplayer -->
         <dependency>
             <groupId>com.sedmelluq</groupId>
