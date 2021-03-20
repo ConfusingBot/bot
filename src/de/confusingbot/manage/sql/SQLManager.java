@@ -11,15 +11,12 @@ public class SQLManager {
     private static Connection connection;
     private static Statement statement;
 
-    private static Boolean isPostgres = true;
-
     public static void connect(Boolean psql) {
-        isPostgres = psql;
         connection = null;
 
         // Connect to psql
         if (psql){
-            String jdbcURL = System.getenv("DATABASE_URL");
+            String jdbcURL = System.getenv("DATABASE_SERVER");
             String username = System.getenv("DATABASE_USERNAME");
             String password = System.getenv("DATABASE_PASSWORD");
 
