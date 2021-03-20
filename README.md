@@ -18,4 +18,9 @@ _Note: This Bot isn't supported anymore and the code is pretty dirty since I lea
 - Run `heroku logs --app confusing-bot` to see the logs
 
 
+### Heroku
+
+- Build `mvn -DskipTests clean dependency:list install`
+- Start `defined in Procfile`
+
 
