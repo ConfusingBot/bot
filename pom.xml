@@ -74,11 +74,12 @@
             <version>3.34.0</version>
         </dependency>
 
+        <!-- Postgresql -->
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql/42.2.19 -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.19</version>
+            <version>9.4-1206-jdbc42</version>
         </dependency>
 
         <!--   https://bintray.com/sedmelluq/com.sedmelluq/lavaplayer -->
