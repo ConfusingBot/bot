@@ -25,4 +25,9 @@ Commands that Heroku executes to execute the Java Project:
 - Build `mvn -DskipTests clean dependency:list install`
 - Start `defined in Procfile`
 
+Connect to psql database
+```
+heroku pg:psql --app confusing-bot
+```
+
 
