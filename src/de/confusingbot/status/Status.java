@@ -17,7 +17,6 @@ public class Status
         this.shardMan = shardMan;
     }
 
-
     public void onSecond()
     {
         Random rand = new Random();

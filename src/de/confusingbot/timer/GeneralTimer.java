@@ -10,8 +10,7 @@ import de.confusingbot.commands.cmds.defaultcmds.youtubecommand.UpdateYouTubeAnn
 
 import java.util.concurrent.*;
 
-public class GeneralTimer
-{
+public class GeneralTimer {
 
     private UpdateQuestionChannels updateQuestionChannels;
     private UpdateVotes updateVotes;
@@ -23,10 +22,9 @@ public class GeneralTimer
 
 
     private ScheduledExecutorService shortScheduler;
-    //private ScheduledExecutorService longScheduler;
+    private ScheduledExecutorService longScheduler;
 
-    public GeneralTimer()
-    {
+    public GeneralTimer() {
         shortScheduler = Executors.newScheduledThreadPool(1);
         //longScheduler = Executors.newScheduledThreadPool(1);
 
@@ -40,41 +38,27 @@ public class GeneralTimer
     }
 
     //Timer
-    public void startTimer()
-    {
-        shortScheduler.scheduleAtFixedRate(new Runnable()
-                                           {
-                                               public void run()
-                                               {
-                                                   updateQuestionChannels.onSecond();
-                                                   updateVotes.onSecond();
-                                                   updateRepeatInfo.onSecond();
-                                                   updateEvents.onSecond();
-                                                   updateInvites.onSecond();
-                                                   updateYouTubeAnnouncements.onSecond();
-                                               }
-                                           },
+    public void startTimer() {
+        shortScheduler.scheduleAtFixedRate(() -> {
+            updateQuestionChannels.onSecond();
+            updateVotes.onSecond();
+            updateRepeatInfo.onSecond();
+            updateEvents.onSecond();
+            updateInvites.onSecond();
+            updateYouTubeAnnouncements.onSecond();
+        },
                 0,
                 60 * 5,// every 5min
                 TimeUnit.SECONDS);
 
-        /*
-        longScheduler.scheduleAtFixedRate(new Runnable()
-                                          {
-                                              public void run()
-                                              {
-                                                  updateInfos.onSecond();
-                                              }
-                                          },
+        longScheduler.scheduleAtFixedRate(() -> updateInfos.onSecond(),
                 0,
                 60 * 60 * 12,// every 12h
                 TimeUnit.SECONDS);
-                */
     }
 
-    public void stopTimer()
-    {
+    public void stopTimer() {
         shortScheduler.shutdown();
-        //longScheduler.shutdown();
+        longScheduler.shutdown();
     }
 }

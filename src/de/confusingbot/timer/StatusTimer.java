@@ -30,7 +30,7 @@ public class StatusTimer
             }
         };
 
-        timer.schedule(timeTask, 0l, 1000 * 30);//30s
+        timer.schedule(timeTask, 0L, 1000 * 30);//30s
     }
 
     public void stopTimer()
