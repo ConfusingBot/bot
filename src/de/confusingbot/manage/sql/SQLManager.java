@@ -19,9 +19,9 @@ public class SQLManager {
 
         // Connect to psql
         if (psql){
-            String jdbcURL = System.getenv("PSQL_SERVER");
-            String username = System.getenv("PSQL_USERNAME");
-            String password = System.getenv("PSQL_PASSWORD");
+            String jdbcURL = System.getenv("DATABASE_URL");
+            String username = System.getenv("DATABASE_USERNAME");
+            String password = System.getenv("DATABASE_PASSWORD");
 
             try {
                 connection = DriverManager.getConnection(jdbcURL, username, password);
