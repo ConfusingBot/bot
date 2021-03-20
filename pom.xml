@@ -42,20 +42,6 @@
                     <appName>confusing-bot</appName>
                 </configuration>
             </plugin>
-
-            <!-- https://stackoverflow.com/questions/40822839/heroku-and-java-no-suitable-driver -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.2</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals><goal>copy-dependencies</goal></goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
