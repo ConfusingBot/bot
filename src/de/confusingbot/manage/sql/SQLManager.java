@@ -20,7 +20,7 @@ public class SQLManager {
         // Connect to psql
         if (psql){
             String jdbcURL = System.getenv("PSQL_SERVER");
-            String username = "postgres";
+            String username = System.getenv("PSQL_USERNAME");
             String password = System.getenv("PSQL_PASSWORD");
 
             try {
