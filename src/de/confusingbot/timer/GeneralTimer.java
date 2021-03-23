@@ -43,20 +43,34 @@ public class GeneralTimer {
 
     // Timer
     public void startTimer() {
+        System.out.println("Started Schedulers!");
+
         shortScheduler.scheduleAtFixedRate(() -> {
-                    updateQuestionChannels.onSecond();
-                    updateVotes.onSecond();
-                    updateRepeatInfo.onSecond();
-                    updateEvents.onSecond();
-                    updateInvites.onSecond();
-                    updateYouTubeAnnouncements.onSecond();
-                    status.onSecond();
+                    try {
+                        updateQuestionChannels.onSecond();
+                        updateVotes.onSecond();
+                        updateRepeatInfo.onSecond();
+                        updateEvents.onSecond();
+                        updateInvites.onSecond();
+                        updateYouTubeAnnouncements.onSecond();
+                        status.onSecond();
+                    } catch (Exception e) {
+                        System.out.println("Something went wrong in the short scheduler!");
+                        e.printStackTrace();
+                    }
                 },
                 0,
                 60 * 5, // every 5min
                 TimeUnit.SECONDS);
 
-        longScheduler.scheduleAtFixedRate(() -> updateInfos.onSecond(),
+        longScheduler.scheduleAtFixedRate(() -> {
+                    try {
+                        updateInfos.onSecond();
+                    } catch (Exception e) {
+                        System.out.println("Something went wrong in the long scheduler!");
+                        e.printStackTrace();
+                    }
+                },
                 0,
                 60 * 60 * 12, // every 12h
                 TimeUnit.SECONDS);

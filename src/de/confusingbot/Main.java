@@ -104,7 +104,7 @@ public class Main
         // Here you have to sleep 5s because otherwise the ShardManger hasn't loaded correctly
         try
         {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(30);
         } catch (InterruptedException e)
         {
             e.printStackTrace();
