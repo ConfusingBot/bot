@@ -20,7 +20,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Build an executable JAR, otherwise https://www.java-forum.org/thema/fehler-beim-oeffnen-von-jar-datei-kein-hauptmanifestattribut.142221/ ( Not needed anymore because of 'maven-assembly-plugin')
+            <!-- Build an executable JAR, otherwise https://www.java-forum.org/thema/fehler-beim-oeffnen-von-jar-datei-kein-hauptmanifestattribut.142221/ ( Not needed anymore because of 'maven-assembly-plugin') -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -32,7 +32,7 @@
                     </archive>
                 </configuration>
             </plugin>
-            -->
+
 
             <!-- Build JAR, which includes all dependencies https://blog.frankel.ch/creating-self-contained-executable-jars/ -->
             <plugin>

@@ -1,5 +1,6 @@
 # ConfusingBot
-🤖 This Bot might be Confusing but this bot has many useful features.. which upgrade your server and simplify the daily life on it! \
+🤖 This Bot might be Confusing but this bot has many useful features.. 
+which upgrade your server and simplify the daily life on it! \
 _Note: This Bot isn't supported anymore and the code is pretty dirty since I learned with it the main concepts of Java!_
 
 ### Setup
@@ -13,7 +14,7 @@ _Note: This Bot isn't supported anymore and the code is pretty dirty since I lea
 
 ### Build
 - Run `mvn -DskipTests clean dependency:list install` to build the ConfusingBot with dependencies
-- Run `java -jar target/ConfusingBot-YOUR_VERSION.jar` to execute the ConfusingBot
+- Run `java -jar target/ConfusingBot-[YOUR_VERSION]-jar-with-dependencies.jar` to execute the ConfusingBot
 
 ### Deploy (https://dashboard.heroku.com/apps/confusing-bot/)
 - Install the Heroku CLI and add it to the environment variables
