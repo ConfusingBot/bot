@@ -8,7 +8,7 @@ _Note: This Bot isn't supported anymore and the code is pretty dirty since I lea
 ```
 DISCORD_TOKEN={DISCORD_TOKEN}
 TOP_GG_TOKEN={TOP_GG_TOKEN}
-# db as this is the internal reference to the 'db' container (https://stackoverflow.com/questions/50927680/how-to-access-postgres-docker-container-other-docker-container-without-ip-addres)
+# confusing-db is an internal reference to the 'db' container (https://stackoverflow.com/questions/50927680/how-to-access-postgres-docker-container-other-docker-container-without-ip-addres)
 DB_URI=postgresql://confusing-db:5401/confusing_bot
 DB_USERNAME=postgres
 DB_PASSWORD=postgres

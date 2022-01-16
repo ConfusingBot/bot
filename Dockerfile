@@ -3,7 +3,7 @@
 #
 # Build stage
 #
-FROM maven:3.6.0-jdk-11-slim AS build
+FROM maven:3-jdk-11 AS build
 
 # Create 'app' directory
 # and specify it as working directory
@@ -24,7 +24,7 @@ RUN mvn -DskipTests clean dependency:list install
 #
 # Package stage
 #
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jdk
 
 # Copy .jar file
 RUN mkdir -p /app/target
