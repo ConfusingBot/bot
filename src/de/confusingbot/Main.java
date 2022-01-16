@@ -27,7 +27,7 @@ public class Main
     public ShardManager shardManager;
     private CommandManager cmdManager;
 
-    public static String token = System.getenv("TOKEN");
+    public static String token = System.getenv("DISCORD_TOKEN");
     public static String topGGToken = System.getenv("TOP_GG_TOKEN");
     public static String version = "0.0.09";
     public static long linesOfCode = 16587;
@@ -51,6 +51,9 @@ public class Main
 
     public Main() throws LoginException
     {
+        System.out.println("DISCORD_TOKEN: " + token);
+        System.out.println("TOP_GG_TOKEN: " + topGGToken);
+
         SQLManager.connect();
         SQLManager.onCreate();
 

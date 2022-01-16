@@ -4,13 +4,15 @@ which upgrade your server and simplify the daily life on it! \
 _Note: This Bot isn't supported anymore and the code is pretty dirty since I learned with it the main concepts of Java!_
 
 ### Setup
-- Add `TOKEN` with the wished TOKEN to the Environment Variables
-- Add `TOP_GG_TOKEN` with the wished TOP_GG_TOKEN to the Environment Variables
-- Add `DATABASE_SERVER` with the wished Postgresql Database Url like `jdbc:postgresql://localhost:5432/confusingbotdb`
-- Add `DATABASE_USERNAME` with the wished psql username like `postgres`
-- Add `DATABASE_PASSWORD` with the required psql password fitting to the username like `myCoolPassword`
-- Run `mvn install`
-- Run Bot 🎉
+`.env.local`
+```
+DISCORD_TOKEN={DISCORD_TOKEN}
+TOP_GG_TOKEN={TOP_GG_TOKEN}
+# db as this is the internal reference to the 'db' container (https://stackoverflow.com/questions/50927680/how-to-access-postgres-docker-container-other-docker-container-without-ip-addres)
+DB_URI=postgresql://confusing-db:5401/confusing_bot
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+```
 
 ### Build
 - Run `mvn -DskipTests clean dependency:list install` to build the ConfusingBot with dependencies

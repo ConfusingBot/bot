@@ -11,9 +11,13 @@ public class SQLManager {
 
     public static void connect() {
         connection = null;
-        String jdbcURL = System.getenv("DATABASE_SERVER");
-        String username = System.getenv("DATABASE_USERNAME");
-        String password = System.getenv("DATABASE_PASSWORD");
+        String jdbcURL = "jdbc:" + System.getenv("DB_URI");
+        String username = System.getenv("DB_USERNAME");
+        String password = System.getenv("DB_PASSWORD");
+
+        System.out.println("DB_URI: " + jdbcURL);
+        System.out.println("DB_USERNAME: " + username);
+        System.out.println("DB_PASSWORD: " + password);
 
         try {
             Class.forName("org.postgresql.Driver");

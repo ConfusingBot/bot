@@ -1,14 +1,41 @@
-# Use the OpenJDK 11 image as the base image
-FROM openjdk:11
+# https://stackoverflow.com/questions/27767264/how-to-dockerize-maven-project-and-how-many-ways-to-accomplish-it
 
-# Create a new app directory for my application files
-RUN mkdir /app
+#
+# Build stage
+#
+FROM maven:3.6.0-jdk-11-slim AS build
 
-# Copy the app files from host machine to image filesystem
-COPY target/ConfusingBot-0.0.5-jar-with-dependencies.jar /app
+# Create 'app' directory
+# and specify it as working directory
+RUN mkdir -p /app/build
+WORKDIR /app/build
 
-# Set the directory for executing future commands
-WORKDIR /app
+# Environment Variables
+ENV APP_VERSION=0.0.5
+
+# Install Dependencies
+COPY pom.xml ./
+RUN mvn clean install
+
+# Build .jar file
+COPY src ./src
+RUN mvn -DskipTests clean dependency:list install
+
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+
+# Copy .jar file
+RUN mkdir -p /app/target
+COPY --from=build /app/build/target /app/target
+# RUN rm /app/build
+WORKDIR /app/target
+
+# For debugging:
+# Lists all the files and folder that we have copied inside the working directory.
+# Note: To actually see the output of this command we need to specify the flag '--progress=plain '
+RUN ls -l
 
 # Run the .jar file
-CMD java -jar ConfusingBot-0.0.5-jar-with-dependencies.jar
+CMD ["java", "-jar", "ConfusingBot-0.0.5-jar-with-dependencies.jar"]

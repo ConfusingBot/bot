@@ -30,3 +30,4 @@ fabric.properties
 
 # project specific stuff
 *.db
+.env.local
