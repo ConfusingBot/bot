@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- styles -->
+    <style>
+        /* GENERAL */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Catamaran", sans-serif;
+        }
+
+        .top-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 200px;
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+        }
+
+        .main-headline {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .box-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .box-category {
+            margin-bottom: 50px;
+        }
+
+        .boxes {
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-bottom: 50px;
+            margin-top: 10px;
+        }
+
+        /* END GENERAL */
+
+
+        /* BACKGROUND */
+
+        .background {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+
+            background: linear-gradient(-45deg, #ff00e0, #ffeb3b, #14ffe9);
+            background-size: 400%;
+
+            animation: background-change 30s ease-in-out infinite;
+        }
+
+        @keyframes background-change {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 300%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* BACKGROUND */
+
+
+        /* BOX */
+
+        .box1 {
+            position: relative;
+        }
+
+        .face {
+            width: 300px;
+            height: 200px;
+
+            transition: 0.5s;
+        }
+
+        .face1 {
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+
+            z-index: 1;
+            transform: translateY(100px);
+
+            background: #333;
+        }
+
+        .box1:hover .face1 {
+            background: #ff0057;
+            transform: translateY(0);
+        }
+
+        .content-headline {
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 20px;
+
+            color: #fff;
+            text-align: center;
+        }
+
+        .face2 {
+            position: relative;
+            padding: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+
+            transform: translateY(-100px);
+
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            background: #fff;
+        }
+
+        .content-text {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+        }
+
+        .box1:hover .face2 {
+            transform: translateY(0);
+        }
+
+        /* END BOX */
+
+
+        /* BUTTON 6 */
+
+        .btn6 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 200px;
+            height: 75px;
+
+            cursor: pointer;
+
+            border-radius: 6px;
+            background: linear-gradient(45deg, #333, #333, #ff0057, #ff0057);
+            background-size: 400%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+            transition: 0.6s;
+        }
+
+        .btn6 a {
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 2px;
+
+            text-decoration: none;
+            color: white;
+            border: none;
+            font-weight: bold;
+        }
+
+        .btn6:hover {
+            background-position: right;
+
+            font-size: 10px;
+        }
+
+        /* END BUTTON 6 */
+
+
+        /* HEADLINE */
+
+        .main-headline2 {
+            position: relative;
+            display: inline-block;
+
+            padding: 20px 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .main-headline2 p {
+            font-size: 70px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            margin: 0px;
+        }
+
+        .main-headline2 span {
+            position: absolute;
+
+            display: block;
+            background: #fff;
+        }
+
+        .main-headline2 span:nth-child(1) {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            width: 100%;
+            height: 5px;
+
+            background: linear-gradient(to right, transparent, white);
+
+            animation: span1-animation 2s linear infinite;
+        }
+
+        @keyframes span1-animation {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .main-headline2 span:nth-child(2) {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            width: 5px;
+            height: 100%;
+
+            background: linear-gradient(to bottom, transparent, white);
+
+            animation: span2-animation 2s linear infinite;
+            animation-delay: 1s;
+        }
+
+        @keyframes span2-animation {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .main-headline2 span:nth-child(3) {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+
+            width: 100%;
+            height: 5px;
+
+            background: linear-gradient(to left, transparent, white);
+
+            animation: span3-animation 2s linear infinite;
+        }
+
+        @keyframes span3-animation {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .main-headline2 span:nth-child(4) {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 5px;
+            height: 100%;
+
+            background: linear-gradient(to top, transparent, white);
+
+            animation: span4-animation 2s linear infinite;
+            animation-delay: 1s;
+        }
+
+        @keyframes span4-animation {
+            0% {
+                transform: translateY(100%);
+            }
+
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+
+        /* HEADLINE */
+    </style>
+
+
+</head>
+
+<body>
+
+<div class="background">
+
+    <div class="main-headline">
+        <div class="main-headline2">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <p>Command Examples</h1>
+        </div>
+    </div>
+
+    <div class="boxes">
+        <div class="box-category">
+            <!-- BOX ROW 1 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/help</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you all Commands
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/question</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Every question will get an own TextChannel in a defined QuestionCategory
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/info</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Gives you some information about the @User, Bot or Server
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 1 -->
+
+            <!-- BOX ROW 2 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/vote</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a special VoteEmbed with custom Emojis and a Result displayed at the end
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/tempchannel</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a special VoiceChannel, which automatically create a TempVoiceChannels
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/roleborder</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a RoleBorder which will tidy the role preview of a member
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+        </div>
+        <!-- END BOX ROW 2 -->
+
+
+        <div class="top-buttons">
+            <!-- BUTTON 6 -->
+            <div class="btn6">
+                <a href="#useful">Useful</a>
+            </div>
+            <!-- END BUTTON 6 -->
+
+            <!-- BUTTON 6 -->
+            <div class="btn6">
+                <a href="#admin">Admin</a>
+            </div>
+            <!-- END BUTTON 6 -->
+
+            <!-- BUTTON 6 -->
+            <div class="btn6">
+                <a href="#music">Music</a>
+            </div>
+            <!-- END BUTTON 6 -->
+
+            <!-- BUTTON 6 -->
+            <div class="btn6">
+                <a href="#fun">Fun</a>
+            </div>
+            <!-- END BUTTON 6 -->
+        </div>
+
+        <div id="useful" class="main-headline">
+            <div class="main-headline2">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <p>Useful Commands</h1>
+            </div>
+        </div>
+
+        <div class="box-category">
+            <!-- BOX ROW 3 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/preview</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Previews your Text in a Box
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/react</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Reacts with Emojis on Messages
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/info</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Gives you some information about the @User, Bot or Server
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 3 -->
+
+
+            <!-- BOX ROW 4 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/question</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Every question will get an own TextChannel in a defined QuestionCategory
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/ping</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you the Ping
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/invite</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Get special roles by inviting as many people as possible
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 4 -->
+
+            <!-- BOX ROW 5 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/youtube</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you some useful stuff from YouTube (ChannelInfo, LastVideo, …)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/weather</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you some weather information
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+            </div>
+            <!-- END BOX ROW 5 -->
+        </div>
+
+        <div id="admin" class="main-headline">
+            <div class="main-headline2">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <p>Admin Commands</h1>
+            </div>
+        </div>
+
+        <div class="box-category">
+            <!-- BOX ROW 6 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/reactrole</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates an awesome role add and take away system
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/joinrole</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a JoinRole which will be added to new Members
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/tempchannel</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a special VoiceChannel, which automatically create a TempVoiceChannels
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 6 -->
+
+
+            <!-- BOX ROW 7 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/role</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates or Removes roles in a simple way
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/clear</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Clears messages
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/acceptrule</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a rule which has to be Accepted by new Members
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 7 -->
+
+            <!-- BOX ROW 8 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/roleborder</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a RoleBorder which will tidy the role preview of a member
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/repeatinfo</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a Text which will be shown every defined timestamp
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/message</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates custom Welcome/Leave Messages (also Private)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 8 -->
+
+            <!-- BOX ROW 8.1 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/vote</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates a special VoteEmbed with custom Emojis and a Result displayed at the end
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/event</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Creates awesome Events
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+            </div>
+            <!-- END BOX ROW 8.1 -->
+        </div>
+
+        <div id="music" class="main-headline">
+            <div class="main-headline2">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <p>Music Commands</h1>
+            </div>
+        </div>
+
+        <div class="box-category">
+            <!-- BOX ROW 9 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/play</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Starts playing a track or add tracks to the queue
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/leave</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Stops the Music and the ConfusingBot will leave your channel
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/trackinfo</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Gives you some information about the current playing track
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 9 -->
+
+
+            <!-- BOX ROW 10 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/join</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                ConfusingBot will join your channel and start playing the left MusicQueue
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/queue</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Offers you the MusicQueue
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/queue clear</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Clears the MeusicQueue
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 10 -->
+
+            <!-- BOX ROW 11 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/queue shuffle</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shuffles the MusicQueue
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/pause</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Pauses/Resumes the current Track
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/volume</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Changes the volume of the Music
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 11 -->
+        </div>
+
+        <div id="fun" class="main-headline">
+            <div class="main-headline2">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <p>Fun Commands</h1>
+            </div>
+        </div>
+
+        <div class="box-category">
+            <!-- BOX ROW 12 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/hug</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Maybe ConfusingBot will hug you
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/joke</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you a Joke
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/meme</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you a Meme
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 12 -->
+
+            <!-- BOX ROW 13 -->
+            <div class="box-row">
+                <!-- BOX 1 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/advice</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows you an Advice
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/cat</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Shows a Cat
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="box1">
+                    <div class="face face1">
+                        <div>
+                            <p class="content-headline">c/yoda</p>
+                        </div>
+                    </div>
+                    <div class="face face2">
+                        <div>
+                            <p class="content-text">
+                                Translates text into Yoda Language
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BOX 3 -->
+            </div>
+            <!-- END BOX ROW 13 -->
+        </div>
+
+
+        <div class="footer">
+            <!-- BUTTON 6 -->
+            <div class="btn6">
+                <a href="https://www.youtube.com/watch?v=lipXrQA2LJ4" target="_blank">More</a>
+            </div>
+            <!-- END BUTTON 6 -->
+        </div>
+
+    </div>
+
+</body>
+
+</html>
